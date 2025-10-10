@@ -27,3 +27,6 @@ dist-ssr
 .env
 .env.local
 .env.production
+
+# AI context/status tracking (local only)
+STATUS.md

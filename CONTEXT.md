@@ -488,9 +488,69 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 5. **Deposit refund process**: User manually marks as refunded (future: could automate after 6 weeks)
 
-6. **User settings**: ✅ Rates are editable in settings (£160, £165, £100, £250 defaults)
+6. **User settings**: ✅ Rates are editable in settings (£160, £100, £250 defaults) - 6-day bonus calculated (£30 flat)
 
 7. **App navigation**: ✅ Dashboard-first (not calendar), with links to weekly/monthly/yearly views
+
+8. **6-day bonus calculation**: ✅ Flat £30 bonus (6 × £5) added as separate line item, NOT baked into daily rate
+
+9. **Van rates**: ✅ Customizable per van hire (not global setting) - Fleet vans £250, Flexi vans £100-£250
+
+10. **Pay timing**: ✅ Standard pay 2 weeks in arrears (Week N+2), Bonus pay 6 weeks delayed (Week N+6)
+
+---
+
+## Development Progress (Oct 10, 2025)
+
+### ✅ Phase 1: Setup & Foundation - COMPLETE
+
+**All tasks completed!** Project is ready for database design and feature development.
+
+**Completed:**
+- ✅ Vite + React 19 + TypeScript project initialized
+- ✅ All dependencies installed (React Router 7, Zustand 5, date-fns 4, Supabase, etc.)
+- ✅ Tailwind CSS v4 configured with custom design system (dark mode, glassmorphic cards)
+- ✅ Folder structure created (components, features, lib, hooks, store, types, pages)
+- ✅ shadcn/ui configured with 15 components installed (Button, Card, Input, Form, Calendar, Badge, Dialog, Tabs, Select, Dropdown Menu, Table, Popover, Sonner, Label)
+- ✅ `src/lib/utils.ts` created (cn utility for className merging)
+- ✅ Path aliases configured (@/* imports working in TypeScript and Vite)
+- ✅ Supabase project created
+- ✅ Supabase client configured (`src/lib/supabase.ts` with type safety)
+- ✅ Environment variables set up (.env.local, .env.example) - **User needs to fill in actual credentials**
+- ✅ Base TypeScript types created (`src/types/database.ts` placeholder with enums)
+- ✅ Build verified passing
+
+**Key Files Created:**
+- `src/lib/supabase.ts` - Supabase client configuration
+- `src/lib/utils.ts` - Utility functions (cn helper)
+- `src/types/database.ts` - Database type definitions (placeholder)
+- `src/components/ui/` - 15 shadcn/ui components
+- `.env.local` - Environment variables (needs Supabase credentials)
+- `.env.example` - Environment template for other developers
+- `tailwind.config.js` - Tailwind v4 configuration
+- `postcss.config.js` - PostCSS with Tailwind v4 plugin
+- `components.json` - shadcn/ui configuration
+- `tsconfig.app.json` - TypeScript with path aliases
+- `vite.config.ts` - Vite with path resolution
+
+**Package Manager:** pnpm (not npm/yarn)
+
+**Build Command:** `pnpm run build` (runs TypeScript check + Vite build)
+
+**Dev Command:** `pnpm dev` (starts Vite dev server)
+
+### ⏳ Phase 2: Database Design - NEXT
+
+**Ready to start:**
+1. Finalize database schema (tables, columns, relationships)
+2. Create database tables in Supabase SQL Editor
+3. Set up Row Level Security (RLS) policies for all tables
+4. Create indexes for performance optimization
+5. Auto-generate TypeScript types from schema
+6. Test database connections
+
+**Pending Confirmation:**
+- Week numbering system (TBC with manager - see Week Structure section above)
 
 ## Glossary
 
