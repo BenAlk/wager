@@ -30,9 +30,10 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 ### 💵 Pay Tracking
 
-- **Normal Routes**: £160/day (£165 when working 6 days)
-- **DRS Routes**: £100/day
-- Automatic rate adjustment based on weekly work schedule
+- **Normal Routes**: £160/day (customizable in settings)
+- **DRS/Missort Routes**: £100/day (customizable in settings)
+- **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days
+- **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), bonuses 6 weeks delayed (Week N+6)
 - Real-time pay calculations
 
 ### 🎯 Bonus System
@@ -48,18 +49,22 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 - Log stops given to other drivers (+£1 per stop)
 - Log stops taken from you (-£1 per stop)
+- Max 200 sweeps per day (total stops given + taken)
 - Weekly sweep balance calculation
+- Paid with standard pay (Week N+2)
 - Running totals in dashboard
 
 ### 🚐 Van Hire Management
 
-- Set custom van rates (default £250/week)
-- On-hire/off-hire functionality
-- Pro-rata cost calculation
+- **Fleet vans**: £250/week (default)
+- **Flexi vans**: £100-£250/week (customizable per van hire)
+- On-hire/off-hire functionality with pro-rata calculations
 - Deposit tracker:
   - First 2 weeks: £25/week
   - Remaining weeks: £50/week until £500 total
+  - Deposits carry over between sequential van hires
 - Visual deposit progress
+- 6-week hold period after off-hire before refund
 
 ### 📊 Dashboard & Reports
 

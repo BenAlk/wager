@@ -22,10 +22,22 @@ The app solves this by automating all calculations and providing visibility into
 
 ### Pay Rates
 
-- **Normal Route**: £160/day standard
-- **6-Day Week Bonus**: +£5/day when you work ANY 6 days in a single week (total £165/day)
-- **DRS Route**: £100/day (smaller routes, often assigned as punishment for infractions)
-- **Hard Constraint**: Cannot work 7 days in a single week
+- **Normal Route**: £160/day (default, customizable in settings)
+- **DRS/Missort Route**: £100/day (default, customizable in settings)
+  - DRS = Cleanup parcels that didn't make it into correct bags in time (not area-specific, smaller routes)
+- **6-Day Week Bonus**: Flat £30 bonus (6 days × £5/day) added to weekly pay when working exactly 6 days
+  - Applied as separate line item, not baked into daily rate
+  - Example: 6 days of Normal routes = (6 × £160) + £30 = £990 total base pay
+- **Hard Constraint**: Cannot work 7 days in a single week (ILLEGAL - hard block in UI)
+
+### Pay Timing
+
+- **Standard Pay** (base + sweeps + van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
+- **Bonus Pay**: Paid **6 weeks after work** (Week N work, bonus paid in Week N+6)
+- Example:
+  - Week 40: Work 6 days, earn £48 bonus eligibility
+  - Week 42: Receive base pay for Week 40 (£990 + sweeps - van costs)
+  - Week 46: Receive £48 bonus from Week 40
 
 ### Bonus System
 
@@ -46,13 +58,16 @@ The app solves this by automating all calculations and providing visibility into
 
 **Critical Timing Rules**:
 
-- **Rankings revealed**: Week after work is completed (Week N work → Week N+1 rankings released)
-- **Bonus paid**: 6 weeks after work is completed
+- **Rankings revealed**: Thursday of Week N+1 (week after work is completed)
+- **Bonus paid**: 6 weeks after work is completed (Week N+6)
+- **Reminder system**: App should notify users on Thursdays to enter rankings
+- **Retroactive entry**: Allow users to enter rankings late, system auto-recalculates
 - **Example Timeline**:
   - Week 39: Work 6 days (Monday-Saturday)
-  - Week 40: Rankings released → Input: Individual Fantastic+, Company Fantastic
+  - Week 40 (Thursday): Rankings released → Input: Individual Fantastic+, Company Fantastic
   - System calculates: 6 days × £8/day = £48 bonus
-  - Week 45: Receive £48 bonus in your pay
+  - Week 41: Receive base pay for Week 39 (2-week arrears)
+  - Week 45: Receive £48 bonus from Week 39 (6-week delay)
 
 **Bonus Calculation**: Per day worked (calculated when rankings entered)
 
@@ -63,7 +78,8 @@ The app solves this by automating all calculations and providing visibility into
 - Sweeping = taking stops from drivers who are behind schedule
 - **+£1 per stop** you take from someone else
 - **-£1 per stop** someone takes from you
-- **Tracked daily**, calculated weekly, paid in that week's pay
+- **Tracked daily**, calculated weekly, paid with that week's standard pay (Week N+2)
+- **Max 200 sweeps per day** (total: stops_given + stops_taken combined, sanity check)
 - Example:
   - Monday: +12 stops given, -3 stops taken
   - Tuesday: +8 stops given, -0 stops taken
@@ -71,7 +87,15 @@ The app solves this by automating all calculations and providing visibility into
 
 ### Van Hire
 
-**Standard Rate**: £250/week (but customizable for different/older vans)
+**Van Rates**:
+- **Standard fleet vans**: £250/week (default)
+- **Flexi vans**: £100-£250/week (company-owned, not fleet)
+- **Customization**: User can set custom rate per van hire in settings (not a global setting)
+
+**Van Hire Rules**:
+- Users cannot have multiple simultaneous van hires
+- When switching vans: Off-hire current van, then on-hire new van
+- **Deposits carry over** between van hires (if you paid £300 on Van A, you need £200 more on Van B)
 
 **Deposit Structure (During Employment)**:
 
@@ -85,7 +109,8 @@ The app solves this by automating all calculations and providing visibility into
 1. Courier gives notice / last day worked
 2. Van returned on off-hire date
 3. Company calculates deposit shortfall: `£500 - deposit_paid_so_far`
-4. Final paycheck is reduced by shortfall amount
+4. Final paycheck is reduced by shortfall amount (only what's available)
+   - Example: £200 shortfall, but final pay is £150 → Company takes £150, chases remaining £50 if damage exceeds
 5. Full £500 deposit held for 6 weeks from off-hire date
 6. After 6 weeks:
    - If no fines/damage → Full £500 refunded
@@ -99,18 +124,35 @@ The app solves this by automating all calculations and providing visibility into
   - Example: Take van on Wednesday (day 4 of week) → Pay (£250 / 7) × 4 days
   - Example: Return van on Friday (5 days used) → Pay (£250 / 7) × 5 days
 
-### Week Structure
+### Week Structure **(TBC - Pending Manager Confirmation)**
 
-- Weeks run **Sunday to Saturday**
-- Week numbers follow ISO standard (e.g., Week 42 = Oct 12-18, 2025)
-- Financial week = same as calendar week for this business
+- Weeks run **Sunday to Saturday** (NOT Monday-Sunday)
+- Week numbers follow a **52-week year starting in late December** (NOT ISO 8601, NOT calendar weeks)
+- **2024-2025 Example**:
+  - Week 1 = Sunday, December 29, 2024 - Saturday, January 4, 2025
+  - Week 41 = Sunday, October 5, 2025 - Saturday, October 11, 2025
+  - Week 52 = Sunday, December 21, 2025 - Saturday, December 27, 2025
+- **2025-2026 Example**:
+  - Week 1 = Sunday, December 28, 2025 - Saturday, January 3, 2026
+- **Week 53 Rule**: Added when January 1st falls on a Sunday
+  - Week 52 ends Saturday, December 24th
+  - Week 53 = Sunday, December 25th - Saturday, December 31st (full 7 days)
+  - Week 1 of new year = Sunday, January 1st - Saturday, January 7th
+- **Implementation note**: Cannot use `date-fns` `getISOWeek()` - needs custom week calculation based on 52-week year cycle
 
 ### Historical Data Policy
 
-- **No backfill**: Users start tracking from their signup week
-- **Fresh start**: If user signs up in Week 50, only track Week 50 onwards
-- **Bonus gap**: First 6 weeks will show £0 bonus (nothing earned 6 weeks prior)
-- **Example**: Sign up Week 50 → First potential bonus payment in Week 56 (from Week 50 work)
+- **No historical weeks**: Users signing up in Week 50 do NOT see Weeks 1-49 in UI (weeks before signup don't exist)
+- **Bonus eligibility delay**:
+  - User can enter rankings for early weeks (Week 50-55)
+  - But £0 bonus shown until Week 56 (6 weeks after Week 50)
+  - First bonus payment: Week 56 for Week 50 work
+- **Pay timeline for new user (signs up Week 50)**:
+  - Week 50: Work logged
+  - Week 51 (Thursday): Enter Week 50 rankings
+  - Week 52: Receive base pay for Week 50 (2-week arrears)
+  - Week 56: Receive bonus for Week 50 (6-week delay)
+- **Future Feature**: Historical data import (toggled in settings) - not MVP
 
 ## Design Decisions
 
@@ -187,7 +229,7 @@ work_days {
   route_type: enum ('Normal' | 'DRS')
   stops_given: number       // default 0
   stops_taken: number       // default 0
-  daily_rate: number        // calculated: £160, £165, or £100
+  daily_rate: number        // stored rate (£160 or £100, from settings at time of entry)
 }
 
 van_hires {
@@ -205,23 +247,27 @@ van_hires {
 
 user_settings {
   user_id: uuid (PK, FK)
-  normal_rate: number       // default £160
-  six_day_rate: number      // default £165
-  drs_rate: number          // default £100
-  van_weekly_rate: number   // default £250
+  normal_rate: number       // default £160 (customizable)
+  drs_rate: number          // default £100 (customizable)
+  // Note: 6-day bonus is calculated (£5 * 6 = £30), not a stored rate
 }
 ```
 
 ## Critical Calculations
 
-### 6-Day Week Detection
+### 6-Day Week Bonus Calculation
 
 ```typescript
-if (days_worked_in_week === 6) {
-  daily_rate = £165  // £160 base + £5 bonus
-} else {
-  daily_rate = £160  // or £100 for DRS
-}
+// Calculate base pay using standard rates
+const base_pay = work_days.reduce((sum, day) => {
+  const rate = day.route_type === 'Normal' ? normalRate : drsRate
+  return sum + rate
+}, 0)
+
+// Add flat £30 bonus if worked exactly 6 days
+const six_day_bonus = work_days.length === 6 ? 30 : 0  // 6 * £5
+
+// Total: base_pay + six_day_bonus
 ```
 
 ### Bonus Calculation (When Rankings Entered in Week N+1)
@@ -279,24 +325,36 @@ if (weeks_with_van < 2) {
 
 ### Weekly Pay Calculation
 
+**For Week N (paid in Week N+2)**:
+
 ```typescript
-// For Week N:
-base_pay = SUM(work_days.daily_rate) // £160/£165/£100 per day
+// Base pay from daily rates
+base_pay = work_days.reduce((sum, day) => {
+  const rate = day.route_type === 'Normal' ? normalRate : drsRate
+  return sum + rate
+}, 0)
 
-six_day_bonus = days_worked === 6 ? days_worked * 5 : 0
+// 6-day bonus (flat £30)
+six_day_bonus = work_days.length === 6 ? 30 : 0
 
-sweep_adjustment = SUM(stops_given - stops_taken) * 1
+// Sweep adjustments
+sweep_adjustment = work_days.reduce((sum, day) => {
+  return sum + (day.stops_given - day.stops_taken)
+}, 0)
 
+// Van costs (pro-rata + deposit)
 van_deduction = pro_rata_van_cost + deposit_payment
 
-bonus_from_week_n_minus_6 = weeks[N - 6].bonus_amount || 0
+// Delayed bonus from 6 weeks ago
+bonus_from_week_n_minus_6 = weeks[N - 6]?.bonus_amount || 0
 
+// Total pay for Week N (received in Week N+2)
 weekly_net_pay =
-	base_pay +
-	six_day_bonus +
-	sweep_adjustment -
-	van_deduction +
-	bonus_from_week_n_minus_6
+  base_pay +
+  six_day_bonus +
+  sweep_adjustment -
+  van_deduction +
+  bonus_from_week_n_minus_6
 ```
 
 ### Off-boarding Final Pay Adjustment
@@ -358,17 +416,18 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 ### Data Entry Constraints
 
 - Max days per week: 6 (hard block on 7)
-- Max sweeps per day: 200 (sanity check)
-- Route type validation: DRS cannot have £165 rate
+- Max sweeps per day: 200 total (stops_given + stops_taken combined, sanity check)
 - Date validation: Cannot log future dates
 - Week validation: Cannot log before user.start_week
 
 ### Calculation Safeguards
 
 - Bonus only calculated if both levels are Fantastic or above
-- Van deposit cannot exceed £500
-- Daily rate must be £100, £160, or £165 only
+- Van deposit cannot exceed £500 total (but carries over between van hires)
+- Daily rate must match user's customized Normal or DRS rate (defaults: £160, £100)
+- 6-day bonus is always £30 flat (6 × £5), applied as separate line item
 - Pro-rata days cannot exceed 7 per week
+- Display breakdown on pay page: base pay + 6-day bonus + sweeps - van costs + delayed bonus
 
 ## Future Feature Ideas
 
@@ -417,32 +476,39 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - Beta test with 2-3 team members
 - Collect feedback before wider rollout
 
-## Open Questions (Needs Clarification)
+## Resolved Design Decisions (Oct 10, 2025)
 
-1. **Bonus entry timing**: Should app remind/force users to enter rankings at start of Week N+1? Or allow retroactive entry anytime?
+1. **Bonus entry timing**: ✅ Remind users on Thursdays (when rankings released), allow retroactive entry with auto-recalculation
 
-2. **Multiple van hires**: Can a courier have overlapping van hires? (e.g., crash van Week 52, new van Week 53, separate deposits?)
+2. **Multiple van hires**: ✅ Sequential only (off-hire current, on-hire new), deposits carry over between vans
 
-3. **7-day validation**: Hard block or soft warning with override option?
+3. **7-day validation**: ✅ Hard block (illegal to work 7 consecutive days)
 
-4. **Sweep detail tracking**: Track who you swept for? Or just net totals?
+4. **Sweep detail tracking**: Track net totals only (stops given/taken per day)
 
-5. **Deposit refund process**: Does user manually mark as refunded? Or automatic after 6 weeks?
+5. **Deposit refund process**: User manually marks as refunded (future: could automate after 6 weeks)
+
+6. **User settings**: ✅ Rates are editable in settings (£160, £165, £100, £250 defaults)
+
+7. **App navigation**: ✅ Dashboard-first (not calendar), with links to weekly/monthly/yearly views
 
 ## Glossary
 
 - **DSP**: Delivery Service Partner (company that contracts with Amazon)
-- **DRS**: Smaller delivery routes (often used punitively)
+- **DRS/Missort Route**: Cleanup parcels that didn't make it into correct bags in time (not area-specific, smaller routes)
 - **Sweep/Sweeping**: Taking delivery stops from another driver who's behind
 - **Stops Given**: Stops you took from others (positive to your pay)
 - **Stops Taken**: Stops others took from you (negative to your pay)
 - **Fantastic/Fantastic+**: Top two performance tiers (eligible for bonuses)
-- **Rankings**: Performance levels released Week N+1 for Week N work
+- **Rankings**: Performance levels released Week N+1 (Thursday) for Week N work
 - **On-hire**: Taking possession of a rental van
 - **Off-hire**: Returning a rental van
 - **Pro-rata**: Proportional payment based on actual days used
-- **Week Number**: ISO week number (Week 1 = first week with Thursday in new year)
-- **6-Week Delay**: Time between earning bonus and receiving payment
+- **Week Number**: Calendar week (Sunday-Saturday), NOT ISO 8601 week
+- **Fleet Van**: Standard rental van (£250/week default)
+- **Flexi Van**: Company-owned van, not fleet (£100-£250/week)
+- **2-Week Arrears**: Standard pay (base + sweeps + van) paid 2 weeks after work
+- **6-Week Delay**: Time between earning bonus and receiving bonus payment
 - **Deposit Hold**: 6-week period after off-hire before refund issued
 
 ## Contact & Collaboration
