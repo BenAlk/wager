@@ -32,8 +32,8 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 - **Normal Routes**: £160/day (customizable in settings)
 - **DRS/Missort Routes**: £100/day (customizable in settings)
-- **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days
-- **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), bonuses 6 weeks delayed (Week N+6)
+- **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days (any route type combination)
+- **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), performance bonuses combined with Week N+6 standard pay (received Week N+8)
 - Real-time pay calculations
 
 ### 🎯 Bonus System
@@ -43,7 +43,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Bonus tiers:
   - Both Fantastic+: £12/day
   - Mixed Fantastic/Fantastic+: £8/day
-- 6-week delay calculation (Week 33 bonus paid in Week 39)
+- 6-week delay calculation (Week 33 bonus combined with Week 39 standard pay, received Week 41)
 
 ### 🚚 Sweep Tracking
 
@@ -133,7 +133,7 @@ wager/
 
 ### Phase 1: Setup & Foundation ✅ **COMPLETE**
 
-**All tasks completed!** Project is ready for database design and feature development.
+**All tasks completed!**
 
 - [x] Initialize Vite + React + TypeScript project
 - [x] Install all dependencies (React Router, Zustand, date-fns, Supabase, etc.)
@@ -148,14 +148,18 @@ wager/
 - [x] Create base TypeScript types (`src/types/database.ts` placeholder with enums)
 - [x] Verify build passes with all configurations
 
-### Phase 2: Database Design
+### Phase 2: Database Design ✅ **COMPLETE**
 
-- [ ] Design complete database schema
-- [ ] Create database tables (user_settings, weeks, days, sweeps, van_hires)
-- [ ] Set up Row Level Security (RLS) policies
-- [ ] Create database indexes
-- [ ] Write migration files
-- [ ] Test database connections
+**All tasks completed!** Database is live with full type safety.
+
+- [x] Design complete database schema (5 tables)
+- [x] Create database tables (users, user_settings, weeks, work_days, van_hires)
+- [x] Set up Row Level Security (RLS) policies on all tables
+- [x] Create performance indexes
+- [x] Write migration file (`supabase/migrations/20251010_initial_schema.sql`)
+- [x] Deploy migration to Supabase successfully
+- [x] Generate TypeScript types from schema (`src/types/database.ts`)
+- [x] Test database connection and verify build passes
 
 ### Phase 3: Core Configuration & Utils
 

@@ -52,23 +52,29 @@ The app revolves around **week-based pay calculations** where multiple factors c
 **6-Day Week Bonus**:
 - Must work exactly 6 days in a single week (Sunday-Saturday)
 - Flat £30 bonus (6 × £5) added as separate line item to weekly pay
+- Works with ANY route type combination (6 Normal, 6 DRS, or mixed routes)
+- Paid with standard pay Week N+2 (part of base pay, NOT delayed like performance bonus)
 - NOT baked into daily rate - calculated as: base_pay + six_day_bonus
 - Working 7 days is ILLEGAL - must be blocked in UI
 
-**Bonus Delay System**:
+**Performance Bonus Delay System**:
 - Work completed in Week N
-- Rankings revealed Thursday of Week N+1 (when users input performance levels)
-- Bonus paid in Week N+6
+- Rankings revealed usually Thursday of Week N+1 (can be delayed 1-2 days)
+- Performance bonus from Week N combined with Week N+6 standard pay
+- Total received in Week N+8 (6-week bonus delay + 2-week pay arrears)
 - Formula: `days_worked × daily_bonus_rate` where daily_bonus is £12 (both Fantastic+) or £8 (mixed Fantastic/Fantastic+)
+- Reminder system helps users enter rankings (not strict Thursday-only)
 
 **Van Pro-Rata**:
 - On-hire/off-hire dates determine actual days charged
 - Formula: `(weekly_rate / 7) × days_with_van`
-- Deposit carries over between sequential van hires
+- Deposit carries over between sequential van hires (one cumulative £500 total, NOT per van)
+- Example: £300 paid on Van A, switch to Van B → only owe £200 more
 
 **Sweep Tracking**:
-- Tracked per day: `(stops_given - stops_taken) × £1`
-- Max 200 sweeps per day (total: stops_given + stops_taken combined)
+- Tracked per day with breakdown: store both `stops_given` and `stops_taken`
+- Calculate net: `(stops_given - stops_taken) × £1`
+- Max 200 sweeps per day (total: stops_given + stops_taken combined, sanity check)
 - Paid with standard pay 2 weeks in arrears (Week N+2)
 
 ### Database Schema (Planned)
@@ -198,7 +204,10 @@ See README.md lines 127-257 for complete development roadmap.
 
 - **User isolation**: Every query must filter by `user_id` (enforce with RLS)
 - **Week numbering**: Calendar weeks (Sunday-Saturday), NOT ISO 8601 - need custom calculation
-- **No historical data**: Users joining Week 50 see only Week 50+ (no weeks before signup)
+  - **PENDING MANAGER CONFIRMATION**
+- **No historical data by default**: Users joining Week 50 see only Week 50+ (no weeks before signup)
+  - Start week automatically set to current week at signup
+  - Future feature: Manual historical data backfill (TBC, not MVP)
 - **Currency precision**: Always calculate in pence internally, display in pounds
 - **Retroactive updates**: When rankings or sweep data changes, recalculate affected weeks
 - **Mobile-first**: Many users will check on phones during/after shifts

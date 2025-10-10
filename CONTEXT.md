@@ -27,17 +27,23 @@ The app solves this by automating all calculations and providing visibility into
   - DRS = Cleanup parcels that didn't make it into correct bags in time (not area-specific, smaller routes)
 - **6-Day Week Bonus**: Flat £30 bonus (6 days × £5/day) added to weekly pay when working exactly 6 days
   - Applied as separate line item, not baked into daily rate
+  - Works with ANY route type combination (6 Normal, 6 DRS, or mixed)
+  - Paid with standard pay in Week N+2 (part of base pay, NOT delayed like performance bonus)
   - Example: 6 days of Normal routes = (6 × £160) + £30 = £990 total base pay
+  - Example: 6 days of DRS routes = (6 × £100) + £30 = £630 total base pay
+  - Example: 4 Normal + 2 DRS = (4 × £160) + (2 × £100) + £30 = £870 total base pay
 - **Hard Constraint**: Cannot work 7 days in a single week (ILLEGAL - hard block in UI)
 
 ### Pay Timing
 
-- **Standard Pay** (base + sweeps + van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
-- **Bonus Pay**: Paid **6 weeks after work** (Week N work, bonus paid in Week N+6)
-- Example:
-  - Week 40: Work 6 days, earn £48 bonus eligibility
-  - Week 42: Receive base pay for Week 40 (£990 + sweeps - van costs)
-  - Week 46: Receive £48 bonus from Week 40
+- **Standard Pay** (base + 6-day bonus + sweeps + van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
+- **Performance Bonus**: Paid **6 weeks after work** (Week N work, bonus paid in Week N+6)
+  - Combined with Week N+6 standard pay, received in Week N+8 (due to 2-week arrears)
+- **Example Timeline**:
+  - Week 32: Work 6 days, eligible for performance bonus
+  - Week 33 (Thursday): Rankings released, enter performance levels
+  - Week 34: Receive standard pay for Week 32 (base + 6-day bonus + sweeps - van costs)
+  - Week 38: Performance bonus from Week 32 combined with Week 36 standard pay (all received in Week 38)
 
 ### Bonus System
 
@@ -58,16 +64,16 @@ The app solves this by automating all calculations and providing visibility into
 
 **Critical Timing Rules**:
 
-- **Rankings revealed**: Thursday of Week N+1 (week after work is completed)
-- **Bonus paid**: 6 weeks after work is completed (Week N+6)
-- **Reminder system**: App should notify users on Thursdays to enter rankings
+- **Rankings revealed**: Usually Thursday of Week N+1, but can be delayed 1-2 days
+- **Performance bonus paid**: 6 weeks after work (Week N+6 bonus combined with Week N+6 standard pay, received in Week N+8)
+- **Reminder system**: App should remind users to enter rankings for accurate pay prediction (not strict Thursday-only)
 - **Retroactive entry**: Allow users to enter rankings late, system auto-recalculates
 - **Example Timeline**:
   - Week 39: Work 6 days (Monday-Saturday)
-  - Week 40 (Thursday): Rankings released → Input: Individual Fantastic+, Company Fantastic
+  - Week 40 (Thursday-ish): Rankings released → Input: Individual Fantastic+, Company Fantastic
   - System calculates: 6 days × £8/day = £48 bonus
-  - Week 41: Receive base pay for Week 39 (2-week arrears)
-  - Week 45: Receive £48 bonus from Week 39 (6-week delay)
+  - Week 41: Receive standard pay for Week 39 (base + 6-day bonus + sweeps - van)
+  - Week 47: Receive Week 45 standard pay + £48 performance bonus from Week 39
 
 **Bonus Calculation**: Per day worked (calculated when rankings entered)
 
@@ -95,7 +101,9 @@ The app solves this by automating all calculations and providing visibility into
 **Van Hire Rules**:
 - Users cannot have multiple simultaneous van hires
 - When switching vans: Off-hire current van, then on-hire new van
-- **Deposits carry over** between van hires (if you paid £300 on Van A, you need £200 more on Van B)
+- **Deposits carry over** between sequential van hires
+  - Example: Paid £300 deposit on Van A, switch to Van B → Only owe £200 more on Van B
+  - No separate deposits per van - one cumulative £500 deposit total across all van hires
 
 **Deposit Structure (During Employment)**:
 
@@ -142,17 +150,19 @@ The app solves this by automating all calculations and providing visibility into
 
 ### Historical Data Policy
 
-- **No historical weeks**: Users signing up in Week 50 do NOT see Weeks 1-49 in UI (weeks before signup don't exist)
+- **No historical weeks by default**: Users signing up in Week 50 do NOT see Weeks 1-49 in UI
+  - Start week automatically set to current week at signup
+  - Cannot log work for weeks before signup
 - **Bonus eligibility delay**:
   - User can enter rankings for early weeks (Week 50-55)
   - But £0 bonus shown until Week 56 (6 weeks after Week 50)
   - First bonus payment: Week 56 for Week 50 work
 - **Pay timeline for new user (signs up Week 50)**:
   - Week 50: Work logged
-  - Week 51 (Thursday): Enter Week 50 rankings
-  - Week 52: Receive base pay for Week 50 (2-week arrears)
-  - Week 56: Receive bonus for Week 50 (6-week delay)
-- **Future Feature**: Historical data import (toggled in settings) - not MVP
+  - Week 51 (Thursday-ish): Enter Week 50 rankings
+  - Week 52: Receive standard pay for Week 50 (2-week arrears)
+  - Week 58: Receive Week 56 standard pay + Week 50 performance bonus
+- **Future Feature**: Historical data backfill - manual entry in settings (TBC, not MVP)
 
 ## Design Decisions
 
@@ -197,61 +207,100 @@ The app solves this by automating all calculations and providing visibility into
 
 ## Database Schema
 
-### Core Tables
+### ✅ Implemented Tables (Live in Supabase)
+
+**All currency values stored in pence (integers) for precision**
 
 ```typescript
 users {
-  id: uuid (PK)
-  email: string
-  start_week: number        // Week they joined app
-  start_year: number
-  created_at: timestamp
+  id: uuid (PK, references auth.users)
+  display_name: text | null              // Optional: "Hey Ben!" personalization
+  start_week: integer NOT NULL           // Week they joined app (1-53)
+  start_year: integer NOT NULL           // Year they joined (e.g., 2025)
+  created_at: timestamptz
+  updated_at: timestamptz                // Auto-updated via trigger
+
+  // RLS: Users can only access their own profile
+}
+
+user_settings {
+  user_id: uuid (PK, FK → users)
+  normal_rate: integer DEFAULT 16000     // £160.00 in pence
+  drs_rate: integer DEFAULT 10000        // £100.00 in pence
+  created_at: timestamptz
+  updated_at: timestamptz                // Auto-updated via trigger
+
+  // Note: 6-day bonus (£30) is calculated, not stored
+  // RLS: Users can only access their own settings
 }
 
 weeks {
   id: uuid (PK)
-  user_id: uuid (FK)
-  week_number: number       // ISO week
-  year: number
-  individual_level: enum    // null until Week N+1
-    ('Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+')
-  company_level: enum       // null until Week N+1
-    ('Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+')
-  bonus_amount: number      // calculated when levels entered
-  bonus_paid_in_week: number // week_number + 6
-  rankings_entered_at: timestamp
+  user_id: uuid (FK → users)
+  week_number: integer NOT NULL          // Week number (1-53)
+  year: integer NOT NULL                 // Year (e.g., 2025)
+  individual_level: text | null          // 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
+  company_level: text | null             // 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
+  bonus_amount: integer DEFAULT 0        // In pence, calculated when rankings entered
+  notes: text | null                     // User notes for the week
+  rankings_entered_at: timestamptz | null
+  created_at: timestamptz
+  updated_at: timestamptz                // Auto-updated via trigger
+
+  UNIQUE(user_id, week_number, year)    // One week per user per year
+  // Note: bonus_paid_in_week calculated as: week_number + 6 (on-the-fly)
+  // RLS: Users can only access their own weeks
 }
 
 work_days {
   id: uuid (PK)
-  week_id: uuid (FK)
-  date: date
-  route_type: enum ('Normal' | 'DRS')
-  stops_given: number       // default 0
-  stops_taken: number       // default 0
-  daily_rate: number        // stored rate (£160 or £100, from settings at time of entry)
+  week_id: uuid (FK → weeks)
+  date: date NOT NULL                    // Calendar date (e.g., '2025-10-10')
+  route_type: text NOT NULL              // 'Normal' | 'DRS'
+  route_number: text | null              // Optional: "DA4-123"
+  daily_rate: integer NOT NULL           // In pence, snapshot from user_settings
+  stops_given: integer DEFAULT 0         // >= 0
+  stops_taken: integer DEFAULT 0         // >= 0
+  notes: text | null                     // Daily notes
+  created_at: timestamptz
+  updated_at: timestamptz                // Auto-updated via trigger
+
+  UNIQUE(week_id, date)                  // One entry per date per week
+  CHECK(stops_given >= 0)
+  CHECK(stops_taken >= 0)
+  CHECK(stops_given + stops_taken <= 200) // Max 200 total sweeps
+  // Note: Net sweeps calculated as: stops_given - stops_taken (on-the-fly)
+  // RLS: Users can only access work_days via their weeks
 }
 
 van_hires {
   id: uuid (PK)
-  user_id: uuid (FK)
-  on_hire_date: date
-  off_hire_date: date       // null = still active
-  weekly_rate: number       // default £250, customizable
-  deposit_paid: number      // running total
-  deposit_complete: boolean
-  deposit_hold_until: date  // off_hire_date + 6 weeks
-  deposit_refunded: boolean
-  deposit_refund_amount: number
-}
+  user_id: uuid (FK → users)
+  on_hire_date: date NOT NULL
+  off_hire_date: date | null             // NULL = currently active
+  van_type: text | null                  // 'Fleet' | 'Flexi'
+  registration: text NOT NULL            // Required: "AB12 CDE"
+  weekly_rate: integer NOT NULL          // In pence (e.g., 25000 = £250.00)
+  deposit_paid: integer DEFAULT 0        // Running total, cumulative across all hires
+  deposit_complete: boolean DEFAULT false
+  deposit_refunded: boolean DEFAULT false
+  deposit_refund_amount: integer | null  // In pence
+  deposit_hold_until: date | null        // off_hire_date + 6 weeks
+  notes: text | null
+  created_at: timestamptz
+  updated_at: timestamptz                // Auto-updated via trigger
 
-user_settings {
-  user_id: uuid (PK, FK)
-  normal_rate: number       // default £160 (customizable)
-  drs_rate: number          // default £100 (customizable)
-  // Note: 6-day bonus is calculated (£5 * 6 = £30), not a stored rate
+  CHECK(deposit_paid >= 0 AND deposit_paid <= 50000)  // Max £500
+  CHECK(off_hire_date IS NULL OR off_hire_date >= on_hire_date)
+  // Note: Total deposit across all hires calculated as: SUM(deposit_paid) (on-the-fly)
+  // RLS: Users can only access their own van hires
 }
 ```
+
+**Migration File:** `supabase/migrations/20251010_initial_schema.sql`
+**TypeScript Types:** `src/types/database.ts` (auto-generated)
+**Security:** All tables have RLS enabled with user-specific policies
+**Performance:** Indexes on user_id, week_number, date, and active van hires
 
 ## Critical Calculations
 
@@ -325,7 +374,7 @@ if (weeks_with_van < 2) {
 
 ### Weekly Pay Calculation
 
-**For Week N (paid in Week N+2)**:
+**Standard Pay for Week N (received in Week N+2)**:
 
 ```typescript
 // Base pay from daily rates
@@ -334,27 +383,42 @@ base_pay = work_days.reduce((sum, day) => {
   return sum + rate
 }, 0)
 
-// 6-day bonus (flat £30)
+// 6-day bonus (flat £30) - paid with standard pay
 six_day_bonus = work_days.length === 6 ? 30 : 0
 
-// Sweep adjustments
+// Sweep adjustments - paid with standard pay
 sweep_adjustment = work_days.reduce((sum, day) => {
   return sum + (day.stops_given - day.stops_taken)
 }, 0)
 
-// Van costs (pro-rata + deposit)
+// Van costs (pro-rata + deposit) - deducted from standard pay
 van_deduction = pro_rata_van_cost + deposit_payment
 
-// Delayed bonus from 6 weeks ago
-bonus_from_week_n_minus_6 = weeks[N - 6]?.bonus_amount || 0
-
-// Total pay for Week N (received in Week N+2)
-weekly_net_pay =
+// Standard pay for Week N (received in Week N+2)
+standard_pay =
   base_pay +
   six_day_bonus +
   sweep_adjustment -
-  van_deduction +
-  bonus_from_week_n_minus_6
+  van_deduction
+```
+
+**Performance Bonus Calculation (Week N bonus received in Week N+8)**:
+
+```typescript
+// Performance bonus from 6 weeks ago (earned Week N-6)
+// This bonus is combined with current week's standard pay
+performance_bonus_from_week_n_minus_6 = weeks[N - 6]?.bonus_amount || 0
+
+// Total pay received in Week N+2:
+// = Week N standard pay + Week N-6 performance bonus
+total_pay_received =
+  standard_pay + // Week N work
+  performance_bonus_from_week_n_minus_6 // Week N-6 bonus (6-week delay)
+
+// Example for Week 38 payment:
+// - Week 36 standard pay (base + 6-day + sweeps - van) [2-week arrears]
+// - Week 32 performance bonus (£48) [6-week delay]
+// - Total received in Week 38
 ```
 
 ### Off-boarding Final Pay Adjustment
@@ -371,7 +435,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 1. **Partial weeks**: User starts/ends employment mid-week
 2. **Van hire across weeks**: On-hire Sunday, off-hire next Tuesday
-3. **Multiple van hires**: Switching vans (new deposit tracking per hire)
+3. **Multiple van hires**: Switching vans (deposit carries over - one cumulative £500 total)
 4. **Bonus entry timing**: Rankings available Week N+1, user enters late in Week N+3
 5. **Historical lookback**: Viewing old weeks, editing past data
 6. **Week 1-6 bonus display**: No bonus yet (6-week delay), show £0
@@ -394,22 +458,29 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 ### Week N+1: Entering Rankings
 
-1. Rankings released (Monday of Week N+1)
+1. Rankings released (usually Thursday, can be 1-2 days late)
 2. App notification: "Enter Week N rankings!"
 3. User inputs:
    - Individual: Fantastic+
    - Company: Fantastic
 4. System calculates bonus: 6 days × £8 = £48
-5. Bonus tracked for payment in Week N+6
+5. Bonus tracked for payment in Week N+8 (6-week delay + 2-week arrears)
 
-### Week N+6: Receiving Bonus
+### Week N+2: Receiving First Payment
 
-1. Pay breakdown shows:
-   - Base pay: £990 (6 days × £165)
+1. Pay breakdown shows (received in Week N+2):
+   - Base pay: £960 (6 days × £160)
+   - 6-day bonus: +£30
    - Sweeps: +£38
    - Van: -£300
-   - **Bonus from Week N: +£48**
-   - Net: £776
+   - Net standard pay: £728
+
+### Week N+8: Receiving Performance Bonus
+
+1. Pay breakdown shows (received in Week N+8):
+   - Week N+6 standard pay: £728 (base + 6-day + sweeps - van)
+   - **Performance bonus from Week N: +£48** (6-week delay)
+   - Total received: £776
 
 ## Validation Rules
 
@@ -504,7 +575,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 ### ✅ Phase 1: Setup & Foundation - COMPLETE
 
-**All tasks completed!** Project is ready for database design and feature development.
+**All tasks completed!**
 
 **Completed:**
 - ✅ Vite + React 19 + TypeScript project initialized
@@ -516,22 +587,36 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - ✅ Path aliases configured (@/* imports working in TypeScript and Vite)
 - ✅ Supabase project created
 - ✅ Supabase client configured (`src/lib/supabase.ts` with type safety)
-- ✅ Environment variables set up (.env.local, .env.example) - **User needs to fill in actual credentials**
-- ✅ Base TypeScript types created (`src/types/database.ts` placeholder with enums)
+- ✅ Environment variables set up (.env.local with credentials, .env.example template)
 - ✅ Build verified passing
 
-**Key Files Created:**
-- `src/lib/supabase.ts` - Supabase client configuration
-- `src/lib/utils.ts` - Utility functions (cn helper)
-- `src/types/database.ts` - Database type definitions (placeholder)
-- `src/components/ui/` - 15 shadcn/ui components
-- `.env.local` - Environment variables (needs Supabase credentials)
-- `.env.example` - Environment template for other developers
-- `tailwind.config.js` - Tailwind v4 configuration
-- `postcss.config.js` - PostCSS with Tailwind v4 plugin
-- `components.json` - shadcn/ui configuration
-- `tsconfig.app.json` - TypeScript with path aliases
-- `vite.config.ts` - Vite with path resolution
+### ✅ Phase 2: Database Design - COMPLETE
+
+**All tasks completed!** Database is live with full type safety.
+
+**Completed:**
+- ✅ Database schema finalized (5 tables: users, user_settings, weeks, work_days, van_hires)
+- ✅ SQL migration created: `supabase/migrations/20251010_initial_schema.sql`
+- ✅ All tables created in Supabase via SQL Editor
+- ✅ Row Level Security (RLS) policies implemented on all tables
+- ✅ Performance indexes created (user_id, week_number, date, active van hires)
+- ✅ Auto-updating `updated_at` triggers on all tables
+- ✅ TypeScript types generated: `src/types/database.ts` (full type safety)
+- ✅ Database constraints added (check constraints, unique constraints, foreign keys)
+- ✅ Build verified passing with new types
+
+**Key Files Created/Updated:**
+- `supabase/migrations/20251010_initial_schema.sql` - Complete database schema
+- `src/types/database.ts` - Auto-generated TypeScript types from schema
+- All helper types: `User`, `UserSettings`, `Week`, `WorkDay`, `VanHire`
+- Enum types: `PerformanceLevel`, `RouteType`, `VanType`
+
+**Database Features:**
+- All currency stored in pence (integers) for precision
+- RLS policies enforce user data isolation
+- Automatic timestamp updates via triggers
+- Data validation via CHECK constraints
+- Foreign key relationships with CASCADE deletes
 
 **Package Manager:** pnpm (not npm/yarn)
 
@@ -539,15 +624,26 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 **Dev Command:** `pnpm dev` (starts Vite dev server)
 
-### ⏳ Phase 2: Database Design - NEXT
+### ⏳ Phase 3: Core Configuration & Utils - NEXT
 
 **Ready to start:**
-1. Finalize database schema (tables, columns, relationships)
-2. Create database tables in Supabase SQL Editor
-3. Set up Row Level Security (RLS) policies for all tables
-4. Create indexes for performance optimization
-5. Auto-generate TypeScript types from schema
-6. Test database connections
+
+**Option A: Authentication (Recommended)**
+1. Build login/signup pages
+2. Implement Supabase authentication
+3. Set up protected routes
+4. Create auth context/provider
+
+**Option B: Core Utilities**
+1. Create calculation utilities (pay, bonus, sweeps, van costs)
+2. Set up Zustand store structure
+3. Create date helper functions
+4. Set up React Router structure
+
+**Option C: Test Database**
+1. Write test to insert/query data
+2. Verify Supabase client connection
+3. Test RLS policies
 
 **Pending Confirmation:**
 - Week numbering system (TBC with manager - see Week Structure section above)
