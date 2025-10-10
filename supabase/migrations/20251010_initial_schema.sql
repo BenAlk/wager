@@ -149,12 +149,16 @@ CREATE INDEX idx_van_hires_active ON van_hires(user_id, off_hire_date) WHERE off
 -- Automatically update updated_at timestamp on row changes
 
 CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER
+SECURITY DEFINER
+SET search_path = public
+LANGUAGE plpgsql
+AS $$
 BEGIN
   NEW.updated_at = now();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 -- Apply trigger to all tables with updated_at
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
