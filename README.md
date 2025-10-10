@@ -131,19 +131,22 @@ wager/
 
 ## Development Roadmap
 
-### Phase 1: Setup & Foundation ✅
+### Phase 1: Setup & Foundation ✅ **COMPLETE**
+
+**All tasks completed!** Project is ready for database design and feature development.
 
 - [x] Initialize Vite + React + TypeScript project
 - [x] Install all dependencies (React Router, Zustand, date-fns, Supabase, etc.)
-- [x] Set up Tailwind CSS v4 configuration
+- [x] Set up Tailwind CSS v4 configuration with custom design system
 - [x] Create folder structure (components, features, lib, hooks, store, types, pages)
-- [x] Set up shadcn/ui and install 15 components (Button, Card, Input, Form, etc.)
-- [x] Create `src/lib/utils.ts` helper function (cn utility)
-- [x] Configure path aliases (@/* imports)
-- [ ] Set up Supabase project
-- [ ] Configure Supabase client
-- [ ] Set up environment variables
-- [ ] Create base TypeScript types
+- [x] Set up shadcn/ui and install 15 components (Button, Card, Input, Form, Calendar, etc.)
+- [x] Create `src/lib/utils.ts` helper function (cn utility for className merging)
+- [x] Configure path aliases (@/* imports in tsconfig and vite.config)
+- [x] Set up Supabase project (cloud database)
+- [x] Configure Supabase client (`src/lib/supabase.ts` with type safety)
+- [x] Set up environment variables (.env.local for secrets, .env.example for docs)
+- [x] Create base TypeScript types (`src/types/database.ts` placeholder with enums)
+- [x] Verify build passes with all configurations
 
 ### Phase 2: Database Design
 
