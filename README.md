@@ -134,11 +134,12 @@ wager/
 ### Phase 1: Setup & Foundation ✅
 
 - [x] Initialize Vite + React + TypeScript project
-- [x] Install all dependencies
-- [x] Set up Tailwind CSS configuration
-- [x] Create folder structure
-- [ ] Set up shadcn/ui CLI and install initial components
-- [ ] Create `src/lib/utils.ts` helper function
+- [x] Install all dependencies (React Router, Zustand, date-fns, Supabase, etc.)
+- [x] Set up Tailwind CSS v4 configuration
+- [x] Create folder structure (components, features, lib, hooks, store, types, pages)
+- [x] Set up shadcn/ui and install 15 components (Button, Card, Input, Form, etc.)
+- [x] Create `src/lib/utils.ts` helper function (cn utility)
+- [x] Configure path aliases (@/* imports)
 - [ ] Set up Supabase project
 - [ ] Configure Supabase client
 - [ ] Set up environment variables
