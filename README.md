@@ -13,6 +13,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Variable daily rates based on days worked per week
 - 6-week delayed bonus system with multiple tier combinations
 - Sweep adjustments (stops given/taken from other drivers)
+- Mileage payments and discrepancies between paid and actual miles
 - Van rental costs with pro-rata calculations
 - Deposit payments with changing weekly rates
 - Different pay structures for Normal vs DRS routes
@@ -53,6 +54,16 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Weekly sweep balance calculation
 - Paid with standard pay (Week N+2)
 - Running totals in dashboard
+
+### 🛣️ Mileage Tracking
+
+- **Amazon Paid Mileage**: Track stop-to-stop miles paid by Amazon
+- **Van Logged Mileage**: Record actual odometer miles driven
+- **Automatic calculations**: Mileage pay at Amazon rate (£0.1988/mile or 19.88p/mile)
+- **Discrepancy alerts**: See where you're losing money on unpaid fuel costs
+- **Weekly summaries**: Total paid miles vs actual miles driven
+- **Historical tracking**: Monitor mileage trends over time
+- Paid with standard pay (Week N+2)
 
 ### 🚐 Van Hire Management
 

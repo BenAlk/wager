@@ -1,7 +1,7 @@
 /**
  * Database type definitions for Supabase
  *
- * Generated from database schema - Last updated: 2025-10-10
+ * Generated from database schema - Last updated: 2025-10-11
  *
  * To regenerate types:
  * supabase gen types typescript --project-id erospvtjewayhmqcyeoh > src/types/database.ts
@@ -135,6 +135,9 @@ export interface Database {
           daily_rate: number
           stops_given: number
           stops_taken: number
+          amazon_paid_miles: number | null
+          van_logged_miles: number | null
+          mileage_rate: number
           notes: string | null
           created_at: string
           updated_at: string
@@ -148,6 +151,9 @@ export interface Database {
           daily_rate: number
           stops_given?: number
           stops_taken?: number
+          amazon_paid_miles?: number | null
+          van_logged_miles?: number | null
+          mileage_rate?: number
           notes?: string | null
           created_at?: string
           updated_at?: string
@@ -161,6 +167,9 @@ export interface Database {
           daily_rate?: number
           stops_given?: number
           stops_taken?: number
+          amazon_paid_miles?: number | null
+          van_logged_miles?: number | null
+          mileage_rate?: number
           notes?: string | null
           created_at?: string
           updated_at?: string

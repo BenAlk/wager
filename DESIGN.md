@@ -449,6 +449,122 @@ focus:outline-none focus:ring-2 focus:ring-blue-500
 </div>
 ```
 
+### Mileage Card (Daily Breakdown)
+
+```jsx
+<div
+	className='bg-white/5 backdrop-blur-sm
+  border border-white/10 rounded-lg p-4 space-y-3'
+>
+	{/* Mileage Input Section */}
+	<div className='grid grid-cols-2 gap-3'>
+		<div>
+			<label className='text-xs text-slate-400 block mb-1'>
+				Amazon Paid Miles
+			</label>
+			<input
+				type='number'
+				step='0.01'
+				className='w-full bg-white/5 border border-white/10
+          rounded-lg px-3 py-2 text-white font-mono
+          focus:ring-2 focus:ring-blue-500'
+				placeholder='85.50'
+			/>
+		</div>
+		<div>
+			<label className='text-xs text-slate-400 block mb-1'>
+				Van Logged Miles
+			</label>
+			<input
+				type='number'
+				step='0.01'
+				className='w-full bg-white/5 border border-white/10
+          rounded-lg px-3 py-2 text-white font-mono
+          focus:ring-2 focus:ring-blue-500'
+				placeholder='98.20'
+			/>
+		</div>
+	</div>
+
+	{/* Mileage Breakdown */}
+	<div className='space-y-2 pt-2 border-t border-white/10'>
+		<div className='flex justify-between items-center'>
+			<span className='text-sm text-slate-400'>Mileage Pay</span>
+			<span className='font-mono font-semibold text-emerald-400'>
+				+£16.90
+			</span>
+		</div>
+		<div className='flex justify-between items-center'>
+			<span className='text-sm text-slate-400 flex items-center gap-1'>
+				<AlertTriangle className='w-4 h-4 text-amber-400' />
+				Fuel Loss
+			</span>
+			<span className='font-mono font-semibold text-amber-400'>-£2.58</span>
+		</div>
+	</div>
+</div>
+```
+
+### Mileage Summary Widget (Weekly Dashboard)
+
+```jsx
+<div
+	className='bg-white/5 backdrop-blur-sm
+  border border-white/10 rounded-lg p-4'
+>
+	<div className='flex items-center gap-2 mb-3'>
+		<div className='w-8 h-8 bg-sky-500/20 rounded-lg flex items-center justify-center'>
+			<Navigation className='w-5 h-5 text-sky-400' />
+		</div>
+		<span className='text-sm font-medium text-slate-200'>
+			Weekly Mileage
+		</span>
+	</div>
+
+	<div className='space-y-2'>
+		<div className='flex justify-between items-baseline'>
+			<span className='text-xs text-slate-400'>Paid</span>
+			<span className='font-mono text-white'>512 mi</span>
+		</div>
+		<div className='flex justify-between items-baseline'>
+			<span className='text-xs text-slate-400'>Actual</span>
+			<span className='font-mono text-white'>587 mi</span>
+		</div>
+		<div className='flex justify-between items-baseline'>
+			<span className='text-xs text-slate-400'>Discrepancy</span>
+			<span className='font-mono text-amber-400'>75 mi</span>
+		</div>
+	</div>
+
+	<div className='mt-3 pt-3 border-t border-white/10'>
+		<div className='flex justify-between items-center'>
+			<span className='text-sm font-medium text-slate-200'>
+				Mileage Earned
+			</span>
+			<span className='text-xl font-mono font-bold text-emerald-400'>
+				£101.40
+			</span>
+		</div>
+		<div className='flex justify-between items-center mt-1'>
+			<span className='text-xs text-slate-400'>Fuel loss</span>
+			<span className='text-sm font-mono text-amber-400'>-£14.89</span>
+		</div>
+	</div>
+</div>
+```
+
+### Mileage Alert Badge
+
+```jsx
+{/* Show when discrepancy > 10% */}
+<div className='flex items-center gap-2 px-3 py-2 bg-amber-500/10 border border-amber-500/20 rounded-lg'>
+	<AlertTriangle className='w-4 h-4 text-amber-400' />
+	<span className='text-sm text-amber-400'>
+		Van mileage is 15% higher than Amazon paid
+	</span>
+</div>
+```
+
 ---
 
 ## Do's and Don'ts

@@ -34,15 +34,34 @@ The app solves this by automating all calculations and providing visibility into
   - Example: 4 Normal + 2 DRS = (4 × £160) + (2 × £100) + £30 = £870 total base pay
 - **Hard Constraint**: Cannot work 7 days in a single week (ILLEGAL - hard block in UI)
 
+### Mileage Tracking
+
+- **Amazon Paid Mileage**: Stop-to-stop distance calculated by Amazon, paid at Amazon's rate
+  - Amazon rate: £0.1988 per mile (19.88 pence per mile)
+  - Paid with standard pay (Week N+2)
+  - User enters mileage amount shown on Amazon pay breakdown
+- **Van Logged Mileage**: Actual odometer reading from the van
+  - Shows real distance driven (includes travel to/from station, detours, etc.)
+  - User enters start/end odometer readings OR total miles driven
+  - Optional field for tracking purposes
+- **Mileage Discrepancy**: Difference between van logged and Amazon paid mileage
+  - Shows where courier is losing money (fuel costs without compensation)
+  - Formula: `(van_logged_miles - amazon_paid_miles) × £0.1988 = money_lost_on_fuel`
+  - Displayed as warning/info in daily breakdown
+- **Example**:
+  - Amazon paid mileage: 85 miles × £0.1988 = £16.90
+  - Van logged mileage: 98 miles
+  - Discrepancy: 13 miles × £0.1988 = £2.58 lost on unpaid fuel costs
+
 ### Pay Timing
 
-- **Standard Pay** (base + 6-day bonus + sweeps + van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
+- **Standard Pay** (base + 6-day bonus + sweeps + mileage - van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
 - **Performance Bonus**: Paid **6 weeks after work** (Week N work, bonus paid in Week N+6)
   - Combined with Week N+6 standard pay, received in Week N+8 (due to 2-week arrears)
 - **Example Timeline**:
   - Week 32: Work 6 days, eligible for performance bonus
   - Week 33 (Thursday): Rankings released, enter performance levels
-  - Week 34: Receive standard pay for Week 32 (base + 6-day bonus + sweeps - van costs)
+  - Week 34: Receive standard pay for Week 32 (base + 6-day bonus + sweeps + mileage - van costs)
   - Week 38: Performance bonus from Week 32 combined with Week 36 standard pay (all received in Week 38)
 
 ### Bonus System
@@ -261,6 +280,9 @@ work_days {
   daily_rate: integer NOT NULL           // In pence, snapshot from user_settings
   stops_given: integer DEFAULT 0         // >= 0
   stops_taken: integer DEFAULT 0         // >= 0
+  amazon_paid_miles: decimal(6,2) | null // Miles Amazon paid for (stop-to-stop)
+  van_logged_miles: decimal(6,2) | null  // Actual van odometer miles driven
+  mileage_rate: integer DEFAULT 1988     // Pence per 100 miles (1988 = £0.1988/mile or 19.88p/mile)
   notes: text | null                     // Daily notes
   created_at: timestamptz
   updated_at: timestamptz                // Auto-updated via trigger
@@ -269,7 +291,12 @@ work_days {
   CHECK(stops_given >= 0)
   CHECK(stops_taken >= 0)
   CHECK(stops_given + stops_taken <= 200) // Max 200 total sweeps
+  CHECK(amazon_paid_miles >= 0)
+  CHECK(van_logged_miles >= 0)
+  CHECK(mileage_rate >= 0)
   // Note: Net sweeps calculated as: stops_given - stops_taken (on-the-fly)
+  // Note: Mileage pay calculated as: amazon_paid_miles × (mileage_rate / 10000) (on-the-fly, divide by 10000 to convert to £)
+  // Note: Mileage discrepancy calculated as: van_logged_miles - amazon_paid_miles (on-the-fly)
   // RLS: Users can only access work_days via their weeks
 }
 
@@ -391,6 +418,13 @@ sweep_adjustment = work_days.reduce((sum, day) => {
   return sum + (day.stops_given - day.stops_taken)
 }, 0)
 
+// Mileage payment - paid with standard pay
+mileage_payment = work_days.reduce((sum, day) => {
+  const miles = day.amazon_paid_miles || 0
+  const rate = day.mileage_rate || 1988  // pence per 100 miles (1988 = £0.1988/mile)
+  return sum + (miles * (rate / 10000))  // Convert to pounds: 1988/10000 = £0.1988
+}, 0)
+
 // Van costs (pro-rata + deposit) - deducted from standard pay
 van_deduction = pro_rata_van_cost + deposit_payment
 
@@ -398,7 +432,8 @@ van_deduction = pro_rata_van_cost + deposit_payment
 standard_pay =
   base_pay +
   six_day_bonus +
-  sweep_adjustment -
+  sweep_adjustment +
+  mileage_payment -
   van_deduction
 ```
 
@@ -416,9 +451,28 @@ total_pay_received =
   performance_bonus_from_week_n_minus_6 // Week N-6 bonus (6-week delay)
 
 // Example for Week 38 payment:
-// - Week 36 standard pay (base + 6-day + sweeps - van) [2-week arrears]
+// - Week 36 standard pay (base + 6-day + sweeps + mileage - van) [2-week arrears]
 // - Week 32 performance bonus (£48) [6-week delay]
 // - Total received in Week 38
+```
+
+### Mileage Calculation
+
+```typescript
+// Daily mileage payment
+amazon_miles = work_day.amazon_paid_miles || 0
+mileage_rate = work_day.mileage_rate || 1988  // Default: 1988 = £0.1988/mile (19.88p/mile)
+daily_mileage_payment = amazon_miles × (mileage_rate / 10000)  // Divide by 10000 to convert to £
+
+// Mileage discrepancy tracking (for user awareness)
+van_miles = work_day.van_logged_miles || 0
+mileage_discrepancy = van_miles - amazon_miles
+money_lost_on_fuel = mileage_discrepancy × (mileage_rate / 10000)
+
+// Example:
+// Amazon paid: 85 miles × £0.1988 = £16.90 (added to pay)
+// Van logged: 98 miles
+// Discrepancy: 13 miles × £0.1988 = £2.58 (additional money lost on fuel for unpaid miles)
 ```
 
 ### Off-boarding Final Pay Adjustment
@@ -449,10 +503,10 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 ### Week N: Logging Work
 
 1. User logs work days (Monday-Saturday = 6 days)
-2. User logs daily sweeps:
-   - Monday: +15 stops given, -3 stops taken
-   - Tuesday: +8 stops given, -0 stops taken
-   - etc.
+2. User logs daily data:
+   - Sweeps: +15 stops given, -3 stops taken
+   - Mileage: Amazon paid 85 miles, Van logged 98 miles
+   - App shows mileage pay (+£16.90) and fuel loss warning (-£2.58)
 3. Van cost automatically calculated (pro-rata + deposit)
 4. Bonus shows "£0 - Rankings not available yet"
 
@@ -472,15 +526,16 @@ final_pay = calculated_weekly_pay - deposit_shortfall
    - Base pay: £960 (6 days × £160)
    - 6-day bonus: +£30
    - Sweeps: +£38
+   - Mileage: +£101.40 (6 days average, ~85 miles/day)
    - Van: -£300
-   - Net standard pay: £728
+   - Net standard pay: £829.40
 
 ### Week N+8: Receiving Performance Bonus
 
 1. Pay breakdown shows (received in Week N+8):
-   - Week N+6 standard pay: £728 (base + 6-day + sweeps - van)
+   - Week N+6 standard pay: £829.40 (base + 6-day + sweeps + mileage - van)
    - **Performance bonus from Week N: +£48** (6-week delay)
-   - Total received: £776
+   - Total received: £877.40
 
 ## Validation Rules
 
@@ -488,6 +543,8 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 - Max days per week: 6 (hard block on 7)
 - Max sweeps per day: 200 total (stops_given + stops_taken combined, sanity check)
+- Mileage values: Must be non-negative decimals
+- Mileage discrepancy warning: Show alert if van_logged_miles > amazon_paid_miles + 10%
 - Date validation: Cannot log future dates
 - Week validation: Cannot log before user.start_week
 
@@ -498,7 +555,8 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - Daily rate must match user's customized Normal or DRS rate (defaults: £160, £100)
 - 6-day bonus is always £30 flat (6 × £5), applied as separate line item
 - Pro-rata days cannot exceed 7 per week
-- Display breakdown on pay page: base pay + 6-day bonus + sweeps - van costs + delayed bonus
+- Display breakdown on pay page: base pay + 6-day bonus + sweeps + mileage - van costs + delayed bonus
+- Mileage rate stored per day (default £0.45) to handle rate changes over time
 
 ## Future Feature Ideas
 
