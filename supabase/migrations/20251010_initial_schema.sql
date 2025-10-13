@@ -188,7 +188,7 @@ COMMENT ON TABLE van_hires IS 'Van rental periods with deposit and refund tracki
 
 COMMENT ON COLUMN user_settings.normal_rate IS 'Normal route daily rate in pence (e.g., 16000 = £160.00)';
 COMMENT ON COLUMN user_settings.drs_rate IS 'DRS route daily rate in pence (e.g., 10000 = £100.00)';
-COMMENT ON COLUMN weeks.bonus_amount IS 'Performance bonus in pence, paid Week N+8 (6-week delay + 2-week arrears)';
+COMMENT ON COLUMN weeks.bonus_amount IS 'Performance bonus in pence, received Week N+6 (6-week delay)';
 COMMENT ON COLUMN work_days.daily_rate IS 'Snapshot of rate at time of entry for historical accuracy';
 COMMENT ON COLUMN van_hires.deposit_paid IS 'Running total of deposit paid across all van hires';
 

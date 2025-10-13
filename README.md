@@ -34,7 +34,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - **Normal Routes**: £160/day (customizable in settings)
 - **DRS/Missort Routes**: £100/day (customizable in settings)
 - **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days (any route type combination)
-- **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), performance bonuses combined with Week N+6 standard pay (received Week N+8)
+- **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), performance bonuses received 6 weeks after work (Week N+6)
 - Real-time pay calculations
 
 ### 🎯 Bonus System
@@ -44,7 +44,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Bonus tiers:
   - Both Fantastic+: £12/day
   - Mixed Fantastic/Fantastic+: £8/day
-- 6-week delay calculation (Week 33 bonus combined with Week 39 standard pay, received Week 41)
+- 6-week delay calculation (Week 33 work, bonus received Week 39 with Week 37 standard pay)
 
 ### 🚚 Sweep Tracking
 
@@ -172,22 +172,23 @@ wager/
 - [x] Generate TypeScript types from schema (`src/types/database.ts`)
 - [x] Test database connection and verify build passes
 
-### Phase 3: Core Configuration & Utils
+### Phase 3: Core Configuration & Utils ✅ **COMPLETE**
 
-- [ ] Create TypeScript interfaces for all data models
-- [ ] Set up Zustand store structure
-- [ ] Create calculation utilities
-- [ ] Create date helper functions
-- [ ] Set up React Router structure
+- [x] Create TypeScript interfaces for all data models
+- [x] Create calculation utilities (670 lines in src/lib/calculations.ts)
+- [x] Create extended type system (350 lines in src/types/index.ts)
+- [x] Correct performance bonus timing throughout codebase
+- [ ] Set up Zustand store structure (pending)
+- [ ] Create date helper functions (pending - requires week numbering confirmation)
 
-### Phase 4: Authentication
+### Phase 4: Authentication ✅ **COMPLETE**
 
-- [ ] Create auth context/provider
-- [ ] Build login/signup pages
-- [ ] Implement Supabase authentication
-- [ ] Set up protected routes
-- [ ] Add logout functionality
-- [ ] Handle auth state persistence
+- [x] Create auth context/provider
+- [x] Build login/signup pages
+- [x] Implement Supabase authentication
+- [x] Set up protected routes
+- [x] Add logout functionality
+- [x] Handle auth state persistence
 
 ### Phase 5: Settings Management
 

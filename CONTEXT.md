@@ -56,13 +56,13 @@ The app solves this by automating all calculations and providing visibility into
 ### Pay Timing
 
 - **Standard Pay** (base + 6-day bonus + sweeps + mileage - van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
-- **Performance Bonus**: Paid **6 weeks after work** (Week N work, bonus paid in Week N+6)
-  - Combined with Week N+6 standard pay, received in Week N+8 (due to 2-week arrears)
+- **Performance Bonus**: Paid **6 weeks after work** (Week N work, bonus received in Week N+6)
+  - The bonus arrives in the same payment as Week N+4 standard pay (both received in Week N+6)
 - **Example Timeline**:
   - Week 32: Work 6 days, eligible for performance bonus
   - Week 33 (Thursday): Rankings released, enter performance levels
   - Week 34: Receive standard pay for Week 32 (base + 6-day bonus + sweeps + mileage - van costs)
-  - Week 38: Performance bonus from Week 32 combined with Week 36 standard pay (all received in Week 38)
+  - Week 38: Receive payment containing Week 36 standard pay + Week 32 performance bonus
 
 ### Bonus System
 
@@ -84,19 +84,20 @@ The app solves this by automating all calculations and providing visibility into
 **Critical Timing Rules**:
 
 - **Rankings revealed**: Usually Thursday of Week N+1, but can be delayed 1-2 days
-- **Performance bonus paid**: 6 weeks after work (Week N+6 bonus combined with Week N+6 standard pay, received in Week N+8)
+- **Performance bonus paid**: 6 weeks after work (Week N work, bonus received in Week N+6)
+  - Week N+6 payment includes: Week N+4 standard pay + Week N performance bonus
 - **Reminder system**: App should remind users to enter rankings for accurate pay prediction (not strict Thursday-only)
 - **Retroactive entry**: Allow users to enter rankings late, system auto-recalculates
 - **Example Timeline**:
   - Week 39: Work 6 days (Monday-Saturday)
   - Week 40 (Thursday-ish): Rankings released → Input: Individual Fantastic+, Company Fantastic
   - System calculates: 6 days × £8/day = £48 bonus
-  - Week 41: Receive standard pay for Week 39 (base + 6-day bonus + sweeps - van)
-  - Week 47: Receive Week 45 standard pay + £48 performance bonus from Week 39
+  - Week 41: Receive standard pay for Week 39 (base + 6-day bonus + sweeps + mileage - van)
+  - Week 45: Receive payment containing Week 43 standard pay + £48 performance bonus from Week 39
 
 **Bonus Calculation**: Per day worked (calculated when rankings entered)
 
-- If you worked 6 days in Week 39 and earned Fantastic+/Fantastic → 6 × £8 = £48 bonus paid in Week 45
+- If you worked 6 days in Week 39 and earned Fantastic+/Fantastic → 6 × £8 = £48 bonus received in Week 45
 
 ### Sweeping
 
@@ -437,7 +438,7 @@ standard_pay =
   van_deduction
 ```
 
-**Performance Bonus Calculation (Week N bonus received in Week N+8)**:
+**Performance Bonus Calculation (Week N bonus received in Week N+6)**:
 
 ```typescript
 // Performance bonus from 6 weeks ago (earned Week N-6)
@@ -518,7 +519,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
    - Individual: Fantastic+
    - Company: Fantastic
 4. System calculates bonus: 6 days × £8 = £48
-5. Bonus tracked for payment in Week N+8 (6-week delay + 2-week arrears)
+5. Bonus tracked for payment in Week N+6 (6-week delay)
 
 ### Week N+2: Receiving First Payment
 
@@ -530,10 +531,10 @@ final_pay = calculated_weekly_pay - deposit_shortfall
    - Van: -£300
    - Net standard pay: £829.40
 
-### Week N+8: Receiving Performance Bonus
+### Week N+6: Receiving Performance Bonus
 
-1. Pay breakdown shows (received in Week N+8):
-   - Week N+6 standard pay: £829.40 (base + 6-day + sweeps + mileage - van)
+1. Pay breakdown shows (received in Week N+6):
+   - Week N+4 standard pay: £829.40 (base + 6-day + sweeps + mileage - van)
    - **Performance bonus from Week N: +£48** (6-week delay)
    - Total received: £877.40
 
@@ -682,26 +683,72 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 **Dev Command:** `pnpm dev` (starts Vite dev server)
 
-### ⏳ Phase 3: Core Configuration & Utils - NEXT
+### ✅ Phase 3: Core Configuration & Utils - COMPLETE (Oct 13, 2025)
 
-**Ready to start:**
+**All tasks completed:**
+- ✅ Calculation utilities implemented (`src/lib/calculations.ts` - 670 lines)
+  - Daily calculations (pay, sweeps, mileage, discrepancies)
+  - Weekly calculations (base pay, 6-day bonus, sweeps, mileage totals)
+  - Performance bonus calculations with tier matrix
+  - Van pro-rata and deposit calculations
+  - Complete weekly pay breakdown function
+  - Pay timing calculations (standard pay N+2, bonus N+6)
+  - Comprehensive validation functions
+  - All currency in pence for precision
 
-**Option A: Authentication (Recommended)**
-1. Build login/signup pages
-2. Implement Supabase authentication
-3. Set up protected routes
-4. Create auth context/provider
+- ✅ Extended TypeScript types (`src/types/index.ts` - 350 lines)
+  - Computed data types (WorkDayWithPay, WeekWithPay, MileageSummary, etc.)
+  - UI state types (calendar, forms, validation)
+  - Statistics and analytics types
+  - Prediction and notification types
+  - Complete type safety for all features
 
-**Option B: Core Utilities**
-1. Create calculation utilities (pay, bonus, sweeps, van costs)
-2. Set up Zustand store structure
-3. Create date helper functions
-4. Set up React Router structure
+- ✅ Performance bonus timing corrected throughout codebase
+  - Fixed from Week N+8 to Week N+6
+  - All documentation updated (CONTEXT.md, README.md, CLAUDE.md, SQL comments)
+  - Code calculations corrected
+  - Build verified passing
 
-**Option C: Test Database**
+**Still Pending:**
+- ⏳ Zustand store structure (not yet created)
+- ⏳ Date helper functions (requires week numbering confirmation from manager)
+
+### ✅ Phase 4: Authentication - COMPLETE (Oct 11, 2025)
+
+**All tasks completed:**
+- ✅ Auth context/provider created (`src/hooks/useAuth.tsx`)
+- ✅ Login/signup pages built (`src/pages/Auth.tsx`)
+- ✅ Supabase authentication implemented (`src/lib/auth.ts`)
+- ✅ Protected routes set up (`src/App.tsx`)
+- ✅ Auth state persistence handled
+- ✅ Database trigger for automatic user profile creation
+- ✅ RLS policies working correctly
+
+### 🚀 Phase 5+: Core Features - READY TO START
+
+**Option A: Dashboard & Calendar View (Recommended)**
+1. Build weekly calendar (Sunday-Saturday)
+2. Week number display and navigation
+3. Day cells with visual indicators
+4. Mobile-responsive design
+5. Use calculation functions from `src/lib/calculations.ts`
+
+**Option B: State Management Setup**
+1. Set up Zustand store structure
+2. User settings store
+3. Calendar navigation state
+4. Week data cache
+
+**Option C: Date Helper Functions**
+1. Custom week number calculation (Sunday-Saturday, 52-week year)
+2. Week date range calculations
+3. ⚠️ **Requires manager confirmation on week numbering system first**
+
+**Option D: Test Database Connection**
 1. Write test to insert/query data
 2. Verify Supabase client connection
-3. Test RLS policies
+3. Test RLS policies are working
+4. Test calculation functions with real data
 
 **Pending Confirmation:**
 - Week numbering system (TBC with manager - see Week Structure section above)
