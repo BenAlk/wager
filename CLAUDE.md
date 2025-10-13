@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 **Wager** is a pay tracking and schedule management application built for Amazon DSP (Delivery Service Partner) couriers. It handles complex calculations including:
+
 - Variable daily rates with 6-day week bonuses
 - 6-week delayed bonus system with performance tiers
 - Sweep adjustments (stops given/taken from other drivers)
@@ -16,12 +17,14 @@ The app is designed for couriers who need to accurately predict weekly earnings 
 ## Development Commands
 
 ### Essential Commands
+
 - `pnpm dev` - Start development server (Vite)
 - `pnpm build` - Build for production (runs TypeScript check + Vite build)
 - `pnpm lint` - Run ESLint
 - `pnpm preview` - Preview production build
 
 ### Package Manager
+
 This project uses **pnpm** exclusively. Do not use npm or yarn.
 
 ## Tech Stack
@@ -50,6 +53,7 @@ The app revolves around **week-based pay calculations** where multiple factors c
 ### Critical Calculation Rules
 
 **6-Day Week Bonus**:
+
 - Must work exactly 6 days in a single week (Sunday-Saturday)
 - Flat £30 bonus (6 × £5) added as separate line item to weekly pay
 - Works with ANY route type combination (6 Normal, 6 DRS, or mixed routes)
@@ -58,6 +62,7 @@ The app revolves around **week-based pay calculations** where multiple factors c
 - Working 7 days is ILLEGAL - must be blocked in UI
 
 **Performance Bonus Delay System**:
+
 - Work completed in Week N
 - Rankings revealed usually Thursday of Week N+1 (can be delayed 1-2 days)
 - Performance bonus from Week N combined with Week N+6 standard pay
@@ -66,12 +71,14 @@ The app revolves around **week-based pay calculations** where multiple factors c
 - Reminder system helps users enter rankings (not strict Thursday-only)
 
 **Van Pro-Rata**:
+
 - On-hire/off-hire dates determine actual days charged
 - Formula: `(weekly_rate / 7) × days_with_van`
 - Deposit carries over between sequential van hires (one cumulative £500 total, NOT per van)
 - Example: £300 paid on Van A, switch to Van B → only owe £200 more
 
 **Sweep Tracking**:
+
 - Tracked per day with breakdown: store both `stops_given` and `stops_taken`
 - Calculate net: `(stops_given - stops_taken) × £1`
 - Max 200 sweeps per day (total: stops_given + stops_taken combined, sanity check)
@@ -80,6 +87,7 @@ The app revolves around **week-based pay calculations** where multiple factors c
 ### Database Schema (Planned)
 
 Key tables to implement:
+
 - `users` - User accounts with start_week/start_year
 - `weeks` - Weekly records with performance levels and bonus calculations
 - `work_days` - Daily records (route_type, stops_given, stops_taken, calculated daily_rate)
@@ -91,6 +99,7 @@ Key tables to implement:
 ### State Management Strategy
 
 Use Zustand for:
+
 - Current week navigation state
 - User settings cache
 - Calendar view state
@@ -120,16 +129,19 @@ Keep complex calculations in `src/lib/calculations.ts` as pure functions that ca
 ## Design System
 
 **Color Palette**:
+
 - Primary gradient: `from-blue-500 to-emerald-500` (trust → earnings)
 - Dark mode default: `bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900`
 - Glassmorphic cards: `bg-white/10 backdrop-blur-xl border border-white/20`
 - Semantic colors: emerald (positive pay), red (deductions), amber (warnings)
 
 **Typography**:
+
 - Currency: Always use `font-mono font-bold` for scannability
 - Format: `£1,234.56` (include £ symbol, use commas)
 
 **Component Patterns**:
+
 - Primary buttons: Gradient with shadow and scale transform on hover
 - Cards: Glassmorphic with backdrop-blur
 - Forms: `bg-white/5 border border-white/10` with blue focus rings
@@ -165,6 +177,7 @@ See DESIGN.md for complete design system specifications.
 ## Code References
 
 When implementing features, reference these key sections:
+
 - Pay calculation logic: See CONTEXT.md lines 224-327
 - Bonus tier matrix: CONTEXT.md lines 40-62
 - Van deposit structure: CONTEXT.md lines 84-99
@@ -181,6 +194,7 @@ Read these files before implementing features to understand business logic and d
 ## Testing Strategy
 
 Focus testing on:
+
 1. Pay calculation accuracy across all combinations
 2. ISO week number calculations (especially year boundaries)
 3. 6-week bonus delay logic with mock timeline data
@@ -192,6 +206,7 @@ Use real-world scenarios from CONTEXT.md examples to create test cases.
 ## Development Status
 
 Currently in **Phase 1: Setup & Foundation**. The project has basic structure but core features are not yet implemented. Next steps:
+
 1. Set up shadcn/ui and install initial components
 2. Configure Supabase project and client
 3. Implement database schema with RLS policies
