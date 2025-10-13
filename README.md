@@ -152,7 +152,7 @@ wager/
 - [x] Create folder structure (components, features, lib, hooks, store, types, pages)
 - [x] Set up shadcn/ui and install 15 components (Button, Card, Input, Form, Calendar, etc.)
 - [x] Create `src/lib/utils.ts` helper function (cn utility for className merging)
-- [x] Configure path aliases (@/* imports in tsconfig and vite.config)
+- [x] Configure path aliases (@/\* imports in tsconfig and vite.config)
 - [x] Set up Supabase project (cloud database)
 - [x] Configure Supabase client (`src/lib/supabase.ts` with type safety)
 - [x] Set up environment variables (.env.local for secrets, .env.example for docs)
@@ -172,7 +172,7 @@ wager/
 - [x] Generate TypeScript types from schema (`src/types/database.ts`)
 - [x] Test database connection and verify build passes
 
-### Phase 3: Core Configuration & Utils ✅ **COMPLETE**
+### Phase 3: Core Configuration & Utils
 
 - [x] Create TypeScript interfaces for all data models
 - [x] Create calculation utilities (670 lines in src/lib/calculations.ts)

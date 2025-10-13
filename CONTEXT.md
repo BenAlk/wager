@@ -114,11 +114,13 @@ The app solves this by automating all calculations and providing visibility into
 ### Van Hire
 
 **Van Rates**:
+
 - **Standard fleet vans**: £250/week (default)
 - **Flexi vans**: £100-£250/week (company-owned, not fleet)
 - **Customization**: User can set custom rate per van hire in settings (not a global setting)
 
 **Van Hire Rules**:
+
 - Users cannot have multiple simultaneous van hires
 - When switching vans: Off-hire current van, then on-hire new van
 - **Deposits carry over** between sequential van hires
@@ -337,12 +339,12 @@ van_hires {
 ```typescript
 // Calculate base pay using standard rates
 const base_pay = work_days.reduce((sum, day) => {
-  const rate = day.route_type === 'Normal' ? normalRate : drsRate
-  return sum + rate
+	const rate = day.route_type === 'Normal' ? normalRate : drsRate
+	return sum + rate
 }, 0)
 
 // Add flat £30 bonus if worked exactly 6 days
-const six_day_bonus = work_days.length === 6 ? 30 : 0  // 6 * £5
+const six_day_bonus = work_days.length === 6 ? 30 : 0 // 6 * £5
 
 // Total: base_pay + six_day_bonus
 ```
@@ -407,8 +409,8 @@ if (weeks_with_van < 2) {
 ```typescript
 // Base pay from daily rates
 base_pay = work_days.reduce((sum, day) => {
-  const rate = day.route_type === 'Normal' ? normalRate : drsRate
-  return sum + rate
+	const rate = day.route_type === 'Normal' ? normalRate : drsRate
+	return sum + rate
 }, 0)
 
 // 6-day bonus (flat £30) - paid with standard pay
@@ -416,14 +418,14 @@ six_day_bonus = work_days.length === 6 ? 30 : 0
 
 // Sweep adjustments - paid with standard pay
 sweep_adjustment = work_days.reduce((sum, day) => {
-  return sum + (day.stops_given - day.stops_taken)
+	return sum + (day.stops_given - day.stops_taken)
 }, 0)
 
 // Mileage payment - paid with standard pay
 mileage_payment = work_days.reduce((sum, day) => {
-  const miles = day.amazon_paid_miles || 0
-  const rate = day.mileage_rate || 1988  // pence per 100 miles (1988 = £0.1988/mile)
-  return sum + (miles * (rate / 10000))  // Convert to pounds: 1988/10000 = £0.1988
+	const miles = day.amazon_paid_miles || 0
+	const rate = day.mileage_rate || 1988 // pence per 100 miles (1988 = £0.1988/mile)
+	return sum + miles * (rate / 10000) // Convert to pounds: 1988/10000 = £0.1988
 }, 0)
 
 // Van costs (pro-rata + deposit) - deducted from standard pay
@@ -431,11 +433,7 @@ van_deduction = pro_rata_van_cost + deposit_payment
 
 // Standard pay for Week N (received in Week N+2)
 standard_pay =
-  base_pay +
-  six_day_bonus +
-  sweep_adjustment +
-  mileage_payment -
-  van_deduction
+	base_pay + six_day_bonus + sweep_adjustment + mileage_payment - van_deduction
 ```
 
 **Performance Bonus Calculation (Week N bonus received in Week N+6)**:
@@ -448,8 +446,8 @@ performance_bonus_from_week_n_minus_6 = weeks[N - 6]?.bonus_amount || 0
 // Total pay received in Week N+2:
 // = Week N standard pay + Week N-6 performance bonus
 total_pay_received =
-  standard_pay + // Week N work
-  performance_bonus_from_week_n_minus_6 // Week N-6 bonus (6-week delay)
+	standard_pay + // Week N work
+	performance_bonus_from_week_n_minus_6 // Week N-6 bonus (6-week delay)
 
 // Example for Week 38 payment:
 // - Week 36 standard pay (base + 6-day + sweeps + mileage - van) [2-week arrears]
@@ -637,13 +635,14 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 **All tasks completed!**
 
 **Completed:**
+
 - ✅ Vite + React 19 + TypeScript project initialized
 - ✅ All dependencies installed (React Router 7, Zustand 5, date-fns 4, Supabase, etc.)
 - ✅ Tailwind CSS v4 configured with custom design system (dark mode, glassmorphic cards)
 - ✅ Folder structure created (components, features, lib, hooks, store, types, pages)
 - ✅ shadcn/ui configured with 15 components installed (Button, Card, Input, Form, Calendar, Badge, Dialog, Tabs, Select, Dropdown Menu, Table, Popover, Sonner, Label)
 - ✅ `src/lib/utils.ts` created (cn utility for className merging)
-- ✅ Path aliases configured (@/* imports working in TypeScript and Vite)
+- ✅ Path aliases configured (@/\* imports working in TypeScript and Vite)
 - ✅ Supabase project created
 - ✅ Supabase client configured (`src/lib/supabase.ts` with type safety)
 - ✅ Environment variables set up (.env.local with credentials, .env.example template)
@@ -654,6 +653,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 **All tasks completed!** Database is live with full type safety.
 
 **Completed:**
+
 - ✅ Database schema finalized (5 tables: users, user_settings, weeks, work_days, van_hires)
 - ✅ SQL migration created: `supabase/migrations/20251010_initial_schema.sql`
 - ✅ All tables created in Supabase via SQL Editor
@@ -665,12 +665,14 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - ✅ Build verified passing with new types
 
 **Key Files Created/Updated:**
+
 - `supabase/migrations/20251010_initial_schema.sql` - Complete database schema
 - `src/types/database.ts` - Auto-generated TypeScript types from schema
 - All helper types: `User`, `UserSettings`, `Week`, `WorkDay`, `VanHire`
 - Enum types: `PerformanceLevel`, `RouteType`, `VanType`
 
 **Database Features:**
+
 - All currency stored in pence (integers) for precision
 - RLS policies enforce user data isolation
 - Automatic timestamp updates via triggers
@@ -683,10 +685,10 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 **Dev Command:** `pnpm dev` (starts Vite dev server)
 
-### ✅ Phase 3: Core Configuration & Utils - COMPLETE (Oct 13, 2025)
+### Phase 3: Core Configuration & Utils
 
-**All tasks completed:**
 - ✅ Calculation utilities implemented (`src/lib/calculations.ts` - 670 lines)
+
   - Daily calculations (pay, sweeps, mileage, discrepancies)
   - Weekly calculations (base pay, 6-day bonus, sweeps, mileage totals)
   - Performance bonus calculations with tier matrix
@@ -697,6 +699,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
   - All currency in pence for precision
 
 - ✅ Extended TypeScript types (`src/types/index.ts` - 350 lines)
+
   - Computed data types (WorkDayWithPay, WeekWithPay, MileageSummary, etc.)
   - UI state types (calendar, forms, validation)
   - Statistics and analytics types
@@ -710,12 +713,14 @@ final_pay = calculated_weekly_pay - deposit_shortfall
   - Build verified passing
 
 **Still Pending:**
+
 - ⏳ Zustand store structure (not yet created)
 - ⏳ Date helper functions (requires week numbering confirmation from manager)
 
 ### ✅ Phase 4: Authentication - COMPLETE (Oct 11, 2025)
 
 **All tasks completed:**
+
 - ✅ Auth context/provider created (`src/hooks/useAuth.tsx`)
 - ✅ Login/signup pages built (`src/pages/Auth.tsx`)
 - ✅ Supabase authentication implemented (`src/lib/auth.ts`)
@@ -727,6 +732,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 ### 🚀 Phase 5+: Core Features - READY TO START
 
 **Option A: Dashboard & Calendar View (Recommended)**
+
 1. Build weekly calendar (Sunday-Saturday)
 2. Week number display and navigation
 3. Day cells with visual indicators
@@ -734,23 +740,27 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 5. Use calculation functions from `src/lib/calculations.ts`
 
 **Option B: State Management Setup**
+
 1. Set up Zustand store structure
 2. User settings store
 3. Calendar navigation state
 4. Week data cache
 
 **Option C: Date Helper Functions**
+
 1. Custom week number calculation (Sunday-Saturday, 52-week year)
 2. Week date range calculations
 3. ⚠️ **Requires manager confirmation on week numbering system first**
 
 **Option D: Test Database Connection**
+
 1. Write test to insert/query data
 2. Verify Supabase client connection
 3. Test RLS policies are working
 4. Test calculation functions with real data
 
 **Pending Confirmation:**
+
 - Week numbering system (TBC with manager - see Week Structure section above)
 
 ## Glossary
