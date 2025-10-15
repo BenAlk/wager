@@ -754,9 +754,15 @@ final_pay = calculated_weekly_pay - deposit_shortfall
   - **Status: TBC** - Fully functional but awaiting manager confirmation on exact rules
   - Easy to modify if rules change (all logic in one file)
 
-**Still Pending:**
-
-- ⏳ Zustand store structure (not yet created)
+- ✅ **Zustand stores implemented** (`src/store/` - 5 stores, Oct 16, 2025)
+  - Auth store: User session and profile management with localStorage persistence
+  - Settings store: Pay rates and invoicing service preferences
+  - Calendar store: Week navigation and view state with localStorage persistence
+  - Weeks store: Week/work day data caching with 5-minute TTL and optimistic updates
+  - Van store: Active and historical van hire tracking with cumulative deposit calculation
+  - All stores include selectors for common queries
+  - DevTools integration for debugging
+  - Full TypeScript type safety
 
 ### ✅ Phase 4: Authentication - COMPLETE (Oct 11, 2025)
 
@@ -772,33 +778,27 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 ### 🚀 Phase 5+: Core Features - READY TO START
 
-**Option A: Dashboard & Calendar View (Recommended)**
+**Recommended Next Steps:**
 
+**Option A: Settings Page** ⚙️ (Easiest, high value)
+1. Build settings form UI
+2. Connect to settingsStore
+3. Implement save to Supabase
+4. Form validation with Zod + React Hook Form
+
+**Option B: Dashboard Landing Page** 🏠 (High visibility)
+1. Current week summary card
+2. Upcoming payment timeline
+3. Quick stats (days worked, sweeps, mileage)
+4. Action items
+5. Use calculation functions from `src/lib/calculations.ts`
+
+**Option C: Weekly Calendar Component** 📅 (Core feature)
 1. Build weekly calendar (Sunday-Saturday)
 2. Week number display and navigation
 3. Day cells with visual indicators
 4. Mobile-responsive design
-5. Use calculation functions from `src/lib/calculations.ts`
-
-**Option B: State Management Setup**
-
-1. Set up Zustand store structure
-2. User settings store
-3. Calendar navigation state
-4. Week data cache
-
-**Option C: Date Helper Functions**
-
-1. Custom week number calculation (Sunday-Saturday, 52-week year)
-2. Week date range calculations
-3. ⚠️ **Requires manager confirmation on week numbering system first**
-
-**Option D: Test Database Connection**
-
-1. Write test to insert/query data
-2. Verify Supabase client connection
-3. Test RLS policies are working
-4. Test calculation functions with real data
+5. Integrate with calendarStore and weeksStore
 
 **Pending Confirmation:**
 
