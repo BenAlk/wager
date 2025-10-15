@@ -60,7 +60,7 @@ Wager is built for couriers who need quick, accurate information about their pay
 **Success** - Positive pay adjustments, completed actions
 
 - Green: `emerald-500`
-- Usage: +£48 bonus, sweep earnings, deposit complete
+- Usage: +£72 bonus, sweep earnings, deposit complete
 
 **Warning** - Attention needed, upcoming deadlines
 
@@ -428,7 +428,7 @@ focus:outline-none focus:ring-2 focus:ring-blue-500
 		<TrendingUp className='w-5 h-5 text-emerald-400' />
 	</div>
 	<div className='text-3xl font-mono font-bold text-white'>£782.50</div>
-	<div className='text-sm text-emerald-400 mt-1'>+£48 from Week 39 bonus</div>
+	<div className='text-sm text-emerald-400 mt-1'>+£72 from Week 39 bonus</div>
 </div>
 ```
 

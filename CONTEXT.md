@@ -98,9 +98,9 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 
 **Bonus Tiers**:
 
-- Individual Fantastic+ AND Company Fantastic+ = £12/day
-- Individual Fantastic+ AND Company Fantastic = £8/day
-- Individual Fantastic AND Company Fantastic+ = £8/day
+- Individual Fantastic+ AND Company Fantastic+ = £16/day
+- Individual Fantastic+ AND Company Fantastic = £12/day
+- Individual Fantastic AND Company Fantastic+ = £12/day
 - All other combinations = £0/day
 
 **Critical Timing Rules**:
@@ -113,13 +113,13 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 - **Example Timeline**:
   - Week 39: Work 6 days (Monday-Saturday)
   - Week 40 (Thursday-ish): Rankings released → Input: Individual Fantastic+, Company Fantastic
-  - System calculates: 6 days × £8/day = £48 bonus
+  - System calculates: 6 days × £12/day = £72 bonus
   - Week 41: Receive standard pay for Week 39 (base + 6-day bonus + sweeps + mileage - van)
-  - Week 45: Receive payment containing Week 43 standard pay + £48 performance bonus from Week 39
+  - Week 45: Receive payment containing Week 43 standard pay + £72 performance bonus from Week 39
 
 **Bonus Calculation**: Per day worked (calculated when rankings entered)
 
-- If you worked 6 days in Week 39 and earned Fantastic+/Fantastic → 6 × £8 = £48 bonus received in Week 45
+- If you worked 6 days in Week 39 and earned Fantastic+/Fantastic → 6 × £12 = £72 bonus received in Week 45
 
 ### Sweeping
 
@@ -388,9 +388,9 @@ if (individual_level IN ['Fantastic', 'Fantastic+'] AND
     company_level IN ['Fantastic', 'Fantastic+']) {
 
   if (individual_level === 'Fantastic+' AND company_level === 'Fantastic+') {
-    daily_bonus = 12
+    daily_bonus = 16
   } else {
-    daily_bonus = 8
+    daily_bonus = 12
   }
 }
 
@@ -486,7 +486,7 @@ total_pay_received =
 
 // Example for Week 38 payment:
 // - Week 36 standard pay (base + 6-day + sweeps + mileage - van) [2-week arrears]
-// - Week 32 performance bonus (£48) [6-week delay]
+// - Week 32 performance bonus (£72 for mixed Fantastic) [6-week delay]
 // - Total received in Week 38
 ```
 
@@ -551,7 +551,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 3. User inputs:
    - Individual: Fantastic+
    - Company: Fantastic
-4. System calculates bonus: 6 days × £8 = £48
+4. System calculates bonus: 6 days × £12 = £72
 5. Bonus tracked for payment in Week N+6 (6-week delay)
 
 ### Week N+2: Receiving First Payment
@@ -568,8 +568,8 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 1. Pay breakdown shows (received in Week N+6):
    - Week N+4 standard pay: £829.40 (base + 6-day + sweeps + mileage - van)
-   - **Performance bonus from Week N: +£48** (6-week delay)
-   - Total received: £877.40
+   - **Performance bonus from Week N: +£72** (6-week delay)
+   - Total received: £901.40
 
 ## Validation Rules
 

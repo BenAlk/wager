@@ -42,8 +42,8 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - 5 performance levels: Poor, Fair, Great, Fantastic, Fantastic+
 - Individual and company performance tracking
 - Bonus tiers:
-  - Both Fantastic+: £12/day
-  - Mixed Fantastic/Fantastic+: £8/day
+  - Both Fantastic+: £16/day
+  - Mixed Fantastic/Fantastic+: £12/day
 - 6-week delay calculation (Week 33 work, bonus received Week 39 with Week 37 standard pay)
 
 ### 🚚 Sweep Tracking
