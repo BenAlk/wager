@@ -176,21 +176,26 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
   - Example: Take van on Wednesday (day 4 of week) → Pay (£250 / 7) × 4 days
   - Example: Return van on Friday (5 days used) → Pay (£250 / 7) × 5 days
 
-### Week Structure **(TBC - Pending Manager Confirmation)**
+### Week Structure ✅ **IMPLEMENTED** (TBC - Awaiting Manager Confirmation)
+
+**Current Implementation** (subject to change based on manager feedback):
 
 - Weeks run **Sunday to Saturday** (NOT Monday-Sunday)
 - Week numbers follow a **52-week year starting in late December** (NOT ISO 8601, NOT calendar weeks)
-- **2024-2025 Example**:
-  - Week 1 = Sunday, December 29, 2024 - Saturday, January 4, 2025
-  - Week 41 = Sunday, October 5, 2025 - Saturday, October 11, 2025
-  - Week 52 = Sunday, December 21, 2025 - Saturday, December 27, 2025
-- **2025-2026 Example**:
-  - Week 1 = Sunday, December 28, 2025 - Saturday, January 3, 2026
-- **Week 53 Rule**: Added when January 1st falls on a Sunday
-  - Week 52 ends Saturday, December 24th
-  - Week 53 = Sunday, December 25th - Saturday, December 31st (full 7 days)
-  - Week 1 of new year = Sunday, January 1st - Saturday, January 7th
-- **Implementation note**: Cannot use `date-fns` `getISOWeek()` - needs custom week calculation based on 52-week year cycle
+- **Week 1 Start Rule**: Week 1 starts on the Sunday following the end of the previous work year (typically the last Sunday of December, between Dec 24-31)
+- **Week 53 Rule**: Week 53 exists ONLY if:
+  1. Week 52 ends on December 24th or earlier, AND
+  2. A full Sunday-Saturday week can fit ending on/before December 31st
+- **2024-2030 Examples**:
+  - 2024-2025: Week 1 = Dec 29, 2024 | Week 52 = Dec 27, 2025 | No Week 53
+  - 2025-2026: Week 1 = Dec 28, 2025 | Week 52 = Dec 26, 2026 | No Week 53
+  - 2026-2027: Week 1 = Dec 27, 2026 | Week 52 = Dec 25, 2027 | No Week 53
+  - 2027-2028: Week 1 = Dec 26, 2027 | Week 52 = Dec 23, 2028 | **Week 53 = Dec 24-30, 2028** ✅
+  - 2028-2029: Week 1 = Dec 31, 2028 | Week 52 = Dec 29, 2029 | No Week 53
+  - 2029-2030: Week 1 = Dec 30, 2029 | Week 52 = Dec 28, 2030 | No Week 53
+- **Week 53 Frequency**: Approximately every 5-6 years
+- **Implementation**: Custom calculation in `src/lib/dates.ts` with full test coverage (40 passing tests)
+- **Status**: Fully functional and ready for use. If manager confirms different rules, can be easily updated in one file.
 
 ### Historical Data Policy
 
