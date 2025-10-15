@@ -14,6 +14,7 @@ import type {
 	PerformanceLevel,
 	RouteType,
 	VanType,
+	InvoicingService,
 } from './database'
 
 // Re-export database types for convenience
@@ -26,6 +27,7 @@ export type {
 	PerformanceLevel,
 	RouteType,
 	VanType,
+	InvoicingService,
 }
 
 // ============================================================================
@@ -61,6 +63,7 @@ export interface WeekWithPay extends Week {
 		mileagePay: number // In pence
 		vanCost: number // In pence
 		depositPayment: number // In pence
+		invoicingCost: number // In pence (Verso Basic £10 or Verso Full £40)
 		standardPay: number // In pence (received Week N+2)
 		performanceBonus: number // In pence (received Week N+6)
 		standardPayWeek: number // Week number when standard pay received

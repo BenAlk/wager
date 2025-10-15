@@ -34,6 +34,28 @@ The app solves this by automating all calculations and providing visibility into
   - Example: 4 Normal + 2 DRS = (4 × £160) + (2 × £100) + £30 = £870 total base pay
 - **Hard Constraint**: Cannot work 7 days in a single week (ILLEGAL - hard block in UI)
 
+### Invoicing & Accounting Services
+
+Users can choose between self-invoicing or using Verso (requires Ltd company setup):
+
+- **Self-Invoicing**: £0/week
+  - Default option for self-employed couriers
+  - User handles their own invoicing and tax returns
+  - No weekly deduction from pay
+
+- **Verso Basic**: £10/week (1000 pence)
+  - Invoicing service
+  - Public liability insurance included
+  - Requires Ltd company setup
+  - Deducted from weekly standard pay (Week N+2)
+
+- **Verso Full**: £40/week (4000 pence)
+  - Full invoicing service
+  - Public liability insurance included
+  - Complete accounting and tax returns handled
+  - Requires Ltd company setup
+  - Deducted from weekly standard pay (Week N+2)
+
 ### Mileage Tracking
 
 - **Amazon Paid Mileage**: Stop-to-stop distance calculated by Amazon, paid at Amazon's rate
@@ -249,10 +271,12 @@ user_settings {
   user_id: uuid (PK, FK → users)
   normal_rate: integer DEFAULT 16000     // £160.00 in pence
   drs_rate: integer DEFAULT 10000        // £100.00 in pence
+  invoicing_service: text DEFAULT 'Self-Invoicing'  // 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
   created_at: timestamptz
   updated_at: timestamptz                // Auto-updated via trigger
 
   // Note: 6-day bonus (£30) is calculated, not stored
+  // Note: Invoicing costs: Self-Invoicing (£0), Verso-Basic (£10), Verso-Full (£40)
   // RLS: Users can only access their own settings
 }
 
@@ -431,9 +455,15 @@ mileage_payment = work_days.reduce((sum, day) => {
 // Van costs (pro-rata + deposit) - deducted from standard pay
 van_deduction = pro_rata_van_cost + deposit_payment
 
+// Invoicing service costs - deducted from standard pay
+invoicing_cost =
+	user_settings.invoicing_service === 'Verso-Basic' ? 1000 : // £10 in pence
+	user_settings.invoicing_service === 'Verso-Full' ? 4000 :  // £40 in pence
+	0 // Self-Invoicing
+
 // Standard pay for Week N (received in Week N+2)
 standard_pay =
-	base_pay + six_day_bonus + sweep_adjustment + mileage_payment - van_deduction
+	base_pay + six_day_bonus + sweep_adjustment + mileage_payment - van_deduction - invoicing_cost
 ```
 
 **Performance Bonus Calculation (Week N bonus received in Week N+6)**:

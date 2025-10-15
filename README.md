@@ -77,6 +77,21 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Visual deposit progress
 - 6-week hold period after off-hire before refund
 
+### 📋 Invoicing & Accounting Services
+
+- **Self-Invoicing**: £0/week (default for self-employed)
+  - Handle your own invoicing and tax returns
+- **Verso Basic**: £10/week
+  - Professional invoicing service
+  - Public liability insurance included
+  - Requires Ltd company setup
+- **Verso Full**: £40/week
+  - Complete invoicing service
+  - Public liability insurance included
+  - Full accounting and tax returns handled
+  - Requires Ltd company setup
+- Weekly costs automatically deducted from standard pay
+
 ### 📊 Dashboard & Reports
 
 - Current week expected pay

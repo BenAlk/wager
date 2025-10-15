@@ -50,6 +50,7 @@ export interface Database {
           user_id: string
           normal_rate: number
           drs_rate: number
+          invoicing_service: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at: string
           updated_at: string
         }
@@ -57,6 +58,7 @@ export interface Database {
           user_id: string
           normal_rate?: number
           drs_rate?: number
+          invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at?: string
           updated_at?: string
         }
@@ -64,6 +66,7 @@ export interface Database {
           user_id?: string
           normal_rate?: number
           drs_rate?: number
+          invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at?: string
           updated_at?: string
         }
@@ -276,3 +279,4 @@ export type VanHire = Tables<'van_hires'>
 export type PerformanceLevel = 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
 export type RouteType = 'Normal' | 'DRS'
 export type VanType = 'Fleet' | 'Flexi'
+export type InvoicingService = 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'

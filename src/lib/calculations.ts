@@ -13,7 +13,13 @@
  * These functions work with pence internally and convert to pounds for display.
  */
 
-import type { WorkDay, Week, VanHire, PerformanceLevel } from '@/types/database'
+import type {
+	WorkDay,
+	Week,
+	VanHire,
+	PerformanceLevel,
+	InvoicingService,
+} from '@/types/database'
 
 // ============================================================================
 // CONSTANTS
@@ -40,6 +46,13 @@ export const DEPOSIT_RATE_AFTER_TWO_WEEKS = 5000 // �50.00/week
  */
 export const BONUS_BOTH_FANTASTIC_PLUS = 1200 // �12/day
 export const BONUS_MIXED_FANTASTIC = 800 // �8/day
+
+/**
+ * Invoicing service costs (in pence per week)
+ */
+export const INVOICING_COST_SELF = 0 // Self-Invoicing: £0/week
+export const INVOICING_COST_VERSO_BASIC = 1000 // Verso Basic: £10/week
+export const INVOICING_COST_VERSO_FULL = 4000 // Verso Full: £40/week
 
 /**
  * Pay timing constants
@@ -386,6 +399,36 @@ export function calculateDepositHoldDate(offHireDate: Date): Date {
 }
 
 // ============================================================================
+// INVOICING SERVICE COSTS
+// ============================================================================
+
+/**
+ * Calculate weekly invoicing service cost
+ * - Self-Invoicing: £0/week
+ * - Verso Basic: £10/week (invoicing + public liability insurance)
+ * - Verso Full: £40/week (invoicing + insurance + full accounting/tax returns)
+ *
+ * Note: Verso services require Ltd company setup
+ *
+ * @param invoicingService - The invoicing service type from user settings
+ * @returns Weekly cost in pence
+ */
+export function calculateInvoicingCost(
+	invoicingService: InvoicingService
+): number {
+	switch (invoicingService) {
+		case 'Self-Invoicing':
+			return INVOICING_COST_SELF
+		case 'Verso-Basic':
+			return INVOICING_COST_VERSO_BASIC
+		case 'Verso-Full':
+			return INVOICING_COST_VERSO_FULL
+		default:
+			return INVOICING_COST_SELF
+	}
+}
+
+// ============================================================================
 // WEEKLY PAY SUMMARY
 // ============================================================================
 
@@ -399,9 +442,10 @@ export interface WeeklyPayBreakdown {
 	// Deductions
 	vanCost: number // Pro-rata van cost (in pence)
 	depositPayment: number // Deposit payment (in pence)
+	invoicingCost: number // Invoicing service cost (in pence): £0, £10, or £40
 
 	// Standard pay total (received Week N+2)
-	standardPay: number // Base + 6-day + sweeps + mileage - van - deposit
+	standardPay: number // Base + 6-day + sweeps + mileage - van - deposit - invoicing
 
 	// Performance bonus (received Week N+6)
 	performanceBonus: number // 6-week delay (in pence)
@@ -412,7 +456,7 @@ export interface WeeklyPayBreakdown {
 
 /**
  * Calculate complete weekly pay breakdown
- * Standard pay = base + 6-day bonus + sweeps + mileage - van costs
+ * Standard pay = base + 6-day bonus + sweeps + mileage - van costs - invoicing cost
  * Received in Week N+2 (2-week arrears)
  */
 export function calculateWeeklyPay(
@@ -421,7 +465,8 @@ export function calculateWeeklyPay(
 	vanHire: VanHire | null,
 	weekStartDate: Date,
 	weekEndDate: Date,
-	weeksWithVan: number
+	weeksWithVan: number,
+	invoicingService: InvoicingService = 'Self-Invoicing'
 ): WeeklyPayBreakdown {
 	// Calculate base components
 	const basePay = calculateWeeklyBasePay(workDays)
@@ -437,6 +482,9 @@ export function calculateWeeklyPay(
 		weeksWithVan
 	)
 
+	// Calculate invoicing service cost
+	const invoicingCost = calculateInvoicingCost(invoicingService)
+
 	// Calculate standard pay (received Week N+2)
 	const standardPay =
 		basePay +
@@ -444,7 +492,8 @@ export function calculateWeeklyPay(
 		sweeps +
 		mileage -
 		vanCosts.vanCost -
-		vanCosts.depositPayment
+		vanCosts.depositPayment -
+		invoicingCost
 
 	// Performance bonus (from week.bonus_amount, received Week N+6)
 	const performanceBonus = week.bonus_amount ?? 0
@@ -456,6 +505,7 @@ export function calculateWeeklyPay(
 		mileage,
 		vanCost: vanCosts.vanCost,
 		depositPayment: vanCosts.depositPayment,
+		invoicingCost,
 		standardPay,
 		performanceBonus,
 		daysWorked: workDays.length,
