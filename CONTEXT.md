@@ -747,10 +747,16 @@ final_pay = calculated_weekly_pay - deposit_shortfall
   - Code calculations corrected
   - Build verified passing
 
+- ✅ **Date utilities implemented** (`src/lib/dates.ts` - 400+ lines, Oct 15, 2025)
+  - Complete week calculation system with Sunday-Saturday weeks
+  - Week 53 logic implemented and tested (40 passing tests)
+  - Helper functions for week navigation, payment timing, formatting
+  - **Status: TBC** - Fully functional but awaiting manager confirmation on exact rules
+  - Easy to modify if rules change (all logic in one file)
+
 **Still Pending:**
 
 - ⏳ Zustand store structure (not yet created)
-- ⏳ Date helper functions (requires week numbering confirmation from manager)
 
 ### ✅ Phase 4: Authentication - COMPLETE (Oct 11, 2025)
 

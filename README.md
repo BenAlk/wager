@@ -192,8 +192,8 @@ wager/
 - [x] Create calculation utilities (670 lines in src/lib/calculations.ts)
 - [x] Create extended type system (350 lines in src/types/index.ts)
 - [x] Correct performance bonus timing throughout codebase
+- [x] Create date helper functions (400+ lines in src/lib/dates.ts with 40 passing tests)
 - [ ] Set up Zustand store structure (pending)
-- [ ] Create date helper functions (pending - requires week numbering confirmation)
 
 ### Phase 4: Authentication ✅ **COMPLETE**
 
