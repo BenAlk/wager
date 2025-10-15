@@ -50,7 +50,6 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 - Log stops given to other drivers (+£1 per stop)
 - Log stops taken from you (-£1 per stop)
-- Max 200 sweeps per day (total stops given + taken)
 - Weekly sweep balance calculation
 - Paid with standard pay (Week N+2)
 - Running totals in dashboard
