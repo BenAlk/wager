@@ -45,7 +45,7 @@ export const DEPOSIT_RATE_AFTER_TWO_WEEKS = 5000 // �50.00/week
  * Performance bonus rates per day (in pence)
  */
 export const BONUS_BOTH_FANTASTIC_PLUS = 1600 // £16/day
-export const BONUS_MIXED_FANTASTIC = 1200 // £12/day
+export const BONUS_MIXED_FANTASTIC = 800 // £8/day
 
 /**
  * Invoicing service costs (in pence per week)
@@ -251,7 +251,7 @@ export function calculateWeeklyMileage(workDays: WorkDay[]): {
  *
  * Bonus Tiers:
  * - Both Fantastic+: £16/day
- * - Mixed Fantastic/Fantastic+: £12/day
+ * - Mixed Fantastic/Fantastic+: £8/day
  * - All others: £0/day
  */
 export function calculatePerformanceBonus(
@@ -275,7 +275,7 @@ export function calculatePerformanceBonus(
 	if (individual_level === 'Fantastic+' && company_level === 'Fantastic+') {
 		dailyBonus = BONUS_BOTH_FANTASTIC_PLUS // £16/day
 	} else {
-		dailyBonus = BONUS_MIXED_FANTASTIC // £12/day
+		dailyBonus = BONUS_MIXED_FANTASTIC // £8/day
 	}
 
 	// Calculate total bonus
@@ -304,7 +304,7 @@ export function getDailyBonusRate(
 		return BONUS_BOTH_FANTASTIC_PLUS // £16/day
 	}
 
-	return BONUS_MIXED_FANTASTIC // £12/day
+	return BONUS_MIXED_FANTASTIC // £8/day
 }
 
 // ============================================================================
