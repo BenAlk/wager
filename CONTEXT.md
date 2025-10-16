@@ -39,11 +39,13 @@ The app solves this by automating all calculations and providing visibility into
 Users can choose between self-invoicing or using Verso (requires Ltd company setup):
 
 - **Self-Invoicing**: £0/week
+
   - Default option for self-employed couriers
   - User handles their own invoicing and tax returns
   - No weekly deduction from pay
 
 - **Verso Basic**: £10/week (1000 pence)
+
   - Invoicing service
   - Public liability insurance included
   - Requires Ltd company setup
@@ -101,6 +103,7 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 - Individual Fantastic+ AND Company Fantastic+ = £16/day
 - Individual Fantastic+ AND Company Fantastic = £8/day
 - Individual Fantastic AND Company Fantastic+ = £8/day
+- Individual Fantastic AND Company Fantastic = £8/day
 - All other combinations = £0/day
 
 **Critical Timing Rules**:
@@ -462,13 +465,20 @@ van_deduction = pro_rata_van_cost + deposit_payment
 
 // Invoicing service costs - deducted from standard pay
 invoicing_cost =
-	user_settings.invoicing_service === 'Verso-Basic' ? 1000 : // £10 in pence
-	user_settings.invoicing_service === 'Verso-Full' ? 4000 :  // £40 in pence
-	0 // Self-Invoicing
+	user_settings.invoicing_service === 'Verso-Basic'
+		? 1000 // £10 in pence
+		: user_settings.invoicing_service === 'Verso-Full'
+		? 4000 // £40 in pence
+		: 0 // Self-Invoicing
 
 // Standard pay for Week N (received in Week N+2)
 standard_pay =
-	base_pay + six_day_bonus + sweep_adjustment + mileage_payment - van_deduction - invoicing_cost
+	base_pay +
+	six_day_bonus +
+	sweep_adjustment +
+	mileage_payment -
+	van_deduction -
+	invoicing_cost
 ```
 
 **Performance Bonus Calculation (Week N bonus received in Week N+6)**:
@@ -742,12 +752,14 @@ final_pay = calculated_weekly_pay - deposit_shortfall
   - Complete type safety for all features
 
 - ✅ Performance bonus timing corrected throughout codebase
+
   - Fixed from Week N+8 to Week N+6
   - All documentation updated (CONTEXT.md, README.md, CLAUDE.md, SQL comments)
   - Code calculations corrected
   - Build verified passing
 
 - ✅ **Date utilities implemented** (`src/lib/dates.ts` - 400+ lines, Oct 15, 2025)
+
   - Complete week calculation system with Sunday-Saturday weeks
   - Week 53 logic implemented and tested (40 passing tests)
   - Helper functions for week navigation, payment timing, formatting
@@ -781,12 +793,14 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 **Recommended Next Steps:**
 
 **Option A: Settings Page** ⚙️ (Easiest, high value)
+
 1. Build settings form UI
 2. Connect to settingsStore
 3. Implement save to Supabase
 4. Form validation with Zod + React Hook Form
 
 **Option B: Dashboard Landing Page** 🏠 (High visibility)
+
 1. Current week summary card
 2. Upcoming payment timeline
 3. Quick stats (days worked, sweeps, mileage)
@@ -794,6 +808,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 5. Use calculation functions from `src/lib/calculations.ts`
 
 **Option C: Weekly Calendar Component** 📅 (Core feature)
+
 1. Build weekly calendar (Sunday-Saturday)
 2. Week number display and navigation
 3. Day cells with visual indicators
