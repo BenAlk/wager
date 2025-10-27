@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
+import { Toaster } from '@/components/ui/sonner'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
+import Settings from '@/pages/Settings'
 
 // Protected route component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -62,8 +64,17 @@ function App() {
 							</ProtectedRoute>
 						}
 					/>
+					<Route
+						path='/settings'
+						element={
+							<ProtectedRoute>
+								<Settings />
+							</ProtectedRoute>
+						}
+					/>
 					<Route path='/' element={<Navigate to='/dashboard' replace />} />
 				</Routes>
+				<Toaster />
 			</AuthProvider>
 		</BrowserRouter>
 	)

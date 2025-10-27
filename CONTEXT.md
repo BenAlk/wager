@@ -788,18 +788,33 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - ✅ Database trigger for automatic user profile creation
 - ✅ RLS policies working correctly
 
-### 🚀 Phase 5+: Core Features - READY TO START
+### ✅ Phase 5: Settings Management - COMPLETE (Oct 27, 2025)
+
+**All tasks completed:**
+
+- ✅ Settings page created (`src/pages/Settings.tsx`)
+- ✅ Pay rate configuration forms (Normal £160, DRS £100)
+- ✅ Invoicing service selection (Self-Invoicing, Verso Basic, Verso Full)
+- ✅ Full Supabase integration (load/save/auto-create defaults)
+- ✅ Form validation with Zod + React Hook Form Controller
+- ✅ Currency conversion (display in pounds, store in pence)
+- ✅ Custom styled increment/decrement buttons
+- ✅ Mobile-responsive design
+- ✅ Protected route with navigation from Dashboard
+- ✅ Toast notifications for user feedback
+- ✅ Form dirty state tracking with `isDirty`
+
+**Key Features:**
+- Automatic settings creation on first load
+- Real-time validation
+- Glassmorphic dark theme design
+- Accessible (aria-labels, keyboard navigation)
+
+### 🚀 Phase 6+: Core Features - READY TO START
 
 **Recommended Next Steps:**
 
-**Option A: Settings Page** ⚙️ (Easiest, high value)
-
-1. Build settings form UI
-2. Connect to settingsStore
-3. Implement save to Supabase
-4. Form validation with Zod + React Hook Form
-
-**Option B: Dashboard Landing Page** 🏠 (High visibility)
+**Option A: Dashboard Landing Page** 🏠 (High visibility)
 
 1. Current week summary card
 2. Upcoming payment timeline
@@ -807,7 +822,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 4. Action items
 5. Use calculation functions from `src/lib/calculations.ts`
 
-**Option C: Weekly Calendar Component** 📅 (Core feature)
+**Option B: Weekly Calendar Component** 📅 (Core feature)
 
 1. Build weekly calendar (Sunday-Saturday)
 2. Week number display and navigation

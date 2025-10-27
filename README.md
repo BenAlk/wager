@@ -204,13 +204,15 @@ wager/
 - [x] Add logout functionality
 - [x] Handle auth state persistence
 
-### Phase 5: Settings Management
+### Phase 5: Settings Management ✅ **COMPLETE**
 
-- [ ] Create settings page layout
-- [ ] Build rate configuration forms
-- [ ] Build bonus level configuration
-- [ ] Implement save/load settings
-- [ ] Add validation and error handling
+- [x] Create settings page layout
+- [x] Build rate configuration forms (Normal/DRS rates)
+- [x] Build invoicing service selection (Self-Invoicing, Verso Basic, Verso Full)
+- [x] Implement save/load settings with Supabase
+- [x] Add validation and error handling with Zod + React Hook Form
+- [x] Custom styled increment/decrement buttons
+- [x] Mobile-responsive design
 
 ### Phase 6: Calendar Core
 
