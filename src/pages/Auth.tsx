@@ -1,11 +1,11 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card } from '@/components/ui/card'
+import { login, signUp } from '@/lib/auth'
 import { TrendingUp } from 'lucide-react'
-import { signUp, login } from '@/lib/auth'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Auth() {
 	const navigate = useNavigate()
@@ -64,7 +64,7 @@ export default function Auth() {
 						className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${
 							isLogin
 								? 'bg-white text-slate-900 shadow-lg'
-								: 'text-slate-300 hover:text-white'
+								: 'text-slate-300 hover:text-white cursor-pointer'
 						}`}
 					>
 						Login
@@ -74,7 +74,7 @@ export default function Auth() {
 						className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${
 							!isLogin
 								? 'bg-white text-slate-900 shadow-lg'
-								: 'text-slate-300 hover:text-white'
+								: 'text-slate-300 hover:text-white cursor-pointer'
 						}`}
 					>
 						Sign Up
@@ -82,15 +82,21 @@ export default function Auth() {
 				</div>
 
 				{/* Form */}
-				<form onSubmit={handleSubmit} className='space-y-4'>
+				<form
+					onSubmit={handleSubmit}
+					className='space-y-4'
+				>
 					{/* Display Name - Animated */}
 					<div
 						className={`overflow-hidden transition-all duration-300 ease-in-out ${
-							!isLogin ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0'
+							!isLogin ? 'max-h-28 opacity-100' : 'max-h-0 opacity-0'
 						}`}
 					>
 						<div className={!isLogin ? '' : 'invisible'}>
-							<Label htmlFor='displayName' className='text-slate-200'>
+							<Label
+								htmlFor='displayName'
+								className='text-slate-200'
+							>
 								Display Name
 							</Label>
 							<Input
@@ -100,14 +106,17 @@ export default function Auth() {
 								value={displayName}
 								onChange={(e) => setDisplayName(e.target.value)}
 								className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
-									focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+									focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
 								required={!isLogin}
 							/>
 						</div>
 					</div>
 
 					<div>
-						<Label htmlFor='email' className='text-slate-200'>
+						<Label
+							htmlFor='email'
+							className='text-slate-200'
+						>
 							Email
 						</Label>
 						<Input
@@ -117,13 +126,16 @@ export default function Auth() {
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
-								focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+								focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
 							required
 						/>
 					</div>
 
 					<div>
-						<Label htmlFor='password' className='text-slate-200'>
+						<Label
+							htmlFor='password'
+							className='text-slate-200'
+						>
 							Password
 						</Label>
 						<Input
@@ -133,7 +145,7 @@ export default function Auth() {
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 							className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
-								focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+								focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
 							required
 							minLength={6}
 						/>
@@ -158,7 +170,7 @@ export default function Auth() {
 							text-white font-semibold py-6 rounded-lg
 							shadow-lg shadow-blue-500/25
 							transition-all transform hover:scale-[1.02] active:scale-[0.98]
-							disabled:opacity-50 disabled:cursor-not-allowed'
+							disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
 					>
 						{loading ? 'Please wait...' : isLogin ? 'Login' : 'Create Account'}
 					</Button>
