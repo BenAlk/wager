@@ -1,8 +1,8 @@
-import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/hooks/useAuth'
 import { logout } from '@/lib/auth'
+import { Calendar, LogOut, Settings, TrendingUp } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { TrendingUp, Settings, LogOut } from 'lucide-react'
 
 export default function Dashboard() {
 	const { user, loading } = useAuth()
@@ -33,7 +33,7 @@ export default function Dashboard() {
 						<div className='hidden sm:block'>
 							<h1 className='text-2xl font-bold text-white'>Wager</h1>
 							<p className='text-slate-400 text-sm'>
-								Welcome back, {user?.email}
+								Welcome back, {user?.user_metadata.display_name}
 							</p>
 						</div>
 						<div className='block sm:hidden'>
@@ -44,7 +44,7 @@ export default function Dashboard() {
 						<Button
 							onClick={() => navigate('/settings')}
 							variant='outline'
-							className='bg-white/5 border-white/10 text-white hover:bg-white/10'
+							className='bg-white/5 border-white/10 text-white hover:bg-white/10 cursor-pointer'
 							aria-label='Settings'
 						>
 							<Settings className='w-4 h-4 md:mr-2' />
@@ -53,7 +53,7 @@ export default function Dashboard() {
 						<Button
 							onClick={handleLogout}
 							variant='outline'
-							className='bg-white/5 border-white/10 text-white hover:bg-white/10'
+							className='bg-white/5 border-white/10 text-white hover:bg-white/10 cursor-pointer'
 							aria-label='Logout'
 						>
 							<LogOut className='w-4 h-4 md:mr-2' />
@@ -67,10 +67,17 @@ export default function Dashboard() {
 					<h2 className='text-xl font-bold text-white mb-4'>
 						Dashboard Coming Soon
 					</h2>
-					<p className='text-slate-300'>
+					<p className='text-slate-300 mb-6'>
 						Authentication is working! Now we'll build out the calendar, pay
 						tracking, and other features.
 					</p>
+					<Button
+						onClick={() => navigate('/calendar')}
+						className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
+					>
+						<Calendar className='w-4 h-4 mr-2' />
+						Open Calendar
+					</Button>
 				</div>
 			</div>
 		</div>

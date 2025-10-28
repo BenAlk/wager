@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from '@/hooks/useAuth'
 import { Toaster } from '@/components/ui/sonner'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
+import Calendar from '@/pages/Calendar'
 import Settings from '@/pages/Settings'
 
 // Protected route component
@@ -61,6 +62,14 @@ function App() {
 						element={
 							<ProtectedRoute>
 								<Dashboard />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/calendar'
+						element={
+							<ProtectedRoute>
+								<Calendar />
 							</ProtectedRoute>
 						}
 					/>

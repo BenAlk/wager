@@ -405,3 +405,53 @@ export function isToday(date: Date): boolean {
 export function getDayIndex(date: Date): number {
 	return date.getDay()
 }
+
+/**
+ * Get payment week for standard pay (Week N+2)
+ * Standard pay is paid 2 weeks in arrears
+ */
+export function getPaymentWeekForStandardPay(workWeek: number, workYear: number): { weekNumber: number; year: number; month: string } {
+	const paymentWeek = workWeek + 2
+	let paymentYear = workYear
+
+	// Handle year boundary
+	const weeksInYear = getWeeksInYear(workYear)
+	if (paymentWeek > weeksInYear) {
+		paymentYear = workYear + 1
+	}
+
+	const actualPaymentWeek = paymentWeek > weeksInYear ? paymentWeek - weeksInYear : paymentWeek
+	const weekInfo = getWeekInfo(actualPaymentWeek, paymentYear)
+	const month = format(weekInfo.startDate, 'MMM d')
+
+	return {
+		weekNumber: actualPaymentWeek,
+		year: paymentYear,
+		month
+	}
+}
+
+/**
+ * Get payment week for performance bonus (Week N+6)
+ * Performance bonus is paid 6 weeks after work
+ */
+export function getPaymentWeekForBonus(workWeek: number, workYear: number): { weekNumber: number; year: number; month: string } {
+	const paymentWeek = workWeek + 6
+	let paymentYear = workYear
+
+	// Handle year boundary
+	const weeksInYear = getWeeksInYear(workYear)
+	if (paymentWeek > weeksInYear) {
+		paymentYear = workYear + 1
+	}
+
+	const actualPaymentWeek = paymentWeek > weeksInYear ? paymentWeek - weeksInYear : paymentWeek
+	const weekInfo = getWeekInfo(actualPaymentWeek, paymentYear)
+	const month = format(weekInfo.startDate, 'MMM d')
+
+	return {
+		weekNumber: actualPaymentWeek,
+		year: paymentYear,
+		month
+	}
+}

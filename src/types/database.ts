@@ -50,6 +50,7 @@ export interface Database {
           user_id: string
           normal_rate: number
           drs_rate: number
+          mileage_rate: number
           invoicing_service: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at: string
           updated_at: string
@@ -58,6 +59,7 @@ export interface Database {
           user_id: string
           normal_rate?: number
           drs_rate?: number
+          mileage_rate?: number
           invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at?: string
           updated_at?: string
@@ -66,6 +68,7 @@ export interface Database {
           user_id?: string
           normal_rate?: number
           drs_rate?: number
+          mileage_rate?: number
           invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at?: string
           updated_at?: string
@@ -88,6 +91,7 @@ export interface Database {
           individual_level: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           company_level: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           bonus_amount: number
+          mileage_rate: number
           notes: string | null
           rankings_entered_at: string | null
           created_at: string
@@ -101,6 +105,7 @@ export interface Database {
           individual_level?: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           company_level?: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           bonus_amount?: number
+          mileage_rate?: number
           notes?: string | null
           rankings_entered_at?: string | null
           created_at?: string
@@ -114,6 +119,7 @@ export interface Database {
           individual_level?: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           company_level?: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           bonus_amount?: number
+          mileage_rate?: number
           notes?: string | null
           rankings_entered_at?: string | null
           created_at?: string
@@ -271,7 +277,7 @@ export type Updates<T extends keyof Database['public']['Tables']> = Database['pu
 // Specific table types for convenience
 export type User = Tables<'users'>
 export type UserSettings = Tables<'user_settings'>
-export type Week = Tables<'weeks'>
+export type Week = Tables<'weeks'> & { work_days?: WorkDay[] }
 export type WorkDay = Tables<'work_days'>
 export type VanHire = Tables<'van_hires'>
 

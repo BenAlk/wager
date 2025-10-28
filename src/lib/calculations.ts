@@ -19,6 +19,7 @@ import type {
 	VanHire,
 	PerformanceLevel,
 	InvoicingService,
+	UserSettings,
 } from '@/types/database'
 
 // ============================================================================
@@ -129,13 +130,14 @@ export function calculateDailySweeps(workDay: WorkDay): number {
 
 /**
  * Calculate mileage pay for a single day
- * Formula: amazon_paid_miles � (mileage_rate / 10000)
- * Note: mileage_rate is stored as pence per 100 miles (e.g., 1988 = �0.1988/mile)
+ * Formula: amazon_paid_miles × (mileage_rate / 100)
+ * Note: mileage_rate is stored as hundredths of a penny (e.g., 1988 = 19.88p/mile)
+ * Example: 100 miles × (1988 / 100) = 100 × 19.88p = 1988p = £19.88
  */
 export function calculateDailyMileagePay(workDay: WorkDay): number {
 	const miles = workDay.amazon_paid_miles ?? 0
-	const rate = workDay.mileage_rate // In pence (e.g., 1988 = 19.88p/mile)
-	return Math.round((miles * rate) / 100) // Convert to pence
+	const rate = workDay.mileage_rate // Stored as hundredths of a penny (e.g., 1988 = 19.88p/mile)
+	return Math.round((miles * rate) / 100) // Calculate: miles × pence-per-mile
 }
 
 /**
@@ -154,7 +156,7 @@ export function calculateMileageDiscrepancy(workDay: WorkDay): {
 		return { discrepancyMiles: 0, discrepancyValue: 0 }
 	}
 
-	const rate = workDay.mileage_rate
+	const rate = workDay.mileage_rate // Stored as hundredths of a penny (e.g., 1988 = 19.88p/mile)
 	const discrepancyValue = Math.round((discrepancyMiles * rate) / 100)
 
 	return { discrepancyMiles, discrepancyValue }
@@ -681,5 +683,79 @@ export function validateWeeklyWorkDays(workDays: WorkDay[]): {
 		valid: errors.length === 0,
 		errors,
 		warnings,
+	}
+}
+
+// ============================================================================
+// SIMPLIFIED BREAKDOWN FOR UI
+// ============================================================================
+
+export interface WeeklyPayBreakdownSimple {
+	basePay: number
+	sixDayBonus: number
+	sweepAdjustment: number
+	stopsGiven: number
+	stopsTaken: number
+	mileagePayment: number
+	totalAmazonMiles: number
+	totalVanMiles: number
+	mileageDiscrepancy: number
+	mileageDiscrepancyValue: number // In pence
+	vanDeduction: number
+	invoicingCost: number
+	standardPay: number
+}
+
+/**
+ * Simplified weekly pay breakdown for UI display
+ * Takes user settings and optional van hire
+ */
+export function calculateWeeklyPayBreakdown(
+	workDays: WorkDay[],
+	settings: UserSettings,
+	vanHire?: VanHire
+): WeeklyPayBreakdownSimple {
+	// Base pay components
+	const basePay = calculateWeeklyBasePay(workDays)
+	const sixDayBonus = calculateSixDayBonus(workDays)
+	const sweepAdjustment = calculateWeeklySweeps(workDays)
+	const mileagePayment = calculateWeeklyMileagePay(workDays)
+
+	// Sweep stats
+	const stopsGiven = workDays.reduce((sum, day) => sum + day.stops_given, 0)
+	const stopsTaken = workDays.reduce((sum, day) => sum + day.stops_taken, 0)
+
+	// Mileage stats
+	const mileageStats = calculateWeeklyMileage(workDays)
+
+	// Van cost (simplified - assume full week)
+	const vanDeduction = vanHire ? vanHire.weekly_rate : 0
+
+	// Invoicing cost
+	const invoicingCost = calculateInvoicingCost(settings.invoicing_service)
+
+	// Standard pay total
+	const standardPay =
+		basePay +
+		sixDayBonus +
+		sweepAdjustment +
+		mileagePayment -
+		vanDeduction -
+		invoicingCost
+
+	return {
+		basePay,
+		sixDayBonus,
+		sweepAdjustment,
+		stopsGiven,
+		stopsTaken,
+		mileagePayment,
+		totalAmazonMiles: mileageStats.totalAmazonMiles,
+		totalVanMiles: mileageStats.totalVanMiles,
+		mileageDiscrepancy: mileageStats.totalDiscrepancyMiles,
+		mileageDiscrepancyValue: mileageStats.totalDiscrepancyValue,
+		vanDeduction,
+		invoicingCost,
+		standardPay,
 	}
 }

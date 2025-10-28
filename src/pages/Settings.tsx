@@ -45,6 +45,11 @@ const settingsSchema = z.object({
 		.int('Rate must be a whole number')
 		.min(0, 'Rate must be positive')
 		.max(1000000, 'Rate too high'), // Max £10,000 (in pence)
+	mileageRate: z
+		.number({ message: 'Mileage rate is required' })
+		.int('Rate must be a whole number')
+		.min(0, 'Rate must be positive')
+		.max(10000, 'Rate too high'), // Max £1 per mile (10000 = 100p/mile in storage format)
 	invoicingService: z.enum(['Self-Invoicing', 'Verso-Basic', 'Verso-Full']),
 })
 
@@ -68,6 +73,7 @@ export default function Settings() {
 		defaultValues: {
 			normalRate: 16000, // £160 in pence
 			drsRate: 10000, // £100 in pence
+			mileageRate: 1988, // 19.88p per mile (stored as pence per 100 miles)
 			invoicingService: 'Self-Invoicing',
 		},
 	})
@@ -95,6 +101,7 @@ export default function Settings() {
 								user_id: user.id,
 								normal_rate: 16000,
 								drs_rate: 10000,
+								mileage_rate: 1988,
 								invoicing_service: 'Self-Invoicing',
 							})
 							.select()
@@ -110,6 +117,7 @@ export default function Settings() {
 						reset({
 							normalRate: newSettings.normal_rate,
 							drsRate: newSettings.drs_rate,
+							mileageRate: newSettings.mileage_rate,
 							invoicingService:
 								newSettings.invoicing_service as InvoicingService,
 						})
@@ -122,6 +130,7 @@ export default function Settings() {
 					reset({
 						normalRate: data.normal_rate,
 						drsRate: data.drs_rate,
+						mileageRate: data.mileage_rate,
 						invoicingService: data.invoicing_service as InvoicingService,
 					})
 				}
@@ -150,6 +159,7 @@ export default function Settings() {
 				.update({
 					normal_rate: data.normalRate,
 					drs_rate: data.drsRate,
+					mileage_rate: data.mileageRate,
 					invoicing_service: data.invoicingService,
 				})
 				.eq('user_id', user.id)
@@ -165,6 +175,7 @@ export default function Settings() {
 				user_id: user.id,
 				normal_rate: data.normalRate,
 				drs_rate: data.drsRate,
+				mileage_rate: data.mileageRate,
 				invoicing_service: data.invoicingService,
 				created_at: settings?.created_at || new Date().toISOString(),
 				updated_at: new Date().toISOString(),
@@ -385,6 +396,69 @@ export default function Settings() {
 								)}
 								<p className='text-xs text-slate-500 mt-1'>
 									Default: £100 per day
+								</p>
+							</div>
+
+							{/* Mileage Rate */}
+							<div>
+								<Label
+									htmlFor='mileageRate'
+									className='text-slate-200'
+								>
+									Mileage Rate (per mile)
+								</Label>
+								<div className='mt-2 relative'>
+									<span className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-mono z-10'>
+										£
+									</span>
+									<Controller
+										name='mileageRate'
+										control={control}
+										render={({ field }) => (
+											<>
+												<Input
+													id='mileageRate'
+													type='number'
+													step='0.0001'
+													placeholder='0.1988'
+													className='bg-white/5 border-white/10 text-white pl-8 pr-12 h-12 font-mono focus:ring-2 focus:ring-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield]'
+													value={(field.value / 10000).toFixed(4)} // Display in pounds (1988 pence = £0.1988)
+													onChange={(e) => {
+														const pounds = parseFloat(e.target.value) || 0
+														field.onChange(Math.round(pounds * 10000)) // Store as pence (e.g., 0.1988 * 10000 = 1988)
+													}}
+												/>
+												<div className='absolute right-1 top-1/2 -translate-y-1/2 flex flex-col gap-0.5'>
+													<button
+														type='button'
+														onClick={() => field.onChange(field.value + 1)}
+														className='bg-white/5 hover:bg-blue-500/20 p-1 rounded transition-colors group cursor-pointer'
+														aria-label='Increase rate'
+													>
+														<ChevronUp className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
+													</button>
+													<button
+														type='button'
+														onClick={() =>
+															field.onChange(Math.max(0, field.value - 1))
+														}
+														className='bg-white/5 hover:bg-blue-500/20 rounded p-1 transition-colors group cursor-pointer'
+														aria-label='Decrease rate'
+													>
+														<ChevronDown className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
+													</button>
+												</div>
+											</>
+										)}
+									/>
+								</div>
+								{errors.mileageRate && (
+									<p className='text-red-400 text-sm mt-1'>
+										{errors.mileageRate.message}
+									</p>
+								)}
+								<p className='text-xs text-slate-500 mt-1'>
+									Default: £0.1988/mile (19.88p). Amazon adjusts this based on fuel prices.
 								</p>
 							</div>
 
