@@ -1,0 +1,15 @@
+# Netlify configuration for Wager SPA
+# https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Build command
+  command = "pnpm run build"
+
+  # Directory with production build files
+  publish = "dist"
+
+# Redirect all requests to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

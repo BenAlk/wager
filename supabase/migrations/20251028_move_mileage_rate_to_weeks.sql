@@ -18,4 +18,4 @@ ALTER COLUMN mileage_rate SET NOT NULL;
 -- This column is in the schema but may not have been added yet
 -- ALTER TABLE work_days DROP COLUMN IF EXISTS mileage_rate;
 
-COMMENT ON COLUMN weeks.mileage_rate IS 'Mileage rate for this week in pence per 100 miles (e.g., 1988 = 19.88p/mile). Amazon adjusts this based on fuel prices.';
+COMMENT ON COLUMN weeks.mileage_rate IS 'Mileage rate for this week stored as hundredths of a penny (e.g., 1988 = 19.88p/mile = £0.1988/mile). Amazon adjusts this based on fuel prices.';

@@ -53,7 +53,7 @@ export const BONUS_MIXED_FANTASTIC = 800 // £8/day
  */
 export const INVOICING_COST_SELF = 0 // Self-Invoicing: £0/week
 export const INVOICING_COST_VERSO_BASIC = 1000 // Verso Basic: £10/week
-export const INVOICING_COST_VERSO_FULL = 4000 // Verso Full: £40/week
+export const INVOICING_COST_VERSO_FULL = 3000 // Verso Full: £30/week
 
 /**
  * Pay timing constants
@@ -408,7 +408,7 @@ export function calculateDepositHoldDate(offHireDate: Date): Date {
  * Calculate weekly invoicing service cost
  * - Self-Invoicing: £0/week
  * - Verso Basic: £10/week (invoicing + public liability insurance)
- * - Verso Full: £40/week (invoicing + insurance + full accounting/tax returns)
+ * - Verso Full: £30/week (invoicing + insurance + full accounting/tax returns)
  *
  * Note: Verso services require Ltd company setup
  *

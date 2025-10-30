@@ -203,7 +203,7 @@ export default function Settings() {
 			case 'Verso-Basic':
 				return '£10'
 			case 'Verso-Full':
-				return '£40'
+				return '£30'
 		}
 	}
 
@@ -521,7 +521,7 @@ export default function Settings() {
 												value='Verso-Full'
 												className='text-white cursor-pointer hover:bg-white/5'
 											>
-												Verso Full (£40/week)
+												Verso Full (£30/week)
 											</SelectItem>
 										</SelectContent>
 									</Select>

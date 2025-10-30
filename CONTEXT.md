@@ -51,7 +51,7 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
   - Requires Ltd company setup
   - Deducted from weekly standard pay (Week N+2)
 
-- **Verso Full**: £40/week (4000 pence)
+- **Verso Full**: £30/week (3000 pence)
   - Full invoicing service
   - Public liability insurance included
   - Complete accounting and tax returns handled
@@ -61,21 +61,26 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 ### Mileage Tracking
 
 - **Amazon Paid Mileage**: Stop-to-stop distance calculated by Amazon, paid at Amazon's rate
-  - Amazon rate: £0.1988 per mile (19.88 pence per mile)
+  - Amazon rate: £0.1988 per mile (19.88 pence per mile) - default, can be adjusted weekly
   - Paid with standard pay (Week N+2)
   - User enters mileage amount shown on Amazon pay breakdown
+  - **Rate Adjustments**: Amazon periodically adjusts the mileage rate based on fuel prices
+    - Rate is set per week (not per day) as Amazon typically changes it weekly or monthly
+    - User can edit the rate for any week via a subtle edit button in the week summary
+    - New weeks auto-populate with user's default rate from settings
 - **Van Logged Mileage**: Actual odometer reading from the van
   - Shows real distance driven (includes travel to/from station, detours, etc.)
   - User enters start/end odometer readings OR total miles driven
   - Optional field for tracking purposes
 - **Mileage Discrepancy**: Difference between van logged and Amazon paid mileage
   - Shows where courier is losing money (fuel costs without compensation)
-  - Formula: `(van_logged_miles - amazon_paid_miles) × £0.1988 = money_lost_on_fuel`
+  - Formula: `(van_logged_miles - amazon_paid_miles) × mileage_rate = money_lost_on_fuel`
   - Displayed as warning/info in daily breakdown
 - **Example**:
   - Amazon paid mileage: 85 miles × £0.1988 = £16.90
   - Van logged mileage: 98 miles
   - Discrepancy: 13 miles × £0.1988 = £2.58 lost on unpaid fuel costs
+- **Storage Format**: Mileage rate stored as hundredths of a penny (1988 = 19.88p/mile = £0.1988/mile)
 
 ### Pay Timing
 
@@ -279,12 +284,14 @@ user_settings {
   user_id: uuid (PK, FK → users)
   normal_rate: integer DEFAULT 16000     // £160.00 in pence
   drs_rate: integer DEFAULT 10000        // £100.00 in pence
+  mileage_rate: integer DEFAULT 1988     // 19.88p/mile (stored as hundredths of penny: 1988 = £0.1988/mile)
   invoicing_service: text DEFAULT 'Self-Invoicing'  // 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
   created_at: timestamptz
   updated_at: timestamptz                // Auto-updated via trigger
 
   // Note: 6-day bonus (£30) is calculated, not stored
-  // Note: Invoicing costs: Self-Invoicing (£0), Verso-Basic (£10), Verso-Full (£40)
+  // Note: Invoicing costs: Self-Invoicing (£0), Verso-Basic (£10), Verso-Full (£30)
+  // Note: mileage_rate is user's default, used when creating new weeks
   // RLS: Users can only access their own settings
 }
 
@@ -296,6 +303,7 @@ weeks {
   individual_level: text | null          // 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
   company_level: text | null             // 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
   bonus_amount: integer DEFAULT 0        // In pence, calculated when rankings entered
+  mileage_rate: integer NOT NULL         // Mileage rate for this week (hundredths of penny: 1988 = £0.1988/mile)
   notes: text | null                     // User notes for the week
   rankings_entered_at: timestamptz | null
   created_at: timestamptz
@@ -303,6 +311,8 @@ weeks {
 
   UNIQUE(user_id, week_number, year)    // One week per user per year
   // Note: bonus_paid_in_week calculated as: week_number + 6 (on-the-fly)
+  // Note: mileage_rate set from user_settings.mileage_rate when week is created
+  // Note: User can edit mileage_rate per week if Amazon changes the rate
   // RLS: Users can only access their own weeks
 }
 
@@ -315,9 +325,9 @@ work_days {
   daily_rate: integer NOT NULL           // In pence, snapshot from user_settings
   stops_given: integer DEFAULT 0         // >= 0
   stops_taken: integer DEFAULT 0         // >= 0
-  amazon_paid_miles: decimal(6,2) | null // Miles Amazon paid for (stop-to-stop)
-  van_logged_miles: decimal(6,2) | null  // Actual van odometer miles driven
-  mileage_rate: integer DEFAULT 1988     // Pence per 100 miles (1988 = £0.1988/mile or 19.88p/mile)
+  amazon_paid_miles: integer | null      // Miles Amazon paid for (stop-to-stop), whole numbers only
+  van_logged_miles: integer | null       // Actual van odometer miles driven, whole numbers only
+  mileage_rate: integer NOT NULL         // Copied from week.mileage_rate (hundredths of penny: 1988 = £0.1988/mile)
   notes: text | null                     // Daily notes
   created_at: timestamptz
   updated_at: timestamptz                // Auto-updated via trigger
@@ -330,7 +340,11 @@ work_days {
   CHECK(van_logged_miles >= 0)
   CHECK(mileage_rate >= 0)
   // Note: Net sweeps calculated as: stops_given - stops_taken (on-the-fly)
-  // Note: Mileage pay calculated as: amazon_paid_miles × (mileage_rate / 10000) (on-the-fly, divide by 10000 to convert to £)
+  // Note: Mileage pay calculated as: amazon_paid_miles × (mileage_rate / 100) (on-the-fly)
+  //       Formula: miles × (rate / 100) = miles × pence-per-mile = total pence
+  //       Example: 100 miles × (1988 / 100) = 100 × 19.88p = 1988p = £19.88
+  // Note: Display rate calculated as: mileage_rate / 10000 (converts to £)
+  //       Example: 1988 / 10000 = £0.1988/mile
   // Note: Mileage discrepancy calculated as: van_logged_miles - amazon_paid_miles (on-the-fly)
   // RLS: Users can only access work_days via their weeks
 }
@@ -468,7 +482,7 @@ invoicing_cost =
 	user_settings.invoicing_service === 'Verso-Basic'
 		? 1000 // £10 in pence
 		: user_settings.invoicing_service === 'Verso-Full'
-		? 4000 // £40 in pence
+		? 3000 // £30 in pence
 		: 0 // Self-Invoicing
 
 // Standard pay for Week N (received in Week N+2)
@@ -503,20 +517,30 @@ total_pay_received =
 ### Mileage Calculation
 
 ```typescript
+// Weekly mileage rate (set once per week, copied to work_days)
+week_mileage_rate = week.mileage_rate || 1988  // Default: 1988 = £0.1988/mile (19.88p/mile)
+
 // Daily mileage payment
 amazon_miles = work_day.amazon_paid_miles || 0
-mileage_rate = work_day.mileage_rate || 1988  // Default: 1988 = £0.1988/mile (19.88p/mile)
-daily_mileage_payment = amazon_miles × (mileage_rate / 10000)  // Divide by 10000 to convert to £
+mileage_rate = work_day.mileage_rate  // Copied from week.mileage_rate
+daily_mileage_payment = amazon_miles × (mileage_rate / 100)  // Divide by 100 to convert to pence
+// Example: 100 miles × (1988 / 100) = 100 × 19.88p = 1988 pence = £19.88
+
+// Display rate (for UI)
+display_rate_pounds = mileage_rate / 10000  // Divide by 10000 to convert to £
+// Example: 1988 / 10000 = £0.1988 per mile
 
 // Mileage discrepancy tracking (for user awareness)
 van_miles = work_day.van_logged_miles || 0
 mileage_discrepancy = van_miles - amazon_miles
-money_lost_on_fuel = mileage_discrepancy × (mileage_rate / 10000)
+money_lost_on_fuel = mileage_discrepancy × (mileage_rate / 100)  // In pence
 
 // Example:
 // Amazon paid: 85 miles × £0.1988 = £16.90 (added to pay)
 // Van logged: 98 miles
 // Discrepancy: 13 miles × £0.1988 = £2.58 (additional money lost on fuel for unpaid miles)
+
+// Note: Users can edit week.mileage_rate if Amazon changes the rate mid-week
 ```
 
 ### Off-boarding Final Pay Adjustment
@@ -600,7 +624,12 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - 6-day bonus is always £30 flat (6 × £5), applied as separate line item
 - Pro-rata days cannot exceed 7 per week
 - Display breakdown on pay page: base pay + 6-day bonus + sweeps + mileage - van costs + delayed bonus
-- Mileage rate stored per day (default £0.45) to handle rate changes over time
+- Mileage rate stored per week (default 1988 = £0.1988/mile or 19.88p/mile)
+  - Rate is editable per week to handle Amazon's periodic rate changes
+  - New weeks auto-populate with user's default rate from settings
+  - Storage format: hundredths of a penny (1988 = 19.88p = £0.1988)
+  - Calculation: miles × (rate / 100) = pence
+  - Display: rate / 10000 = £ per mile
 
 ## Future Feature Ideas
 
@@ -810,29 +839,76 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - Glassmorphic dark theme design
 - Accessible (aria-labels, keyboard navigation)
 
-### 🚀 Phase 6+: Core Features - READY TO START
+### ✅ Phase 6: Calendar & Work Day Logging - COMPLETE (Oct 28, 2025)
 
-**Recommended Next Steps:**
+**All tasks completed:**
 
-**Option A: Dashboard Landing Page** 🏠 (High visibility)
+- ✅ Calendar page with week navigation (Sunday-Saturday)
+- ✅ Day cells showing route type, pay, sweeps, mileage with color coding
+- ✅ DayEditModal for CRUD operations on work days
+- ✅ NumberInput component with custom chevron arrows
+- ✅ Week summary with pay breakdown
+- ✅ Performance rankings input with edit functionality
+- ✅ Mileage rate management (per week, editable via subtle button)
+- ✅ 6-day work limit validation (UI + backend)
+- ✅ Back to dashboard navigation
+- ✅ Full Supabase integration with optimistic updates
+- ✅ Mileage discrepancy calculations and warnings
+- ✅ Clear sweep language ("you helped" vs "helped you")
+- ✅ Integer-only mileage inputs
 
-1. Current week summary card
-2. Upcoming payment timeline
-3. Quick stats (days worked, sweeps, mileage)
-4. Action items
-5. Use calculation functions from `src/lib/calculations.ts`
+**Key Features:**
 
-**Option B: Weekly Calendar Component** 📅 (Core feature)
-
-1. Build weekly calendar (Sunday-Saturday)
-2. Week number display and navigation
-3. Day cells with visual indicators
-4. Mobile-responsive design
-5. Integrate with calendarStore and weeksStore
+- Week-based mileage rate (not daily)
+  - Set from user's default when creating new week
+  - Editable per week via pencil icon in summary
+  - Inline editor with check/cancel buttons
+  - Storage: hundredths of penny (1988 = 19.88p = £0.1988)
+- Performance rankings
+  - Individual and Company performance levels
+  - Save/edit with automatic bonus calculation
+  - Shows payment week (N+6 delay)
+- 6-day work limit enforced
+  - "+ Add" button disabled when 6 days logged
+  - Backend validation with error toast
+- Mobile-responsive glassmorphic design
 
 **Pending Confirmation:**
 
 - Week numbering system (TBC with manager - see Week Structure section above)
+
+### 🚀 Deployment Configuration (Oct 28, 2025)
+
+**Platform:** Netlify Free Tier
+**Live URL:** wager.netlify.app
+
+**Configuration Files:**
+
+1. **`public/_redirects`** - Netlify SPA routing configuration
+   - Single-line file: `/* /index.html 200`
+   - Ensures all routes serve index.html for client-side routing
+   - Fixes "Page Not Found" errors when directly navigating to routes
+
+2. **`netlify.toml`** - Build and deploy configuration
+   - Build command: `pnpm run build`
+   - Publish directory: `dist`
+   - Redirect rules for SPA routing
+   - Version-controlled and explicit
+
+**Environment Variables (Set in Netlify Dashboard):**
+- `VITE_SUPABASE_URL` - Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` - Supabase anonymous key
+
+**Deploy Process:**
+1. Push to GitHub repository
+2. Netlify auto-detects changes
+3. Runs `pnpm run build`
+4. Deploys `dist/` folder
+5. Applies redirect rules
+
+**SPA Routing Fix:**
+- Without redirect rules: Direct navigation to `/dashboard` → 404
+- With redirect rules: Direct navigation to `/dashboard` → Serves index.html → React Router handles route → Success ✅
 
 ## Glossary
 

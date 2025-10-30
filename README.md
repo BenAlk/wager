@@ -58,7 +58,12 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 - **Amazon Paid Mileage**: Track stop-to-stop miles paid by Amazon
 - **Van Logged Mileage**: Record actual odometer miles driven
-- **Automatic calculations**: Mileage pay at Amazon rate (£0.1988/mile or 19.88p/mile)
+- **Flexible Rate Management**:
+  - Default rate: £0.1988/mile (19.88p/mile) - customizable in settings
+  - Per-week rate editing via subtle pencil button in summary
+  - Amazon periodically adjusts rates based on fuel prices
+  - New weeks auto-populate with your default rate
+- **Automatic calculations**: Mileage pay calculated using week's rate
 - **Discrepancy alerts**: See where you're losing money on unpaid fuel costs
 - **Weekly summaries**: Total paid miles vs actual miles driven
 - **Historical tracking**: Monitor mileage trends over time
@@ -84,7 +89,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
   - Professional invoicing service
   - Public liability insurance included
   - Requires Ltd company setup
-- **Verso Full**: £40/week
+- **Verso Full**: £30/week
   - Complete invoicing service
   - Public liability insurance included
   - Full accounting and tax returns handled
@@ -119,8 +124,11 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 ### Deployment
 
-- **Vercel/Netlify** - Frontend hosting
-- **Supabase** - Backend infrastructure
+- **Netlify** - Frontend hosting (Free tier)
+  - Automatic deployments from git
+  - SPA routing configured via `_redirects` and `netlify.toml`
+  - Custom domain support
+- **Supabase** - Backend infrastructure (Cloud PostgreSQL + Auth)
 
 ## Project Structure
 
@@ -151,6 +159,9 @@ wager/
 │   └── App.tsx
 ├── supabase/
 │   └── migrations/          # Database migrations
+├── public/
+│   └── _redirects           # Netlify SPA routing config
+├── netlify.toml             # Netlify build configuration
 └── package.json
 ```
 
@@ -293,8 +304,57 @@ wager/
 - [ ] Test multi-user isolation
 - [ ] Cross-browser testing
 - [ ] Mobile device testing
-- [ ] Deploy to production
+- [x] Deploy to Netlify (production)
 - [ ] Beta testing with team
+
+## Deployment
+
+### Netlify Setup ✅ **LIVE**
+
+The app is deployed on Netlify Free tier at: **wager.netlify.app**
+
+#### Configuration Files
+
+1. **`public/_redirects`** - Single-line file for SPA routing:
+   ```
+   /*    /index.html   200
+   ```
+
+2. **`netlify.toml`** - Full build configuration:
+   ```toml
+   [build]
+     command = "pnpm run build"
+     publish = "dist"
+
+   [[redirects]]
+     from = "/*"
+     to = "/index.html"
+     status = 200
+   ```
+
+#### Why Both Files?
+
+- `_redirects` is simpler and widely recognized
+- `netlify.toml` is more explicit and documents build settings
+- Having both ensures maximum compatibility
+
+#### SPA Routing Fix
+
+These files solve the "Page Not Found" error when directly navigating to routes like `/dashboard` or `/calendar`. Without them, Netlify tries to find actual files at those paths instead of letting React Router handle the routing.
+
+#### Deploy Process
+
+1. Push code to GitHub
+2. Netlify automatically detects changes
+3. Runs `pnpm run build`
+4. Deploys `dist/` folder
+5. Applies redirect rules
+
+#### Environment Variables (Netlify Dashboard)
+
+Required environment variables in Netlify:
+- `VITE_SUPABASE_URL` - Your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` - Your Supabase anonymous key
 
 ## Contributing
 
