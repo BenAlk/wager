@@ -443,7 +443,7 @@ export default function WeekSummary({
 			{/* Total Expected */}
 			<div className='border-t border-white/20 pt-4 mt-6'>
 				<div className='flex items-center justify-between'>
-					<span className='text-xl font-bold text-white'>Total Expected</span>
+					<span className='text-xl font-bold text-white'>Total Earnings</span>
 					<span className='text-3xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400'>
 						£
 						{(
