@@ -15,6 +15,7 @@ import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
 import { supabase } from '@/lib/supabase'
+import { fetchUserSettings } from '@/lib/api/settings'
 import { useSettingsStore } from '@/store/settingsStore'
 import type { InvoicingService } from '@/types/database'
 
@@ -80,60 +81,22 @@ export default function Settings() {
 
 	/**
 	 * Load settings from Supabase on mount
+	 * Note: Settings are already loaded globally in AuthProvider,
+	 * but we reload here to ensure form has latest values
 	 */
 	useEffect(() => {
 		const loadSettings = async () => {
 			if (!user?.id) return
 
 			try {
-				const { data, error } = await supabase
-					.from('user_settings')
-					.select('*')
-					.eq('user_id', user.id)
-					.single()
-
-				if (error) {
-					// If no settings exist, create default ones
-					if (error.code === 'PGRST116') {
-						const { data: newSettings, error: insertError } = await supabase
-							.from('user_settings')
-							.insert({
-								user_id: user.id,
-								normal_rate: 16000,
-								drs_rate: 10000,
-								mileage_rate: 1988,
-								invoicing_service: 'Self-Invoicing',
-							})
-							.select()
-							.single()
-
-						if (insertError) {
-							console.error('Error creating settings:', insertError)
-							toast.error('Failed to load settings')
-							return
-						}
-
-						setSettings(newSettings)
-						reset({
-							normalRate: newSettings.normal_rate,
-							drsRate: newSettings.drs_rate,
-							mileageRate: newSettings.mileage_rate,
-							invoicingService:
-								newSettings.invoicing_service as InvoicingService,
-						})
-					} else {
-						console.error('Error loading settings:', error)
-						toast.error('Failed to load settings')
-					}
-				} else if (data) {
-					setSettings(data)
-					reset({
-						normalRate: data.normal_rate,
-						drsRate: data.drs_rate,
-						mileageRate: data.mileage_rate,
-						invoicingService: data.invoicing_service as InvoicingService,
-					})
-				}
+				const data = await fetchUserSettings(user.id)
+				setSettings(data)
+				reset({
+					normalRate: data.normal_rate,
+					drsRate: data.drs_rate,
+					mileageRate: data.mileage_rate,
+					invoicingService: data.invoicing_service as InvoicingService,
+				})
 			} catch (err) {
 				console.error('Error in loadSettings:', err)
 				toast.error('Failed to load settings')

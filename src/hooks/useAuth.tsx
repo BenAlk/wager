@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
+import { fetchUserSettings } from '@/lib/api/settings'
+import { useSettingsStore } from '@/store/settingsStore'
 
 interface AuthContextType {
 	user: User | null
@@ -18,6 +20,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [user, setUser] = useState<User | null>(null)
 	const [session, setSession] = useState<Session | null>(null)
 	const [loading, setLoading] = useState(true)
+	const { setSettings, setLoading: setSettingsLoading } = useSettingsStore()
+
+	// Load settings when user is authenticated
+	useEffect(() => {
+		const loadUserSettings = async (userId: string) => {
+			try {
+				setSettingsLoading(true)
+				const settings = await fetchUserSettings(userId)
+				setSettings(settings)
+			} catch (error) {
+				console.error('Error loading user settings:', error)
+			} finally {
+				setSettingsLoading(false)
+			}
+		}
+
+		if (user?.id) {
+			loadUserSettings(user.id)
+		}
+	}, [user?.id, setSettings, setSettingsLoading])
 
 	useEffect(() => {
 		// Get initial session
