@@ -1,10 +1,11 @@
 import DayCell from '@/components/calendar/DayCell'
 import DayEditModal from '@/components/calendar/DayEditModal'
+import PaymentThisWeek from '@/components/calendar/PaymentThisWeek'
 import WeekSummary from '@/components/calendar/WeekSummary'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchWeekWithWorkDays } from '@/lib/api/weeks'
-import { formatWeekRange, getWeekDates } from '@/lib/dates'
+import { formatWeekRange, getWeekDates, getPreviousWeek } from '@/lib/dates'
 import { useCalendarStore } from '@/store/calendarStore'
 import { getWeekKey, isCacheStale, useWeeksStore } from '@/store/weeksStore'
 import {
@@ -35,6 +36,30 @@ export default function Calendar() {
 		: undefined
 	const loading = loadingWeeks.has(weekKey)
 
+	// Calculate Week N-2 and Week N-6 for payment display
+	const weekNMinus2Info = getPreviousWeek(currentWeek.week, currentWeek.year, 2)
+	const weekNMinus6Info = getPreviousWeek(currentWeek.week, currentWeek.year, 6)
+
+	// Get Week N-2 data (standard pay received this week)
+	const weekNMinus2Key = getWeekKey(weekNMinus2Info.week, weekNMinus2Info.year)
+	const cachedWeekNMinus2 = cache.get(weekNMinus2Key)
+	const weekNMinus2Data = cachedWeekNMinus2
+		? {
+				...cachedWeekNMinus2.week,
+				work_days: cachedWeekNMinus2.workDays,
+		  }
+		: undefined
+
+	// Get Week N-6 data (bonus received this week)
+	const weekNMinus6Key = getWeekKey(weekNMinus6Info.week, weekNMinus6Info.year)
+	const cachedWeekNMinus6 = cache.get(weekNMinus6Key)
+	const weekNMinus6Data = cachedWeekNMinus6
+		? {
+				...cachedWeekNMinus6.week,
+				work_days: cachedWeekNMinus6.workDays,
+		  }
+		: undefined
+
 	// Calculate week date range
 	const weekDates = getWeekDates(currentWeek.week, currentWeek.year)
 	const dateRangeText = formatWeekRange(currentWeek.week, currentWeek.year)
@@ -44,27 +69,67 @@ export default function Calendar() {
 		if (!user) return
 
 		const loadWeekData = async () => {
-			// Check if we need to fetch
-			if (cachedWeek && !isCacheStale(cachedWeek)) {
-				return // Data is fresh, no need to fetch
+			// Fetch current week data
+			if (!cachedWeek || isCacheStale(cachedWeek)) {
+				try {
+					setLoading(weekKey, true)
+
+					const result = await fetchWeekWithWorkDays(
+						user.id,
+						currentWeek.week,
+						currentWeek.year
+					)
+
+					if (result) {
+						setWeek(result.week, result.workDays)
+					}
+				} catch (error) {
+					console.error('Error fetching week data:', error)
+				} finally {
+					setLoading(weekKey, false)
+				}
 			}
 
-			try {
-				setLoading(weekKey, true)
+			// Fetch Week N-2 data (for payment display)
+			if (!cachedWeekNMinus2 || isCacheStale(cachedWeekNMinus2)) {
+				try {
+					setLoading(weekNMinus2Key, true)
 
-				const result = await fetchWeekWithWorkDays(
-					user.id,
-					currentWeek.week,
-					currentWeek.year
-				)
+					const result = await fetchWeekWithWorkDays(
+						user.id,
+						weekNMinus2Info.week,
+						weekNMinus2Info.year
+					)
 
-				if (result) {
-					setWeek(result.week, result.workDays)
+					if (result) {
+						setWeek(result.week, result.workDays)
+					}
+				} catch (error) {
+					console.error('Error fetching Week N-2 data:', error)
+				} finally {
+					setLoading(weekNMinus2Key, false)
 				}
-			} catch (error) {
-				console.error('Error fetching week data:', error)
-			} finally {
-				setLoading(weekKey, false)
+			}
+
+			// Fetch Week N-6 data (for bonus payment display)
+			if (!cachedWeekNMinus6 || isCacheStale(cachedWeekNMinus6)) {
+				try {
+					setLoading(weekNMinus6Key, true)
+
+					const result = await fetchWeekWithWorkDays(
+						user.id,
+						weekNMinus6Info.week,
+						weekNMinus6Info.year
+					)
+
+					if (result) {
+						setWeek(result.week, result.workDays)
+					}
+				} catch (error) {
+					console.error('Error fetching Week N-6 data:', error)
+				} finally {
+					setLoading(weekNMinus6Key, false)
+				}
 			}
 		}
 
@@ -75,6 +140,14 @@ export default function Calendar() {
 		currentWeek.year,
 		weekKey,
 		cachedWeek,
+		weekNMinus2Key,
+		cachedWeekNMinus2,
+		weekNMinus2Info.week,
+		weekNMinus2Info.year,
+		weekNMinus6Key,
+		cachedWeekNMinus6,
+		weekNMinus6Info.week,
+		weekNMinus6Info.year,
 		setWeek,
 		setLoading,
 	])
@@ -138,6 +211,14 @@ export default function Calendar() {
 						Today
 					</Button>
 				</div>
+
+				{/* Payment This Week */}
+				<PaymentThisWeek
+					weekNumber={currentWeek.week}
+					year={currentWeek.year}
+					weekNMinus2Data={weekNMinus2Data}
+					weekNMinus6Data={weekNMinus6Data}
+				/>
 
 				{/* Calendar Grid */}
 				<div className='grid grid-cols-1 lg:grid-cols-7 gap-4 mb-8'>

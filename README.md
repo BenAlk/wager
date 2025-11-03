@@ -28,6 +28,9 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Week number display (e.g., "Week 42")
 - Easy navigation between weeks
 - Quick day type assignment (Normal/DRS)
+- **Payment This Week** section showing actual bank deposits
+- 6-day work limit validation (blocks 7th day - illegal)
+- Back to dashboard navigation
 
 ### 💵 Pay Tracking
 
@@ -35,7 +38,13 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - **DRS/Missort Routes**: £100/day (customizable in settings)
 - **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days (any route type combination)
 - **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), performance bonuses received 6 weeks after work (Week N+6)
+- **Payment This Week Display**:
+  - Shows Week N-2 standard pay (what you're receiving this week)
+  - Shows Week N-6 bonus payment (delayed performance bonus)
+  - Complete breakdown of all payment components
+  - Clear labeling of which past weeks payments are from
 - Real-time pay calculations
+- Week summary showing earnings for current week
 
 ### 🎯 Bonus System
 
@@ -136,8 +145,12 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 wager/
 ├── src/
 │   ├── components/
-│   │   ├── ui/              # shadcn UI components
+│   │   ├── ui/              # shadcn UI components (Button, Input, NumberInput, etc.)
 │   │   ├── calendar/        # Calendar view components
+│   │   │   ├── DayCell.tsx           # Individual day display
+│   │   │   ├── DayEditModal.tsx      # Work day CRUD modal
+│   │   │   ├── PaymentThisWeek.tsx   # Week N-2 + N-6 payment display
+│   │   │   └── WeekSummary.tsx       # Current week earnings breakdown
 │   │   ├── dashboard/       # Dashboard widgets
 │   │   ├── settings/        # Settings forms
 │   │   └── shared/          # Reusable components
@@ -149,9 +162,12 @@ wager/
 │   │   ├── van/             # Van hire management
 │   │   └── pay/             # Pay calculations
 │   ├── lib/
-│   │   ├── supabase.ts      # Supabase client
-│   │   ├── calculations.ts  # Pay calculation utilities
-│   │   └── utils.ts         # General utilities
+│   │   ├── api/
+│   │   │   └── weeks.ts          # Week/work day API functions
+│   │   ├── supabase.ts           # Supabase client
+│   │   ├── calculations.ts       # Pay calculation utilities
+│   │   ├── dates.ts              # Week calculations & formatting
+│   │   └── utils.ts              # General utilities
 │   ├── hooks/               # Custom React hooks
 │   ├── store/               # Zustand stores
 │   ├── types/               # TypeScript types
@@ -225,37 +241,41 @@ wager/
 - [x] Custom styled increment/decrement buttons
 - [x] Mobile-responsive design
 
-### Phase 6: Calendar Core
+### Phase 6: Calendar Core ✅ **COMPLETE**
 
-- [ ] Create weekly calendar component
-- [ ] Implement week number calculation
-- [ ] Build week navigation
-- [ ] Create day cell component
-- [ ] Add day type selection
-- [ ] Make responsive for mobile
+- [x] Create weekly calendar component
+- [x] Implement week number calculation
+- [x] Build week navigation
+- [x] Create day cell component
+- [x] Add day type selection
+- [x] Make responsive for mobile
 
-### Phase 7: Day Management
+### Phase 7: Day Management ✅ **COMPLETE**
 
-- [ ] Create day detail modal
-- [ ] Add notes functionality
-- [ ] Display calculated pay per day
-- [ ] Implement day data persistence
+- [x] Create day detail modal
+- [x] Add notes functionality
+- [x] Display calculated pay per day
+- [x] Implement day data persistence
+- [x] Color-coded sweep inputs (green for helping, red for being helped)
+- [x] Integer-only mileage inputs
+- [x] Custom NumberInput component with chevron arrows
 
-### Phase 8: Bonus System
+### Phase 8: Bonus System ✅ **COMPLETE**
 
-- [ ] Create bonus input UI
-- [ ] Build performance dropdowns
-- [ ] Implement bonus calculation logic
-- [ ] Implement 6-week delay calculation
-- [ ] Display bonus indicators
+- [x] Create bonus input UI
+- [x] Build performance dropdowns
+- [x] Implement bonus calculation logic
+- [x] Implement 6-week delay calculation
+- [x] Display bonus indicators
+- [x] Edit functionality for correcting rankings
 
-### Phase 9: Sweeping System
+### Phase 9: Sweeping System ✅ **COMPLETE**
 
-- [ ] Create sweep log UI
-- [ ] Add stops given/taken inputs
-- [ ] Calculate sweep balances
-- [ ] Display sweep totals
-- [ ] Create sweep history
+- [x] Create sweep log UI
+- [x] Add stops given/taken inputs
+- [x] Calculate sweep balances
+- [x] Display sweep totals
+- [x] Clear language ("you helped" vs "helped you")
 
 ### Phase 10: Van Hire Management
 

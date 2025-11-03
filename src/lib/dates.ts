@@ -218,17 +218,25 @@ export function getCurrentWeek(): WeekInfo {
 }
 
 /**
- * Get the previous week
+ * Get the previous week (or N weeks back)
+ * @param weeksBack - Number of weeks to go back (default: 1)
  */
-export function getPreviousWeek(week: number, year: number): WeekInfo {
-	if (week === 1) {
-		// Go to last week of previous year
-		const previousYear = year - 1
-		const weeksInPreviousYear = getWeeksInYear(previousYear)
-		return getWeekInfo(weeksInPreviousYear, previousYear)
+export function getPreviousWeek(week: number, year: number, weeksBack: number = 1): WeekInfo {
+	let currentWeek = week
+	let currentYear = year
+
+	// Go back N weeks
+	for (let i = 0; i < weeksBack; i++) {
+		if (currentWeek === 1) {
+			// Go to last week of previous year
+			currentYear = currentYear - 1
+			currentWeek = getWeeksInYear(currentYear)
+		} else {
+			currentWeek = currentWeek - 1
+		}
 	}
 
-	return getWeekInfo(week - 1, year)
+	return getWeekInfo(currentWeek, currentYear)
 }
 
 /**

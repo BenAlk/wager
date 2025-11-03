@@ -179,10 +179,10 @@ export default function WeekSummary({
 			<div className='space-y-3 mb-6'>
 				{/* Base Pay */}
 				<div className='flex items-center justify-between'>
-					<span className='text-slate-400'>
+					<span className='text-sm sm:text-lg text-slate-400'>
 						Base Pay ({daysWorked} {daysWorked === 1 ? 'day' : 'days'})
 					</span>
-					<span className='font-mono font-semibold text-white'>
+					<span className='text-sm sm:text-lg font-mono font-semibold text-white'>
 						£{(breakdown.basePay / 100).toFixed(2)}
 					</span>
 				</div>
@@ -190,8 +190,10 @@ export default function WeekSummary({
 				{/* 6-Day Bonus */}
 				{breakdown.sixDayBonus > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-emerald-400'>6-Day Bonus</span>
-						<span className='font-mono font-semibold text-emerald-400'>
+						<span className='text-sm sm:text-lg text-emerald-400'>
+							6-Day Bonus
+						</span>
+						<span className='text-sm sm:text-lg font-mono font-semibold text-emerald-400'>
 							+ £{(breakdown.sixDayBonus / 100).toFixed(2)}
 						</span>
 					</div>
@@ -200,12 +202,12 @@ export default function WeekSummary({
 				{/* Sweeps */}
 				{breakdown.sweepAdjustment !== 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-slate-400'>
-							Sweeps ({breakdown.stopsGiven} you helped, {breakdown.stopsTaken}{' '}
-							helped you)
+						<span className='text-sm sm:text-lg text-slate-400'>
+							Sweeps {<br></br>} ({breakdown.stopsGiven} you helped,{' '}
+							{breakdown.stopsTaken} helped you)
 						</span>
 						<span
-							className={`font-mono font-semibold ${
+							className={`text-sm sm:text-lg font-mono font-semibold ${
 								breakdown.sweepAdjustment > 0
 									? 'text-emerald-400'
 									: 'text-red-400'
@@ -256,7 +258,7 @@ export default function WeekSummary({
 						) : (
 							<>
 								<div className='flex items-center gap-2'>
-									<span className='text-slate-400'>
+									<span className='text-sm sm:text-lg text-slate-400'>
 										Mileage ({breakdown.totalAmazonMiles.toFixed(1)} mi × £
 										{(
 											(weekData?.mileage_rate || currentSettings.mileage_rate) /
@@ -275,7 +277,7 @@ export default function WeekSummary({
 										</Button>
 									)}
 								</div>
-								<span className='font-mono font-semibold text-emerald-400'>
+								<span className='text-sm sm:text-lg font-mono font-semibold text-emerald-400'>
 									+ £{(breakdown.mileagePayment / 100).toFixed(2)}
 								</span>
 							</>
@@ -286,8 +288,8 @@ export default function WeekSummary({
 				{/* Van Hire */}
 				{breakdown.vanDeduction > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-slate-400'>Van Hire</span>
-						<span className='font-mono font-semibold text-red-400'>
+						<span className='text-sm sm:text-lg text-slate-400'>Van Hire</span>
+						<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
 							- £{(breakdown.vanDeduction / 100).toFixed(2)}
 						</span>
 					</div>
@@ -296,10 +298,10 @@ export default function WeekSummary({
 				{/* Invoicing Service */}
 				{breakdown.invoicingCost > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-slate-400'>
+						<span className='text-sm sm:text-lg text-slate-400'>
 							Invoicing ({currentSettings.invoicing_service})
 						</span>
-						<span className='font-mono font-semibold text-red-400'>
+						<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
 							- £{(breakdown.invoicingCost / 100).toFixed(2)}
 						</span>
 					</div>
@@ -312,11 +314,11 @@ export default function WeekSummary({
 					<span className='text-lg font-semibold text-slate-200'>
 						Standard Pay
 					</span>
-					<span className='text-2xl font-mono font-bold text-white'>
+					<span className='text-sm sm:text-lg font-mono font-bold text-white'>
 						£{(breakdown.standardPay / 100).toFixed(2)}
 					</span>
 				</div>
-				<p className='text-sm text-slate-400'>
+				<p className='text-sm sm:text-lg  text-slate-400'>
 					Paid Week {standardPayWeek.weekNumber} ({standardPayWeek.month})
 				</p>
 			</div>
@@ -409,14 +411,9 @@ export default function WeekSummary({
 				) : (
 					<>
 						<div className='flex items-center justify-between mb-2'>
-							<span className='text-slate-400'>
+							<span className='text-sm sm:text-lg text-slate-400'>
 								Performance Bonus ({daysWorked}{' '}
 								{daysWorked === 1 ? 'day' : 'days'})
-							</span>
-							<div className='flex items-center gap-2'>
-								<span className='font-mono font-semibold text-emerald-400'>
-									+ £{(weekData.bonus_amount / 100).toFixed(2)}
-								</span>
 								<Button
 									variant='ghost'
 									size='sm'
@@ -425,14 +422,20 @@ export default function WeekSummary({
 								>
 									<Pencil className='w-4 h-4' />
 								</Button>
+							</span>
+
+							<div className='flex items-center gap-2'>
+								<span className='text-sm sm:text-lg font-mono font-semibold text-emerald-400'>
+									+ £{(weekData.bonus_amount / 100).toFixed(2)}
+								</span>
 							</div>
 						</div>
-						<div className='text-sm text-slate-400 mb-2'>
+						<div className='text-sm sm:text-lg text-slate-400 mb-2'>
 							Individual: {weekData.individual_level} | Company:{' '}
 							{weekData.company_level}
 						</div>
 						{bonusPayWeek && (
-							<p className='text-sm text-slate-400'>
+							<p className='text-sm sm:text-lg text-slate-400'>
 								Paid Week {bonusPayWeek.weekNumber} ({bonusPayWeek.month})
 							</p>
 						)}
@@ -444,7 +447,7 @@ export default function WeekSummary({
 			<div className='border-t border-white/20 pt-4 mt-6'>
 				<div className='flex items-center justify-between'>
 					<span className='text-xl font-bold text-white'>Total Earnings</span>
-					<span className='text-3xl font-mono font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400'>
+					<span className='text-xl sm:text-3xl font-mono font-bold text-emerald-400'>
 						£
 						{(
 							(breakdown.standardPay + (weekData.bonus_amount || 0)) /

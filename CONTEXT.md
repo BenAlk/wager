@@ -792,6 +792,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
   - Complete week calculation system with Sunday-Saturday weeks
   - Week 53 logic implemented and tested (40 passing tests)
   - Helper functions for week navigation, payment timing, formatting
+  - `getPreviousWeek(week, year, weeksBack?)` - Enhanced Nov 3 to support going back N weeks (for Payment This Week feature)
   - **Status: TBC** - Fully functional but awaiting manager confirmation on exact rules
   - Easy to modify if rules change (all logic in one file)
 
@@ -856,9 +857,19 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - ✅ Mileage discrepancy calculations and warnings
 - ✅ Clear sweep language ("you helped" vs "helped you")
 - ✅ Integer-only mileage inputs
+- ✅ **Payment This Week section** (shows actual bank deposits)
 
 **Key Features:**
 
+- **Payment This Week Display** (NEW - Nov 3, 2025)
+  - Shows Week N-2 standard pay (what you're receiving this week)
+  - Shows Week N-6 bonus payment (delayed performance bonus)
+  - Complete breakdown: base pay, 6-day bonus, sweeps, mileage, van hire, invoicing
+  - Clear labeling of which past weeks payments are from
+  - Large gradient total showing expected bank deposit
+  - Empty state for weeks with no payments
+  - Auto-fetches Week N-2 and Week N-6 data
+  - Cache-aware with 5-minute TTL
 - Week-based mileage rate (not daily)
   - Set from user's default when creating new week
   - Editable per week via pencil icon in summary
