@@ -3,14 +3,20 @@ import { useAuth } from '@/hooks/useAuth'
 import { logout } from '@/lib/auth'
 import { Calendar, LogOut, Settings, TrendingUp } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 export default function Dashboard() {
 	const { user, loading } = useAuth()
 	const navigate = useNavigate()
 
 	const handleLogout = async () => {
-		await logout()
-		navigate('/auth')
+		try {
+			await logout()
+			navigate('/auth')
+		} catch (error) {
+			console.error('Logout error:', error)
+			toast.error('Failed to logout. Please try again.')
+		}
 	}
 
 	if (loading) {

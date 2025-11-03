@@ -66,10 +66,18 @@ export async function login({ email, password }: LoginData) {
 
 /**
  * Log out the current user
+ * Gracefully handles cases where session is already missing
  */
 export async function logout() {
 	const { error } = await supabase.auth.signOut()
-	if (error) throw error
+
+	// Ignore "Auth session missing" errors - user is already logged out
+	if (error && error.message !== 'Auth session missing!') {
+		throw error
+	}
+
+	// Clear any local state
+	// Note: Supabase client automatically clears localStorage on signOut
 }
 
 /**
