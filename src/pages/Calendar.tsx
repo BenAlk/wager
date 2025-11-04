@@ -5,7 +5,7 @@ import WeekSummary from '@/components/calendar/WeekSummary'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchWeekWithWorkDays } from '@/lib/api/weeks'
-import { formatWeekRange, getWeekDates, getPreviousWeek } from '@/lib/dates'
+import { formatWeekRange, getPreviousWeek, getWeekDates } from '@/lib/dates'
 import { useCalendarStore } from '@/store/calendarStore'
 import { getWeekKey, isCacheStale, useWeeksStore } from '@/store/weeksStore'
 import {
@@ -15,15 +15,32 @@ import {
 	ChevronRight,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 export default function Calendar() {
 	const navigate = useNavigate()
+	const [searchParams] = useSearchParams()
 	const { user } = useAuth()
-	const { currentWeek, goToPreviousWeek, goToNextWeek, goToToday } =
+	const { currentWeek, goToPreviousWeek, goToNextWeek, goToToday, setCurrentWeek } =
 		useCalendarStore()
 	const { cache, loadingWeeks, setWeek, setLoading } = useWeeksStore()
 	const [editingDate, setEditingDate] = useState<Date | null>(null)
+
+	// Handle URL query parameters for week navigation
+	useEffect(() => {
+		const weekParam = searchParams.get('week')
+		const yearParam = searchParams.get('year')
+
+		if (weekParam && yearParam) {
+			const week = parseInt(weekParam, 10)
+			const year = parseInt(yearParam, 10)
+
+			if (!isNaN(week) && !isNaN(year) && week >= 1 && week <= 53) {
+				const weekInfo = getPreviousWeek(week, year, 0) // Get WeekInfo for the specified week
+				setCurrentWeek(weekInfo)
+			}
+		}
+	}, [searchParams, setCurrentWeek])
 
 	// Get current week data from cache
 	const weekKey = getWeekKey(currentWeek.week, currentWeek.year)
@@ -212,14 +229,6 @@ export default function Calendar() {
 					</Button>
 				</div>
 
-				{/* Payment This Week */}
-				<PaymentThisWeek
-					weekNumber={currentWeek.week}
-					year={currentWeek.year}
-					weekNMinus2Data={weekNMinus2Data}
-					weekNMinus6Data={weekNMinus6Data}
-				/>
-
 				{/* Calendar Grid */}
 				<div className='grid grid-cols-1 lg:grid-cols-7 gap-4 mb-8'>
 					{weekDates.map((date) => (
@@ -238,6 +247,14 @@ export default function Calendar() {
 					weekData={currentWeekData}
 					weekNumber={currentWeek.week}
 					year={currentWeek.year}
+				/>
+
+				{/* Payment This Week */}
+				<PaymentThisWeek
+					weekNumber={currentWeek.week}
+					year={currentWeek.year}
+					weekNMinus2Data={weekNMinus2Data}
+					weekNMinus6Data={weekNMinus6Data}
 				/>
 			</main>
 

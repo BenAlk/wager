@@ -19,7 +19,6 @@ import type {
 	VanHire,
 	PerformanceLevel,
 	InvoicingService,
-	UserSettings,
 } from '@/types/database'
 
 // ============================================================================
@@ -708,11 +707,11 @@ export interface WeeklyPayBreakdownSimple {
 
 /**
  * Simplified weekly pay breakdown for UI display
- * Takes user settings and optional van hire
+ * Takes invoicing service (from week snapshot) and optional van hire
  */
 export function calculateWeeklyPayBreakdown(
 	workDays: WorkDay[],
-	settings: UserSettings,
+	invoicingService: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full',
 	vanHire?: VanHire
 ): WeeklyPayBreakdownSimple {
 	// Base pay components
@@ -732,7 +731,7 @@ export function calculateWeeklyPayBreakdown(
 	const vanDeduction = vanHire ? vanHire.weekly_rate : 0
 
 	// Invoicing cost
-	const invoicingCost = calculateInvoicingCost(settings.invoicing_service)
+	const invoicingCost = calculateInvoicingCost(invoicingService)
 
 	// Standard pay total
 	const standardPay =

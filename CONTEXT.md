@@ -304,6 +304,7 @@ weeks {
   company_level: text | null             // 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
   bonus_amount: integer DEFAULT 0        // In pence, calculated when rankings entered
   mileage_rate: integer NOT NULL         // Mileage rate for this week (hundredths of penny: 1988 = £0.1988/mile)
+  invoicing_service: text NOT NULL       // 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full' - snapshot from user_settings
   notes: text | null                     // User notes for the week
   rankings_entered_at: timestamptz | null
   created_at: timestamptz
@@ -312,7 +313,9 @@ weeks {
   UNIQUE(user_id, week_number, year)    // One week per user per year
   // Note: bonus_paid_in_week calculated as: week_number + 6 (on-the-fly)
   // Note: mileage_rate set from user_settings.mileage_rate when week is created
+  // Note: invoicing_service set from user_settings.invoicing_service when week is created
   // Note: User can edit mileage_rate per week if Amazon changes the rate
+  // Note: Changing invoicing service in settings doesn't affect past weeks (snapshot pattern)
   // RLS: Users can only access their own weeks
 }
 
@@ -373,7 +376,13 @@ van_hires {
 }
 ```
 
-**Migration File:** `supabase/migrations/20251010_initial_schema.sql`
+**Migration Files:**
+- `supabase/migrations/20251010_initial_schema.sql` - Initial database schema
+- `supabase/migrations/20251028_add_mileage_rate_to_settings.sql` - User default mileage rate
+- `supabase/migrations/20251028_move_mileage_rate_to_weeks.sql` - Weekly mileage rate snapshot
+- `supabase/migrations/20251028_fix_rls_policies.sql` - RLS policy fixes
+- `supabase/migrations/20251103_add_invoicing_service_to_weeks.sql` - Weekly invoicing service snapshot
+
 **TypeScript Types:** `src/types/database.ts` (auto-generated)
 **Security:** All tables have RLS enabled with user-specific policies
 **Performance:** Indexes on user_id, week_number, date, and active van hires
@@ -861,7 +870,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 **Key Features:**
 
-- **Payment This Week Display** (NEW - Nov 3, 2025)
+- **Payment This Week Display** (Nov 3, 2025)
   - Shows Week N-2 standard pay (what you're receiving this week)
   - Shows Week N-6 bonus payment (delayed performance bonus)
   - Complete breakdown: base pay, 6-day bonus, sweeps, mileage, van hire, invoicing
@@ -870,19 +879,42 @@ final_pay = calculated_weekly_pay - deposit_shortfall
   - Empty state for weeks with no payments
   - Auto-fetches Week N-2 and Week N-6 data
   - Cache-aware with 5-minute TTL
-- Week-based mileage rate (not daily)
+  - **Missing rankings reminder** (clickable, navigates to Week N-6)
+
+- **URL-Based Navigation** (Nov 3, 2025)
+  - Shareable week links: `/calendar?week=42&year=2025`
+  - Automatic navigation from reminders
+  - Deep linking support
+
+- **Week Summary Enhancements** (Nov 3, 2025)
+  - Clear week functionality with confirmation dialog
+  - Deletes all work days and snapshot data for week
+  - Invoicing service snapshot per week (historical accuracy)
+
+- **Data Integrity - Snapshot Pattern** (Nov 3, 2025)
+  - Mileage rate: Snapshot per week from user default
+  - Invoicing service: Snapshot per week from user settings
+  - Changing settings doesn't affect past weeks
+  - Each week preserves its original rates
+
+- **Week-based mileage rate** (not daily)
   - Set from user's default when creating new week
   - Editable per week via pencil icon in summary
   - Inline editor with check/cancel buttons
   - Storage: hundredths of penny (1988 = 19.88p = £0.1988)
-- Performance rankings
+
+- **Performance rankings**
   - Individual and Company performance levels
+  - Available from Week N+2 onwards (not before)
+  - Placeholder message explains when available
   - Save/edit with automatic bonus calculation
   - Shows payment week (N+6 delay)
-- 6-day work limit enforced
+  - Year boundary handling (Week 51 → Week 1 next year)
+
+- **6-day work limit enforced**
   - "+ Add" button disabled when 6 days logged
   - Backend validation with error toast
-- Mobile-responsive glassmorphic design
+  - Mobile-responsive glassmorphic design
 
 **Pending Confirmation:**
 
@@ -929,7 +961,7 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - **Stops Given**: Stops you took from others (positive to your pay)
 - **Stops Taken**: Stops others took from you (negative to your pay)
 - **Fantastic/Fantastic+**: Top two performance tiers (eligible for bonuses)
-- **Rankings**: Performance levels released Week N+1 (Thursday) for Week N work
+- **Rankings**: Performance levels released Week N+2 (Thursday) for Week N work
 - **On-hire**: Taking possession of a rental van
 - **Off-hire**: Returning a rental van
 - **Pro-rata**: Proportional payment based on actual days used

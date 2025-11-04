@@ -589,6 +589,65 @@ focus:outline-none focus:ring-2 focus:ring-blue-500
 
 ---
 
+## Data Integrity & Snapshot Architecture
+
+### Historical Data Preservation
+
+Wager uses a **snapshot architecture** to maintain historical accuracy of pay calculations. When rates change (mileage, invoicing service, daily pay rates), these changes should NOT retroactively affect past weeks' calculations.
+
+### Snapshot Fields (Per Week)
+
+The following fields are stored **per week** rather than globally:
+
+1. **Mileage Rate** (`weeks.mileage_rate`)
+   - Default: User's setting at time of week creation
+   - Editable: Yes, via pencil icon in Week Summary
+   - Use Case: Amazon adjusts mileage rates based on fuel prices
+   - Format: Integer representing pence (1988 = 19.88p per mile)
+
+2. **Invoicing Service** (`weeks.invoicing_service`)
+   - Default: User's setting at time of week creation
+   - Values: 'Self-Invoicing' (£0), 'Verso-Basic' (£10), 'Verso-Full' (£30)
+   - Use Case: User switches service providers mid-year
+   - Migration: `20251103_add_invoicing_service_to_weeks.sql`
+
+### Non-Snapshot Fields (Global Settings)
+
+These fields use **current user settings** and are NOT snapshot:
+
+1. **Normal/DRS Daily Rates** (`work_days.daily_rate`)
+   - Snapshot at work day creation
+   - Reason: Rare changes, tied to specific work performed
+
+2. **Van Hire Costs** (`van_hires.weekly_rate`)
+   - Snapshot per van hire record
+   - Reason: Each hire is a distinct contract period
+
+### Example Scenario
+
+**Week 40** (October 2025):
+- Mileage rate: £0.1988/mile (user default)
+- Invoicing: Self-Invoicing (£0)
+- Work days: 5 × £160 = £800
+
+**Week 44** (November 2025):
+- User switches to Verso-Full in settings
+- User edits Week 44 mileage rate to £0.2050/mile (Amazon adjustment)
+
+**Result**:
+- Week 40 calculations: Still use £0.1988/mile + Self-Invoicing (£0)
+- Week 44 calculations: Use £0.2050/mile + Verso-Full (£30)
+- Historical accuracy maintained ✅
+
+### Implementation Notes
+
+1. **Week Creation**: When first work day is added, week record is created with current user defaults
+2. **Week Editing**: User can edit mileage rate via subtle pencil icon in Week Summary
+3. **Calculations**: Always use week's snapshot values, never global settings
+4. **Clear Week**: Deleting a week removes all snapshot data for that week
+
+---
+
 ## Future Considerations
 
 ### Light Mode (if needed later)
@@ -606,6 +665,6 @@ focus:outline-none focus:ring-2 focus:ring-blue-500
 
 ---
 
-**Last Updated**: October 10, 2025
-**Version**: 1.0 - Initial Design System
+**Last Updated**: November 3, 2025
+**Version**: 1.1 - Added Data Integrity documentation
 **Status**: Active - Use for all Wager UI components

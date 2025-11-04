@@ -117,7 +117,7 @@ export default function DayCell({
 						) : (
 							<Package className='w-4 h-4' />
 						)}
-						<span className='text-xs font-medium'>{isNormal ? 'N' : 'D'}</span>
+						<span className='text-xs font-medium'>{isNormal ? 'Std.' : 'DRS'}</span>
 					</div>
 				</div>
 

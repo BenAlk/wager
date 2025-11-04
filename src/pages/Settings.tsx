@@ -14,8 +14,8 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
-import { supabase } from '@/lib/supabase'
 import { fetchUserSettings } from '@/lib/api/settings'
+import { supabase } from '@/lib/supabase'
 import { useSettingsStore } from '@/store/settingsStore'
 import type { InvoicingService } from '@/types/database'
 
@@ -230,9 +230,12 @@ export default function Settings() {
 					{/* Pay Rates Card */}
 					<Card className='bg-white/10 backdrop-blur-xl border-white/20 p-6'>
 						<h2 className='text-xl font-semibold text-white mb-4'>Pay Rates</h2>
-						<p className='text-sm text-slate-400 mb-6'>
+						<p className='text-sm text-slate-400'>
 							Set your daily pay rates. These will be used to calculate your
 							weekly earnings.
+						</p>
+						<p className='text-red-500 mb-6'>
+							These should only be changed on the week that pay rates change.
 						</p>
 
 						<div className='space-y-4'>
@@ -421,7 +424,8 @@ export default function Settings() {
 									</p>
 								)}
 								<p className='text-xs text-slate-500 mt-1'>
-									Default: £0.1988/mile (19.88p). Amazon adjusts this based on fuel prices.
+									Default: £0.1988/mile (19.88p). Amazon adjusts this based on
+									fuel prices.
 								</p>
 							</div>
 

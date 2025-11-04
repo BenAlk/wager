@@ -13,7 +13,8 @@ export async function getOrCreateWeek(
 	userId: string,
 	weekNumber: number,
 	year: number,
-	defaultMileageRate: number = 1988 // 19.88p per mile
+	defaultMileageRate: number = 1988, // 19.88p per mile
+	defaultInvoicingService: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full' = 'Self-Invoicing'
 ): Promise<Week> {
 	// First, try to get existing week - use maybeSingle() to avoid 406 error
 	const { data: existingWeek, error: fetchError } = await supabase
@@ -41,6 +42,7 @@ export async function getOrCreateWeek(
 			year: year,
 			bonus_amount: 0,
 			mileage_rate: defaultMileageRate,
+			invoicing_service: defaultInvoicingService,
 		})
 		.select()
 		.single();
@@ -189,4 +191,17 @@ export async function updateWeekMileageRate(
 	if (!data) throw new Error('Failed to update week mileage rate');
 
 	return data;
+}
+
+/**
+ * Delete a week and all associated work days
+ * This will cascade delete all work_days due to foreign key constraint
+ */
+export async function deleteWeek(weekId: string): Promise<void> {
+	const { error } = await supabase
+		.from('weeks')
+		.delete()
+		.eq('id', weekId);
+
+	if (error) throw error;
 }

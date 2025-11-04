@@ -33,6 +33,7 @@ interface WeeksState {
 	addWorkDay: (weekKey: WeekKey, workDay: WorkDay) => void
 	updateWorkDay: (weekKey: WeekKey, workDayId: string, updates: Partial<WorkDay>) => void
 	removeWorkDay: (weekKey: WeekKey, workDayId: string) => void
+	deleteWeek: (weekKey: WeekKey) => void
 	getWeek: (weekIdentifier: WeekInfo) => CachedWeek | undefined
 	setLoading: (weekKey: WeekKey, isLoading: boolean) => void
 	invalidateWeek: (weekKey: WeekKey) => void
@@ -154,6 +155,19 @@ export const useWeeksStore = create<WeeksState>()(
 					},
 					false,
 					'weeks/removeWorkDay'
+				)
+			},
+
+			// Delete entire week and all work days
+			deleteWeek: (weekKey) => {
+				set(
+					(state) => {
+						const newCache = new Map(state.cache)
+						newCache.delete(weekKey)
+						return { cache: newCache }
+					},
+					false,
+					'weeks/deleteWeek'
 				)
 			},
 

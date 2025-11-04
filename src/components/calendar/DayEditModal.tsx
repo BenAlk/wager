@@ -136,7 +136,8 @@ export default function DayEditModal({
 					user.id,
 					weekInfo.week,
 					weekInfo.year,
-					currentSettings.mileage_rate
+					currentSettings.mileage_rate,
+					currentSettings.invoicing_service
 				)
 			}
 

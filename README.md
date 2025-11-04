@@ -26,11 +26,22 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 - Visual calendar running Sunday to Saturday
 - Week number display (e.g., "Week 42")
-- Easy navigation between weeks
+- Easy navigation between weeks (previous/next/today buttons)
+- URL-based navigation (shareable week links)
 - Quick day type assignment (Normal/DRS)
 - **Payment This Week** section showing actual bank deposits
+  - Week N-2 standard pay breakdown
+  - Week N-6 performance bonus (when entered)
+  - Missing rankings reminder with one-click navigation
+- **Week Summary** with full pay breakdown
+  - Real-time calculations
+  - Performance rankings input (available from Week N+2)
+  - Edit rankings functionality
+  - Weekly mileage rate adjustment
+  - Clear week functionality
 - 6-day work limit validation (blocks 7th day - illegal)
 - Back to dashboard navigation
+- Custom NumberInput components with styled increment/decrement arrows
 
 ### 💵 Pay Tracking
 
@@ -104,6 +115,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
   - Full accounting and tax returns handled
   - Requires Ltd company setup
 - Weekly costs automatically deducted from standard pay
+- **Historical Accuracy**: Service level is snapshot per week - changing your service level in settings doesn't affect past weeks' calculations
 
 ### 📊 Dashboard & Reports
 
@@ -245,29 +257,36 @@ wager/
 
 - [x] Create weekly calendar component
 - [x] Implement week number calculation
-- [x] Build week navigation
+- [x] Build week navigation (previous/next/today)
+- [x] URL-based navigation with query parameters
 - [x] Create day cell component
 - [x] Add day type selection
 - [x] Make responsive for mobile
+- [x] PaymentThisWeek component showing Week N-2 and Week N-6
+- [x] Missing rankings reminder with navigation
 
 ### Phase 7: Day Management ✅ **COMPLETE**
 
 - [x] Create day detail modal
 - [x] Add notes functionality
 - [x] Display calculated pay per day
-- [x] Implement day data persistence
+- [x] Implement day data persistence with Supabase
 - [x] Color-coded sweep inputs (green for helping, red for being helped)
 - [x] Integer-only mileage inputs
 - [x] Custom NumberInput component with chevron arrows
+- [x] 6-day work limit validation
+- [x] Auto-populate with user settings defaults
 
 ### Phase 8: Bonus System ✅ **COMPLETE**
 
 - [x] Create bonus input UI
-- [x] Build performance dropdowns
+- [x] Build performance dropdowns (5 levels each)
 - [x] Implement bonus calculation logic
 - [x] Implement 6-week delay calculation
 - [x] Display bonus indicators
 - [x] Edit functionality for correcting rankings
+- [x] Rankings availability logic (Week N+2)
+- [x] Automatic bonus amount calculation
 
 ### Phase 9: Sweeping System ✅ **COMPLETE**
 
@@ -276,8 +295,29 @@ wager/
 - [x] Calculate sweep balances
 - [x] Display sweep totals
 - [x] Clear language ("you helped" vs "helped you")
+- [x] NumberInput components with +/- buttons
 
-### Phase 10: Van Hire Management
+### Phase 10: Week Summary & Data Management ✅ **COMPLETE**
+
+- [x] Complete pay breakdown display
+- [x] Weekly mileage rate adjustment (editable inline)
+- [x] Mileage discrepancy calculations and warnings
+- [x] Clear week functionality with confirmation
+- [x] Invoicing service snapshot per week
+- [x] Historical data integrity (rate changes don't affect past weeks)
+
+### Phase 11: Pay Calculations Engine ✅ **COMPLETE**
+
+- [x] Build core pay calculation function
+- [x] Implement all rate calculations (Normal/DRS/mileage)
+- [x] Integrate bonus calculations
+- [x] Apply sweep adjustments
+- [x] Calculate van deductions
+- [x] Calculate invoicing costs
+- [x] Weekly pay breakdown function
+- [x] Mileage discrepancy calculations
+
+### Phase 12: Van Hire Management
 
 - [ ] Create van management UI
 - [ ] Implement on-hire/off-hire functionality
@@ -285,16 +325,7 @@ wager/
 - [ ] Build deposit tracker
 - [ ] Display deposit progress
 
-### Phase 11: Pay Calculations Engine
-
-- [ ] Build core pay calculation function
-- [ ] Implement all rate calculations
-- [ ] Integrate bonus calculations
-- [ ] Apply sweep adjustments
-- [ ] Calculate van deductions
-- [ ] Test all edge cases
-
-### Phase 12: Dashboard & Reports
+### Phase 13: Dashboard & Reports
 
 - [ ] Create main dashboard layout
 - [ ] Build pay widgets
@@ -302,7 +333,7 @@ wager/
 - [ ] Add statistics and visualizations
 - [ ] Implement filtering options
 
-### Phase 13: Additional Features
+### Phase 14: Additional Features
 
 - [ ] Add export/backup functionality
 - [ ] Implement comprehensive validation
@@ -310,7 +341,7 @@ wager/
 - [ ] Create notification system
 - [ ] Add confirmation dialogs
 
-### Phase 14: UI/UX Polish
+### Phase 15: UI/UX Polish
 
 - [ ] Make fully responsive
 - [ ] Add animations and transitions
@@ -318,7 +349,7 @@ wager/
 - [ ] Create onboarding flow
 - [ ] Improve accessibility
 
-### Phase 15: Testing & Deployment
+### Phase 16: Testing & Deployment
 
 - [ ] Test all calculations
 - [ ] Test multi-user isolation

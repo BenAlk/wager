@@ -1,8 +1,8 @@
 import { calculateWeeklyPayBreakdown } from '@/lib/calculations'
 import { getPreviousWeek } from '@/lib/dates'
-import { useSettingsStore } from '@/store/settingsStore'
 import type { Week } from '@/types/database'
-import { Banknote } from 'lucide-react'
+import { AlertCircle, Banknote } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 interface PaymentThisWeekProps {
 	weekNumber: number
@@ -17,25 +17,16 @@ export default function PaymentThisWeek({
 	weekNMinus2Data,
 	weekNMinus6Data,
 }: PaymentThisWeekProps) {
-	const { settings } = useSettingsStore()
-
-	// Use default settings if not loaded
-	const currentSettings = settings || {
-		user_id: '',
-		normal_rate: 16000,
-		drs_rate: 10000,
-		mileage_rate: 1988,
-		invoicing_service: 'Self-Invoicing' as const,
-		created_at: '',
-		updated_at: '',
-	}
+	const navigate = useNavigate()
 
 	// Calculate Week N-2 standard pay
 	const standardPayBreakdown =
-		weekNMinus2Data && weekNMinus2Data.work_days && weekNMinus2Data.work_days.length > 0
+		weekNMinus2Data &&
+		weekNMinus2Data.work_days &&
+		weekNMinus2Data.work_days.length > 0
 			? calculateWeeklyPayBreakdown(
 					weekNMinus2Data.work_days,
-					currentSettings,
+					weekNMinus2Data.invoicing_service || 'Self-Invoicing',
 					undefined // Van hire would be passed here if needed
 			  )
 			: null
@@ -49,6 +40,22 @@ export default function PaymentThisWeek({
 	// Calculate what weeks the payments are from
 	const weekNMinus2Info = getPreviousWeek(weekNumber, year, 2)
 	const weekNMinus6Info = getPreviousWeek(weekNumber, year, 6)
+
+	// Check if Week N-6 has work days but no rankings entered
+	const hasWeekNMinus6WorkDays =
+		weekNMinus6Data &&
+		weekNMinus6Data.work_days &&
+		weekNMinus6Data.work_days.length > 0
+	const hasWeekNMinus6Rankings =
+		weekNMinus6Data?.individual_level && weekNMinus6Data?.company_level
+
+	const shouldShowRankingsReminder =
+		hasWeekNMinus6WorkDays && !hasWeekNMinus6Rankings
+
+	// Handler to navigate to Week N-6
+	const handleNavigateToWeekNMinus6 = () => {
+		navigate(`/calendar?week=${weekNMinus6Info.week}&year=${weekNMinus6Info.year}`)
+	}
 
 	// If no payments this week, show a message
 	if (totalPayment === 0) {
@@ -68,7 +75,7 @@ export default function PaymentThisWeek({
 	}
 
 	return (
-		<div className='bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 lg:p-8 mb-8'>
+		<div className='bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 lg:p-8'>
 			<div className='flex items-center justify-center gap-3 mb-6'>
 				<div className='w-10 h-10 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center'>
 					<Banknote className='w-6 h-6 text-white' />
@@ -166,6 +173,27 @@ export default function PaymentThisWeek({
 							<span className='sm:text-sm lg:text-2xl font-mono font-bold text-emerald-400'>
 								+£{(bonusPayment / 100).toFixed(2)}
 							</span>
+						</div>
+					</div>
+				)}
+
+				{/* Reminder for missing Week N-6 rankings */}
+				{shouldShowRankingsReminder && (
+					<div
+						onClick={handleNavigateToWeekNMinus6}
+						className='bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 cursor-pointer hover:bg-amber-500/15 transition-colors'
+					>
+						<div className='flex items-start gap-3'>
+							<AlertCircle className='w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5' />
+							<div className='flex-1'>
+								<p className='text-amber-400 font-medium text-sm sm:text-base'>
+									Missing Performance Rankings
+								</p>
+								<p className='text-amber-400/80 text-xs sm:text-sm mt-1'>
+									Week {weekNMinus6Info.week} rankings haven't been entered yet.
+									Click here to add them and estimate your bonus payment.
+								</p>
+							</div>
 						</div>
 					</div>
 				)}

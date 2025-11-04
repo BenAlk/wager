@@ -92,6 +92,7 @@ export interface Database {
           company_level: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           bonus_amount: number
           mileage_rate: number
+          invoicing_service: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           notes: string | null
           rankings_entered_at: string | null
           created_at: string
@@ -106,6 +107,7 @@ export interface Database {
           company_level?: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           bonus_amount?: number
           mileage_rate?: number
+          invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           notes?: string | null
           rankings_entered_at?: string | null
           created_at?: string
@@ -120,6 +122,7 @@ export interface Database {
           company_level?: 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+' | null
           bonus_amount?: number
           mileage_rate?: number
+          invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           notes?: string | null
           rankings_entered_at?: string | null
           created_at?: string

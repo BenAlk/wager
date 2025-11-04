@@ -2,19 +2,19 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/useAuth'
-import { updateWeekMileageRate, updateWeekRankings } from '@/lib/api/weeks'
+import { deleteWeek as deleteWeekAPI, updateWeekMileageRate, updateWeekRankings } from '@/lib/api/weeks'
 import {
 	calculateWeeklyPayBreakdown,
 	getDailyBonusRate,
 } from '@/lib/calculations'
 import {
+	getCurrentWeek,
 	getPaymentWeekForBonus,
 	getPaymentWeekForStandardPay,
 } from '@/lib/dates'
-import { useSettingsStore } from '@/store/settingsStore'
 import { useWeeksStore } from '@/store/weeksStore'
 import type { PerformanceLevel, Week } from '@/types/database'
-import { AlertCircle, Check, Pencil, X } from 'lucide-react'
+import { AlertCircle, Check, Pencil, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -30,8 +30,7 @@ export default function WeekSummary({
 	year,
 }: WeekSummaryProps) {
 	const { user } = useAuth()
-	const { settings } = useSettingsStore()
-	const { updateWeek } = useWeeksStore()
+	const { updateWeek, deleteWeek } = useWeeksStore()
 
 	const [individualLevel, setIndividualLevel] =
 		useState<PerformanceLevel | null>(null)
@@ -43,21 +42,15 @@ export default function WeekSummary({
 	const [isEditingMileageRate, setIsEditingMileageRate] = useState(false)
 	const [editedMileageRate, setEditedMileageRate] = useState<number>(0)
 	const [isSavingMileageRate, setIsSavingMileageRate] = useState(false)
+	const [showClearConfirm, setShowClearConfirm] = useState(false)
+	const [isClearing, setIsClearing] = useState(false)
 
-	// Use default settings if not loaded yet
-	const currentSettings = settings || {
-		user_id: '',
-		normal_rate: 16000,
-		drs_rate: 10000,
-		mileage_rate: 1988,
-		invoicing_service: 'Self-Invoicing' as const,
-		created_at: '',
-		updated_at: '',
-	}
+	// Use default invoicing service if week doesn't have it yet (old data)
+	const weekInvoicingService = weekData?.invoicing_service || 'Self-Invoicing'
 
 	if (!weekData || !weekData.work_days || weekData.work_days.length === 0) {
 		return (
-			<div className='bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6'>
+			<div className='bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8'>
 				<h3 className='text-xl font-bold text-white mb-4'>
 					Week {weekNumber} Summary
 				</h3>
@@ -68,10 +61,10 @@ export default function WeekSummary({
 		)
 	}
 
-	// Calculate pay breakdown
+	// Calculate pay breakdown using week's snapshotted invoicing service
 	const breakdown = calculateWeeklyPayBreakdown(
 		weekData.work_days,
-		currentSettings,
+		weekInvoicingService,
 		undefined // TODO: Get active van hire from store
 	)
 
@@ -83,6 +76,26 @@ export default function WeekSummary({
 
 	const daysWorked = weekData.work_days.length
 	const hasBonusRankings = weekData.individual_level && weekData.company_level
+
+	// Check if rankings are available yet (Week N+2 or later)
+	const currentWeek = getCurrentWeek()
+	const rankingsAvailableWeek = weekNumber + 2
+
+	// Handle year boundary: Week 51 → Week 1 next year, Week 52 → Week 2 next year
+	let rankingsAvailableYear = year
+	let adjustedRankingsWeek = rankingsAvailableWeek
+
+	if (rankingsAvailableWeek > 52) {
+		rankingsAvailableYear = year + 1
+		adjustedRankingsWeek = rankingsAvailableWeek - 52
+	}
+
+	// Rankings are available if:
+	// 1. Current year is after the rankings year, OR
+	// 2. Current year equals rankings year AND current week >= rankings week
+	const areRankingsAvailable =
+		currentWeek.year > rankingsAvailableYear ||
+		(currentWeek.year === rankingsAvailableYear && currentWeek.week >= adjustedRankingsWeek)
 
 	const performanceLevels: PerformanceLevel[] = [
 		'Poor',
@@ -144,7 +157,7 @@ export default function WeekSummary({
 	}
 
 	const handleEditMileageRate = () => {
-		setEditedMileageRate(weekData?.mileage_rate || currentSettings.mileage_rate)
+		setEditedMileageRate(weekData?.mileage_rate || 1988) // Default to 19.88p if not set
 		setIsEditingMileageRate(true)
 	}
 
@@ -169,11 +182,45 @@ export default function WeekSummary({
 		setIsEditingMileageRate(false)
 	}
 
+	const handleClearWeek = async () => {
+		if (!weekData || !user) return
+
+		try {
+			setIsClearing(true)
+			const weekKey = `${year}-W${weekNumber.toString().padStart(2, '0')}`
+
+			// Delete from database
+			await deleteWeekAPI(weekData.id)
+
+			// Remove from cache
+			deleteWeek(weekKey)
+
+			toast.success('Week cleared successfully')
+			setShowClearConfirm(false)
+		} catch (error) {
+			console.error('Error clearing week:', error)
+			toast.error('Failed to clear week')
+		} finally {
+			setIsClearing(false)
+		}
+	}
+
 	return (
-		<div className='bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 lg:p-8'>
-			<h3 className='text-2xl font-bold text-white mb-6'>
-				Week {weekNumber} Summary
-			</h3>
+		<div className='bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 lg:p-8 mb-8'>
+			<div className='flex items-center justify-between mb-6'>
+				<h3 className='text-2xl font-bold text-white'>
+					Week {weekNumber} Summary
+				</h3>
+				<Button
+					onClick={() => setShowClearConfirm(true)}
+					variant='ghost'
+					size='sm'
+					className='text-red-400 hover:text-red-300 hover:bg-red-500/10'
+				>
+					<Trash2 className='w-4 h-4 mr-2' />
+					Clear Week
+				</Button>
+			</div>
 
 			{/* Pay Breakdown */}
 			<div className='space-y-3 mb-6'>
@@ -261,7 +308,7 @@ export default function WeekSummary({
 									<span className='text-sm sm:text-lg text-slate-400'>
 										Mileage ({breakdown.totalAmazonMiles.toFixed(1)} mi × £
 										{(
-											(weekData?.mileage_rate || currentSettings.mileage_rate) /
+											(weekData?.mileage_rate || 1988) /
 											10000
 										).toFixed(4)}
 										)
@@ -271,7 +318,7 @@ export default function WeekSummary({
 											variant='ghost'
 											size='sm'
 											onClick={handleEditMileageRate}
-											className='text-slate-400 hover:text-white h-6 w-6 p-0 cursor-pointer'
+											className='text-slate-400 h-6 w-6 p-2 cursor-pointer border-2 hover:text-yellow-400'
 										>
 											<Pencil className='w-3 h-3' />
 										</Button>
@@ -299,7 +346,7 @@ export default function WeekSummary({
 				{breakdown.invoicingCost > 0 && (
 					<div className='flex items-center justify-between'>
 						<span className='text-sm sm:text-lg text-slate-400'>
-							Invoicing ({currentSettings.invoicing_service})
+							Invoicing ({weekInvoicingService})
 						</span>
 						<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
 							- £{(breakdown.invoicingCost / 100).toFixed(2)}
@@ -325,7 +372,23 @@ export default function WeekSummary({
 
 			{/* Performance Bonus Section */}
 			<div className='border-t border-white/20 pt-4'>
-				{!hasBonusRankings || isEditingRankings ? (
+				{!areRankingsAvailable ? (
+					// Rankings not available yet
+					<div className='bg-white/5 border border-white/10 rounded-lg p-4'>
+						<div className='flex items-center gap-2 mb-3'>
+							<AlertCircle className='w-5 h-5 text-slate-400' />
+							<h4 className='text-lg font-semibold text-white'>
+								Performance Rankings
+							</h4>
+						</div>
+						<p className='text-slate-400 text-sm'>
+							Rankings will be available from <span className='font-semibold text-white'>Week {adjustedRankingsWeek}</span> onwards.
+						</p>
+						<p className='text-slate-500 text-xs mt-2'>
+							Amazon typically releases performance rankings on Thursday of Week N+2 (two weeks after your work week).
+						</p>
+					</div>
+				) : !hasBonusRankings || isEditingRankings ? (
 					<div className='bg-white/5 border border-white/10 rounded-lg p-4'>
 						<div className='flex items-center justify-between mb-4'>
 							<div className='flex items-center gap-2'>
@@ -418,7 +481,7 @@ export default function WeekSummary({
 									variant='ghost'
 									size='sm'
 									onClick={handleEditRankings}
-									className='text-slate-400 hover:text-white -mr-2 cursor-pointer'
+									className='text-slate-400 h-6 w-6 p-2 ml-2 cursor-pointer border-2 hover:text-yellow-400'
 								>
 									<Pencil className='w-4 h-4' />
 								</Button>
@@ -469,6 +532,43 @@ export default function WeekSummary({
 						Estimated fuel loss: £
 						{(breakdown.mileageDiscrepancyValue / 100).toFixed(2)}
 					</p>
+				</div>
+			)}
+
+			{/* Clear Week Confirmation Dialog */}
+			{showClearConfirm && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm'>
+					<div className='bg-slate-900 border border-red-500/50 rounded-2xl shadow-2xl w-full max-w-md p-6'>
+						<div className='flex items-center gap-3 mb-4'>
+							<div className='w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center'>
+								<Trash2 className='w-6 h-6 text-red-400' />
+							</div>
+							<div>
+								<h3 className='text-xl font-bold text-white'>Clear Week {weekNumber}?</h3>
+								<p className='text-sm text-slate-400'>This action cannot be undone</p>
+							</div>
+						</div>
+						<p className='text-slate-300 mb-6'>
+							This will permanently delete all work days, rankings, and snapshot data for Week {weekNumber}.
+						</p>
+						<div className='flex gap-3'>
+							<Button
+								onClick={() => setShowClearConfirm(false)}
+								variant='ghost'
+								className='flex-1 text-slate-400 hover:text-white hover:bg-white/10'
+								disabled={isClearing}
+							>
+								Cancel
+							</Button>
+							<Button
+								onClick={handleClearWeek}
+								disabled={isClearing}
+								className='flex-1 bg-red-500 hover:bg-red-600 text-white'
+							>
+								{isClearing ? 'Clearing...' : 'Clear Week'}
+							</Button>
+						</div>
+					</div>
 				</div>
 			)}
 		</div>
