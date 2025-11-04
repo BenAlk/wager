@@ -451,9 +451,10 @@ export function calculateWeeklyVanCosts(
 		const overlapEnd = vanEnd < weekEndDate ? vanEnd : weekEndDate
 
 		// Calculate days this van was active during the week
-		const daysActive = Math.ceil(
-			(overlapEnd.getTime() - overlapStart.getTime()) / (1000 * 60 * 60 * 24)
-		) + 1 // +1 to include both start and end days
+		// For same-day: 0 days difference + 1 = 1 day
+		// For full week (Sun-Sat): ~6 days difference + 1 = 7 days
+		const daysDiff = (overlapEnd.getTime() - overlapStart.getTime()) / (1000 * 60 * 60 * 24)
+		const daysActive = Math.floor(daysDiff) + 1
 
 		if (daysActive <= 0) return // Van not active during this week
 

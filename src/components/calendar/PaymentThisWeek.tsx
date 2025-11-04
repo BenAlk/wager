@@ -1,12 +1,12 @@
+import { useAuth } from '@/hooks/useAuth'
+import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import { calculateWeeklyPayBreakdown } from '@/lib/calculations'
 import { getPreviousWeek, getWeekDateRange } from '@/lib/dates'
-import type { Week, VanHire } from '@/types/database'
-import { AlertCircle, Banknote } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { fetchVanHiresForWeek } from '@/lib/api/vans'
-import { useAuth } from '@/hooks/useAuth'
 import { useVanStore } from '@/store/vanStore'
+import type { VanHire, Week } from '@/types/database'
+import { AlertCircle, Banknote } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface PaymentThisWeekProps {
 	weekNumber: number
@@ -35,7 +35,10 @@ export default function PaymentThisWeek({
 		const fetchVansForWeekNMinus2 = async () => {
 			if (!user?.id) return
 
-			const { startDate, endDate } = getWeekDateRange(weekNMinus2Info.week, weekNMinus2Info.year)
+			const { startDate, endDate } = getWeekDateRange(
+				weekNMinus2Info.week,
+				weekNMinus2Info.year
+			)
 			const vans = await fetchVanHiresForWeek(user.id, startDate, endDate)
 			setWeekNMinus2VanHires(vans)
 		}
@@ -46,7 +49,8 @@ export default function PaymentThisWeek({
 	// Calculate deposit payment for Week N-2
 	// Any week with a van triggers a deposit payment in Week N+2 (this week)
 	// Count how many weeks had a van BEFORE Week N-2 to determine which week this is
-	const { startDate: weekNMinus2Start, endDate: weekNMinus2End } = getWeekDateRange(weekNMinus2Info.week, weekNMinus2Info.year)
+	const { startDate: weekNMinus2Start, endDate: weekNMinus2End } =
+		getWeekDateRange(weekNMinus2Info.week, weekNMinus2Info.year)
 
 	// Total deposit already paid (from all previous weeks before Week N-2)
 	const depositPaidBeforeWeekNMinus2 = allVans
@@ -55,11 +59,14 @@ export default function PaymentThisWeek({
 
 	// Count how many weeks had ANY van before Week N-2 ended
 	// This determines if this is the 1st, 2nd, 3rd, etc. week with a van
-	const earliestVanHire = allVans.length > 0
-		? allVans.reduce((earliest, van) =>
-				new Date(van.on_hire_date) < new Date(earliest.on_hire_date) ? van : earliest
-		  )
-		: null
+	const earliestVanHire =
+		allVans.length > 0
+			? allVans.reduce((earliest, van) =>
+					new Date(van.on_hire_date) < new Date(earliest.on_hire_date)
+						? van
+						: earliest
+			  )
+			: null
 
 	let weeksWithVanBeforeNMinus2 = 0
 	if (earliestVanHire) {
@@ -67,7 +74,8 @@ export default function PaymentThisWeek({
 		if (firstVanStart < weekNMinus2Start) {
 			// Calculate weeks from first van hire to start of Week N-2
 			const daysSinceFirstVan = Math.ceil(
-				(weekNMinus2Start.getTime() - firstVanStart.getTime()) / (1000 * 60 * 60 * 24)
+				(weekNMinus2Start.getTime() - firstVanStart.getTime()) /
+					(1000 * 60 * 60 * 24)
 			)
 			weeksWithVanBeforeNMinus2 = Math.ceil(daysSinceFirstVan / 7)
 		}
@@ -75,7 +83,8 @@ export default function PaymentThisWeek({
 
 	// If Week N-2 has a van, this is week number (weeksWithVanBeforeNMinus2 + 1)
 	// This determines the deposit amount: weeks 1-2 = £25, weeks 3+ = £50
-	const weekNumberWithVan = weekNMinus2VanHires.length > 0 ? weeksWithVanBeforeNMinus2 + 1 : 0
+	const weekNumberWithVan =
+		weekNMinus2VanHires.length > 0 ? weeksWithVanBeforeNMinus2 + 1 : 0
 
 	// Calculate Week N-2 standard pay with van costs
 	const standardPayBreakdown =
@@ -112,11 +121,13 @@ export default function PaymentThisWeek({
 
 	// Handler to navigate to Week N-6
 	const handleNavigateToWeekNMinus6 = () => {
-		navigate(`/calendar?week=${weekNMinus6Info.week}&year=${weekNMinus6Info.year}`)
+		navigate(
+			`/calendar?week=${weekNMinus6Info.week}&year=${weekNMinus6Info.year}`
+		)
 	}
 
-	// If no payments this week, show a message
-	if (totalPayment === 0) {
+	// If no work data for Week N-2 and no bonus, show a message
+	if (!standardPayBreakdown && bonusPayment === 0) {
 		return (
 			<div className='bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8'>
 				<div className='flex items-center gap-3 mb-4'>
@@ -145,7 +156,7 @@ export default function PaymentThisWeek({
 
 			<div className='space-y-3 mb-6'>
 				{/* Standard Pay from Week N-2 */}
-				{standardPayBreakdown && standardPayBreakdown.standardPay > 0 && (
+				{standardPayBreakdown && (
 					<div className='bg-white/5 border border-white/10 rounded-lg p-4'>
 						<div className='text-xs text-slate-500 space-y-1'>
 							<div className='flex justify-between'>
@@ -271,7 +282,12 @@ export default function PaymentThisWeek({
 					<span className='text-xs sm:text-2xl font-bold text-white'>
 						Total Payment (Week {weekNumber})
 					</span>
-					<span className='text-lg sm:text-4xl font-mono font-bold text-emerald-400 animate-pulse'>
+					<span
+						className={
+							'text-lg sm:text-4xl font-mono font-bold animate-pulse ' +
+							(totalPayment < 0 ? 'text-red-400' : 'text-emerald-400')
+						}
+					>
 						£{(totalPayment / 100).toFixed(2)}
 					</span>
 				</div>

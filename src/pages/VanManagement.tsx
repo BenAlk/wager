@@ -1,4 +1,4 @@
-import { ArrowLeft, Plus, Truck, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Plus, Truck, AlertCircle /*, Trash2*/ } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -8,6 +8,7 @@ import { fetchAllVanHires, recalculateAllDeposits, setManualDepositAdjustment } 
 import { useVanStore } from '@/store/vanStore'
 import { formatCurrency } from '@/lib/calculations'
 import type { VanHire } from '@/types/database'
+// import { supabase } from '@/lib/supabase' // Commented out for beta testing
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -34,6 +35,7 @@ export default function VanManagement() {
 	const [showDepositModal, setShowDepositModal] = useState(false)
 	const [depositAdjustment, setDepositAdjustment] = useState('')
 	const [isAdjusting, setIsAdjusting] = useState(false)
+	// const [isDeleting, setIsDeleting] = useState(false) // Commented out for beta testing
 
 	/**
 	 * Load all van hires on mount and recalculate deposits
@@ -121,6 +123,35 @@ export default function VanManagement() {
 		}
 	}
 
+	// DEBUG ONLY: Delete all van data for current user - COMMENTED OUT FOR BETA TESTING
+	/* const handleDeleteAllVans = async () => {
+		if (!user?.id) return
+
+		const confirmed = window.confirm(
+			'🚨 DEBUG ONLY 🚨\n\nThis will DELETE ALL van hire data for your account.\n\nAre you sure you want to continue?'
+		)
+		if (!confirmed) return
+
+		setIsDeleting(true)
+		try {
+			const { error } = await supabase
+				.from('van_hires')
+				.delete()
+				.eq('user_id', user.id)
+
+			if (error) throw error
+
+			// Clear store
+			setAllVans([])
+			toast.success('All van data deleted', { duration: 3000 })
+		} catch (error) {
+			console.error('Error deleting van data:', error)
+			toast.error('Failed to delete van data', { duration: 3000 })
+		} finally {
+			setIsDeleting(false)
+		}
+	} */
+
 	if (isLoading) {
 		return (
 			<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center'>
@@ -153,14 +184,26 @@ export default function VanManagement() {
 							</p>
 						</div>
 					</div>
-					<Button
-						onClick={handleNewVan}
-						className='text-xs sm:text-xl bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
-						disabled={activeVan !== null}
-					>
-						<Plus className='w-4 h-4 mr-2' />
-						New Van Hire
-					</Button>
+					<div className='flex gap-2'>
+						{/* DEBUG ONLY: Delete all vans button - COMMENTED OUT FOR BETA TESTING */}
+						{/* <Button
+							onClick={handleDeleteAllVans}
+							disabled={isDeleting || allVans.length === 0}
+							variant='outline'
+							className='border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300'
+						>
+							<Trash2 className='w-4 h-4 mr-2' />
+							{isDeleting ? 'Deleting...' : '🚨 DEBUG: Delete All'}
+						</Button> */}
+						<Button
+							onClick={handleNewVan}
+							className='text-xs sm:text-xl bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+							disabled={activeVan !== null}
+						>
+							<Plus className='w-4 h-4 mr-2' />
+							New Van Hire
+						</Button>
+					</div>
 				</div>
 
 				{/* Deposit Summary Card */}

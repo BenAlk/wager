@@ -13,9 +13,12 @@ import {
 	Calendar as CalendarIcon,
 	ChevronLeft,
 	ChevronRight,
+	// Trash2, // Commented out for beta testing
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+// import { supabase } from '@/lib/supabase' // Commented out for beta testing
+// import { toast } from 'sonner' // Commented out for beta testing
 
 export default function Calendar() {
 	const navigate = useNavigate()
@@ -23,8 +26,9 @@ export default function Calendar() {
 	const { user } = useAuth()
 	const { currentWeek, goToPreviousWeek, goToNextWeek, goToToday, setCurrentWeek } =
 		useCalendarStore()
-	const { cache, loadingWeeks, setWeek, setLoading } = useWeeksStore()
+	const { cache, loadingWeeks, setWeek, setLoading /*, clearCache*/ } = useWeeksStore()
 	const [editingDate, setEditingDate] = useState<Date | null>(null)
+	// const [isDeleting, setIsDeleting] = useState(false) // Commented out for beta testing
 
 	// Handle URL query parameters for week navigation
 	useEffect(() => {
@@ -169,6 +173,66 @@ export default function Calendar() {
 		setLoading,
 	])
 
+	// DEBUG ONLY: Delete all calendar/work data for current user - COMMENTED OUT FOR BETA TESTING
+	/* const handleDeleteAllCalendarData = async () => {
+		if (!user?.id) return
+
+		const confirmed = window.confirm(
+			'🚨 DEBUG ONLY 🚨\n\nThis will DELETE ALL weeks and work days for your account.\n\nAre you sure you want to continue?'
+		)
+		if (!confirmed) return
+
+		setIsDeleting(true)
+		try {
+			// Get all weeks first to delete their work_days
+			const { data: weeks, error: fetchError } = await supabase
+				.from('weeks')
+				.select('id')
+				.eq('user_id', user.id)
+
+			if (fetchError) {
+				console.error('Error fetching weeks:', fetchError)
+				throw fetchError
+			}
+
+			if (weeks && weeks.length > 0) {
+				const weekIds = weeks.map(w => w.id)
+
+				// Delete all work days for these weeks
+				const { error: workDaysError } = await supabase
+					.from('work_days')
+					.delete()
+					.in('week_id', weekIds)
+
+				if (workDaysError) {
+					console.error('Error deleting work days:', workDaysError)
+					throw workDaysError
+				}
+			}
+
+			// Then delete all weeks
+			const { error: weeksError } = await supabase
+				.from('weeks')
+				.delete()
+				.eq('user_id', user.id)
+
+			if (weeksError) {
+				console.error('Error deleting weeks:', weeksError)
+				throw weeksError
+			}
+
+			// Clear the cache
+			clearCache()
+
+			toast.success('All calendar data deleted', { duration: 3000 })
+		} catch (error) {
+			console.error('Error deleting calendar data:', error)
+			toast.error(`Failed to delete calendar data: ${error instanceof Error ? error.message : 'Unknown error'}`, { duration: 5000 })
+		} finally {
+			setIsDeleting(false)
+		}
+	} */
+
 	return (
 		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'>
 			{/* Header */}
@@ -221,12 +285,24 @@ export default function Calendar() {
 							<ChevronRight className='w-5 h-5' />
 						</Button>
 					</div>
-					<Button
-						onClick={goToToday}
-						className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
-					>
-						Today
-					</Button>
+					<div className='flex gap-2'>
+						{/* DEBUG ONLY: Delete all calendar data button - COMMENTED OUT FOR BETA TESTING */}
+						{/* <Button
+							onClick={handleDeleteAllCalendarData}
+							disabled={isDeleting}
+							variant='outline'
+							className='border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300'
+						>
+							<Trash2 className='w-4 h-4 mr-2' />
+							{isDeleting ? 'Deleting...' : '🚨 DEBUG: Delete All'}
+						</Button> */}
+						<Button
+							onClick={goToToday}
+							className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
+						>
+							Today
+						</Button>
+					</div>
 				</div>
 
 				{/* Calendar Grid */}

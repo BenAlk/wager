@@ -2,8 +2,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/useAuth'
-import { deleteWeek as deleteWeekAPI, updateWeekMileageRate, updateWeekRankings } from '@/lib/api/weeks'
 import { fetchVanHiresForWeek } from '@/lib/api/vans'
+import {
+	deleteWeek as deleteWeekAPI,
+	updateWeekMileageRate,
+	updateWeekRankings,
+} from '@/lib/api/weeks'
 import {
 	calculateWeeklyPayBreakdown,
 	getDailyBonusRate,
@@ -14,11 +18,11 @@ import {
 	getPaymentWeekForStandardPay,
 	getWeekDateRange,
 } from '@/lib/dates'
-import { useWeeksStore } from '@/store/weeksStore'
 import { useVanStore } from '@/store/vanStore'
-import type { PerformanceLevel, Week, VanHire } from '@/types/database'
+import { useWeeksStore } from '@/store/weeksStore'
+import type { PerformanceLevel, VanHire, Week } from '@/types/database'
 import { AlertCircle, Check, Pencil, Trash2, X } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 interface WeekSummaryProps {
@@ -80,7 +84,10 @@ export default function WeekSummary({
 	}
 
 	// Calculate deposit paid before this week (not used since deposits aren't shown in work week)
-	const { startDate: weekStart, endDate: weekEnd } = getWeekDateRange(weekNumber, year)
+	const { startDate: weekStart, endDate: weekEnd } = getWeekDateRange(
+		weekNumber,
+		year
+	)
 	const depositPaidBeforeWeek = allVans
 		.filter((van) => new Date(van.on_hire_date) < weekStart)
 		.reduce((sum, van) => sum + van.deposit_paid, 0)
@@ -125,7 +132,8 @@ export default function WeekSummary({
 	// 2. Current year equals rankings year AND current week >= rankings week
 	const areRankingsAvailable =
 		currentWeek.year > rankingsAvailableYear ||
-		(currentWeek.year === rankingsAvailableYear && currentWeek.week >= adjustedRankingsWeek)
+		(currentWeek.year === rankingsAvailableYear &&
+			currentWeek.week >= adjustedRankingsWeek)
 
 	const performanceLevels: PerformanceLevel[] = [
 		'Poor',
@@ -337,11 +345,7 @@ export default function WeekSummary({
 								<div className='flex items-center gap-2'>
 									<span className='text-sm sm:text-lg text-slate-400'>
 										Mileage ({breakdown.totalAmazonMiles.toFixed(1)} mi × £
-										{(
-											(weekData?.mileage_rate || 1988) /
-											10000
-										).toFixed(4)}
-										)
+										{((weekData?.mileage_rate || 1988) / 10000).toFixed(4)})
 									</span>
 									{weekData && (
 										<Button
@@ -366,7 +370,9 @@ export default function WeekSummary({
 				{breakdown.vanDeduction > 0 && (
 					<div>
 						<div className='flex items-center justify-between'>
-							<span className='text-sm sm:text-lg text-slate-400'>Van Hire</span>
+							<span className='text-sm sm:text-lg text-slate-400'>
+								Van Hire
+							</span>
 							<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
 								- £{(breakdown.vanDeduction / 100).toFixed(2)}
 							</span>
@@ -374,8 +380,14 @@ export default function WeekSummary({
 						{breakdown.vanBreakdown && breakdown.vanBreakdown.length > 0 && (
 							<div className='ml-4 mt-1 space-y-1'>
 								{breakdown.vanBreakdown.map((van, idx) => (
-									<div key={idx} className='flex items-center justify-between text-xs sm:text-sm text-slate-500'>
-										<span>{van.registration} ({van.days} day{van.days !== 1 ? 's' : ''})</span>
+									<div
+										key={idx}
+										className='flex items-center justify-between text-xs sm:text-sm text-slate-500'
+									>
+										<span>
+											{van.registration} ({van.days} day
+											{van.days !== 1 ? 's' : ''})
+										</span>
 										<span>- £{(van.vanCost / 100).toFixed(2)}</span>
 									</div>
 								))}
@@ -387,7 +399,9 @@ export default function WeekSummary({
 				{/* Deposit Payment */}
 				{breakdown.depositPayment > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-sm sm:text-lg text-slate-400'>Deposit Payment</span>
+						<span className='text-sm sm:text-lg text-slate-400'>
+							Deposit Payment
+						</span>
 						<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
 							- £{(breakdown.depositPayment / 100).toFixed(2)}
 						</span>
@@ -434,10 +448,15 @@ export default function WeekSummary({
 							</h4>
 						</div>
 						<p className='text-slate-400 text-sm'>
-							Rankings will be available from <span className='font-semibold text-white'>Week {adjustedRankingsWeek}</span> onwards.
+							Rankings will be available from{' '}
+							<span className='font-semibold text-white'>
+								Week {adjustedRankingsWeek}
+							</span>{' '}
+							onwards.
 						</p>
 						<p className='text-slate-500 text-xs mt-2'>
-							Amazon typically releases performance rankings on Thursday of Week N+2 (two weeks after your work week).
+							Amazon typically releases performance rankings on Thursday of Week
+							N+2 (two weeks after your work week).
 						</p>
 					</div>
 				) : !hasBonusRankings || isEditingRankings ? (
@@ -562,7 +581,14 @@ export default function WeekSummary({
 			<div className='border-t border-white/20 pt-4 mt-6'>
 				<div className='flex items-center justify-between'>
 					<span className='text-xl font-bold text-white'>Total Earnings</span>
-					<span className='text-xl sm:text-3xl font-mono font-bold text-emerald-400'>
+					<span
+						className={
+							'text-lg sm:text-4xl font-mono font-bold animate-pulse ' +
+							(breakdown.standardPay + (weekData.bonus_amount || 0) < 0
+								? 'text-red-400'
+								: 'text-emerald-400')
+						}
+					>
 						£
 						{(
 							(breakdown.standardPay + (weekData.bonus_amount || 0)) /
@@ -596,12 +622,17 @@ export default function WeekSummary({
 								<Trash2 className='w-6 h-6 text-red-400' />
 							</div>
 							<div>
-								<h3 className='text-xl font-bold text-white'>Clear Week {weekNumber}?</h3>
-								<p className='text-sm text-slate-400'>This action cannot be undone</p>
+								<h3 className='text-xl font-bold text-white'>
+									Clear Week {weekNumber}?
+								</h3>
+								<p className='text-sm text-slate-400'>
+									This action cannot be undone
+								</p>
 							</div>
 						</div>
 						<p className='text-slate-300 mb-6'>
-							This will permanently delete all work days, rankings, and snapshot data for Week {weekNumber}.
+							This will permanently delete all work days, rankings, and snapshot
+							data for Week {weekNumber}.
 						</p>
 						<div className='flex gap-3'>
 							<Button
