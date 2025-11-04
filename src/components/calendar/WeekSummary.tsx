@@ -79,34 +79,14 @@ export default function WeekSummary({
 		)
 	}
 
-	// Calculate deposit paid before this week
+	// Calculate deposit paid before this week (not used since deposits aren't shown in work week)
 	const { startDate: weekStart, endDate: weekEnd } = getWeekDateRange(weekNumber, year)
 	const depositPaidBeforeWeek = allVans
 		.filter((van) => new Date(van.on_hire_date) < weekStart)
 		.reduce((sum, van) => sum + van.deposit_paid, 0)
 
-	// Calculate how many weeks the user has had ANY van (for deposit calculation)
-	// Find the earliest van hire date and count weeks from then to current week
-	const earliestVanHire = allVans.length > 0
-		? allVans.reduce((earliest, van) =>
-				new Date(van.on_hire_date) < new Date(earliest.on_hire_date) ? van : earliest
-		  )
-		: null
-
-	let weeksWithAnyVan = 0
-	if (earliestVanHire) {
-		const firstVanStart = new Date(earliestVanHire.on_hire_date)
-		// Only count if the user had a van on or before this week ends
-		if (firstVanStart <= weekEnd) {
-			// Calculate weeks from first van hire to end of this week
-			const daysSinceFirstVan = Math.ceil(
-				(weekEnd.getTime() - firstVanStart.getTime()) / (1000 * 60 * 60 * 24)
-			)
-			weeksWithAnyVan = Math.ceil(daysSinceFirstVan / 7)
-		}
-	}
-
 	// Calculate pay breakdown using week's snapshotted invoicing service and vans
+	// Note: Deposits are NOT included here - they are deducted in the payment week (Week N+2)
 	const breakdown = calculateWeeklyPayBreakdown(
 		weekData.work_days,
 		weekInvoicingService,
@@ -114,7 +94,8 @@ export default function WeekSummary({
 		weekStart,
 		weekEnd,
 		depositPaidBeforeWeek,
-		weeksWithAnyVan
+		0, // Paycheck number not used since deposits aren't included in work week
+		false // Don't include deposit payment in work week, only in payment week
 	)
 
 	// Calculate payment weeks

@@ -264,6 +264,9 @@ export async function recalculateAllDeposits(userId: string): Promise<boolean> {
 		}
 
 		// Calculate deposit for each van
+		// NOTE: Deposits are NOT paid during the week the van is on hire
+		// They are paid 2 weeks later (when the paycheck arrives)
+		// However, for van deposit tracking, we associate the deposit with the van that triggered it
 		for (const van of sortedVans) {
 			if (totalDepositPaidSoFar >= MAX_DEPOSIT) {
 				// Already paid full deposit, this van pays nothing
@@ -278,9 +281,19 @@ export async function recalculateAllDeposits(userId: string): Promise<boolean> {
 
 			// Calculate which weeks this van covers
 			const vanStart = new Date(van.on_hire_date)
+			const today = new Date()
+
+			// For deposit calculation, we only count weeks where payment has been RECEIVED
+			// Payments are received 2 weeks after work (Week N work → Week N+2 payment)
+			// So we need to subtract 2 weeks from today to get the latest work week that's been paid
+			const latestPaidWorkWeekEnd = new Date(today)
+			latestPaidWorkWeekEnd.setDate(latestPaidWorkWeekEnd.getDate() - 14) // 2 weeks ago
+
+			// For active vans, use the latest paid work week as the end date for deposit calculation
+			// For off-hired vans, use the actual off-hire date
 			const vanEnd = van.off_hire_date
 				? new Date(van.off_hire_date)
-				: new Date() // Use today if still active
+				: latestPaidWorkWeekEnd
 
 			// Calculate number of weeks from first van hire to start of this van
 			const daysSinceFirstVan = Math.ceil(
@@ -289,19 +302,23 @@ export async function recalculateAllDeposits(userId: string): Promise<boolean> {
 			const weeksSinceFirstVan = Math.floor(daysSinceFirstVan / 7)
 
 			// Calculate number of weeks this van was/is on hire
+			// Include both start and end dates
 			const vanDurationDays = Math.ceil(
 				(vanEnd.getTime() - vanStart.getTime()) / (1000 * 60 * 60 * 24)
-			) + 1 // +1 to include both start and end dates
+			) + 1
+			// Round up partial weeks (any part of a week counts as a full week for deposits)
 			const vanDurationWeeks = Math.ceil(vanDurationDays / 7)
 
 			// Calculate deposits for each week this van was active
+			// Each week with a van triggers a deposit payment (2 weeks later in reality, but we track it here)
 			let depositForThisVan = 0
 			for (let i = 0; i < vanDurationWeeks; i++) {
 				if (totalDepositPaidSoFar >= MAX_DEPOSIT) break
 
+				// Calculate which "week with van" this is (1st, 2nd, 3rd, etc.)
 				// Apply week offset from manual deposit
-				const weekNumber = weeksSinceFirstVan + i + 1 + weekOffset // Week 1, 2, 3, etc.
-				const weekRate = weekNumber <= 2 ? WEEK_1_2_RATE : WEEK_3_PLUS_RATE
+				const weekWithVanNumber = weeksSinceFirstVan + i + 1 + weekOffset
+				const weekRate = weekWithVanNumber <= 2 ? WEEK_1_2_RATE : WEEK_3_PLUS_RATE
 				const depositThisWeek = Math.min(
 					weekRate,
 					MAX_DEPOSIT - totalDepositPaidSoFar

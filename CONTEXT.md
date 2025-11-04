@@ -161,12 +161,23 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 
 **Deposit Structure (During Employment)** - Fully Automated:
 
-- First 2 weeks with ANY van: £25/week toward deposit
-- After 2 weeks: £50/week toward deposit
-- Total deposit required: £500
-- Once £500 paid, only weekly rate applies
+- **Deposit Payment Timing**: Deposits are deducted from paychecks (Week N+2), NOT during work week
+  - Week N: Work with van → Week N+2: Deposit deducted from paycheck
+  - Example: Van on-hire Week 40 → First deposit deducted Week 42 payment
+- **Deposit Schedule**: Based on paychecks received, not work weeks
+  - First 2 paychecks with van costs: £25/paycheck toward deposit
+  - Paychecks 3+: £50/paycheck toward deposit
+  - Total deposit required: £500
+  - Example Timeline:
+    - Week 40: Van on-hire
+    - Week 42: 1st paycheck with van (1st deposit: £25)
+    - Week 43: 2nd paycheck with van (2nd deposit: £25)
+    - Week 44: 3rd paycheck with van (3rd deposit: £50)
+    - Week 45: 4th paycheck with van (4th deposit: £50)
+    - Continues until £500 total reached
+- Once £500 paid, only weekly van rate applies (no more deposits)
 - **Manual deposit adjustment**: For users who paid deposits before using app
-- **Week offset logic**: Manual deposits ≥£50 skip the £25/week period
+- **Week offset logic**: Manual deposits ≥£50 skip the £25/paycheck period
 
 **Off-boarding Process**:
 
@@ -201,6 +212,10 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 - Auto-dismiss toasts (3 seconds)
 - Integrated with weekly pay calculations
 - Van cost breakdown in week summaries
+- **Deposit Tracking for Active Vans**: Only counts deposits for paychecks already received
+  - Calculation: Uses `today - 14 days` as cutoff (2-week payment delay)
+  - Example: Van on-hire Week 40, today is Week 45 → Shows deposits for Weeks 42-45 only (not Week 46+)
+  - Ensures deposit total reflects money actually deducted from bank account
 
 ### Week Structure ✅ **IMPLEMENTED** (TBC - Awaiting Manager Confirmation)
 

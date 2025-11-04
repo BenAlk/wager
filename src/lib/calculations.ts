@@ -342,13 +342,13 @@ export function calculateDepositPayment(
 		return 0
 	}
 
-	// First 2 weeks: �25/week
+	// First 2 paychecks with van: £25/paycheck
 	if (weeksWithVan <= 2) {
 		const remaining = MAX_DEPOSIT - totalDepositPaid
 		return Math.min(DEPOSIT_RATE_FIRST_TWO_WEEKS, remaining)
 	}
 
-	// After 2 weeks: �50/week
+	// Paychecks 3+: £50/paycheck
 	const remaining = MAX_DEPOSIT - totalDepositPaid
 	return Math.min(DEPOSIT_RATE_AFTER_TWO_WEEKS, remaining)
 }
@@ -824,7 +824,8 @@ export function calculateWeeklyPayBreakdown(
 	weekStartDate?: Date,
 	weekEndDate?: Date,
 	totalDepositPaidBeforeWeek: number = 0,
-	weeksWithAnyVan: number = 0
+	weeksWithAnyVan: number = 0,
+	includeDepositPayment: boolean = true
 ): WeeklyPayBreakdownSimple {
 	// Base pay components
 	const basePay = calculateWeeklyBasePay(workDays)
@@ -858,12 +859,13 @@ export function calculateWeeklyPayBreakdown(
 			weeksWithAnyVan
 		)
 		vanDeduction = vanCosts.vanCost
-		depositPayment = vanCosts.depositPayment
+		// Only include deposit payment if requested (for payment week, not work week)
+		depositPayment = includeDepositPayment ? vanCosts.depositPayment : 0
 		vanBreakdown = vanCosts.breakdown.map((b) => ({
 			registration: b.registration,
 			days: b.days,
 			vanCost: b.vanCost,
-			depositPayment: b.depositPayment,
+			depositPayment: includeDepositPayment ? b.depositPayment : 0,
 		}))
 	}
 
