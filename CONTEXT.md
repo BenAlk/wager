@@ -141,13 +141,13 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
   - Tuesday: +8 stops given, -0 stops taken
   - Weekly total: +45 given, -7 taken = net +38 stops = **+£38**
 
-### Van Hire
+### Van Hire ✅ **IMPLEMENTED** (Nov 4, 2025)
 
 **Van Rates**:
 
 - **Standard fleet vans**: £250/week (default)
 - **Flexi vans**: £100-£250/week (company-owned, not fleet)
-- **Customization**: User can set custom rate per van hire in settings (not a global setting)
+- **Customization**: User can set custom rate per van hire (not a global setting)
 
 **Van Hire Rules**:
 
@@ -156,18 +156,22 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 - **Deposits carry over** between sequential van hires
   - Example: Paid £300 deposit on Van A, switch to Van B → Only owe £200 more on Van B
   - No separate deposits per van - one cumulative £500 deposit total across all van hires
+  - **Deposits calculated chronologically** based on total weeks with ANY van
+  - **ONE deposit payment per week** regardless of van changes
 
-**Deposit Structure (During Employment)**:
+**Deposit Structure (During Employment)** - Fully Automated:
 
-- First 2 weeks: £25/week toward deposit
+- First 2 weeks with ANY van: £25/week toward deposit
 - After 2 weeks: £50/week toward deposit
 - Total deposit required: £500
 - Once £500 paid, only weekly rate applies
+- **Manual deposit adjustment**: For users who paid deposits before using app
+- **Week offset logic**: Manual deposits ≥£50 skip the £25/week period
 
 **Off-boarding Process**:
 
 1. Courier gives notice / last day worked
-2. Van returned on off-hire date
+2. Van returned on off-hire date (off_hire_date is INCLUSIVE - last day WITH van)
 3. Company calculates deposit shortfall: `£500 - deposit_paid_so_far`
 4. Final paycheck is reduced by shortfall amount (only what's available)
    - Example: £200 shortfall, but final pay is £150 → Company takes £150, chases remaining £50 if damage exceeds
@@ -176,13 +180,27 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
    - If no fines/damage → Full £500 refunded
    - If fines/damage → £500 minus deductions refunded
 
-**On-Hire/Off-Hire Pro-rata**:
+**On-Hire/Off-Hire Pro-rata** - Fully Implemented:
 
 - **On-hire**: Date you take possession of van
-- **Off-hire**: Date you return van
+- **Off-hire**: Date you return van (INCLUSIVE - last day with van)
 - **Pro-rata calculation**: Pay only for days you had the van
-  - Example: Take van on Wednesday (day 4 of week) → Pay (£250 / 7) × 4 days
-  - Example: Return van on Friday (5 days used) → Pay (£250 / 7) × 5 days
+  - Formula: `(weekly_rate / 7) × days_active`
+  - Days calculation includes both start and end dates
+  - Example: Take van on Wednesday (day 4 of week) → Pay (£250 / 7) × 4 days = £142.86
+  - Example: Return van on Friday (5 days used) → Pay (£250 / 7) × 5 days = £178.57
+  - **Multiple vans per week**: Each van calculated separately, costs added together
+  - **Same-day swap guidance**: App warns to off-hire previous day if picking up new van same morning
+
+**Van Management Features** (Separate Page):
+
+- Complete CRUD operations (create, edit, off-hire, delete)
+- Deposit summary card with progress bar
+- Van hire history with status badges
+- Custom delete confirmation modal
+- Auto-dismiss toasts (3 seconds)
+- Integrated with weekly pay calculations
+- Van cost breakdown in week summaries
 
 ### Week Structure ✅ **IMPLEMENTED** (TBC - Awaiting Manager Confirmation)
 
@@ -436,24 +454,45 @@ weekly_sweep_total = SUM(work_days.stops_given - work_days.stops_taken) * 1 // �
 // Weekly total: +38 stops = +£38
 ```
 
-### Van Pro-Rata
+### Van Pro-Rata ✅ **IMPLEMENTED**
 
 ```typescript
-days_in_week = 7
-daily_van_rate = van_weekly_rate / days_in_week
-days_on_hire = count_days_between(on_hire_date, off_hire_date)
-pro_rata_cost = daily_van_rate × days_on_hire
+// Support multiple vans per week
+for (const van of vansActiveThisWeek) {
+  // Calculate overlap between van period and work week
+  const overlapStart = max(van.on_hire_date, weekStart)
+  const overlapEnd = min(van.off_hire_date || today, weekEnd)
+
+  // Days includes both start and end (inclusive)
+  const daysActive = Math.round(
+    (overlapEnd - overlapStart) / (1000 * 60 * 60 * 24)
+  ) + 1
+
+  // Pro-rata cost
+  const vanCost = Math.round((van.weekly_rate / 7) * daysActive)
+}
 ```
 
-### Deposit Tracker
+### Deposit Tracker ✅ **IMPLEMENTED**
 
 ```typescript
-if (weeks_with_van < 2) {
-  weekly_deposit = £25
-} else if (total_deposit < £500) {
-  weekly_deposit = £50
+// Calculated chronologically across ALL van hires
+// Based on total weeks with ANY van (not per-van)
+const weeksWithAnyVan = calculateTotalWeeksWithVan(userId)
+
+// ONE deposit payment per week
+if (weeksWithAnyVan <= 2) {
+  weekly_deposit = 2500  // £25 in pence
+} else if (total_deposit < 50000) {
+  weekly_deposit = 5000  // £50 in pence
 } else {
-  weekly_deposit = £0
+  weekly_deposit = 0
+}
+
+// Manual deposit adjustment with week offset
+if (manualDepositAmount >= 5000) {  // £50+
+  weekOffset = Math.min(2, Math.floor(manualDepositAmount / 2500))
+  // Skip £25/week period
 }
 ```
 
@@ -770,16 +809,17 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 ### Phase 3: Core Configuration & Utils
 
-- ✅ Calculation utilities implemented (`src/lib/calculations.ts` - 670 lines)
+- ✅ Calculation utilities implemented (`src/lib/calculations.ts` - 750+ lines)
 
   - Daily calculations (pay, sweeps, mileage, discrepancies)
   - Weekly calculations (base pay, 6-day bonus, sweeps, mileage totals)
   - Performance bonus calculations with tier matrix
-  - Van pro-rata and deposit calculations
+  - **Van pro-rata and deposit calculations** (supports multiple vans per week)
   - Complete weekly pay breakdown function
   - Pay timing calculations (standard pay N+2, bonus N+6)
   - Comprehensive validation functions
   - All currency in pence for precision
+  - **Van cost integration** with breakdown display
 
 - ✅ Extended TypeScript types (`src/types/index.ts` - 350 lines)
 
@@ -920,6 +960,54 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 - Week numbering system (TBC with manager - see Week Structure section above)
 
+### ✅ Phase 12: Van Hire Management - COMPLETE (Nov 4, 2025)
+
+**All tasks completed!** Van management is fully functional with pro-rata calculations and intelligent deposit tracking.
+
+**Completed:**
+
+- ✅ Van management UI (separate page `/vans` with cards)
+- ✅ Complete CRUD operations (create, edit, off-hire, delete)
+- ✅ On-hire/off-hire functionality with pro-rata calculations
+- ✅ Deposit tracker with automatic chronological calculation
+- ✅ Deposit summary card with progress bar (total paid/remaining/target)
+- ✅ Support for multiple vans per week (mid-week van changes)
+- ✅ Manual deposit adjustment feature (for users who paid before using app)
+- ✅ Week offset logic (manual deposits ≥£50 skip £25/week period)
+- ✅ Custom delete confirmation modal (no accidental deletions)
+- ✅ Auto-dismiss toasts (3-second notifications)
+- ✅ Van cost integration into weekly pay breakdowns
+- ✅ Van hire card component with status badges (active/off-hired)
+- ✅ Edit functionality for all van details
+- ✅ Same-day swap guidance (informational message)
+- ✅ Van store with activeVan tracking
+- ✅ Intelligent deposit recalculation on page load
+
+**Key Files Created:**
+
+- `src/lib/api/vans.ts` - Van hire CRUD and deposit calculations (410 lines)
+- `src/pages/VanManagement.tsx` - Main van management page
+- `src/components/van/VanHireCard.tsx` - Individual van display
+- `src/components/van/VanHireModal.tsx` - Create/edit/delete/off-hire modal
+
+**Key Files Modified:**
+
+- `src/lib/calculations.ts` - Added pro-rata van cost calculations with multi-van support
+- `src/components/calendar/WeekSummary.tsx` - Integrated van cost display with breakdown
+- `src/store/vanStore.ts` - Fixed activeVan recalculation
+- `src/App.tsx` - Added /vans route
+- `src/pages/Dashboard.tsx` - Added Van Management navigation button
+
+**Business Logic Implemented:**
+
+- Van costs calculated pro-rata: `(weekly_rate / 7) × days_active`
+- Deposit payments: £25/week for weeks 1-2, £50/week for weeks 3+, max £500 total
+- Deposits calculated based on total weeks with ANY van, not per-van
+- ONE deposit payment per week regardless of van changes
+- Off-hire date is inclusive (last day with van)
+- Manual deposit adjustment creates special entry (registration='MANUAL_DEPOSIT_ADJUSTMENT')
+- Week offset calculation for manual deposits ≥£50
+
 ### 🚀 Deployment Configuration (Oct 28, 2025)
 
 **Platform:** Netlify Free Tier
@@ -986,6 +1074,6 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 ---
 
-**Last Updated**: October 10, 2025 (v2 - Clarified Rules)
-**Current Phase**: Phase 1 - Setup & Foundation
-**Next Steps**: Database schema implementation + authentication setup
+**Last Updated**: November 4, 2025 (v3 - Van Management Complete)
+**Current Phase**: Phase 13 - Dashboard & Reports
+**Next Steps**: Dashboard widgets, pay summaries, historical records

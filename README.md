@@ -89,17 +89,30 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - **Historical tracking**: Monitor mileage trends over time
 - Paid with standard pay (Week N+2)
 
-### 🚐 Van Hire Management
+### 🚐 Van Hire Management ✅ **COMPLETE**
 
+- **Separate van management page** accessible from dashboard
+- **Complete CRUD operations**: Create, edit, off-hire, and delete van hires
 - **Fleet vans**: £250/week (default)
 - **Flexi vans**: £100-£250/week (customizable per van hire)
-- On-hire/off-hire functionality with pro-rata calculations
-- Deposit tracker:
-  - First 2 weeks: £25/week
-  - Remaining weeks: £50/week until £500 total
-  - Deposits carry over between sequential van hires
-- Visual deposit progress
-- 6-week hold period after off-hire before refund
+- **Pro-rata calculations**: (weekly_rate / 7) × days_active for partial weeks
+- **Multiple vans per week**: Supports mid-week van changes with separate pro-rata costs
+- **Intelligent deposit tracking**:
+  - First 2 weeks with ANY van: £25/week
+  - Weeks 3+ with ANY van: £50/week until £500 total
+  - Deposits cumulative across ALL van hires (one £500 total)
+  - Automatic chronological calculation
+  - ONE deposit payment per week (not per van)
+- **Manual deposit adjustment**: For users who paid deposits before using app
+- **Week offset logic**: Manual deposits ≥£50 skip the £25/week period
+- **Visual deposit progress**: Summary card with progress bar
+- **Van hire history**: Filterable list with status badges (active/off-hired)
+- **Off-hire date inclusive**: Last day WITH the van
+- **Same-day swap guidance**: Informational message for morning van swaps
+- **Custom delete confirmation**: No accidental deletions
+- **Auto-dismiss toasts**: 3-second notifications
+- **6-week hold period**: After off-hire before refund
+- **Integrated with pay calculations**: Van costs show in week summaries with breakdown
 
 ### 📋 Invoicing & Accounting Services
 
@@ -157,33 +170,32 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 wager/
 ├── src/
 │   ├── components/
-│   │   ├── ui/              # shadcn UI components (Button, Input, NumberInput, etc.)
+│   │   ├── ui/              # shadcn UI components (Button, Input, NumberInput, Select, etc.)
 │   │   ├── calendar/        # Calendar view components
 │   │   │   ├── DayCell.tsx           # Individual day display
 │   │   │   ├── DayEditModal.tsx      # Work day CRUD modal
 │   │   │   ├── PaymentThisWeek.tsx   # Week N-2 + N-6 payment display
 │   │   │   └── WeekSummary.tsx       # Current week earnings breakdown
+│   │   ├── van/             # Van management components
+│   │   │   ├── VanHireCard.tsx       # Individual van display
+│   │   │   └── VanHireModal.tsx      # Van hire CRUD modal
 │   │   ├── dashboard/       # Dashboard widgets
 │   │   ├── settings/        # Settings forms
 │   │   └── shared/          # Reusable components
-│   ├── features/
-│   │   ├── auth/            # Authentication logic
-│   │   ├── schedule/        # Week/day management
-│   │   ├── bonus/           # Bonus calculations
-│   │   ├── sweeping/        # Sweep tracking
-│   │   ├── van/             # Van hire management
-│   │   └── pay/             # Pay calculations
 │   ├── lib/
 │   │   ├── api/
-│   │   │   └── weeks.ts          # Week/work day API functions
+│   │   │   ├── weeks.ts          # Week/work day API functions
+│   │   │   └── vans.ts           # Van hire API functions
 │   │   ├── supabase.ts           # Supabase client
-│   │   ├── calculations.ts       # Pay calculation utilities
-│   │   ├── dates.ts              # Week calculations & formatting
+│   │   ├── calculations.ts       # Pay calculation utilities (750+ lines)
+│   │   ├── dates.ts              # Week calculations & formatting (400+ lines)
 │   │   └── utils.ts              # General utilities
 │   ├── hooks/               # Custom React hooks
-│   ├── store/               # Zustand stores
+│   ├── store/               # Zustand stores (auth, settings, calendar, weeks, van)
 │   ├── types/               # TypeScript types
-│   ├── pages/               # Route pages
+│   │   ├── database.ts           # Auto-generated Supabase types
+│   │   └── index.ts              # Extended types (350 lines)
+│   ├── pages/               # Route pages (Auth, Dashboard, Calendar, Settings, VanManagement)
 │   └── App.tsx
 ├── supabase/
 │   └── migrations/          # Database migrations
@@ -317,13 +329,22 @@ wager/
 - [x] Weekly pay breakdown function
 - [x] Mileage discrepancy calculations
 
-### Phase 12: Van Hire Management
+### Phase 12: Van Hire Management ✅ **COMPLETE**
 
-- [ ] Create van management UI
-- [ ] Implement on-hire/off-hire functionality
-- [ ] Calculate pro-rata costs
-- [ ] Build deposit tracker
-- [ ] Display deposit progress
+**All tasks completed!** Van management is fully functional with pro-rata calculations and intelligent deposit tracking.
+
+- [x] Create van management UI (separate page with cards)
+- [x] Implement on-hire/off-hire functionality
+- [x] Calculate pro-rata costs for partial weeks
+- [x] Build deposit tracker with chronological calculation
+- [x] Display deposit progress (summary card with progress bar)
+- [x] Support multiple vans per week
+- [x] Add manual deposit adjustment feature
+- [x] Custom delete confirmation modal
+- [x] Auto-dismiss toasts
+- [x] Integrate van costs into weekly pay breakdowns
+- [x] Van hire card component with status badges
+- [x] Edit functionality for all van details
 
 ### Phase 13: Dashboard & Reports
 
