@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { logout } from '@/lib/auth'
-import { Calendar, LogOut, Settings, TrendingUp } from 'lucide-react'
+import { Calendar, LogOut, Settings, TrendingUp, Truck } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -77,13 +77,22 @@ export default function Dashboard() {
 						Authentication is working! Now we'll build out the calendar, pay
 						tracking, and other features.
 					</p>
-					<Button
-						onClick={() => navigate('/calendar')}
-						className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
-					>
-						<Calendar className='w-4 h-4 mr-2' />
-						Open Calendar
-					</Button>
+					<div className='flex flex-wrap gap-3'>
+						<Button
+							onClick={() => navigate('/calendar')}
+							className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
+						>
+							<Calendar className='w-4 h-4 mr-2' />
+							Open Calendar
+						</Button>
+						<Button
+							onClick={() => navigate('/vans')}
+							className='bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white cursor-pointer'
+						>
+							<Truck className='w-4 h-4 mr-2' />
+							Van Management
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>

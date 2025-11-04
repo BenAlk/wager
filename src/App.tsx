@@ -5,6 +5,7 @@ import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
 import Calendar from '@/pages/Calendar'
 import Settings from '@/pages/Settings'
+import VanManagement from '@/pages/VanManagement'
 
 // Protected route component
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -78,6 +79,14 @@ function App() {
 						element={
 							<ProtectedRoute>
 								<Settings />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/vans'
+						element={
+							<ProtectedRoute>
+								<VanManagement />
 							</ProtectedRoute>
 						}
 					/>

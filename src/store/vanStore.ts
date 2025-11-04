@@ -88,15 +88,12 @@ export const useVanStore = create<VanState>()(
 							0
 						)
 
-						// Update active van if needed
-						const updatedActive =
-							state.activeVan?.id === vanId
-								? { ...state.activeVan, ...updates }
-								: state.activeVan
+						// Recalculate active van (van with no off_hire_date)
+						const active = updatedVans.find((v) => v.off_hire_date === null) ?? null
 
 						return {
 							allVans: updatedVans,
-							activeVan: updatedActive,
+							activeVan: active,
 							totalDepositPaid: totalDeposit,
 						}
 					},

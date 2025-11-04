@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/useAuth'
 import { deleteWeek as deleteWeekAPI, updateWeekMileageRate, updateWeekRankings } from '@/lib/api/weeks'
+import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import {
 	calculateWeeklyPayBreakdown,
 	getDailyBonusRate,
@@ -11,11 +12,13 @@ import {
 	getCurrentWeek,
 	getPaymentWeekForBonus,
 	getPaymentWeekForStandardPay,
+	getWeekDateRange,
 } from '@/lib/dates'
 import { useWeeksStore } from '@/store/weeksStore'
-import type { PerformanceLevel, Week } from '@/types/database'
+import { useVanStore } from '@/store/vanStore'
+import type { PerformanceLevel, Week, VanHire } from '@/types/database'
 import { AlertCircle, Check, Pencil, Trash2, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 
 interface WeekSummaryProps {
@@ -31,6 +34,7 @@ export default function WeekSummary({
 }: WeekSummaryProps) {
 	const { user } = useAuth()
 	const { updateWeek, deleteWeek } = useWeeksStore()
+	const { allVans } = useVanStore()
 
 	const [individualLevel, setIndividualLevel] =
 		useState<PerformanceLevel | null>(null)
@@ -44,9 +48,23 @@ export default function WeekSummary({
 	const [isSavingMileageRate, setIsSavingMileageRate] = useState(false)
 	const [showClearConfirm, setShowClearConfirm] = useState(false)
 	const [isClearing, setIsClearing] = useState(false)
+	const [weekVanHires, setWeekVanHires] = useState<VanHire[]>([])
 
 	// Use default invoicing service if week doesn't have it yet (old data)
 	const weekInvoicingService = weekData?.invoicing_service || 'Self-Invoicing'
+
+	// Fetch vans active during this week
+	useEffect(() => {
+		const fetchVansForWeek = async () => {
+			if (!user?.id) return
+
+			const { startDate, endDate } = getWeekDateRange(weekNumber, year)
+			const vans = await fetchVanHiresForWeek(user.id, startDate, endDate)
+			setWeekVanHires(vans)
+		}
+
+		fetchVansForWeek()
+	}, [user?.id, weekNumber, year])
 
 	if (!weekData || !weekData.work_days || weekData.work_days.length === 0) {
 		return (
@@ -61,11 +79,42 @@ export default function WeekSummary({
 		)
 	}
 
-	// Calculate pay breakdown using week's snapshotted invoicing service
+	// Calculate deposit paid before this week
+	const { startDate: weekStart, endDate: weekEnd } = getWeekDateRange(weekNumber, year)
+	const depositPaidBeforeWeek = allVans
+		.filter((van) => new Date(van.on_hire_date) < weekStart)
+		.reduce((sum, van) => sum + van.deposit_paid, 0)
+
+	// Calculate how many weeks the user has had ANY van (for deposit calculation)
+	// Find the earliest van hire date and count weeks from then to current week
+	const earliestVanHire = allVans.length > 0
+		? allVans.reduce((earliest, van) =>
+				new Date(van.on_hire_date) < new Date(earliest.on_hire_date) ? van : earliest
+		  )
+		: null
+
+	let weeksWithAnyVan = 0
+	if (earliestVanHire) {
+		const firstVanStart = new Date(earliestVanHire.on_hire_date)
+		// Only count if the user had a van on or before this week ends
+		if (firstVanStart <= weekEnd) {
+			// Calculate weeks from first van hire to end of this week
+			const daysSinceFirstVan = Math.ceil(
+				(weekEnd.getTime() - firstVanStart.getTime()) / (1000 * 60 * 60 * 24)
+			)
+			weeksWithAnyVan = Math.ceil(daysSinceFirstVan / 7)
+		}
+	}
+
+	// Calculate pay breakdown using week's snapshotted invoicing service and vans
 	const breakdown = calculateWeeklyPayBreakdown(
 		weekData.work_days,
 		weekInvoicingService,
-		undefined // TODO: Get active van hire from store
+		weekVanHires,
+		weekStart,
+		weekEnd,
+		depositPaidBeforeWeek,
+		weeksWithAnyVan
 	)
 
 	// Calculate payment weeks
@@ -334,10 +383,32 @@ export default function WeekSummary({
 
 				{/* Van Hire */}
 				{breakdown.vanDeduction > 0 && (
+					<div>
+						<div className='flex items-center justify-between'>
+							<span className='text-sm sm:text-lg text-slate-400'>Van Hire</span>
+							<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
+								- £{(breakdown.vanDeduction / 100).toFixed(2)}
+							</span>
+						</div>
+						{breakdown.vanBreakdown && breakdown.vanBreakdown.length > 0 && (
+							<div className='ml-4 mt-1 space-y-1'>
+								{breakdown.vanBreakdown.map((van, idx) => (
+									<div key={idx} className='flex items-center justify-between text-xs sm:text-sm text-slate-500'>
+										<span>{van.registration} ({van.days} day{van.days !== 1 ? 's' : ''})</span>
+										<span>- £{(van.vanCost / 100).toFixed(2)}</span>
+									</div>
+								))}
+							</div>
+						)}
+					</div>
+				)}
+
+				{/* Deposit Payment */}
+				{breakdown.depositPayment > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-sm sm:text-lg text-slate-400'>Van Hire</span>
+						<span className='text-sm sm:text-lg text-slate-400'>Deposit Payment</span>
 						<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
-							- £{(breakdown.vanDeduction / 100).toFixed(2)}
+							- £{(breakdown.depositPayment / 100).toFixed(2)}
 						</span>
 					</div>
 				)}

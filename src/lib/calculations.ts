@@ -354,8 +354,9 @@ export function calculateDepositPayment(
 }
 
 /**
- * Calculate van costs for a week
+ * Calculate van costs for a week (LEGACY - single van)
  * Includes pro-rata van hire + deposit payment
+ * @deprecated Use calculateWeeklyVanCosts for multiple van support
  */
 export function calculateWeeklyVanCost(
 	vanHire: VanHire | null,
@@ -387,6 +388,106 @@ export function calculateWeeklyVanCost(
 	const totalCost = vanCost + depositPayment
 
 	return { vanCost, depositPayment, totalCost }
+}
+
+/**
+ * Calculate van costs for multiple vans in a week (pro-rata)
+ * Handles scenarios where user switches vans mid-week
+ *
+ * Deposit payments are calculated once per week based on total weeks with ANY van
+ * (not per-van). First 2 weeks: £25/week, then £50/week until £500 total.
+ *
+ * Example: Van A for 2 days (£250/week) + Van B for 5 days (£200/week)
+ * = (250/7 * 2) + (200/7 * 5) = £71.43 + £142.86 = £214.29
+ * + ONE deposit payment for the week (not two)
+ */
+export function calculateWeeklyVanCosts(
+	vanHires: VanHire[],
+	weekStartDate: Date,
+	weekEndDate: Date,
+	totalDepositPaidBeforeWeek: number,
+	weeksWithAnyVan: number
+): {
+	vanCost: number // Total pro-rata cost in pence
+	depositPayment: number // SINGLE deposit payment for the week
+	totalCost: number // Total deduction in pence
+	breakdown: Array<{
+		vanId: string
+		registration: string
+		days: number
+		vanCost: number
+		depositPayment: number
+	}>
+} {
+	if (!vanHires || vanHires.length === 0) {
+		return { vanCost: 0, depositPayment: 0, totalCost: 0, breakdown: [] }
+	}
+
+	let totalVanCost = 0
+	const breakdown: Array<{
+		vanId: string
+		registration: string
+		days: number
+		vanCost: number
+		depositPayment: number
+	}> = []
+
+	// Sort vans by on_hire_date to process in chronological order
+	const sortedVans = [...vanHires].sort(
+		(a, b) =>
+			new Date(a.on_hire_date).getTime() - new Date(b.on_hire_date).getTime()
+	)
+
+	sortedVans.forEach((van) => {
+		// Determine the overlap period between van hire and week
+		const vanStart = new Date(van.on_hire_date)
+		const vanEnd = van.off_hire_date
+			? new Date(van.off_hire_date)
+			: new Date('2099-12-31') // Far future if still active
+
+		// Calculate overlap start and end
+		const overlapStart =
+			vanStart > weekStartDate ? vanStart : weekStartDate
+		const overlapEnd = vanEnd < weekEndDate ? vanEnd : weekEndDate
+
+		// Calculate days this van was active during the week
+		const daysActive = Math.ceil(
+			(overlapEnd.getTime() - overlapStart.getTime()) / (1000 * 60 * 60 * 24)
+		) + 1 // +1 to include both start and end days
+
+		if (daysActive <= 0) return // Van not active during this week
+
+		// Calculate pro-rata cost for this van
+		const vanCost = Math.round((van.weekly_rate / 7) * daysActive)
+
+		totalVanCost += vanCost
+
+		breakdown.push({
+			vanId: van.id,
+			registration: van.registration,
+			days: daysActive,
+			vanCost,
+			depositPayment: 0, // Will be set on first van only
+		})
+	})
+
+	// Calculate ONE deposit payment per week based on total weeks with ANY van
+	const depositPayment = calculateDepositPayment(
+		weeksWithAnyVan,
+		totalDepositPaidBeforeWeek
+	)
+
+	// Assign the deposit payment to the first van in the breakdown for display
+	if (breakdown.length > 0 && depositPayment > 0) {
+		breakdown[0].depositPayment = depositPayment
+	}
+
+	return {
+		vanCost: totalVanCost,
+		depositPayment,
+		totalCost: totalVanCost + depositPayment,
+		breakdown,
+	}
 }
 
 /**
@@ -701,8 +802,15 @@ export interface WeeklyPayBreakdownSimple {
 	mileageDiscrepancy: number
 	mileageDiscrepancyValue: number // In pence
 	vanDeduction: number
+	depositPayment: number
 	invoicingCost: number
 	standardPay: number
+	vanBreakdown?: Array<{
+		registration: string
+		days: number
+		vanCost: number
+		depositPayment: number
+	}>
 }
 
 /**
@@ -712,7 +820,11 @@ export interface WeeklyPayBreakdownSimple {
 export function calculateWeeklyPayBreakdown(
 	workDays: WorkDay[],
 	invoicingService: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full',
-	vanHire?: VanHire
+	vanHires: VanHire[] = [],
+	weekStartDate?: Date,
+	weekEndDate?: Date,
+	totalDepositPaidBeforeWeek: number = 0,
+	weeksWithAnyVan: number = 0
 ): WeeklyPayBreakdownSimple {
 	// Base pay components
 	const basePay = calculateWeeklyBasePay(workDays)
@@ -727,8 +839,33 @@ export function calculateWeeklyPayBreakdown(
 	// Mileage stats
 	const mileageStats = calculateWeeklyMileage(workDays)
 
-	// Van cost (simplified - assume full week)
-	const vanDeduction = vanHire ? vanHire.weekly_rate : 0
+	// Van costs (pro-rata with multiple van support)
+	let vanDeduction = 0
+	let depositPayment = 0
+	let vanBreakdown: Array<{
+		registration: string
+		days: number
+		vanCost: number
+		depositPayment: number
+	}> = []
+
+	if (vanHires.length > 0 && weekStartDate && weekEndDate) {
+		const vanCosts = calculateWeeklyVanCosts(
+			vanHires,
+			weekStartDate,
+			weekEndDate,
+			totalDepositPaidBeforeWeek,
+			weeksWithAnyVan
+		)
+		vanDeduction = vanCosts.vanCost
+		depositPayment = vanCosts.depositPayment
+		vanBreakdown = vanCosts.breakdown.map((b) => ({
+			registration: b.registration,
+			days: b.days,
+			vanCost: b.vanCost,
+			depositPayment: b.depositPayment,
+		}))
+	}
 
 	// Invoicing cost
 	const invoicingCost = calculateInvoicingCost(invoicingService)
@@ -740,6 +877,7 @@ export function calculateWeeklyPayBreakdown(
 		sweepAdjustment +
 		mileagePayment -
 		vanDeduction -
+		depositPayment -
 		invoicingCost
 
 	return {
@@ -754,7 +892,9 @@ export function calculateWeeklyPayBreakdown(
 		mileageDiscrepancy: mileageStats.totalDiscrepancyMiles,
 		mileageDiscrepancyValue: mileageStats.totalDiscrepancyValue,
 		vanDeduction,
+		depositPayment,
 		invoicingCost,
 		standardPay,
+		vanBreakdown: vanBreakdown.length > 0 ? vanBreakdown : undefined,
 	}
 }
