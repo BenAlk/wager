@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { X, Loader2, Save, Trash2, AlertCircle } from 'lucide-react'
+import { AlertCircle, Loader2, Save, Trash2, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -8,20 +8,18 @@ import * as z from 'zod'
 import { useAuth } from '@/hooks/useAuth'
 import {
 	createVanHire,
-	updateVanHire,
 	deleteVanHire,
 	offHireVan,
 	refundDeposit,
+	updateVanHire,
 } from '@/lib/api/vans'
 import { useVanStore } from '@/store/vanStore'
 import type { VanHire, VanType } from '@/types/database'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { DatePicker } from '@/components/ui/date-picker'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
 import {
 	Select,
 	SelectContent,
@@ -29,6 +27,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
 
 const vanHireSchema = z.object({
 	registration: z
@@ -54,18 +53,19 @@ interface VanHireModalProps {
 	onClose: () => void
 }
 
-export function VanHireModal({
-	van,
-	onClose,
-}: VanHireModalProps) {
+export function VanHireModal({ van, onClose }: VanHireModalProps) {
 	const { user } = useAuth()
-	const { addVan, updateVan: updateVanStore, removeVan, setSaving } =
-		useVanStore()
+	const {
+		addVan,
+		updateVan: updateVanStore,
+		removeVan,
+		setSaving,
+	} = useVanStore()
 	const [isDeleting, setIsDeleting] = useState(false)
 	const [showOffHire, setShowOffHire] = useState(false)
 	const [showRefund, setShowRefund] = useState(false)
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-	const [offHireDateInput, setOffHireDateInput] = useState<Date | undefined>(undefined)
+	const [offHireDateInput, setOffHireDateInput] = useState('')
 	const [refundAmountInput, setRefundAmountInput] = useState('')
 
 	const isEditMode = van !== null
@@ -181,12 +181,12 @@ export function VanHireModal({
 
 		setSaving(true)
 		try {
-			const updated = await offHireVan(van.id, offHireDateInput)
+			const offHireDate = new Date(offHireDateInput)
+			const updated = await offHireVan(van.id, offHireDate)
 			if (updated) {
 				updateVanStore(van.id, updated)
 				toast.success('Van off-hired successfully', { duration: 3000 })
 				setShowOffHire(false)
-				setOffHireDateInput(undefined)
 				onClose()
 			} else {
 				toast.error('Failed to off-hire van', { duration: 3000 })
@@ -207,7 +207,9 @@ export function VanHireModal({
 
 		const refundAmount = Math.round(parseFloat(refundAmountInput) * 100)
 		if (refundAmount > van.deposit_paid) {
-			toast.error('Refund amount cannot exceed deposit paid', { duration: 3000 })
+			toast.error('Refund amount cannot exceed deposit paid', {
+				duration: 3000,
+			})
 			return
 		}
 
@@ -252,10 +254,16 @@ export function VanHireModal({
 					</div>
 
 					{/* Form */}
-					<form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						className='space-y-6'
+					>
 						{/* Registration */}
 						<div>
-							<Label htmlFor='registration' className='text-white'>
+							<Label
+								htmlFor='registration'
+								className='text-white'
+							>
 								Registration Number *
 							</Label>
 							<Controller
@@ -280,7 +288,10 @@ export function VanHireModal({
 						{/* Van Type & Weekly Rate */}
 						<div className='grid grid-cols-2 gap-4'>
 							<div>
-								<Label htmlFor='van_type' className='text-white'>
+								<Label
+									htmlFor='van_type'
+									className='text-white'
+								>
 									Van Type
 								</Label>
 								<Controller
@@ -297,10 +308,16 @@ export function VanHireModal({
 												<SelectValue placeholder='Select type' />
 											</SelectTrigger>
 											<SelectContent className='bg-slate-900 border-white/20'>
-												<SelectItem value='Fleet' className='text-white hover:bg-white/10 focus:bg-white/10'>
+												<SelectItem
+													value='Fleet'
+													className='text-white hover:bg-white/10 focus:bg-white/10'
+												>
 													Fleet (£250/week)
 												</SelectItem>
-												<SelectItem value='Flexi' className='text-white hover:bg-white/10 focus:bg-white/10'>
+												<SelectItem
+													value='Flexi'
+													className='text-white hover:bg-white/10 focus:bg-white/10'
+												>
 													Flexi (£100-£250/week)
 												</SelectItem>
 											</SelectContent>
@@ -310,7 +327,10 @@ export function VanHireModal({
 							</div>
 
 							<div>
-								<Label htmlFor='weekly_rate' className='text-white'>
+								<Label
+									htmlFor='weekly_rate'
+									className='text-white'
+								>
 									Weekly Rate (£) *
 								</Label>
 								<Controller
@@ -324,7 +344,9 @@ export function VanHireModal({
 											step='0.01'
 											value={field.value / 100}
 											onChange={(e) =>
-												field.onChange(Math.round(parseFloat(e.target.value) * 100))
+												field.onChange(
+													Math.round(parseFloat(e.target.value) * 100)
+												)
 											}
 											className='bg-white/5 border-white/20 text-white mt-2'
 										/>
@@ -341,22 +363,23 @@ export function VanHireModal({
 						{/* Dates */}
 						<div className='grid grid-cols-2 gap-4'>
 							<div>
-								<Label htmlFor='on_hire_date' className='text-white'>
+								<Label
+									htmlFor='on_hire_date'
+									className='text-white'
+								>
 									On-Hire Date *
 								</Label>
 								<Controller
 									name='on_hire_date'
 									control={control}
 									render={({ field }) => (
-										<div className='mt-2'>
-											<DatePicker
-												date={field.value ? new Date(field.value) : undefined}
-												onDateChange={(date) => {
-													field.onChange(date ? date.toISOString().split('T')[0] : '')
-												}}
-												placeholder='Select on-hire date'
-											/>
-										</div>
+										<Input
+											{...field}
+											id='on_hire_date'
+											type='date'
+											lang='en-GB'
+											className='bg-white/5 border-white/20 text-white mt-2'
+										/>
 									)}
 								/>
 								{errors.on_hire_date && (
@@ -367,23 +390,25 @@ export function VanHireModal({
 							</div>
 
 							<div>
-								<Label htmlFor='off_hire_date' className='text-white'>
+								<Label
+									htmlFor='off_hire_date'
+									className='text-white'
+								>
 									Off-Hire Date
 								</Label>
 								<Controller
 									name='off_hire_date'
 									control={control}
 									render={({ field }) => (
-										<div className='mt-2'>
-											<DatePicker
-												date={field.value ? new Date(field.value) : undefined}
-												onDateChange={(date) => {
-													field.onChange(date ? date.toISOString().split('T')[0] : null)
-												}}
-												placeholder='Select off-hire date'
-												disabled={isEditMode && !van?.off_hire_date}
-											/>
-										</div>
+										<Input
+											{...field}
+											value={field.value ?? ''}
+											id='off_hire_date'
+											type='date'
+											lang='en-GB'
+											className='bg-white/5 border-white/20 text-white mt-2'
+											disabled={isEditMode && !van?.off_hire_date}
+										/>
 									)}
 								/>
 								<p className='text-slate-400 text-xs mt-1'>
@@ -403,14 +428,18 @@ export function VanHireModal({
 									</span>
 								</div>
 								<p className='text-slate-500 text-xs mt-2'>
-									Deposits are automatically calculated by the system based on weeks with any van
+									Deposits are automatically calculated by the system based on
+									weeks with any van
 								</p>
 							</div>
 						)}
 
 						{/* Notes */}
 						<div>
-							<Label htmlFor='notes' className='text-white'>
+							<Label
+								htmlFor='notes'
+								className='text-white'
+							>
 								Notes
 							</Label>
 							<Controller
@@ -516,9 +545,12 @@ export function VanHireModal({
 								<AlertCircle className='w-6 h-6 text-red-400' />
 							</div>
 							<div>
-								<h3 className='text-xl font-bold text-white mb-2'>Delete Van Hire?</h3>
+								<h3 className='text-xl font-bold text-white mb-2'>
+									Delete Van Hire?
+								</h3>
 								<p className='text-slate-400'>
-									Are you sure you want to delete this van hire? This action cannot be undone.
+									Are you sure you want to delete this van hire? This action
+									cannot be undone.
 								</p>
 								{van && (
 									<p className='text-white font-semibold mt-2'>
@@ -574,22 +606,28 @@ export function VanHireModal({
 								Important: Same-Day Van Swaps
 							</p>
 							<p className='text-blue-300 text-xs'>
-								The off-hire date is the <strong>last day</strong> you had the van.
-								If you're picking up a new van the same morning you're returning this one,
-								off-hire this van on the <strong>previous day</strong> to avoid counting the same day twice.
+								The off-hire date is the <strong>last day</strong> you had the
+								van. If you're picking up a new van the same morning you're
+								returning this one, off-hire this van on the{' '}
+								<strong>previous day</strong> to avoid counting the same day
+								twice.
 							</p>
 						</div>
 
-						<Label htmlFor='off_hire_input' className='text-white'>
+						<Label
+							htmlFor='off_hire_input'
+							className='text-white'
+						>
 							Off-Hire Date *
 						</Label>
-						<div className='mt-2 mb-4'>
-							<DatePicker
-								date={offHireDateInput}
-								onDateChange={(date) => setOffHireDateInput(date)}
-								placeholder='Select off-hire date'
-							/>
-						</div>
+						<Input
+							id='off_hire_input'
+							type='date'
+							value={offHireDateInput}
+							onChange={(e) => setOffHireDateInput(e.target.value)}
+							lang='en-GB'
+							className='bg-white/5 border-white/20 text-white mt-2 mb-4'
+						/>
 						<div className='flex gap-2 justify-end'>
 							<Button
 								variant='outline'
@@ -619,7 +657,10 @@ export function VanHireModal({
 						<p className='text-slate-400 mb-4'>
 							Enter the refund amount (after deducting any damage costs).
 						</p>
-						<Label htmlFor='refund_input' className='text-white'>
+						<Label
+							htmlFor='refund_input'
+							className='text-white'
+						>
 							Refund Amount (£) *
 						</Label>
 						<Input
