@@ -18,6 +18,7 @@ import type { VanHire, VanType } from '@/types/database'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { DatePicker } from '@/components/ui/date-picker'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -64,7 +65,7 @@ export function VanHireModal({
 	const [showOffHire, setShowOffHire] = useState(false)
 	const [showRefund, setShowRefund] = useState(false)
 	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-	const [offHireDateInput, setOffHireDateInput] = useState('')
+	const [offHireDateInput, setOffHireDateInput] = useState<Date | undefined>(undefined)
 	const [refundAmountInput, setRefundAmountInput] = useState('')
 
 	const isEditMode = van !== null
@@ -180,12 +181,12 @@ export function VanHireModal({
 
 		setSaving(true)
 		try {
-			const offHireDate = new Date(offHireDateInput)
-			const updated = await offHireVan(van.id, offHireDate)
+			const updated = await offHireVan(van.id, offHireDateInput)
 			if (updated) {
 				updateVanStore(van.id, updated)
 				toast.success('Van off-hired successfully', { duration: 3000 })
 				setShowOffHire(false)
+				setOffHireDateInput(undefined)
 				onClose()
 			} else {
 				toast.error('Failed to off-hire van', { duration: 3000 })
@@ -347,12 +348,15 @@ export function VanHireModal({
 									name='on_hire_date'
 									control={control}
 									render={({ field }) => (
-										<Input
-											{...field}
-											id='on_hire_date'
-											type='date'
-											className='bg-white/5 border-white/20 text-white mt-2'
-										/>
+										<div className='mt-2'>
+											<DatePicker
+												date={field.value ? new Date(field.value) : undefined}
+												onDateChange={(date) => {
+													field.onChange(date ? date.toISOString().split('T')[0] : '')
+												}}
+												placeholder='Select on-hire date'
+											/>
+										</div>
 									)}
 								/>
 								{errors.on_hire_date && (
@@ -370,14 +374,16 @@ export function VanHireModal({
 									name='off_hire_date'
 									control={control}
 									render={({ field }) => (
-										<Input
-											{...field}
-											value={field.value ?? ''}
-											id='off_hire_date'
-											type='date'
-											className='bg-white/5 border-white/20 text-white mt-2'
-											disabled={isEditMode && !van?.off_hire_date}
-										/>
+										<div className='mt-2'>
+											<DatePicker
+												date={field.value ? new Date(field.value) : undefined}
+												onDateChange={(date) => {
+													field.onChange(date ? date.toISOString().split('T')[0] : null)
+												}}
+												placeholder='Select off-hire date'
+												disabled={isEditMode && !van?.off_hire_date}
+											/>
+										</div>
 									)}
 								/>
 								<p className='text-slate-400 text-xs mt-1'>
@@ -577,13 +583,13 @@ export function VanHireModal({
 						<Label htmlFor='off_hire_input' className='text-white'>
 							Off-Hire Date *
 						</Label>
-						<Input
-							id='off_hire_input'
-							type='date'
-							value={offHireDateInput}
-							onChange={(e) => setOffHireDateInput(e.target.value)}
-							className='bg-white/5 border-white/20 text-white mt-2 mb-4'
-						/>
+						<div className='mt-2 mb-4'>
+							<DatePicker
+								date={offHireDateInput}
+								onDateChange={(date) => setOffHireDateInput(date)}
+								placeholder='Select off-hire date'
+							/>
+						</div>
 						<div className='flex gap-2 justify-end'>
 							<Button
 								variant='outline'
