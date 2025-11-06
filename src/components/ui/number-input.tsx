@@ -5,9 +5,9 @@ import * as React from 'react'
 export interface NumberInputProps
 	extends Omit<
 		React.InputHTMLAttributes<HTMLInputElement>,
-		'type' | 'onChange'
+		'type' | 'onChange' | 'value'
 	> {
-	value?: number
+	value?: number | null
 	onChange?: (value: number) => void
 	min?: number
 	max?: number
@@ -15,11 +15,11 @@ export interface NumberInputProps
 }
 
 const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
-	({ className, value = 0, onChange, min, max, step = 1, ...props }, ref) => {
-		const [localValue, setLocalValue] = React.useState<number>(value)
+	({ className, value, onChange, min, max, step = 1, ...props }, ref) => {
+		const [localValue, setLocalValue] = React.useState<number>(value ?? 0)
 
 		React.useEffect(() => {
-			setLocalValue(value)
+			setLocalValue(value ?? 0)
 		}, [value])
 
 		const handleIncrement = () => {
@@ -64,7 +64,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 					ref={ref}
 					{...props}
 				/>
-				<div className='absolute right-1 flex flex-col gap-0.5'>
+				<div className='absolute right-1 flex flex-col gap-0.5 mb-1'>
 					<button
 						type='button'
 						onClick={handleIncrement}

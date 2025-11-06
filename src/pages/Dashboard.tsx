@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { logout } from '@/lib/auth'
@@ -5,9 +6,20 @@ import { Calendar, LogOut, Settings, TrendingUp, Truck } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
+import { fetchWeekWithWorkDays } from '@/lib/api/weeks'
+import { dateToWeekNumber } from '@/lib/dates'
+
+import { QuickAddWorkTile } from '@/components/dashboard/QuickAddWorkTile'
+import { PaymentTile } from '@/components/dashboard/PaymentTile'
+import { QuickAddSweepsTile } from '@/components/dashboard/QuickAddSweepsTile'
+import { RankingsReminderTile } from '@/components/dashboard/RankingsReminderTile'
+import { QuickAddOdometerTile } from '@/components/dashboard/QuickAddOdometerTile'
+import { VanStatusTile } from '@/components/dashboard/VanStatusTile'
+
 export default function Dashboard() {
 	const { user, loading } = useAuth()
 	const navigate = useNavigate()
+	const [hasWorkToday, setHasWorkToday] = useState(false)
 
 	const handleLogout = async () => {
 		try {
@@ -18,6 +30,23 @@ export default function Dashboard() {
 			toast.error('Failed to logout. Please try again.')
 		}
 	}
+
+	// Check if work exists for today
+	const checkTodayWorkStatus = async () => {
+		if (!user?.id) return
+
+		const today = new Date()
+		const todayString = today.toISOString().split('T')[0]
+		const { week, year } = dateToWeekNumber(today)
+
+		const weekData = await fetchWeekWithWorkDays(user.id, week, year)
+		const todayWork = weekData?.workDays?.find((wd) => wd.date === todayString)
+		setHasWorkToday(!!todayWork)
+	}
+
+	useEffect(() => {
+		checkTodayWorkStatus()
+	}, [user?.id])
 
 	if (loading) {
 		return (
@@ -48,6 +77,24 @@ export default function Dashboard() {
 					</div>
 					<div className='flex items-center gap-2'>
 						<Button
+							onClick={() => navigate('/calendar')}
+							variant='outline'
+							className='bg-white/5 border-white/10 text-white hover:bg-white/10 cursor-pointer'
+							aria-label='Calendar'
+						>
+							<Calendar className='w-4 h-4 md:mr-2' />
+							<span className='hidden md:inline'>Calendar</span>
+						</Button>
+						<Button
+							onClick={() => navigate('/vans')}
+							variant='outline'
+							className='bg-white/5 border-white/10 text-white hover:bg-white/10 cursor-pointer'
+							aria-label='Vans'
+						>
+							<Truck className='w-4 h-4 md:mr-2' />
+							<span className='hidden md:inline'>Vans</span>
+						</Button>
+						<Button
 							onClick={() => navigate('/settings')}
 							variant='outline'
 							className='bg-white/5 border-white/10 text-white hover:bg-white/10 cursor-pointer'
@@ -68,30 +115,40 @@ export default function Dashboard() {
 					</div>
 				</div>
 
-				{/* Content */}
-				<div className='bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-8'>
-					<h2 className='text-xl font-bold text-white mb-4'>
-						Dashboard Coming Soon
-					</h2>
-					<p className='text-slate-300 mb-6'>
-						Authentication is working! Now we'll build out the calendar, pay
-						tracking, and other features.
-					</p>
-					<div className='flex flex-wrap gap-3'>
-						<Button
-							onClick={() => navigate('/calendar')}
-							className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
-						>
-							<Calendar className='w-4 h-4 mr-2' />
-							Open Calendar
-						</Button>
-						<Button
-							onClick={() => navigate('/vans')}
-							className='bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white cursor-pointer'
-						>
-							<Truck className='w-4 h-4 mr-2' />
-							Van Management
-						</Button>
+				{/* Dashboard Grid */}
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+					{/* Quick Add Work - Mobile: 1st, Desktop: Top-left */}
+					<div className='order-1'>
+						<QuickAddWorkTile
+							onWorkAdded={() => {
+								setHasWorkToday(true)
+							}}
+						/>
+					</div>
+
+					{/* Quick Add Sweeps - Mobile: 2nd, Desktop: Middle-left */}
+					<div className='order-2 md:order-3'>
+						<QuickAddSweepsTile hasWorkToday={hasWorkToday} />
+					</div>
+
+					{/* Quick Add Odometer - Mobile: 3rd, Desktop: Bottom-left */}
+					<div className='order-3 md:order-5'>
+						<QuickAddOdometerTile hasWorkToday={hasWorkToday} />
+					</div>
+
+					{/* Payment This Week - Mobile: 4th, Desktop: Top-right */}
+					<div className='order-4 md:order-2'>
+						<PaymentTile />
+					</div>
+
+					{/* Rankings Reminder - Mobile: 5th, Desktop: Middle-right */}
+					<div className='order-5 md:order-4'>
+						<RankingsReminderTile />
+					</div>
+
+					{/* Van Status - Mobile: 6th, Desktop: Bottom-right */}
+					<div className='order-6'>
+						<VanStatusTile />
 					</div>
 				</div>
 			</div>

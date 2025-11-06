@@ -83,12 +83,6 @@ export default function DayCell({
 	// Work day cell
 	const isNormal = workDay.route_type === 'Normal'
 	const netSweeps = workDay.stops_given - workDay.stops_taken
-	const hasMileageDiscrepancy =
-		workDay.van_logged_miles && workDay.amazon_paid_miles
-			? (workDay.van_logged_miles - workDay.amazon_paid_miles) /
-					workDay.amazon_paid_miles >
-			  0.1
-			: false
 
 	return (
 		<div
@@ -117,7 +111,9 @@ export default function DayCell({
 						) : (
 							<Package className='w-4 h-4' />
 						)}
-						<span className='text-xs font-medium'>{isNormal ? 'Std.' : 'DRS'}</span>
+						<span className='text-xs font-medium'>
+							{isNormal ? 'Std.' : 'DRS'}
+						</span>
 					</div>
 				</div>
 
@@ -148,16 +144,57 @@ export default function DayCell({
 				)}
 
 				{/* Mileage */}
-				{workDay.amazon_paid_miles && (
-					<div className='flex items-center gap-1 mb-3'>
-						<span className='text-slate-400 text-xs'>📍</span>
-						<span
-							className={`text-sm font-medium ${
-								hasMileageDiscrepancy ? 'text-amber-400' : 'text-white'
-							}`}
-						>
-							{workDay.amazon_paid_miles}m
-						</span>
+				{((workDay.amazon_paid_miles ?? 0) > 0 ||
+					(workDay.van_logged_miles ?? 0) > 0) && (
+					<div className='mb-3'>
+						<div className='flex justify-between gap-5'>
+							{(workDay.van_logged_miles ?? 0) > 0 && (
+								<div className='flex items-center gap-1'>
+									<span className='text-yellow-400 text-xs'>📌</span>
+									<span className='text-sm font-medium text-yellow-400'>
+										{workDay.van_logged_miles}m
+									</span>
+								</div>
+							)}
+							{(workDay.amazon_paid_miles ?? 0) > 0 && (
+								<div className='flex items-center gap-1'>
+									<span className='text-slate-400 text-xs'>📍</span>
+									<span className='text-sm font-medium text-white'>
+										{workDay.amazon_paid_miles}m
+									</span>
+								</div>
+							)}
+						</div>
+						<div>
+							{(workDay.van_logged_miles ?? 0) > 0 &&
+								(workDay.amazon_paid_miles ?? 0) > 0 && (
+									<div className='flex items-center justify-center gap-1 mt-0.5'>
+										<span className='text-xs text-slate-500'>Δ</span>
+										<span
+											className={`text-xs font-medium ${
+												(workDay.van_logged_miles ?? 0) -
+													(workDay.amazon_paid_miles ?? 0) >
+												0
+													? 'text-red-400'
+													: (workDay.van_logged_miles ?? 0) -
+															(workDay.amazon_paid_miles ?? 0) <
+													  0
+													? 'text-emerald-400'
+													: 'text-slate-400'
+											}`}
+										>
+											{(workDay.van_logged_miles ?? 0) -
+												(workDay.amazon_paid_miles ?? 0) >
+											0
+												? '+'
+												: ''}
+											{(workDay.van_logged_miles ?? 0) -
+												(workDay.amazon_paid_miles ?? 0)}
+											m
+										</span>
+									</div>
+								)}
+						</div>
 					</div>
 				)}
 
