@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { toast } from 'sonner'
 import { Gauge, Loader2, Pencil } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
 import { fetchWeekWithWorkDays, updateWorkDay } from '@/lib/api/weeks'
 import { dateToWeekNumber } from '@/lib/dates'
 import type { WorkDay } from '@/types/database'
 
-import { DashboardTile } from './DashboardTile'
 import { Button } from '@/components/ui/button'
-import { NumberInput } from '@/components/ui/number-input'
 import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
+import { DashboardTile } from './DashboardTile'
 
 const odometerSchema = z.object({
 	van_logged_miles: z.number().min(0, 'Cannot be negative'),
@@ -112,7 +112,10 @@ export function QuickAddOdometerTile({
 	// Show odometer details if entered and not editing
 	if (todayWork && todayWork.van_logged_miles > 0 && !isEditing) {
 		return (
-			<DashboardTile title='Quick Add Odometer' icon={Gauge}>
+			<DashboardTile
+				title='Quick Add Odometer'
+				icon={Gauge}
+			>
 				<div className='flex flex-col h-full'>
 					<div className='space-y-4 flex-1'>
 						<div className='bg-white/5 rounded-lg p-4'>
@@ -129,7 +132,7 @@ export function QuickAddOdometerTile({
 									onClick={() => setIsEditing(true)}
 									className='text-slate-400 hover:text-white hover:bg-white/10 h-8 w-8'
 								>
-									<Pencil className='w-4 h-4' />
+									<Pencil className='w-4 h-4 text-yellow-400' />
 								</Button>
 							</div>
 						</div>
@@ -155,7 +158,10 @@ export function QuickAddOdometerTile({
 					</p>
 				</div>
 			) : (
-				<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col h-full'>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className='flex flex-col h-full'
+				>
 					<div className='space-y-4'>
 						<div>
 							<Label

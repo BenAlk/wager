@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import { Loader2, Pencil, Repeat2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { Repeat2, Loader2, Pencil } from 'lucide-react'
+import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
 import { fetchWeekWithWorkDays, updateWorkDay } from '@/lib/api/weeks'
 import { dateToWeekNumber } from '@/lib/dates'
 import type { WorkDay } from '@/types/database'
 
-import { DashboardTile } from './DashboardTile'
 import { Button } from '@/components/ui/button'
-import { NumberInput } from '@/components/ui/number-input'
 import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
+import { DashboardTile } from './DashboardTile'
 
 const sweepsSchema = z.object({
 	stops_given: z.number().min(0, 'Cannot be negative').max(200, 'Max 200'),
@@ -122,9 +122,16 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 	}
 
 	// Show sweeps details if entered and not editing
-	if (todayWork && (todayWork.stops_given > 0 || todayWork.stops_taken > 0) && !isEditing) {
+	if (
+		todayWork &&
+		(todayWork.stops_given > 0 || todayWork.stops_taken > 0) &&
+		!isEditing
+	) {
 		return (
-			<DashboardTile title='Quick Add Sweeps' icon={Repeat2}>
+			<DashboardTile
+				title='Quick Add Sweeps'
+				icon={Repeat2}
+			>
 				<div className='flex flex-col h-full'>
 					<div className='space-y-4 flex-1'>
 						<div className='bg-white/5 rounded-lg p-4'>
@@ -142,7 +149,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 									onClick={() => setIsEditing(true)}
 									className='text-slate-400 hover:text-white hover:bg-white/10 h-8 w-8'
 								>
-									<Pencil className='w-4 h-4' />
+									<Pencil className='w-4 h-4 text-yellow-400' />
 								</Button>
 							</div>
 							<div>
@@ -175,10 +182,16 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 					</p>
 				</div>
 			) : (
-				<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col h-full'>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className='flex flex-col h-full'
+				>
 					<div className='space-y-2'>
 						<div>
-							<Label htmlFor='stops_given' className='text-slate-300 text-sm'>
+							<Label
+								htmlFor='stops_given'
+								className='text-slate-300 text-sm'
+							>
 								Stops Given (Others took from you)
 							</Label>
 							<Controller
@@ -203,7 +216,10 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 						</div>
 
 						<div>
-							<Label htmlFor='stops_taken' className='text-slate-300 text-sm'>
+							<Label
+								htmlFor='stops_taken'
+								className='text-slate-300 text-sm'
+							>
 								Stops Taken (You took from others)
 							</Label>
 							<Controller
