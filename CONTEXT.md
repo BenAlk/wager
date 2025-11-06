@@ -1087,8 +1087,99 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - **Status**: In active development (Phase 1)
 - **License**: MIT
 
+### ✅ Phase 13: Dashboard & Reports - COMPLETE (Jan 6, 2025)
+
+**All tasks completed!** Dashboard is fully functional with 6 interactive tiles.
+
+**Completed:**
+
+- ✅ Main dashboard layout with responsive CSS Grid
+- ✅ **Quick Add Work** tile (create/edit today's work)
+  - Route type selection (Normal/DRS) with auto-rate calculation
+  - Route number input
+  - Edit mode with populated form values
+  - Contextual button text ("Add Work" vs "Confirm Edits")
+  - Cache sync with weeks store on edit
+- ✅ **Quick Add Sweeps** tile (log sweeps with edit mode)
+  - Stops given/taken inputs with NumberInput
+  - Shows entered data with edit button
+  - Color-coded display (red=given, green=taken)
+  - Edit mode with populated form
+- ✅ **Quick Add Odometer** tile (log van miles)
+  - Van logged miles input with NumberInput
+  - Shows entered data with edit button
+  - Yellow van theme 🚐
+  - Edit mode with populated form
+- ✅ **Payment Tile** (Week N-2 + N-6 breakdown)
+  - Standard pay from Week N-2
+  - Performance bonus from Week N-6
+  - Complete pay breakdown
+  - Navigate to calendar for details
+- ✅ **Rankings Reminder Tile** (Week N-2 rankings entry)
+  - Form with Individual/Company performance dropdowns
+  - Projected bonus calculation
+  - Smart placeholders:
+    - "Rankings entered" when already saved
+    - "No bonus eligible" when no work days
+    - "Enter Rankings Now" when missing
+  - Default values properly set to 'Fantastic'
+  - Form reset on modal open
+- ✅ **Van Status Tile** (active/last van display)
+  - Shows active van with deposit progress
+  - Shows last van after off-hire with badge
+  - Quick off-hire button
+  - Deposit progress bar
+- ✅ **Responsive tile ordering** (mobile vs desktop)
+  - CSS Grid with order utilities
+  - Mobile: work, sweeps, odometer, payment, rankings, van
+  - Desktop: 2-column grid with different order
+- ✅ **Consistent UX**
+  - All buttons at bottom of tiles (flexbox with mt-auto)
+  - Uniform button sizing (w-full h-10)
+  - Consistent tile height (min-h-[280px])
+- ✅ **Real-time cache sync**
+  - Dashboard updates sync with calendar via weeks store
+  - No page refresh needed after edits
+- ✅ **Dual mileage display on calendar**
+  - Amazon paid miles 📍 (gray pin, white text)
+  - Van logged miles 🚐 (yellow van, yellow text)
+  - Difference indicator Δ with color coding:
+    - Red if losing money (van > paid)
+    - Green if good deal (van < paid)
+    - Gray if exact match
+- ✅ **NumberInput component improvements**
+  - Null-safe (handles null/undefined values)
+  - Consistent throughout app (sweeps, odometer, all number fields)
+  - Custom chevron arrows
+  - Proper TypeScript typing
+
+**Key Files Created:**
+
+- `src/pages/Dashboard.tsx` - Main dashboard with 6 tiles
+- `src/components/dashboard/DashboardTile.tsx` - Base tile wrapper
+- `src/components/dashboard/QuickAddWorkTile.tsx` - Work entry tile
+- `src/components/dashboard/QuickAddSweepsTile.tsx` - Sweeps entry tile
+- `src/components/dashboard/QuickAddOdometerTile.tsx` - Odometer entry tile
+- `src/components/dashboard/PaymentTile.tsx` - Payment breakdown tile
+- `src/components/dashboard/RankingsReminderTile.tsx` - Rankings entry tile
+- `src/components/dashboard/VanStatusTile.tsx` - Van status tile
+
+**Key Files Modified:**
+
+- `src/components/calendar/DayCell.tsx` - Added dual mileage display
+- `src/components/ui/number-input.tsx` - Made null-safe
+- `src/store/weeksStore.ts` - Already had updateWorkDay for cache sync
+
+**Business Logic:**
+
+- Dashboard tiles fetch today's data on mount
+- Edit mode populates forms with existing values
+- Updates sync with weeks store cache automatically
+- Tiles show entered data vs empty forms intelligently
+- Placeholders handle all states (entered/missing/no work)
+
 ---
 
-**Last Updated**: November 4, 2025 (v3 - Van Management Complete)
-**Current Phase**: Phase 13 - Dashboard & Reports
-**Next Steps**: Dashboard widgets, pay summaries, historical records
+**Last Updated**: January 6, 2025 (v4 - Dashboard Complete)
+**Current Phase**: Phase 14 - Export & Data Management
+**Next Steps**: CSV export, data backup, comprehensive statistics

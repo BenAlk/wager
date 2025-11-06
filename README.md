@@ -29,6 +29,13 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Easy navigation between weeks (previous/next/today buttons)
 - URL-based navigation (shareable week links)
 - Quick day type assignment (Normal/DRS)
+- **Dual Mileage Display** on day cells:
+  - Amazon paid miles 📍 (gray pin, white text)
+  - Van logged miles 🚐 (yellow van, yellow text)
+  - Difference indicator Δ with color coding:
+    - Red if van miles > paid miles (losing money)
+    - Green if van miles < paid miles (good deal)
+    - Gray if exact match
 - **Payment This Week** section showing actual bank deposits
   - Week N-2 standard pay breakdown
   - Week N-6 performance bonus (when entered)
@@ -41,7 +48,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
   - Clear week functionality
 - 6-day work limit validation (blocks 7th day - illegal)
 - Back to dashboard navigation
-- Custom NumberInput components with styled increment/decrement arrows
+- Custom NumberInput components with styled increment/decrement arrows throughout
 
 ### 💵 Pay Tracking
 
@@ -130,19 +137,25 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - Weekly costs automatically deducted from standard pay
 - **Historical Accuracy**: Service level is snapshot per week - changing your service level in settings doesn't affect past weeks' calculations
 
-### 📊 Dashboard & Reports
+### 📊 Dashboard & Reports ✅ **COMPLETE**
 
-- Current week expected pay
-- Upcoming pay (including delayed bonuses)
-- Historical pay records
-- Weekly/monthly statistics
-- Export functionality
+- **6 Interactive Tiles** with mobile-first responsive layout:
+  - **Quick Add Work**: Create/edit today's work with route type & number, auto-rate calculation, contextual button text ("Add Work" vs "Confirm Edits")
+  - **Quick Add Sweeps**: Update sweeps for today, shows entered data with edit button, color-coded display (red/green)
+  - **Quick Add Odometer**: Log van miles for today, shows entered data with edit button, yellow van theme 🚐
+  - **Payment Tile**: Week N-2 standard pay + Week N-6 bonus with full breakdown
+  - **Rankings Reminder**: Week N-2 rankings entry with projected bonus, smart placeholders (entered/no work/missing)
+  - **Van Status Tile**: Shows active or last van with deposit progress, quick off-hire button
+- **Responsive Tile Ordering**: Different layouts for mobile vs desktop (CSS Grid with order utilities)
+- **Consistent UX**: All buttons positioned at bottom, uniform sizing (w-full h-10), flexbox layout
+- **Real-time Sync**: Dashboard updates automatically sync with calendar via weeks store cache
+- **Edit Mode**: All quick add tiles support in-place editing with populated forms and contextual messaging
 
 ## Tech Stack
 
 ### Frontend
 
-- **React 18+** with TypeScript
+- **React 19** with TypeScript
 - **Vite** - Fast build tool
 - **Tailwind CSS** - Utility-first styling
 - **shadcn/ui** - Beautiful UI components
@@ -172,14 +185,21 @@ wager/
 │   ├── components/
 │   │   ├── ui/              # shadcn UI components (Button, Input, NumberInput, Select, etc.)
 │   │   ├── calendar/        # Calendar view components
-│   │   │   ├── DayCell.tsx           # Individual day display
+│   │   │   ├── DayCell.tsx           # Individual day display with dual mileage
 │   │   │   ├── DayEditModal.tsx      # Work day CRUD modal
 │   │   │   ├── PaymentThisWeek.tsx   # Week N-2 + N-6 payment display
 │   │   │   └── WeekSummary.tsx       # Current week earnings breakdown
 │   │   ├── van/             # Van management components
 │   │   │   ├── VanHireCard.tsx       # Individual van display
 │   │   │   └── VanHireModal.tsx      # Van hire CRUD modal
-│   │   ├── dashboard/       # Dashboard widgets
+│   │   ├── dashboard/       # Dashboard tiles (6 interactive widgets)
+│   │   │   ├── QuickAddWorkTile.tsx      # Create/edit today's work
+│   │   │   ├── QuickAddSweepsTile.tsx    # Log sweeps with edit mode
+│   │   │   ├── QuickAddOdometerTile.tsx  # Log van miles with edit mode
+│   │   │   ├── RankingsReminderTile.tsx  # Week N-2 rankings entry
+│   │   │   ├── PaymentTile.tsx           # Week N-2 + N-6 pay breakdown
+│   │   │   ├── VanStatusTile.tsx         # Active/last van with quick off-hire
+│   │   │   └── DashboardTile.tsx         # Base wrapper component
 │   │   ├── settings/        # Settings forms
 │   │   └── shared/          # Reusable components
 │   ├── lib/
@@ -346,15 +366,24 @@ wager/
 - [x] Van hire card component with status badges
 - [x] Edit functionality for all van details
 
-### Phase 13: Dashboard & Reports
+### Phase 13: Dashboard & Reports ✅ **COMPLETE**
 
-- [ ] Create main dashboard layout
-- [ ] Build pay widgets
-- [ ] Create historical records view
-- [ ] Add statistics and visualizations
-- [ ] Implement filtering options
+**All tasks completed!** Dashboard is fully functional with 6 interactive tiles.
 
-### Phase 14: Additional Features
+- [x] Create main dashboard layout with responsive grid
+- [x] Build Quick Add Work tile (create/edit with cache sync)
+- [x] Build Quick Add Sweeps tile (with edit mode and color coding)
+- [x] Build Quick Add Odometer tile (with edit mode and yellow theme)
+- [x] Build Payment tile (Week N-2 + N-6 breakdown)
+- [x] Build Rankings Reminder tile (with smart placeholders)
+- [x] Build Van Status tile (active/last van with quick off-hire)
+- [x] Implement responsive tile ordering (mobile vs desktop)
+- [x] Add consistent button sizing and positioning
+- [x] Integrate with weeks store for real-time cache sync
+- [x] Add dual mileage display to calendar day cells
+- [x] Make NumberInput components null-safe and consistent throughout
+
+### Phase 14: Export & Data Management
 
 - [ ] Add export/backup functionality
 - [ ] Implement comprehensive validation
