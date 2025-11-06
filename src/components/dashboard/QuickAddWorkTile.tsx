@@ -83,7 +83,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 		if (isEditing && todayWork) {
 			reset({
 				route_type: todayWork.route_type as 'Normal' | 'DRS',
-				route_number: todayWork.route_number,
+				route_number: todayWork.route_number || '',
 			})
 		}
 	}, [isEditing, todayWork, reset])

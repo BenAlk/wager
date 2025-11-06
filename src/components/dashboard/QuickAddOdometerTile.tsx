@@ -39,7 +39,6 @@ export function QuickAddOdometerTile({
 	const {
 		control,
 		handleSubmit,
-		reset,
 		setValue,
 		formState: { errors },
 	} = useForm<OdometerFormData>({
@@ -60,7 +59,7 @@ export function QuickAddOdometerTile({
 			setTodayWork(work || null)
 
 			// Set form values if work exists
-			if (work) {
+			if (work && work.van_logged_miles !== null) {
 				setValue('van_logged_miles', work.van_logged_miles)
 			}
 		}
@@ -110,7 +109,7 @@ export function QuickAddOdometerTile({
 	}
 
 	// Show odometer details if entered and not editing
-	if (todayWork && todayWork.van_logged_miles > 0 && !isEditing) {
+	if (todayWork && todayWork.van_logged_miles !== null && todayWork.van_logged_miles > 0 && !isEditing) {
 		return (
 			<DashboardTile
 				title='Quick Add Odometer'

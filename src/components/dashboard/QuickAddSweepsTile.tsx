@@ -39,7 +39,6 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 		control,
 		handleSubmit,
 		watch,
-		reset,
 		setValue,
 		formState: { errors },
 	} = useForm<SweepsFormData>({

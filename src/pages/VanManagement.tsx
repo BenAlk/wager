@@ -13,7 +13,7 @@ import type { VanHire } from '@/types/database'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { NumberInput } from '@/components/ui/number-input'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { VanHireModal } from '@/components/van/VanHireModal'
 import { VanHireCard } from '@/components/van/VanHireCard'
@@ -366,7 +366,7 @@ export default function VanManagement() {
 							min='0'
 							max='500'
 							value={depositAdjustment}
-							onChange={(e) => setDepositAdjustment(e.target.value)}
+							onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDepositAdjustment(e.target.value)}
 							placeholder='e.g., 250.00'
 							className='bg-white/5 border-white/20 text-white mt-2 mb-2'
 						/>
