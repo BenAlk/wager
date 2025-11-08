@@ -391,13 +391,14 @@ van_hires {
   on_hire_date: date NOT NULL
   off_hire_date: date | null             // NULL = currently active
   van_type: text | null                  // 'Fleet' | 'Flexi'
-  registration: text NOT NULL            // Required: "AB12 CDE"
+  registration: text NOT NULL            // Required: "AB12 CDE" or 'MANUAL_DEPOSIT_ADJUSTMENT'
   weekly_rate: integer NOT NULL          // In pence (e.g., 25000 = £250.00)
   deposit_paid: integer DEFAULT 0        // Running total, cumulative across all hires
   deposit_complete: boolean DEFAULT false
   deposit_refunded: boolean DEFAULT false
   deposit_refund_amount: integer | null  // In pence
   deposit_hold_until: date | null        // off_hire_date + 6 weeks
+  deposit_calculation_start_date: date | null  // Date to start calculating deposits (for manual adjustments)
   notes: text | null
   created_at: timestamptz
   updated_at: timestamptz                // Auto-updated via trigger
@@ -405,6 +406,8 @@ van_hires {
   CHECK(deposit_paid >= 0 AND deposit_paid <= 50000)  // Max £500
   CHECK(off_hire_date IS NULL OR off_hire_date >= on_hire_date)
   // Note: Total deposit across all hires calculated as: SUM(deposit_paid) (on-the-fly)
+  // Note: deposit_calculation_start_date prevents double-counting when backdating vans with manual deposits
+  // Note: MANUAL_DEPOSIT_ADJUSTMENT entries are filtered from all displays
   // RLS: Users can only access their own van hires
 }
 ```
@@ -415,6 +418,7 @@ van_hires {
 - `supabase/migrations/20251028_move_mileage_rate_to_weeks.sql` - Weekly mileage rate snapshot
 - `supabase/migrations/20251028_fix_rls_policies.sql` - RLS policy fixes
 - `supabase/migrations/20251103_add_invoicing_service_to_weeks.sql` - Weekly invoicing service snapshot
+- `supabase/migrations/20250106_add_deposit_calculation_start_date.sql` - Manual deposit start date tracking
 
 **TypeScript Types:** `src/types/database.ts` (auto-generated)
 **Security:** All tables have RLS enabled with user-specific policies
@@ -1180,6 +1184,78 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 
 ---
 
-**Last Updated**: January 6, 2025 (v4 - Dashboard Complete)
-**Current Phase**: Phase 14 - Export & Data Management
+### ✅ Phase 14: Validation & UX Improvements - COMPLETE (Jan 8, 2025)
+
+**All tasks completed!** Comprehensive validation, notifications, and confirmations implemented.
+
+**Completed:**
+
+- ✅ **Reusable ConfirmationDialog component** (`src/components/ui/confirmation-dialog.tsx`)
+  - Three variants: default (blue), warning (amber), destructive (red)
+  - Centered icon in colored circle background
+  - Loading state with spinner
+  - Mobile-responsive button layout
+- ✅ **Delete work day confirmation**
+  - AlertTriangle icon with destructive variant
+  - Detailed description with date formatting
+  - Integrated into DayEditModal
+- ✅ **Auth UX improvements**
+  - Toast notifications for success/error (Sonner)
+  - Zod validation for login and signup forms
+  - React Hook Form with proper error handling
+  - Separate forms for login and signup
+- ✅ **Van hire date validation**
+  - Off-hire cannot be before on-hire (Zod cross-field validation)
+  - Clear error messages
+- ✅ **Manual deposit bug fix**
+  - Fixed double-counting when backdating vans
+  - Added `deposit_calculation_start_date` field to van_hires
+  - Prevents counting historical weeks twice
+  - Migration: `20250106_add_deposit_calculation_start_date.sql`
+- ✅ **Clear Deposits button**
+  - Red outlined button on van management page
+  - Allows error correction
+  - Calls `clearManualDepositAdjustment` API
+- ✅ **Deposit display consistency**
+  - Removed per-van deposit display from VanHireCard
+  - Updated VanStatusTile to show `totalDepositPaid` from store
+  - All deposit displays now show cumulative total
+- ✅ **MANUAL_DEPOSIT_ADJUSTMENT filtering**
+  - Filtered from weekly summary van breakdown (WeekSummary.tsx)
+  - Filtered from van management page history
+  - Only used internally for calculations
+- ✅ **Standardized confirmation dialogs**
+  - Clear Week: Now uses ConfirmationDialog
+  - Delete Van Hire: Already using ConfirmationDialog
+  - Consistent UX across all confirmations
+
+**Key Files Created:**
+
+- `src/components/ui/confirmation-dialog.tsx` - Reusable confirmation modal (109 lines)
+- `supabase/migrations/20250106_add_deposit_calculation_start_date.sql` - Deposit tracking fix
+
+**Key Files Modified:**
+
+- `src/pages/Auth.tsx` - Added Zod validation, toast notifications, React Hook Form
+- `src/components/calendar/DayEditModal.tsx` - Added delete confirmation
+- `src/components/calendar/WeekSummary.tsx` - Added MANUAL_DEPOSIT_ADJUSTMENT filter, standardized clear confirmation
+- `src/components/van/VanHireModal.tsx` - Added date range validation
+- `src/components/van/VanHireCard.tsx` - Removed per-van deposit display
+- `src/components/dashboard/VanStatusTile.tsx` - Updated to show totalDepositPaid
+- `src/lib/api/vans.ts` - Updated recalculateAllDeposits with deposit_calculation_start_date logic
+- `src/pages/VanManagement.tsx` - Added Clear Deposits button, updated manual deposit UI
+- `src/types/database.ts` - Added deposit_calculation_start_date field
+
+**Business Logic:**
+
+- Manual deposit adjustment creates entry with `deposit_calculation_start_date` set to today
+- Deposit recalculation only counts weeks AFTER the start date
+- Historical weeks before start date are skipped entirely
+- Prevents double-counting when user backdates van hires
+- MANUAL_DEPOSIT_ADJUSTMENT entries filtered from all user-facing displays
+
+---
+
+**Last Updated**: January 8, 2025 (v5 - Validation & UX Complete)
+**Current Phase**: Phase 15 - Export & Data Management
 **Next Steps**: CSV export, data backup, comprehensive statistics
