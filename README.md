@@ -383,15 +383,29 @@ wager/
 - [x] Add dual mileage display to calendar day cells
 - [x] Make NumberInput components null-safe and consistent throughout
 
-### Phase 14: Export & Data Management
+### Phase 14: Validation & UX Improvements ✅ **COMPLETE**
 
-- [ ] Add export/backup functionality
-- [ ] Implement comprehensive validation
-- [ ] Add loading states
-- [ ] Create notification system
-- [ ] Add confirmation dialogs
+**All tasks completed!** Comprehensive validation, notifications, and confirmations implemented.
 
-### Phase 15: UI/UX Polish
+- [x] Create reusable ConfirmationDialog component with variants (default, warning, destructive)
+- [x] Add delete work day confirmation with AlertTriangle icon
+- [x] Implement toast notifications for Auth flow (success/error messages)
+- [x] Add Zod validation to Auth forms (login and signup)
+- [x] Add date range validation for van hire (off-hire cannot be before on-hire)
+- [x] Fix manual deposit double-counting bug with deposit_calculation_start_date
+- [x] Add Clear Deposits button for error correction
+- [x] Remove per-van deposit display (deposits are cumulative across all vans)
+- [x] Update VanStatusTile to show totalDepositPaid from store
+- [x] Filter MANUAL_DEPOSIT_ADJUSTMENT from weekly summary van breakdown
+- [x] Standardize existing confirmation dialogs (Clear Week, Delete Van Hire)
+
+### Phase 15: Export & Data Management
+
+- [ ] Add CSV export functionality
+- [ ] Implement data backup
+- [ ] Add data import validation
+
+### Phase 16: UI/UX Polish
 
 - [ ] Make fully responsive
 - [ ] Add animations and transitions
@@ -399,7 +413,7 @@ wager/
 - [ ] Create onboarding flow
 - [ ] Improve accessibility
 
-### Phase 16: Testing & Deployment
+### Phase 17: Testing & Deployment
 
 - [ ] Test all calculations
 - [ ] Test multi-user isolation

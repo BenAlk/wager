@@ -246,6 +246,39 @@ className="w-8 h-8 bg-blue-500/20 rounded-lg
 - Clean, modern aesthetic
 - Wide variety of courier-relevant icons
 
+### Confirmation Dialogs
+
+**Reusable ConfirmationDialog Component**:
+
+```jsx
+<ConfirmationDialog
+  open={showConfirm}
+  onOpenChange={setShowConfirm}
+  onConfirm={handleConfirm}
+  title="Delete Work Day?"
+  description={<>Detailed explanation with <strong>emphasis</strong></>}
+  confirmText="Delete Work Day"
+  cancelText="Cancel"
+  variant="destructive" // 'default' | 'warning' | 'destructive'
+  icon={<AlertTriangle className="w-6 h-6" />}
+  isLoading={isDeleting}
+/>
+```
+
+**Variants**:
+
+- **default**: Blue theme for informational confirmations
+- **warning**: Amber theme for caution (not implemented yet)
+- **destructive**: Red theme for delete/clear actions
+
+**Usage**:
+
+- Consistent styling across all confirmations
+- Icon centered in colored circle background
+- Title and description centered
+- Loading state with spinner
+- Mobile-responsive button layout
+
 ---
 
 ## Layout Patterns
@@ -665,6 +698,6 @@ These fields use **current user settings** and are NOT snapshot:
 
 ---
 
-**Last Updated**: November 3, 2025
-**Version**: 1.1 - Added Data Integrity documentation
+**Last Updated**: January 8, 2025
+**Version**: 1.2 - Added ConfirmationDialog component documentation
 **Status**: Active - Use for all Wager UI components
