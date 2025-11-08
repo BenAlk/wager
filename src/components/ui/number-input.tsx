@@ -11,7 +11,7 @@ export interface NumberInputProps
 	onChange?: (value: number) => void
 	min?: number
 	max?: number
-	step?: number
+	step?: number | 'any'
 	/** Size variant for the chevron buttons. 'default' matches Settings page, 'sm' is smaller for compact layouts */
 	chevronSize?: 'default' | 'sm'
 }
@@ -36,19 +36,25 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 			setLocalValue(value ?? 0)
 		}, [value])
 
+		// Use step for increment/decrement, default to 1 if "any"
+		const numericStep = typeof step === 'number' ? step : 1
+
 		const handleIncrement = () => {
-			const newValue = localValue + step
+			const newValue = localValue + numericStep
 			if (max !== undefined && newValue > max) return
 			setLocalValue(newValue)
 			onChange?.(newValue)
 		}
 
 		const handleDecrement = () => {
-			const newValue = localValue - step
+			const newValue = localValue - numericStep
 			if (min !== undefined && newValue < min) return
 			setLocalValue(newValue)
 			onChange?.(newValue)
 		}
+
+		// For HTML input, use "any" if step is very small to avoid browser validation issues
+		const htmlStep = typeof step === 'number' && step < 0.01 ? 'any' : step
 
 		const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value === '' ? 0 : parseInt(e.target.value, 10)
@@ -80,6 +86,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 					value={localValue}
 					onChange={handleInputChange}
 					min={min}
+				step={htmlStep}
 					max={max}
 					ref={ref}
 					{...props}

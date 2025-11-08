@@ -22,9 +22,36 @@ import {
 import { useVanStore } from '@/store/vanStore'
 import { useWeeksStore } from '@/store/weeksStore'
 import type { PerformanceLevel, VanHire, Week } from '@/types/database'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertCircle, Check, Pencil, Trash2, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { z } from 'zod'
+
+/**
+ * Rankings form validation schema
+ */
+const rankingsSchema = z.object({
+	individual_level: z.enum(['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+']),
+	company_level: z.enum(['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+']),
+})
+
+type RankingsFormData = z.infer<typeof rankingsSchema>
+
+/**
+ * Mileage rate form validation schema
+ * Note: Stored as hundredths of penny (1988 = £0.1988/mile)
+ * Validation happens on the STORED value (after Math.round conversion in onChange)
+ */
+const mileageRateSchema = z.object({
+	mileage_rate: z
+		.number({ message: 'Mileage rate is required' })
+		.min(0, 'Mileage rate cannot be negative')
+		.max(10000, 'Mileage rate cannot exceed £1.00 per mile'),
+})
+
+type MileageRateFormData = z.infer<typeof mileageRateSchema>
 
 interface WeekSummaryProps {
 	weekData: Week | undefined
@@ -41,19 +68,38 @@ export default function WeekSummary({
 	const { updateWeek, deleteWeek } = useWeeksStore()
 	const { allVans } = useVanStore()
 
-	const [individualLevel, setIndividualLevel] =
-		useState<PerformanceLevel | null>(null)
-	const [companyLevel, setCompanyLevel] = useState<PerformanceLevel | null>(
-		null
-	)
-	const [isSavingRankings, setIsSavingRankings] = useState(false)
 	const [isEditingRankings, setIsEditingRankings] = useState(false)
 	const [isEditingMileageRate, setIsEditingMileageRate] = useState(false)
-	const [editedMileageRate, setEditedMileageRate] = useState<number>(0)
-	const [isSavingMileageRate, setIsSavingMileageRate] = useState(false)
 	const [showClearConfirm, setShowClearConfirm] = useState(false)
 	const [isClearing, setIsClearing] = useState(false)
 	const [weekVanHires, setWeekVanHires] = useState<VanHire[]>([])
+
+	// Rankings form
+	const {
+		control: rankingsControl,
+		handleSubmit: handleRankingsSubmit,
+		reset: resetRankings,
+		formState: { errors: rankingsErrors, isSubmitting: isSavingRankings },
+	} = useForm<RankingsFormData>({
+		resolver: zodResolver(rankingsSchema),
+		defaultValues: {
+			individual_level: 'Fantastic',
+			company_level: 'Fantastic',
+		},
+	})
+
+	// Mileage rate form
+	const {
+		control: mileageControl,
+		handleSubmit: handleMileageSubmit,
+		reset: resetMileageRate,
+		formState: { errors: mileageErrors, isSubmitting: isSavingMileageRate },
+	} = useForm<MileageRateFormData>({
+		resolver: zodResolver(mileageRateSchema),
+		defaultValues: {
+			mileage_rate: 1988, // Default to 19.88p
+		},
+	})
 
 	// Use default invoicing service if week doesn't have it yet (old data)
 	const weekInvoicingService = weekData?.invoicing_service || 'Self-Invoicing'
@@ -144,31 +190,29 @@ export default function WeekSummary({
 		'Fantastic+',
 	]
 
-	const handleSaveRankings = async () => {
-		if (!user || !weekData || !individualLevel || !companyLevel) {
-			toast.error('Please select both rankings')
+	const onRankingsSubmit = async (data: RankingsFormData) => {
+		if (!user || !weekData) {
+			toast.error('Unable to save rankings')
 			return
 		}
 
 		try {
-			setIsSavingRankings(true)
-
 			// Calculate bonus amount
-			const dailyBonus = getDailyBonusRate(individualLevel, companyLevel)
+			const dailyBonus = getDailyBonusRate(data.individual_level, data.company_level)
 			const bonusAmount = dailyBonus * daysWorked
 
 			// Update in database
 			await updateWeekRankings(
 				weekData.id,
-				individualLevel,
-				companyLevel,
+				data.individual_level,
+				data.company_level,
 				bonusAmount
 			)
 
 			// Update cache
 			updateWeek(weekData.id, {
-				individual_level: individualLevel,
-				company_level: companyLevel,
+				individual_level: data.individual_level,
+				company_level: data.company_level,
 				bonus_amount: bonusAmount,
 			})
 
@@ -177,47 +221,46 @@ export default function WeekSummary({
 		} catch (error) {
 			console.error('Error saving rankings:', error)
 			toast.error('Failed to save rankings')
-		} finally {
-			setIsSavingRankings(false)
 		}
 	}
 
 	const handleEditRankings = () => {
 		// Pre-populate with existing values
-		setIndividualLevel(weekData?.individual_level || null)
-		setCompanyLevel(weekData?.company_level || null)
+		resetRankings({
+			individual_level: weekData?.individual_level || 'Fantastic',
+			company_level: weekData?.company_level || 'Fantastic',
+		})
 		setIsEditingRankings(true)
 	}
 
-	const handleCancelEdit = () => {
-		setIndividualLevel(null)
-		setCompanyLevel(null)
+	const handleCancelRankingsEdit = () => {
+		resetRankings()
 		setIsEditingRankings(false)
 	}
 
 	const handleEditMileageRate = () => {
-		setEditedMileageRate(weekData?.mileage_rate || 1988) // Default to 19.88p if not set
+		resetMileageRate({
+			mileage_rate: weekData?.mileage_rate || 1988, // Default to 19.88p if not set
+		})
 		setIsEditingMileageRate(true)
 	}
 
-	const handleSaveMileageRate = async () => {
+	const onMileageRateSubmit = async (data: MileageRateFormData) => {
 		if (!weekData || !user) return
 
 		try {
-			setIsSavingMileageRate(true)
-			await updateWeekMileageRate(weekData.id, editedMileageRate)
-			updateWeek(weekData.id, { mileage_rate: editedMileageRate })
+			await updateWeekMileageRate(weekData.id, data.mileage_rate)
+			updateWeek(weekData.id, { mileage_rate: data.mileage_rate })
 			toast.success('Mileage rate updated!')
 			setIsEditingMileageRate(false)
 		} catch (error) {
 			console.error('Error updating mileage rate:', error)
 			toast.error('Failed to update mileage rate')
-		} finally {
-			setIsSavingMileageRate(false)
 		}
 	}
 
 	const handleCancelMileageEdit = () => {
+		resetMileageRate()
 		setIsEditingMileageRate(false)
 	}
 
@@ -309,29 +352,39 @@ export default function WeekSummary({
 				{breakdown.mileagePayment > 0 && (
 					<div className='flex items-center justify-between'>
 						{isEditingMileageRate ? (
-							<div className='flex items-center gap-2 flex-1'>
+							<form
+								onSubmit={handleMileageSubmit(onMileageRateSubmit)}
+								className='flex items-center gap-2 flex-1'
+							>
 								<span className='text-slate-400'>Rate:</span>
 								<span className='text-slate-400 font-mono'>£</span>
-								<NumberInput
-									value={editedMileageRate / 10000}
-									onChange={(value) => setEditedMileageRate(Math.round(value * 10000))}
-									step={0.0001}
-									min={0}
-									max={1}
-									chevronSize='sm'
-									className='w-24 h-8 bg-white/5 border-white/10 text-white font-mono text-sm px-2'
+								<Controller
+									name='mileage_rate'
+									control={mileageControl}
+									render={({ field }) => (
+										<NumberInput
+											value={field.value / 10000}
+											onChange={(value) => field.onChange(Math.round(value * 10000))}
+											step={0.0001}
+											min={0}
+											max={1}
+											chevronSize='sm'
+											className='w-24 h-8 bg-white/5 border-white/10 text-white font-mono text-sm px-2'
+										/>
+									)}
 								/>
 								<span className='text-slate-400 text-sm'>/mi</span>
 								<Button
+									type='submit'
 									variant='ghost'
 									size='sm'
-									onClick={handleSaveMileageRate}
 									disabled={isSavingMileageRate}
 									className='text-emerald-400 hover:text-emerald-300 h-8 px-2'
 								>
 									<Check className='w-4 h-4' />
 								</Button>
 								<Button
+									type='button'
 									variant='ghost'
 									size='sm'
 									onClick={handleCancelMileageEdit}
@@ -339,7 +392,12 @@ export default function WeekSummary({
 								>
 									<X className='w-4 h-4' />
 								</Button>
-							</div>
+								{mileageErrors.mileage_rate && (
+									<p className='text-red-400 text-xs'>
+										{mileageErrors.mileage_rate.message}
+									</p>
+								)}
+							</form>
 						) : (
 							<>
 								<div className='flex items-center gap-2'>
@@ -462,7 +520,10 @@ export default function WeekSummary({
 						</p>
 					</div>
 				) : !hasBonusRankings || isEditingRankings ? (
-					<div className='bg-white/5 border border-white/10 rounded-lg p-4'>
+					<form
+						onSubmit={handleRankingsSubmit(onRankingsSubmit)}
+						className='bg-white/5 border border-white/10 rounded-lg p-4'
+					>
 						<div className='flex items-center justify-between mb-4'>
 							<div className='flex items-center gap-2'>
 								<AlertCircle className='w-5 h-5 text-amber-400' />
@@ -472,9 +533,10 @@ export default function WeekSummary({
 							</div>
 							{isEditingRankings && (
 								<Button
+									type='button'
 									variant='ghost'
 									size='sm'
-									onClick={handleCancelEdit}
+									onClick={handleCancelRankingsEdit}
 									className='text-slate-400 hover:text-white'
 								>
 									<X className='w-4 h-4 mr-1' />
@@ -490,60 +552,82 @@ export default function WeekSummary({
 
 						<div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4'>
 							{/* Individual Performance */}
-							<div>
-								<Label className='text-slate-200 mb-2 block'>
-									Your Performance
-								</Label>
-								<div className='space-y-1'>
-									{performanceLevels.map((level) => (
-										<button
-											key={level}
-											type='button'
-											onClick={() => setIndividualLevel(level)}
-											className={`w-full py-2 px-3 rounded-lg border text-sm transition-all ${
-												individualLevel === level
-													? 'bg-blue-500/20 border-blue-500 text-blue-400'
-													: 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 cursor-pointer'
-											}`}
-										>
-											{level}
-										</button>
-									))}
-								</div>
-							</div>
+							<Controller
+								name='individual_level'
+								control={rankingsControl}
+								render={({ field }) => (
+									<div>
+										<Label className='text-slate-200 mb-2 block'>
+											Your Performance
+										</Label>
+										<div className='space-y-1'>
+											{performanceLevels.map((level) => (
+												<button
+													key={level}
+													type='button'
+													onClick={() => field.onChange(level)}
+													className={`w-full py-2 px-3 rounded-lg border text-sm transition-all ${
+														field.value === level
+															? 'bg-blue-500/20 border-blue-500 text-blue-400'
+															: 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 cursor-pointer'
+													}`}
+												>
+													{level}
+												</button>
+											))}
+										</div>
+										{rankingsErrors.individual_level && (
+											<p className='text-red-400 text-xs mt-1'>
+												{rankingsErrors.individual_level.message}
+											</p>
+										)}
+									</div>
+								)}
+							/>
 
 							{/* Company Performance */}
-							<div>
-								<Label className='text-slate-200 mb-2 block'>
-									Company Performance
-								</Label>
-								<div className='space-y-1'>
-									{performanceLevels.map((level) => (
-										<button
-											key={level}
-											type='button'
-											onClick={() => setCompanyLevel(level)}
-											className={`w-full py-2 px-3 rounded-lg border text-sm transition-all ${
-												companyLevel === level
-													? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-													: 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 cursor-pointer'
-											}`}
-										>
-											{level}
-										</button>
-									))}
-								</div>
-							</div>
+							<Controller
+								name='company_level'
+								control={rankingsControl}
+								render={({ field }) => (
+									<div>
+										<Label className='text-slate-200 mb-2 block'>
+											Company Performance
+										</Label>
+										<div className='space-y-1'>
+											{performanceLevels.map((level) => (
+												<button
+													key={level}
+													type='button'
+													onClick={() => field.onChange(level)}
+													className={`w-full py-2 px-3 rounded-lg border text-sm transition-all ${
+														field.value === level
+															? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
+															: 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 cursor-pointer'
+													}`}
+												>
+													{level}
+												</button>
+											))}
+										</div>
+										{rankingsErrors.company_level && (
+											<p className='text-red-400 text-xs mt-1'>
+												{rankingsErrors.company_level.message}
+											</p>
+										)}
+									</div>
+								)}
+							/>
 						</div>
 
 						<Button
-							onClick={handleSaveRankings}
-							disabled={!individualLevel || !companyLevel || isSavingRankings}
+							type='submit'
+							disabled={isSavingRankings}
 							className='w-full bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
 						>
 							{isSavingRankings ? 'Saving...' : 'Save Rankings'}
 						</Button>
-					</div>
+					</form>
 				) : (
 					<>
 						<div className='flex items-center justify-between mb-2'>
