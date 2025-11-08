@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { motion } from 'framer-motion'
 import { AlertCircle, Loader2, Save, Trash2, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -254,8 +255,20 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 	// Note: Deposits are auto-calculated by the system, not user-editable
 
 	return (
-		<div className='fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
-			<Card className='bg-slate-900 border-white/20 max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.2 }}
+			className='fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4'
+		>
+			<motion.div
+				initial={{ opacity: 0, scale: 0.95, y: 20 }}
+				animate={{ opacity: 1, scale: 1, y: 0 }}
+				exit={{ opacity: 0, scale: 0.95, y: 20 }}
+				transition={{ duration: 0.2, ease: 'easeOut' }}
+			>
+				<Card className='bg-slate-900 border-white/20 max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
 				<div className='p-6'>
 					{/* Header */}
 					<div className='flex items-center justify-between mb-6'>
@@ -556,6 +569,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 					</form>
 				</div>
 			</Card>
+			</motion.div>
 
 			{/* Delete Confirmation Dialog */}
 			<ConfirmationDialog
@@ -687,6 +701,6 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 					</Card>
 				</div>
 			)}
-		</div>
+		</motion.div>
 	)
 }

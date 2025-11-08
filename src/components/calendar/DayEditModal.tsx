@@ -17,6 +17,7 @@ import { getWeekKey, useWeeksStore } from '@/store/weeksStore'
 import type { Week, WorkDay } from '@/types/database'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format, isSameDay } from 'date-fns'
+import { motion } from 'framer-motion'
 import { AlertTriangle, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -221,8 +222,20 @@ export default function DayEditModal({
 	}
 
 	return (
-		<div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm'>
-			<div className='bg-slate-900 border border-white/20 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto'>
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.2 }}
+			className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm'
+		>
+			<motion.div
+				initial={{ opacity: 0, scale: 0.95, y: 20 }}
+				animate={{ opacity: 1, scale: 1, y: 0 }}
+				exit={{ opacity: 0, scale: 0.95, y: 20 }}
+				transition={{ duration: 0.2, ease: 'easeOut' }}
+				className='bg-slate-900 border border-white/20 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto'
+			>
 				{/* Header */}
 				<div className='sticky top-0 z-10 bg-slate-900 border-b border-white/10 p-6 flex items-center justify-between'>
 					<div>
@@ -479,7 +492,7 @@ export default function DayEditModal({
 						</div>
 					</div>
 				</form>
-			</div>
+			</motion.div>
 
 			{/* Delete Confirmation Dialog */}
 			<ConfirmationDialog
@@ -503,6 +516,6 @@ export default function DayEditModal({
 				icon={<AlertTriangle className="w-6 h-6" />}
 				isLoading={isDeleting}
 			/>
-		</div>
+		</motion.div>
 	)
 }

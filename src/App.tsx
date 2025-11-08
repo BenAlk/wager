@@ -1,6 +1,9 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
 import { Toaster } from '@/components/ui/sonner'
+import { AnimatePresence } from 'framer-motion'
+import { PageTransition } from '@/components/shared/PageTransition'
+import { LoadingScreen } from '@/components/shared/LoadingScreen'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
 import Calendar from '@/pages/Calendar'
@@ -12,11 +15,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 	const { user, loading } = useAuth()
 
 	if (loading) {
-		return (
-			<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center'>
-				<p className='text-white text-lg'>Loading...</p>
-			</div>
-		)
+		return <LoadingScreen />
 	}
 
 	if (!user) {
@@ -31,11 +30,7 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 	const { user, loading } = useAuth()
 
 	if (loading) {
-		return (
-			<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center'>
-				<p className='text-white text-lg'>Loading...</p>
-			</div>
-		)
+		return <LoadingScreen />
 	}
 
 	if (user) {
@@ -45,53 +40,73 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 	return <>{children}</>
 }
 
+function AnimatedRoutes() {
+	const location = useLocation()
+
+	return (
+		<AnimatePresence mode='wait'>
+			<Routes location={location} key={location.pathname}>
+				<Route
+					path='/auth'
+					element={
+						<PublicRoute>
+							<PageTransition>
+								<Auth />
+							</PageTransition>
+						</PublicRoute>
+					}
+				/>
+				<Route
+					path='/dashboard'
+					element={
+						<ProtectedRoute>
+							<PageTransition>
+								<Dashboard />
+							</PageTransition>
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path='/calendar'
+					element={
+						<ProtectedRoute>
+							<PageTransition>
+								<Calendar />
+							</PageTransition>
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path='/settings'
+					element={
+						<ProtectedRoute>
+							<PageTransition>
+								<Settings />
+							</PageTransition>
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path='/vans'
+					element={
+						<ProtectedRoute>
+							<PageTransition>
+								<VanManagement />
+							</PageTransition>
+						</ProtectedRoute>
+					}
+				/>
+				<Route path='/' element={<Navigate to='/dashboard' replace />} />
+			</Routes>
+		</AnimatePresence>
+	)
+}
+
 function App() {
 	return (
 		<BrowserRouter>
 			<AuthProvider>
-				<Routes>
-					<Route
-						path='/auth'
-						element={
-							<PublicRoute>
-								<Auth />
-							</PublicRoute>
-						}
-					/>
-					<Route
-						path='/dashboard'
-						element={
-							<ProtectedRoute>
-								<Dashboard />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path='/calendar'
-						element={
-							<ProtectedRoute>
-								<Calendar />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path='/settings'
-						element={
-							<ProtectedRoute>
-								<Settings />
-							</ProtectedRoute>
-						}
-					/>
-					<Route
-						path='/vans'
-						element={
-							<ProtectedRoute>
-								<VanManagement />
-							</ProtectedRoute>
-						}
-					/>
-					<Route path='/' element={<Navigate to='/dashboard' replace />} />
-				</Routes>
+				<AnimatedRoutes />
 				<Toaster />
 			</AuthProvider>
 		</BrowserRouter>

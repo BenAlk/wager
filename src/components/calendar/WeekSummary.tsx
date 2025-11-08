@@ -410,9 +410,9 @@ export default function WeekSummary({
 											variant='ghost'
 											size='sm'
 											onClick={handleEditMileageRate}
-											className='text-slate-400 h-6 w-6 p-2 cursor-pointer border-2 hover:text-yellow-400'
+											className='text-slate-400 h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 cursor-pointer border-2 hover:text-yellow-400'
 										>
-											<Pencil className='w-3 h-3' />
+											<Pencil className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 										</Button>
 									)}
 								</div>
@@ -638,9 +638,9 @@ export default function WeekSummary({
 									variant='ghost'
 									size='sm'
 									onClick={handleEditRankings}
-									className='text-slate-400 h-6 w-6 p-2 ml-2 cursor-pointer border-2 hover:text-yellow-400'
+									className='text-slate-400 h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 ml-1 sm:ml-2 cursor-pointer border-2 hover:text-yellow-400'
 								>
-									<Pencil className='w-4 h-4' />
+									<Pencil className='w-3 h-3 sm:w-4 sm:h-4' />
 								</Button>
 							</span>
 

@@ -399,13 +399,7 @@ wager/
 - [x] Filter MANUAL_DEPOSIT_ADJUSTMENT from weekly summary van breakdown
 - [x] Standardize existing confirmation dialogs (Clear Week, Delete Van Hire)
 
-### Phase 15: Export & Data Management
-
-- [ ] Add CSV export functionality
-- [ ] Implement data backup
-- [ ] Add data import validation
-
-### Phase 16: UI/UX Polish
+### Phase 15: UI/UX Polish
 
 - [ ] Make fully responsive
 - [ ] Add animations and transitions
@@ -413,7 +407,7 @@ wager/
 - [ ] Create onboarding flow
 - [ ] Improve accessibility
 
-### Phase 17: Testing & Deployment
+### Phase 16: Testing & Deployment
 
 - [ ] Test all calculations
 - [ ] Test multi-user isolation
