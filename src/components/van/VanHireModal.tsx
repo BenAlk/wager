@@ -18,8 +18,10 @@ import type { VanHire, VanType } from '@/types/database'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
 import {
 	Select,
 	SelectContent,
@@ -29,22 +31,38 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 
-const vanHireSchema = z.object({
-	registration: z
-		.string()
-		.min(1, 'Registration is required')
-		.max(20, 'Registration too long')
-		.transform((val) => val.toUpperCase().trim()),
-	van_type: z.enum(['Fleet', 'Flexi']).nullable(),
-	weekly_rate: z
-		.number({ message: 'Weekly rate is required' })
-		.int('Rate must be a whole number')
-		.min(0, 'Rate must be positive')
-		.max(100000, 'Rate too high'), // Max £1,000
-	on_hire_date: z.string().min(1, 'On-hire date is required'),
-	off_hire_date: z.string().optional().nullable(),
-	notes: z.string().max(500, 'Notes too long').optional().nullable(),
-})
+const vanHireSchema = z
+	.object({
+		registration: z
+			.string()
+			.min(1, 'Registration is required')
+			.max(20, 'Registration too long')
+			.transform((val) => val.toUpperCase().trim()),
+		van_type: z.enum(['Fleet', 'Flexi']).nullable(),
+		weekly_rate: z
+			.number({ message: 'Weekly rate is required' })
+			.int('Rate must be a whole number')
+			.min(0, 'Rate must be positive')
+			.max(100000, 'Rate too high'), // Max £1,000
+		on_hire_date: z.string().min(1, 'On-hire date is required'),
+		off_hire_date: z.string().optional().nullable(),
+		notes: z.string().max(500, 'Notes too long').optional().nullable(),
+	})
+	.refine(
+		(data) => {
+			// If off_hire_date is provided, ensure it's not before on_hire_date
+			if (data.off_hire_date && data.on_hire_date) {
+				const onHire = new Date(data.on_hire_date)
+				const offHire = new Date(data.off_hire_date)
+				return offHire >= onHire
+			}
+			return true
+		},
+		{
+			message: 'Off-hire date must be on or after on-hire date',
+			path: ['off_hire_date'],
+		}
+	)
 
 type VanHireFormData = z.infer<typeof vanHireSchema>
 
@@ -133,6 +151,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 					deposit_refunded: false,
 					deposit_refund_amount: null,
 					deposit_hold_until: null,
+					deposit_calculation_start_date: null, // Auto-calculation from van start
 					notes: data.notes ?? null,
 				})
 				if (newVan) {
@@ -337,17 +356,13 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									name='weekly_rate'
 									control={control}
 									render={({ field }) => (
-										<Input
-											{...field}
+										<NumberInput
 											id='weekly_rate'
-											type='number'
-											step='0.01'
 											value={field.value / 100}
-											onChange={(e) =>
-												field.onChange(
-													Math.round(parseFloat(e.target.value) * 100)
-												)
-											}
+											onChange={(value) => field.onChange(value * 100)}
+											min={0}
+											max={1000}
+											chevronSize='sm'
 											className='bg-white/5 border-white/20 text-white mt-2'
 										/>
 									)}
@@ -411,9 +426,15 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 										/>
 									)}
 								/>
-								<p className='text-slate-400 text-xs mt-1'>
-									Leave empty if currently on-hire
-								</p>
+								{errors.off_hire_date ? (
+									<p className='text-red-400 text-xs mt-1'>
+										{errors.off_hire_date.message}
+									</p>
+								) : (
+									<p className='text-slate-400 text-xs mt-1'>
+										Leave empty if currently on-hire
+									</p>
+								)}
 							</div>
 						</div>
 
@@ -537,58 +558,32 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 			</Card>
 
 			{/* Delete Confirmation Dialog */}
-			{showDeleteConfirm && (
-				<div className='fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4'>
-					<Card className='bg-slate-900 border-white/20 max-w-md w-full p-6'>
-						<div className='flex items-start gap-4 mb-4'>
-							<div className='p-3 rounded-full bg-red-500/20'>
-								<AlertCircle className='w-6 h-6 text-red-400' />
-							</div>
-							<div>
-								<h3 className='text-xl font-bold text-white mb-2'>
-									Delete Van Hire?
-								</h3>
-								<p className='text-slate-400'>
-									Are you sure you want to delete this van hire? This action
-									cannot be undone.
-								</p>
-								{van && (
-									<p className='text-white font-semibold mt-2'>
-										{van.registration}
-									</p>
-								)}
-							</div>
-						</div>
-						<div className='flex gap-2 justify-end'>
-							<Button
-								variant='outline'
-								onClick={() => setShowDeleteConfirm(false)}
-								disabled={isDeleting}
-								className='border-white/20 text-white hover:bg-white/10'
-							>
-								Cancel
-							</Button>
-							<Button
-								onClick={handleDelete}
-								disabled={isDeleting}
-								className='bg-red-500 hover:bg-red-600 text-white'
-							>
-								{isDeleting ? (
-									<>
-										<Loader2 className='w-4 h-4 mr-2 animate-spin' />
-										Deleting...
-									</>
-								) : (
-									<>
-										<Trash2 className='w-4 h-4 mr-2' />
-										Delete
-									</>
-								)}
-							</Button>
-						</div>
-					</Card>
-				</div>
-			)}
+			<ConfirmationDialog
+				open={showDeleteConfirm}
+				onOpenChange={setShowDeleteConfirm}
+				onConfirm={handleDelete}
+				title="Delete Van Hire?"
+				description={
+					<>
+						Are you sure you want to delete this van hire?
+						{van && (
+							<>
+								<br />
+								<br />
+								<strong>{van.registration}</strong>
+							</>
+						)}
+						<br />
+						<br />
+						This action cannot be undone.
+					</>
+				}
+				confirmText="Delete"
+				cancelText="Cancel"
+				variant="destructive"
+				icon={<AlertCircle className="w-6 h-6" />}
+				isLoading={isDeleting}
+			/>
 
 			{/* Off-Hire Dialog */}
 			{showOffHire && (

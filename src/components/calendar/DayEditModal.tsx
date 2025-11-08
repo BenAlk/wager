@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { NumberInput } from '@/components/ui/number-input'
 import { Textarea } from '@/components/ui/textarea'
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 import { useAuth } from '@/hooks/useAuth'
 import {
 	deleteWorkDay as apiDeleteWorkDay,
@@ -16,7 +17,7 @@ import { getWeekKey, useWeeksStore } from '@/store/weeksStore'
 import type { Week, WorkDay } from '@/types/database'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format, isSameDay } from 'date-fns'
-import { Trash2, X } from 'lucide-react'
+import { AlertTriangle, Trash2, X } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -54,6 +55,7 @@ export default function DayEditModal({
 		removeWorkDay,
 	} = useWeeksStore()
 	const [isDeleting, setIsDeleting] = useState(false)
+	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
 	// Use default settings if not loaded yet
 	const currentSettings = settings || {
@@ -190,7 +192,11 @@ export default function DayEditModal({
 		}
 	}
 
-	const handleDelete = async () => {
+	const handleDeleteClick = () => {
+		setShowDeleteConfirm(true)
+	}
+
+	const handleDeleteConfirm = async () => {
 		if (!existingWorkDay || !user) return
 
 		try {
@@ -315,6 +321,7 @@ export default function DayEditModal({
 											id='stops_given'
 											min={0}
 											max={200}
+											chevronSize='sm'
 											className='mt-2 bg-emerald-500/5 border-emerald-500/20 text-white focus:ring-emerald-500'
 										/>
 									)}
@@ -344,6 +351,7 @@ export default function DayEditModal({
 											id='stops_taken'
 											min={0}
 											max={200}
+											chevronSize='sm'
 											className='mt-2 bg-red-500/5 border-red-500/20 text-white focus:ring-red-500'
 										/>
 									)}
@@ -381,6 +389,7 @@ export default function DayEditModal({
 											{...field}
 											id='van_logged_miles'
 											min={0}
+											chevronSize='sm'
 											placeholder='98'
 											className='mt-2 bg-white/5 border-white/10 text-white font-mono'
 										/>
@@ -405,6 +414,7 @@ export default function DayEditModal({
 											{...field}
 											id='amazon_paid_miles'
 											min={0}
+											chevronSize='sm'
 											placeholder='Leave blank until payslip'
 											className='mt-2 bg-white/5 border-white/10 text-white font-mono'
 										/>
@@ -439,7 +449,7 @@ export default function DayEditModal({
 						{existingWorkDay ? (
 							<Button
 								type='button'
-								onClick={handleDelete}
+								onClick={handleDeleteClick}
 								disabled={isDeleting}
 								variant='ghost'
 								className='text-red-400 hover:text-red-300 hover:bg-red-500/10 cursor-pointer'
@@ -470,6 +480,29 @@ export default function DayEditModal({
 					</div>
 				</form>
 			</div>
+
+			{/* Delete Confirmation Dialog */}
+			<ConfirmationDialog
+				open={showDeleteConfirm}
+				onOpenChange={setShowDeleteConfirm}
+				onConfirm={handleDeleteConfirm}
+				title="Delete Work Day?"
+				description={
+					<>
+						Are you sure you want to delete this work day for{' '}
+						<strong>{format(date, 'EEEE, MMMM d')}</strong>?
+						<br />
+						<br />
+						This will remove all data including route information, sweeps, and
+						mileage. This action cannot be undone.
+					</>
+				}
+				confirmText="Delete Work Day"
+				cancelText="Cancel"
+				variant="destructive"
+				icon={<AlertTriangle className="w-6 h-6" />}
+				isLoading={isDeleting}
+			/>
 		</div>
 	)
 }

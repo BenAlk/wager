@@ -235,6 +235,9 @@ export async function recalculateAllDeposits(userId: string): Promise<boolean> {
 		// Check for manual adjustment entry
 		const manualAdjustment = vans.find(v => v.registration === 'MANUAL_DEPOSIT_ADJUSTMENT')
 		const manualDepositAmount = manualAdjustment?.deposit_paid ?? 0
+		const depositCalculationStartDate = manualAdjustment?.deposit_calculation_start_date
+			? new Date(manualAdjustment.deposit_calculation_start_date)
+			: null
 
 		// Filter out manual adjustment entry and sort by on_hire_date chronologically
 		const actualVans = vans.filter(v => v.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT')
@@ -295,16 +298,34 @@ export async function recalculateAllDeposits(userId: string): Promise<boolean> {
 				? new Date(van.off_hire_date)
 				: latestPaidWorkWeekEnd
 
-			// Calculate number of weeks from first van hire to start of this van
+			// If there's a deposit calculation start date (from manual adjustment),
+			// only calculate deposits for weeks AFTER that date
+			// This prevents double-counting historical deposits
+			const effectiveVanStart = depositCalculationStartDate && vanStart < depositCalculationStartDate
+				? depositCalculationStartDate
+				: vanStart
+
+			// If van ended before deposit tracking started, skip it entirely
+			if (depositCalculationStartDate && vanEnd < depositCalculationStartDate) {
+				if (van.deposit_paid !== 0) {
+					await supabase
+						.from('van_hires')
+						.update({ deposit_paid: 0 })
+						.eq('id', van.id)
+				}
+				continue
+			}
+
+			// Calculate number of weeks from first van hire to effective start of this van
 			const daysSinceFirstVan = Math.ceil(
-				(vanStart.getTime() - firstVanDate.getTime()) / (1000 * 60 * 60 * 24)
+				(effectiveVanStart.getTime() - firstVanDate.getTime()) / (1000 * 60 * 60 * 24)
 			)
 			const weeksSinceFirstVan = Math.floor(daysSinceFirstVan / 7)
 
-			// Calculate number of weeks this van was/is on hire
+			// Calculate number of weeks this van was/is on hire (from effective start)
 			// Include both start and end dates
 			const vanDurationDays = Math.ceil(
-				(vanEnd.getTime() - vanStart.getTime()) / (1000 * 60 * 60 * 24)
+				(vanEnd.getTime() - effectiveVanStart.getTime()) / (1000 * 60 * 60 * 24)
 			) + 1
 			// Round up partial weeks (any part of a week counts as a full week for deposits)
 			const vanDurationWeeks = Math.ceil(vanDurationDays / 7)
@@ -354,6 +375,8 @@ export async function setManualDepositAdjustment(
 	amount: number
 ): Promise<boolean> {
 	try {
+		const today = new Date().toISOString().split('T')[0]
+
 		// Check if there's already a manual adjustment entry
 		const { data: existing } = await supabase
 			.from('van_hires')
@@ -364,6 +387,7 @@ export async function setManualDepositAdjustment(
 
 		if (existing) {
 			// Update existing adjustment
+			// Keep the original deposit_calculation_start_date when updating amount
 			const { error } = await supabase
 				.from('van_hires')
 				.update({ deposit_paid: amount })
@@ -372,18 +396,21 @@ export async function setManualDepositAdjustment(
 			if (error) throw error
 		} else {
 			// Create new adjustment entry
+			// Set deposit_calculation_start_date to TODAY
+			// This tells the system to only calculate deposits from today forward
 			const { error } = await supabase.from('van_hires').insert({
 				user_id: userId,
 				registration: 'MANUAL_DEPOSIT_ADJUSTMENT',
 				van_type: null,
 				weekly_rate: 0,
-				on_hire_date: new Date().toISOString().split('T')[0],
-				off_hire_date: new Date().toISOString().split('T')[0],
+				on_hire_date: today,
+				off_hire_date: today,
 				deposit_paid: amount,
 				deposit_complete: amount >= 50000,
 				deposit_refunded: false,
 				deposit_refund_amount: null,
 				deposit_hold_until: null,
+				deposit_calculation_start_date: today,
 				notes: 'Manual deposit adjustment for deposits paid before using this app',
 			})
 
@@ -393,6 +420,28 @@ export async function setManualDepositAdjustment(
 		return true
 	} catch (error) {
 		console.error('Error setting manual deposit adjustment:', error)
+		return false
+	}
+}
+
+/**
+ * Clear manual deposit adjustment
+ * Deletes the manual adjustment entry, resetting deposits to auto-calculated values
+ */
+export async function clearManualDepositAdjustment(
+	userId: string
+): Promise<boolean> {
+	try {
+		const { error } = await supabase
+			.from('van_hires')
+			.delete()
+			.eq('user_id', userId)
+			.eq('registration', 'MANUAL_DEPOSIT_ADJUSTMENT')
+
+		if (error) throw error
+		return true
+	} catch (error) {
+		console.error('Error clearing manual deposit adjustment:', error)
 		return false
 	}
 }

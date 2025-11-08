@@ -203,6 +203,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 										onChange={field.onChange}
 										min={0}
 										max={200}
+										chevronSize='sm'
 										className='bg-white/5 border-white/20 text-white'
 									/>
 								)}
@@ -231,6 +232,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 										onChange={field.onChange}
 										min={0}
 										max={200}
+										chevronSize='sm'
 										className='bg-white/5 border-white/20 text-white mt-1'
 									/>
 								)}

@@ -3,36 +3,82 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { login, signUp } from '@/lib/auth'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { TrendingUp } from 'lucide-react'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { z } from 'zod'
+
+const loginSchema = z.object({
+	email: z.string().email('Invalid email address'),
+	password: z.string().min(6, 'Password must be at least 6 characters'),
+})
+
+const signUpSchema = loginSchema.extend({
+	displayName: z
+		.string()
+		.min(1, 'Display name is required')
+		.max(50, 'Display name must be less than 50 characters'),
+})
+
+type LoginFormData = z.infer<typeof loginSchema>
+type SignUpFormData = z.infer<typeof signUpSchema>
 
 export default function Auth() {
 	const navigate = useNavigate()
 	const [isLogin, setIsLogin] = useState(true)
-	const [email, setEmail] = useState('')
-	const [password, setPassword] = useState('')
-	const [displayName, setDisplayName] = useState('')
-	const [loading, setLoading] = useState(false)
-	const [error, setError] = useState<string | null>(null)
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault()
-		setError(null)
-		setLoading(true)
+	const loginForm = useForm<LoginFormData>({
+		resolver: zodResolver(loginSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+	})
 
+	const signUpForm = useForm<SignUpFormData>({
+		resolver: zodResolver(signUpSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+			displayName: '',
+		},
+	})
+
+	const {
+		handleSubmit: handleLoginSubmit,
+		register: registerLogin,
+		formState: { errors: loginErrors, isSubmitting: isLoginSubmitting },
+	} = loginForm
+
+	const {
+		handleSubmit: handleSignUpSubmit,
+		register: registerSignUp,
+		formState: { errors: signUpErrors, isSubmitting: isSignUpSubmitting },
+	} = signUpForm
+
+	const errors = isLogin ? loginErrors : signUpErrors
+	const isSubmitting = isLogin ? isLoginSubmitting : isSignUpSubmitting
+
+	const onSubmit = async (data: LoginFormData | SignUpFormData) => {
 		try {
 			if (isLogin) {
+				const { email, password } = data as LoginFormData
 				await login({ email, password })
+				toast.success('Welcome back!', { duration: 3000 })
 			} else {
+				const { email, password, displayName } = data as SignUpFormData
 				await signUp({ email, password, displayName })
+				toast.success('Account created successfully!', { duration: 3000 })
 			}
 			// Navigate to dashboard on success
 			navigate('/dashboard')
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Authentication failed')
-		} finally {
-			setLoading(false)
+			const errorMessage =
+				err instanceof Error ? err.message : 'Authentication failed'
+			toast.error(errorMessage, { duration: 4000 })
 		}
 	}
 
@@ -83,16 +129,14 @@ export default function Auth() {
 
 				{/* Form */}
 				<form
-					onSubmit={handleSubmit}
+					onSubmit={
+						isLogin ? handleLoginSubmit(onSubmit) : handleSignUpSubmit(onSubmit)
+					}
 					className='space-y-4'
 				>
 					{/* Display Name - Animated */}
-					<div
-						className={`overflow-hidden transition-all duration-300 ease-in-out ${
-							!isLogin ? 'max-h-28 opacity-100' : 'max-h-0 opacity-0'
-						}`}
-					>
-						<div className={!isLogin ? '' : 'invisible'}>
+					{!isLogin && (
+						<div>
 							<Label
 								htmlFor='displayName'
 								className='text-slate-200'
@@ -103,14 +147,17 @@ export default function Auth() {
 								id='displayName'
 								type='text'
 								placeholder='Ben'
-								value={displayName}
-								onChange={(e) => setDisplayName(e.target.value)}
+								{...registerSignUp('displayName')}
 								className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
 									focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
-								required={!isLogin}
 							/>
+							{signUpErrors.displayName && (
+								<p className='text-xs text-red-400 mt-1.5'>
+									{signUpErrors.displayName.message as string}
+								</p>
+							)}
 						</div>
-					</div>
+					)}
 
 					<div>
 						<Label
@@ -123,12 +170,15 @@ export default function Auth() {
 							id='email'
 							type='email'
 							placeholder='you@example.com'
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
+							{...(isLogin ? registerLogin('email') : registerSignUp('email'))}
 							className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
 								focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
-							required
 						/>
+						{errors.email && (
+							<p className='text-xs text-red-400 mt-1.5'>
+								{errors.email.message as string}
+							</p>
+						)}
 					</div>
 
 					<div>
@@ -142,29 +192,28 @@ export default function Auth() {
 							id='password'
 							type='password'
 							placeholder='••••••••'
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
+							{...(isLogin
+								? registerLogin('password')
+								: registerSignUp('password'))}
 							className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
 								focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
-							required
-							minLength={6}
 						/>
-						{!isLogin && (
-							<p className='text-xs text-slate-400 mt-1.5'>
-								At least 6 characters
+						{errors.password ? (
+							<p className='text-xs text-red-400 mt-1.5'>
+								{errors.password.message as string}
 							</p>
+						) : (
+							!isLogin && (
+								<p className='text-xs text-slate-400 mt-1.5'>
+									At least 6 characters
+								</p>
+							)
 						)}
 					</div>
 
-					{error && (
-						<div className='p-3 bg-red-500/10 border border-red-500/20 rounded-lg'>
-							<p className='text-sm text-red-400'>{error}</p>
-						</div>
-					)}
-
 					<Button
 						type='submit'
-						disabled={loading}
+						disabled={isSubmitting}
 						className='w-full bg-gradient-to-r from-blue-500 to-emerald-500
 							hover:from-blue-600 hover:to-emerald-600
 							text-white font-semibold py-6 rounded-lg
@@ -172,7 +221,11 @@ export default function Auth() {
 							transition-all transform hover:scale-[1.02] active:scale-[0.98]
 							disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
 					>
-						{loading ? 'Please wait...' : isLogin ? 'Login' : 'Create Account'}
+						{isSubmitting
+							? 'Please wait...'
+							: isLogin
+								? 'Login'
+								: 'Create Account'}
 					</Button>
 				</form>
 

@@ -1,12 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import {
-	ArrowLeft,
-	ChevronDown,
-	ChevronUp,
-	Loader2,
-	Save,
-	Settings as SettingsIcon,
-} from 'lucide-react'
+import { ArrowLeft, Loader2, Save, Settings as SettingsIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -21,8 +14,8 @@ import type { InvoicingService } from '@/types/database'
 
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
 import {
 	Select,
 	SelectContent,
@@ -255,40 +248,15 @@ export default function Settings() {
 										name='normalRate'
 										control={control}
 										render={({ field }) => (
-											<>
-												<Input
-													id='normalRate'
-													type='number'
-													step='1'
-													placeholder='160'
-													className='bg-white/5 border-white/10 text-white pl-8 pr-12 h-12 font-mono focus:ring-2 focus:ring-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield]'
-													value={field.value / 100} // Display in pounds
-													onChange={(e) => {
-														const pounds = parseInt(e.target.value) || 0
-														field.onChange(pounds * 100) // Store in pence
-													}}
-												/>
-												<div className='absolute right-1 top-1/2 -translate-y-1/2 flex flex-col gap-0.5'>
-													<button
-														type='button'
-														onClick={() => field.onChange(field.value + 100)}
-														className='bg-white/5 hover:bg-blue-500/20 p-1 rounded transition-colors group cursor-pointer'
-														aria-label='Increase rate'
-													>
-														<ChevronUp className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
-													</button>
-													<button
-														type='button'
-														onClick={() =>
-															field.onChange(Math.max(0, field.value - 100))
-														}
-														className='bg-white/5 hover:bg-blue-500/20 rounded p-1 transition-colors group cursor-pointer'
-														aria-label='Decrease rate'
-													>
-														<ChevronDown className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
-													</button>
-												</div>
-											</>
+											<NumberInput
+												id='normalRate'
+												value={field.value / 100}
+												onChange={(value) => field.onChange(value * 100)}
+												min={0}
+												max={10000}
+												placeholder='160'
+												className='bg-white/5 border-white/10 text-white pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
+											/>
 										)}
 									/>
 								</div>
@@ -318,40 +286,15 @@ export default function Settings() {
 										name='drsRate'
 										control={control}
 										render={({ field }) => (
-											<>
-												<Input
-													id='drsRate'
-													type='number'
-													step='1'
-													placeholder='100'
-													className='bg-white/5 border-white/10 text-white pl-8 pr-12 h-12 font-mono focus:ring-2 focus:ring-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield]'
-													value={field.value / 100} // Display in pounds
-													onChange={(e) => {
-														const pounds = parseInt(e.target.value) || 0
-														field.onChange(pounds * 100) // Store in pence
-													}}
-												/>
-												<div className='absolute right-1 top-1/2 -translate-y-1/2 flex flex-col gap-0.5 cursor-pointer'>
-													<button
-														type='button'
-														onClick={() => field.onChange(field.value + 100)}
-														className='bg-white/5 hover:bg-blue-500/20 rounded p-1 transition-colors group cursor-pointer'
-														aria-label='Increase rate'
-													>
-														<ChevronUp className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
-													</button>
-													<button
-														type='button'
-														onClick={() =>
-															field.onChange(Math.max(0, field.value - 100))
-														}
-														className='bg-white/5 hover:bg-blue-500/20 rounded p-1 transition-colors group cursor-pointer'
-														aria-label='Decrease rate'
-													>
-														<ChevronDown className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
-													</button>
-												</div>
-											</>
+											<NumberInput
+												id='drsRate'
+												value={field.value / 100}
+												onChange={(value) => field.onChange(value * 100)}
+												min={0}
+												max={10000}
+												placeholder='100'
+												className='bg-white/5 border-white/10 text-white pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
+											/>
 										)}
 									/>
 								</div>
@@ -381,40 +324,16 @@ export default function Settings() {
 										name='mileageRate'
 										control={control}
 										render={({ field }) => (
-											<>
-												<Input
-													id='mileageRate'
-													type='number'
-													step='0.0001'
-													placeholder='0.1988'
-													className='bg-white/5 border-white/10 text-white pl-8 pr-12 h-12 font-mono focus:ring-2 focus:ring-blue-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield]'
-													value={(field.value / 10000).toFixed(4)} // Display in pounds (1988 pence = £0.1988)
-													onChange={(e) => {
-														const pounds = parseFloat(e.target.value) || 0
-														field.onChange(Math.round(pounds * 10000)) // Store as pence (e.g., 0.1988 * 10000 = 1988)
-													}}
-												/>
-												<div className='absolute right-1 top-1/2 -translate-y-1/2 flex flex-col gap-0.5'>
-													<button
-														type='button'
-														onClick={() => field.onChange(field.value + 1)}
-														className='bg-white/5 hover:bg-blue-500/20 p-1 rounded transition-colors group cursor-pointer'
-														aria-label='Increase rate'
-													>
-														<ChevronUp className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
-													</button>
-													<button
-														type='button'
-														onClick={() =>
-															field.onChange(Math.max(0, field.value - 1))
-														}
-														className='bg-white/5 hover:bg-blue-500/20 rounded p-1 transition-colors group cursor-pointer'
-														aria-label='Decrease rate'
-													>
-														<ChevronDown className='w-3 h-3 text-slate-400 group-hover:text-blue-400' />
-													</button>
-												</div>
-											</>
+											<NumberInput
+												id='mileageRate'
+												value={parseFloat((field.value / 10000).toFixed(4))}
+												onChange={(value) => field.onChange(Math.round(value * 10000))}
+												step={0.0001}
+												min={0}
+												max={1}
+												placeholder='0.1988'
+												className='bg-white/5 border-white/10 text-white pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
+											/>
 										)}
 									/>
 								</div>

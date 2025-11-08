@@ -90,7 +90,7 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 				</Button>
 			</div>
 
-			<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+			<div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
 				<div>
 					<p className='text-slate-400 text-sm mb-1'>Weekly Rate</p>
 					<p className='text-lg font-mono font-bold text-white'>
@@ -102,17 +102,6 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 					<p className='text-lg font-bold text-white'>
 						{durationWeeks}w {durationDays % 7}d
 					</p>
-				</div>
-				<div>
-					<p className='text-slate-400 text-sm mb-1'>Deposit Paid</p>
-					<div className='flex items-center gap-2'>
-						<p className='text-lg font-mono font-bold text-white'>
-							{formatCurrency(van.deposit_paid)}
-						</p>
-						{van.deposit_complete && (
-							<CheckCircle2 className='w-4 h-4 text-emerald-400' />
-						)}
-					</div>
 				</div>
 				<div>
 					<p className='text-slate-400 text-sm mb-1'>Status</p>

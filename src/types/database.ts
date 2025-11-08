@@ -209,6 +209,7 @@ export interface Database {
           deposit_refunded: boolean
           deposit_refund_amount: number | null
           deposit_hold_until: string | null
+          deposit_calculation_start_date: string | null
           notes: string | null
           created_at: string
           updated_at: string
@@ -226,6 +227,7 @@ export interface Database {
           deposit_refunded?: boolean
           deposit_refund_amount?: number | null
           deposit_hold_until?: string | null
+          deposit_calculation_start_date?: string | null
           notes?: string | null
           created_at?: string
           updated_at?: string
@@ -243,6 +245,7 @@ export interface Database {
           deposit_refunded?: boolean
           deposit_refund_amount?: number | null
           deposit_hold_until?: string | null
+          deposit_calculation_start_date?: string | null
           notes?: string | null
           created_at?: string
           updated_at?: string

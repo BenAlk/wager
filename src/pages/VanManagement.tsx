@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { useAuth } from '@/hooks/useAuth'
-import { fetchAllVanHires, recalculateAllDeposits, setManualDepositAdjustment } from '@/lib/api/vans'
+import { fetchAllVanHires, recalculateAllDeposits, setManualDepositAdjustment, clearManualDepositAdjustment } from '@/lib/api/vans'
 import { useVanStore } from '@/store/vanStore'
 import { formatCurrency } from '@/lib/calculations'
 import type { VanHire } from '@/types/database'
@@ -13,8 +13,8 @@ import type { VanHire } from '@/types/database'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
 import { VanHireModal } from '@/components/van/VanHireModal'
 import { VanHireCard } from '@/components/van/VanHireCard'
 
@@ -104,12 +104,14 @@ export default function VanManagement() {
 		try {
 			const success = await setManualDepositAdjustment(user.id, amount)
 			if (success) {
+				// Recalculate deposits with the new manual amount
+				await recalculateAllDeposits(user.id)
 				// Reload vans to reflect the adjustment
 				const vans = await fetchAllVanHires(user.id)
 				if (vans) {
 					setAllVans(vans)
 				}
-				toast.success('Deposit adjustment set successfully', { duration: 3000 })
+				toast.success('Manual deposit set successfully', { duration: 3000 })
 				setShowDepositModal(false)
 				setDepositAdjustment('')
 			} else {
@@ -117,6 +119,34 @@ export default function VanManagement() {
 			}
 		} catch (error) {
 			console.error('Error setting deposit:', error)
+			toast.error('An error occurred', { duration: 3000 })
+		} finally {
+			setIsAdjusting(false)
+		}
+	}
+
+	const handleClearDeposit = async () => {
+		if (!user?.id) return
+
+		setIsAdjusting(true)
+		try {
+			const success = await clearManualDepositAdjustment(user.id)
+			if (success) {
+				// Recalculate deposits without manual adjustment
+				await recalculateAllDeposits(user.id)
+				// Reload vans to reflect the changes
+				const vans = await fetchAllVanHires(user.id)
+				if (vans) {
+					setAllVans(vans)
+				}
+				toast.success('Manual deposit cleared successfully', { duration: 3000 })
+				setShowDepositModal(false)
+				setDepositAdjustment('')
+			} else {
+				toast.error('Failed to clear deposit adjustment', { duration: 3000 })
+			}
+		} catch (error) {
+			console.error('Error clearing deposit:', error)
 			toast.error('An error occurred', { duration: 3000 })
 		} finally {
 			setIsAdjusting(false)
@@ -340,33 +370,30 @@ export default function VanManagement() {
 			{showDepositModal && (
 				<div className='fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4'>
 					<Card className='bg-slate-900 border-white/20 max-w-md w-full p-6'>
-						<h3 className='text-xl font-bold text-white mb-4'>Set Deposit Amount</h3>
-						<p className='text-slate-400 mb-4'>
-							If you've already paid some or all of your deposit before using this app,
-							enter the total amount here to ensure accurate tracking.
-						</p>
+						<h3 className='text-xl font-bold text-white mb-4'>Set Manual Deposit</h3>
 
-						<div className='bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3 mb-4'>
-							<p className='text-yellow-400 text-sm font-semibold mb-1'>
-								Important
+						<div className='bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-4'>
+							<p className='text-blue-400 text-sm font-semibold mb-2'>
+								💡 Deposits Already Paid
 							</p>
-							<p className='text-yellow-300 text-xs'>
-								This will override the automatically calculated deposit.
-								Only use this if you started using the app after already paying part of your deposit.
+							<p className='text-blue-200 text-sm leading-relaxed'>
+								Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted.
+							</p>
+							<p className='text-blue-300 text-xs mt-2'>
+								Deposit limit: £500
 							</p>
 						</div>
 
 						<Label htmlFor='deposit_amount' className='text-white'>
 							Total Deposit Paid (£) *
 						</Label>
-						<Input
+						<NumberInput
 							id='deposit_amount'
-							type='number'
-							step='0.01'
-							min='0'
-							max='500'
-							value={depositAdjustment}
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDepositAdjustment(e.target.value)}
+							value={depositAdjustment ? parseFloat(depositAdjustment) : null}
+							onChange={(value) => setDepositAdjustment(value.toString())}
+							min={0}
+							max={500}
+							chevronSize='sm'
 							placeholder='e.g., 250.00'
 							className='bg-white/5 border-white/20 text-white mt-2 mb-2'
 						/>
@@ -374,25 +401,35 @@ export default function VanManagement() {
 							Maximum: £500.00
 						</p>
 
-						<div className='flex gap-2 justify-end'>
+						<div className='flex flex-col sm:flex-row gap-2'>
 							<Button
 								variant='outline'
-								onClick={() => {
-									setShowDepositModal(false)
-									setDepositAdjustment('')
-								}}
-								disabled={isAdjusting}
-								className='border-white/20 text-white hover:bg-white/10'
+								onClick={handleClearDeposit}
+								disabled={isAdjusting || totalDepositPaid === 0}
+								className='border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300'
 							>
-								Cancel
+								Clear Deposits
 							</Button>
-							<Button
-								onClick={handleSetDeposit}
-								disabled={isAdjusting}
-								className='bg-gradient-to-r from-blue-500 to-emerald-500'
-							>
-								{isAdjusting ? 'Setting...' : 'Set Deposit'}
-							</Button>
+							<div className='flex gap-2 flex-1 justify-end'>
+								<Button
+									variant='outline'
+									onClick={() => {
+										setShowDepositModal(false)
+										setDepositAdjustment('')
+									}}
+									disabled={isAdjusting}
+									className='border-white/20 text-white hover:bg-white/10'
+								>
+									Cancel
+								</Button>
+								<Button
+									onClick={handleSetDeposit}
+									disabled={isAdjusting}
+									className='bg-gradient-to-r from-blue-500 to-emerald-500'
+								>
+									{isAdjusting ? 'Setting...' : 'Set Deposit'}
+								</Button>
+							</div>
 						</div>
 					</Card>
 				</div>

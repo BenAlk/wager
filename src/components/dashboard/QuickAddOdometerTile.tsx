@@ -178,6 +178,7 @@ export function QuickAddOdometerTile({
 										value={field.value}
 										onChange={field.onChange}
 										min={0}
+										chevronSize='sm'
 										placeholder='Enter total miles'
 										className='bg-white/5 border-white/20 text-white mt-1'
 									/>

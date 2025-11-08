@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label'
 
 export function VanStatusTile() {
 	const { user } = useAuth()
-	const { activeVan, updateVan, setSaving } = useVanStore()
+	const { activeVan, updateVan, setSaving, totalDepositPaid } = useVanStore()
 	const [showOffHireModal, setShowOffHireModal] = useState(false)
 	const [offHireDateInput, setOffHireDateInput] = useState('')
 	const [lastVan, setLastVan] = useState<VanHire | null>(null)
@@ -46,7 +46,7 @@ export function VanStatusTile() {
 		return null
 	}
 
-	const depositProgress = (displayVan.deposit_paid / 50000) * 100
+	const depositProgress = (totalDepositPaid / 50000) * 100
 	const isOffHired = !!displayVan.off_hire_date
 
 	const handleOffHire = async () => {
@@ -109,7 +109,7 @@ export function VanStatusTile() {
 							<div className='flex items-center justify-between mb-2'>
 								<p className='text-slate-400 text-sm'>Deposit Progress</p>
 								<p className='text-white text-sm font-mono'>
-									£{(displayVan.deposit_paid / 100).toFixed(2)} / £500
+									£{(totalDepositPaid / 100).toFixed(2)} / £500
 								</p>
 							</div>
 							<div className='w-full bg-slate-700 rounded-full h-2'>

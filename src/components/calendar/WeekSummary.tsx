@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import {
@@ -311,14 +312,13 @@ export default function WeekSummary({
 							<div className='flex items-center gap-2 flex-1'>
 								<span className='text-slate-400'>Rate:</span>
 								<span className='text-slate-400 font-mono'>£</span>
-								<Input
-									type='number'
-									step='0.0001'
-									value={(editedMileageRate / 10000).toFixed(4)}
-									onChange={(e) => {
-										const pounds = parseFloat(e.target.value) || 0
-										setEditedMileageRate(Math.round(pounds * 10000))
-									}}
+								<NumberInput
+									value={editedMileageRate / 10000}
+									onChange={(value) => setEditedMileageRate(Math.round(value * 10000))}
+									step={0.0001}
+									min={0}
+									max={1}
+									chevronSize='sm'
 									className='w-24 h-8 bg-white/5 border-white/10 text-white font-mono text-sm px-2'
 								/>
 								<span className='text-slate-400 text-sm'>/mi</span>
@@ -379,18 +379,20 @@ export default function WeekSummary({
 						</div>
 						{breakdown.vanBreakdown && breakdown.vanBreakdown.length > 0 && (
 							<div className='ml-4 mt-1 space-y-1'>
-								{breakdown.vanBreakdown.map((van, idx) => (
-									<div
-										key={idx}
-										className='flex items-center justify-between text-xs sm:text-sm text-slate-500'
-									>
-										<span>
-											{van.registration} ({van.days} day
-											{van.days !== 1 ? 's' : ''})
-										</span>
-										<span>- £{(van.vanCost / 100).toFixed(2)}</span>
-									</div>
-								))}
+								{breakdown.vanBreakdown
+									.filter((van) => van.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT')
+									.map((van, idx) => (
+										<div
+											key={idx}
+											className='flex items-center justify-between text-xs sm:text-sm text-slate-500'
+										>
+											<span>
+												{van.registration} ({van.days} day
+												{van.days !== 1 ? 's' : ''})
+											</span>
+											<span>- £{(van.vanCost / 100).toFixed(2)}</span>
+										</div>
+									))}
 							</div>
 						)}
 					</div>
@@ -614,46 +616,26 @@ export default function WeekSummary({
 			)}
 
 			{/* Clear Week Confirmation Dialog */}
-			{showClearConfirm && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm'>
-					<div className='bg-slate-900 border border-red-500/50 rounded-2xl shadow-2xl w-full max-w-md p-6'>
-						<div className='flex items-center gap-3 mb-4'>
-							<div className='w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center'>
-								<Trash2 className='w-6 h-6 text-red-400' />
-							</div>
-							<div>
-								<h3 className='text-xl font-bold text-white'>
-									Clear Week {weekNumber}?
-								</h3>
-								<p className='text-sm text-slate-400'>
-									This action cannot be undone
-								</p>
-							</div>
-						</div>
-						<p className='text-slate-300 mb-6'>
-							This will permanently delete all work days, rankings, and snapshot
-							data for Week {weekNumber}.
-						</p>
-						<div className='flex gap-3'>
-							<Button
-								onClick={() => setShowClearConfirm(false)}
-								variant='ghost'
-								className='flex-1 text-slate-400 hover:text-white hover:bg-white/10'
-								disabled={isClearing}
-							>
-								Cancel
-							</Button>
-							<Button
-								onClick={handleClearWeek}
-								disabled={isClearing}
-								className='flex-1 bg-red-500 hover:bg-red-600 text-white'
-							>
-								{isClearing ? 'Clearing...' : 'Clear Week'}
-							</Button>
-						</div>
-					</div>
-				</div>
-			)}
+			<ConfirmationDialog
+				open={showClearConfirm}
+				onOpenChange={setShowClearConfirm}
+				onConfirm={handleClearWeek}
+				title={`Clear Week ${weekNumber}?`}
+				description={
+					<>
+						This will permanently delete all work days, rankings, and snapshot
+						data for <strong>Week {weekNumber}</strong>.
+						<br />
+						<br />
+						This action cannot be undone.
+					</>
+				}
+				confirmText="Clear Week"
+				cancelText="Cancel"
+				variant="destructive"
+				icon={<Trash2 className="w-6 h-6" />}
+				isLoading={isClearing}
+			/>
 		</div>
 	)
 }
