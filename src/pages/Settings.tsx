@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowLeft, Loader2, Save, Settings as SettingsIcon } from 'lucide-react'
+import { Loader2, Save } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
@@ -189,32 +189,8 @@ export default function Settings() {
 	}
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-8'>
+		<div className='p-4 md:p-8'>
 			<div className='max-w-4xl mx-auto'>
-				{/* Header */}
-				<div className='mb-8'>
-					<Button
-						onClick={() => navigate('/dashboard')}
-						variant='ghost'
-						className='mb-4 text-slate-400 hover:text-white hover:bg-white/5 cursor-pointer'
-					>
-						<ArrowLeft className='w-4 h-4 mr-2' />
-						Back to Dashboard
-					</Button>
-
-					<div className='flex items-center gap-3'>
-						<div className='w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center'>
-							<SettingsIcon className='w-6 h-6 text-blue-400' />
-						</div>
-						<div>
-							<h1 className='text-3xl font-bold text-white'>Settings</h1>
-							<p className='text-slate-400'>
-								Configure your pay rates and invoicing preferences
-							</p>
-						</div>
-					</div>
-				</div>
-
 				{/* Settings Form */}
 				<form
 					onSubmit={handleSubmit(onSubmit)}

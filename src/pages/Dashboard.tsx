@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
-import { logout } from '@/lib/auth'
 import { motion } from 'framer-motion'
-import { Calendar, LogOut, Settings, TrendingUp, Truck } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
 
 import { fetchWeekWithWorkDays } from '@/lib/api/weeks'
 import { dateToWeekNumber } from '@/lib/dates'
@@ -20,18 +15,7 @@ import { LoadingScreen } from '@/components/shared/LoadingScreen'
 
 export default function Dashboard() {
 	const { user, loading } = useAuth()
-	const navigate = useNavigate()
 	const [hasWorkToday, setHasWorkToday] = useState(false)
-
-	const handleLogout = async () => {
-		try {
-			await logout()
-			navigate('/auth')
-		} catch (error) {
-			console.error('Logout error:', error)
-			toast.error('Failed to logout. Please try again.')
-		}
-	}
 
 	// Check if work exists for today
 	const checkTodayWorkStatus = async () => {
@@ -55,72 +39,8 @@ export default function Dashboard() {
 	}
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-8'>
+		<div className='p-4 md:p-8'>
 			<div className='max-w-7xl mx-auto'>
-				{/* Header */}
-				<header className='flex items-center justify-between mb-6 sm:mb-8'>
-					<div className='flex items-center gap-2 sm:gap-3'>
-						<div
-							className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg'
-							role='img'
-							aria-label='Wager logo'
-						>
-							<TrendingUp className='w-5 h-5 sm:w-6 sm:h-6 text-white' aria-hidden='true' />
-						</div>
-						<div className='hidden sm:block'>
-							<h1 className='text-2xl font-bold text-white'>Wager</h1>
-							<p className='text-slate-400 text-sm'>
-								Welcome back, {user?.user_metadata.display_name}
-							</p>
-						</div>
-						<div className='block sm:hidden'>
-							<h1 className='text-lg font-bold text-white'>Wager</h1>
-						</div>
-					</div>
-					<nav aria-label='Main navigation' className='flex items-center gap-1 sm:gap-2'>
-						<Button
-							onClick={() => navigate('/calendar')}
-							variant='outline'
-							size='icon-sm'
-							className='bg-white/5 border-white/10 text-white hover:bg-white/10 sm:size-9 md:h-9 md:w-auto md:px-4'
-							aria-label='Go to calendar page'
-						>
-							<Calendar className='w-4 h-4 md:mr-2' aria-hidden='true' />
-							<span className='hidden md:inline'>Calendar</span>
-						</Button>
-						<Button
-							onClick={() => navigate('/vans')}
-							variant='outline'
-							size='icon-sm'
-							className='bg-white/5 border-white/10 text-white hover:bg-white/10 sm:size-9 md:h-9 md:w-auto md:px-4'
-							aria-label='Go to van management page'
-						>
-							<Truck className='w-4 h-4 md:mr-2' aria-hidden='true' />
-							<span className='hidden md:inline'>Vans</span>
-						</Button>
-						<Button
-							onClick={() => navigate('/settings')}
-							variant='outline'
-							size='icon-sm'
-							className='bg-white/5 border-white/10 text-white hover:bg-white/10 sm:size-9 md:h-9 md:w-auto md:px-4'
-							aria-label='Go to settings page'
-						>
-							<Settings className='w-4 h-4 md:mr-2' aria-hidden='true' />
-							<span className='hidden md:inline'>Settings</span>
-						</Button>
-						<Button
-							onClick={handleLogout}
-							variant='outline'
-							size='icon-sm'
-							className='bg-white/5 border-white/10 text-white hover:bg-white/10 sm:size-9 md:h-9 md:w-auto md:px-4'
-							aria-label='Log out of your account'
-						>
-							<LogOut className='w-4 h-4 md:mr-2' aria-hidden='true' />
-							<span className='hidden md:inline'>Logout</span>
-						</Button>
-					</nav>
-				</header>
-
 				{/* Dashboard Grid */}
 				<main aria-label='Dashboard tiles' className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 					{/* Quick Add Work - Mobile: 1st, Desktop: Top-left */}

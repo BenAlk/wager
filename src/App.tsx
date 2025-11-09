@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { AnimatePresence } from 'framer-motion'
 import { PageTransition } from '@/components/shared/PageTransition'
 import { LoadingScreen } from '@/components/shared/LoadingScreen'
+import { MainLayout } from '@/components/layout/MainLayout'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
 import Calendar from '@/pages/Calendar'
@@ -57,45 +58,45 @@ function AnimatedRoutes() {
 					}
 				/>
 				<Route
-					path='/dashboard'
 					element={
 						<ProtectedRoute>
+							<MainLayout />
+						</ProtectedRoute>
+					}
+				>
+					<Route
+						path='/dashboard'
+						element={
 							<PageTransition>
 								<Dashboard />
 							</PageTransition>
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					path='/calendar'
-					element={
-						<ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/calendar'
+						element={
 							<PageTransition>
 								<Calendar />
 							</PageTransition>
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					path='/settings'
-					element={
-						<ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/settings'
+						element={
 							<PageTransition>
 								<Settings />
 							</PageTransition>
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					path='/vans'
-					element={
-						<ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/vans'
+						element={
 							<PageTransition>
 								<VanManagement />
 							</PageTransition>
-						</ProtectedRoute>
-					}
-				/>
+						}
+					/>
+				</Route>
 				<Route path='/' element={<Navigate to='/dashboard' replace />} />
 			</Routes>
 		</AnimatePresence>

@@ -9,19 +9,16 @@ import { formatWeekRange, getPreviousWeek, getWeekDates } from '@/lib/dates'
 import { useCalendarStore } from '@/store/calendarStore'
 import { getWeekKey, isCacheStale, useWeeksStore } from '@/store/weeksStore'
 import {
-	ArrowLeft,
-	Calendar as CalendarIcon,
 	ChevronLeft,
 	ChevronRight,
 	// Trash2, // Commented out for beta testing
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 // import { supabase } from '@/lib/supabase' // Commented out for beta testing
 // import { toast } from 'sonner' // Commented out for beta testing
 
 export default function Calendar() {
-	const navigate = useNavigate()
 	const [searchParams] = useSearchParams()
 	const { user } = useAuth()
 	const { currentWeek, goToPreviousWeek, goToNextWeek, goToToday, setCurrentWeek } =
@@ -234,29 +231,7 @@ export default function Calendar() {
 	} */
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'>
-			{/* Header */}
-			<header className='border-b border-white/10 bg-white/5 backdrop-blur-xl'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
-					<div className='flex items-center justify-between'>
-						<div className='flex items-center gap-3'>
-							<Button
-								onClick={() => navigate('/dashboard')}
-								variant='ghost'
-								size='icon'
-								className='text-slate-400 hover:text-white hover:bg-white/10 cursor-pointer'
-							>
-								<ArrowLeft className='w-5 h-5' />
-							</Button>
-							<div className='w-10 h-10 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-lg flex items-center justify-center'>
-								<CalendarIcon className='w-6 h-6 text-white' />
-							</div>
-							<h1 className='text-2xl font-bold text-white'>Calendar</h1>
-						</div>
-					</div>
-				</div>
-			</header>
-
+		<div>
 			{/* Main Content */}
 			<main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
 				{/* Week Navigation */}

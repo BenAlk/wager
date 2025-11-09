@@ -401,16 +401,33 @@ wager/
 
 ### Phase 15: UI/UX Polish ✅ **COMPLETE**
 
-- [x] Fix horizontal scrolling on small iOS devices (320-360px)
-- [x] Add cursor pointer to all interactive buttons
-- [x] Add smooth page transitions between routes
-- [x] Add modal entrance/exit animations (scale + fade)
-- [x] Add dashboard tile animations (staggered fade-in/slide-up)
-- [x] Add button hover/active states with subtle scale
-- [x] Replace "Loading..." with animated skeleton screens
-- [x] Improve accessibility (ARIA labels, semantic HTML, focus states)
-- [x] Optimize for small screens (dashboard header, edit buttons)
-- [x] Create reusable EmptyState component
+- [x] Make fully responsive
+  - [x] Fix horizontal scrolling on small iOS devices (320-360px)
+  - [x] Optimize for small screens (dashboard header, edit buttons)
+  - [x] Mobile-first responsive layouts throughout
+  - [x] Responsive tile ordering (mobile vs desktop)
+- [x] Add animations and transitions
+  - [x] Add smooth page transitions between routes
+  - [x] Add modal entrance/exit animations (scale + fade)
+  - [x] Add dashboard tile animations (staggered fade-in/slide-up)
+  - [x] Add button hover/active states with subtle scale
+  - [x] Add cursor pointer to all interactive buttons
+- [ ] Implement keyboard shortcuts
+  - [ ] Week navigation (arrow keys, today shortcut)
+  - [ ] Quick add work (keyboard shortcut)
+  - [ ] Calendar shortcuts (n for new day, e for edit)
+- [ ] Create onboarding flow
+  - [ ] Welcome screen for new users
+  - [ ] Initial settings wizard
+  - [ ] Feature tour/tooltips
+  - [ ] Sample data for first-time experience
+- [x] Improve accessibility
+  - [x] ARIA labels on interactive elements
+  - [x] Semantic HTML throughout
+  - [x] Focus states on all inputs/buttons
+  - [x] Screen reader support
+  - [ ] Keyboard navigation testing
+  - [ ] WCAG 2.1 AA compliance audit
 
 ### Phase 16: Testing & Deployment
 

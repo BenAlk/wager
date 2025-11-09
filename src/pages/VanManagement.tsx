@@ -1,6 +1,5 @@
-import { ArrowLeft, Plus, Truck, AlertCircle /*, Trash2*/ } from 'lucide-react'
+import { Plus, Truck, AlertCircle /*, Trash2*/ } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 import { useAuth } from '@/hooks/useAuth'
@@ -19,7 +18,6 @@ import { VanHireModal } from '@/components/van/VanHireModal'
 import { VanHireCard } from '@/components/van/VanHireCard'
 
 export default function VanManagement() {
-	const navigate = useNavigate()
 	const { user } = useAuth()
 	const {
 		allVans,
@@ -191,29 +189,10 @@ export default function VanManagement() {
 	}
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'>
+		<div>
 			<div className='container mx-auto px-4 py-8 max-w-6xl'>
-				{/* Header */}
-				<div className='flex items-center justify-between mb-8'>
-					<div className='flex items-center gap-4'>
-						<Button
-							variant='ghost'
-							size='icon'
-							onClick={() => navigate('/dashboard')}
-							className='text-white hover:bg-white/10'
-						>
-							<ArrowLeft className='w-5 h-5' />
-						</Button>
-						<div>
-							<h1 className='text-xs sm:text-3xl font-bold text-white flex items-center gap-3'>
-								<Truck className='w-8 h-8' />
-								Van Management
-							</h1>
-							<p className='text-xs sm:text-lg text-slate-400 mt-1'>
-								Track your van hires and deposits
-							</p>
-						</div>
-					</div>
+				{/* Actions Bar */}
+				<div className='flex items-center justify-end mb-8'>
 					<div className='flex gap-2'>
 						{/* DEBUG ONLY: Delete all vans button - COMMENTED OUT FOR BETA TESTING */}
 						{/* <Button
