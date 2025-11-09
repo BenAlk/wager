@@ -399,13 +399,18 @@ wager/
 - [x] Filter MANUAL_DEPOSIT_ADJUSTMENT from weekly summary van breakdown
 - [x] Standardize existing confirmation dialogs (Clear Week, Delete Van Hire)
 
-### Phase 15: UI/UX Polish
+### Phase 15: UI/UX Polish ✅ **COMPLETE**
 
-- [ ] Make fully responsive
-- [ ] Add animations and transitions
-- [ ] Implement keyboard shortcuts
-- [ ] Create onboarding flow
-- [ ] Improve accessibility
+- [x] Fix horizontal scrolling on small iOS devices (320-360px)
+- [x] Add cursor pointer to all interactive buttons
+- [x] Add smooth page transitions between routes
+- [x] Add modal entrance/exit animations (scale + fade)
+- [x] Add dashboard tile animations (staggered fade-in/slide-up)
+- [x] Add button hover/active states with subtle scale
+- [x] Replace "Loading..." with animated skeleton screens
+- [x] Improve accessibility (ARIA labels, semantic HTML, focus states)
+- [x] Optimize for small screens (dashboard header, edit buttons)
+- [x] Create reusable EmptyState component
 
 ### Phase 16: Testing & Deployment
 
