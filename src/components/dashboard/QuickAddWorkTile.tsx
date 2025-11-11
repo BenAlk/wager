@@ -44,6 +44,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 	const { user } = useAuth()
 	const { settings } = useSettingsStore()
 	const updateWorkDayInStore = useWeeksStore((state) => state.updateWorkDay)
+	const addWorkDayToStore = useWeeksStore((state) => state.addWorkDay)
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [todayWork, setTodayWork] = useState<WorkDay | null>(null)
 	const [isEditing, setIsEditing] = useState(false)
@@ -152,6 +153,9 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					toast.success('Work added for today!', { duration: 3000 })
 					setTodayWork(workDay)
 					reset()
+					// Add to weeks store cache so calendar reflects the change
+					const weekKey = getWeekKey(weekNum, year)
+					addWorkDayToStore(weekKey, workDay)
 					onWorkAdded?.()
 				} else {
 					toast.error('Failed to add work')

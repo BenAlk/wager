@@ -8,6 +8,7 @@ import * as z from 'zod'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchWeekWithWorkDays, updateWorkDay } from '@/lib/api/weeks'
 import { dateToWeekNumber } from '@/lib/dates'
+import { useWeeksStore, getWeekKey } from '@/store/weeksStore'
 import type { WorkDay } from '@/types/database'
 
 import { Button } from '@/components/ui/button'
@@ -29,6 +30,7 @@ export function QuickAddOdometerTile({
 	hasWorkToday,
 }: QuickAddOdometerTileProps) {
 	const { user } = useAuth()
+	const updateWorkDayInStore = useWeeksStore((state) => state.updateWorkDay)
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [todayWork, setTodayWork] = useState<WorkDay | null>(null)
 	const [isEditing, setIsEditing] = useState(false)
@@ -97,6 +99,9 @@ export function QuickAddOdometerTile({
 				toast.success('Odometer updated!', { duration: 3000 })
 				setTodayWork(updated)
 				setIsEditing(false)
+				// Update the weeks store cache so calendar reflects the change
+				const weekKey = getWeekKey(weekNum, year)
+				updateWorkDayInStore(weekKey, updated.id, updated)
 			} else {
 				toast.error('Failed to update odometer')
 			}
