@@ -216,9 +216,9 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 		>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className='flex flex-col h-full'
+				className='flex flex-col items-center w-full h-full'
 			>
-				<div className='space-y-1'>
+				<div className='space-y-1 w-2/3'>
 					<div>
 						<Label
 							htmlFor='route_type'
@@ -287,7 +287,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 				<Button
 					type='submit'
 					disabled={isSubmitting}
-					className='w-full h-10 mt-auto bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+					className='self-center w-1/2 h-10 mt-auto bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
 				>
 					{isSubmitting ? (
 						<>

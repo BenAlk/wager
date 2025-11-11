@@ -176,13 +176,13 @@ export function RankingsReminderTile() {
 	return (
 		<>
 			<DashboardTile title='Rankings Reminder' icon={Award}>
-				<div className='text-center py-4'>
-					<p className='text-amber-400 text-sm mb-4'>
+				<div className='flex flex-col min-h-full justify-evenly items-center py-4'>
+					<p className='text-amber-400 text-sm'>
 						Week {weekNMinus2Info.week} rankings are missing!
 					</p>
 					<Button
 						onClick={() => setShowModal(true)}
-						className='w-full h-10 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600'
+						className='w-1/2 h-10 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600'
 					>
 						Enter Rankings Now
 					</Button>

@@ -183,9 +183,9 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 			) : (
 				<form
 					onSubmit={handleSubmit(onSubmit)}
-					className='flex flex-col h-full'
+					className='flex flex-col items-center w-full h-full'
 				>
-					<div className='space-y-2'>
+					<div className='space-y-2 w-2/3'>
 						<div>
 							<Label
 								htmlFor='stops_given'
@@ -254,7 +254,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 					<Button
 						type='submit'
 						disabled={isSubmitting || stopsGiven + stopsTaken > 200}
-						className='w-full h-10 mt-auto bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+						className='self-center w-1/2 h-10 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 mt-6'
 					>
 						{isSubmitting ? (
 							<>
