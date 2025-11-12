@@ -138,33 +138,33 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 			>
 				<div className='flex flex-col h-full'>
 					<div className='space-y-4 flex-1'>
-						<div className='bg-white/5 rounded-lg p-4'>
+						<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
 							<div className='flex justify-between items-start mb-3'>
 								<div className='flex-1'>
-									<p className='text-slate-400 text-xs mb-1'>Stops Given</p>
-									<p className='text-red-400 font-semibold text-lg'>
+									<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops Given</p>
+									<p className='text-[var(--text-sweeps-taken)] font-semibold text-lg'>
 										{todayWork.stops_given}
 									</p>
-									<p className='text-slate-500 text-xs'>Others took from you</p>
+									<p className='text-[var(--text-tertiary)] text-xs'>Others took from you</p>
 								</div>
 								<Button
 									variant='ghost'
 									size='icon'
 									onClick={() => setIsEditing(true)}
-									className='text-slate-400 hover:text-white hover:bg-white/10 h-8 w-8'
+									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8'
 								>
-									<Pencil className='w-4 h-4 text-yellow-400' />
+									<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' />
 								</Button>
 							</div>
 							<div>
-								<p className='text-slate-400 text-xs mb-1'>Stops Taken</p>
-								<p className='text-emerald-400 font-semibold text-lg'>
+								<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops Taken</p>
+								<p className='text-[var(--text-sweeps-given)] font-semibold text-lg'>
 									{todayWork.stops_taken}
 								</p>
-								<p className='text-slate-500 text-xs'>You took from others</p>
+								<p className='text-[var(--text-tertiary)] text-xs'>You took from others</p>
 							</div>
 						</div>
-						<p className='text-slate-400 text-xs text-center'>
+						<p className='text-[var(--text-secondary)] text-xs text-center'>
 							Sweeps logged for today
 						</p>
 					</div>
@@ -181,7 +181,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 		>
 			{!hasWorkToday ? (
 				<div className='text-center py-8'>
-					<p className='text-slate-400 text-sm'>
+					<p className='text-[var(--text-secondary)] text-sm'>
 						Add work for today first to enable sweeps
 					</p>
 				</div>
@@ -194,7 +194,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 						<div>
 							<Label
 								htmlFor='stops_given'
-								className='text-slate-300 text-sm'
+								className='text-[var(--input-label)] text-sm'
 							>
 								Stops Given (Others took from you)
 							</Label>
@@ -209,12 +209,12 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 										min={0}
 										max={200}
 										chevronSize='sm'
-										className='bg-white/5 border-white/20 text-white'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)]'
 									/>
 								)}
 							/>
 							{errors.stops_given && (
-								<p className='text-red-400 text-xs mt-1'>
+								<p className='text-[var(--input-error-text)] text-xs mt-1'>
 									{errors.stops_given.message}
 								</p>
 							)}
@@ -223,7 +223,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 						<div>
 							<Label
 								htmlFor='stops_taken'
-								className='text-slate-300 text-sm'
+								className='text-[var(--input-label)] text-sm'
 							>
 								Stops Taken (You took from others)
 							</Label>
@@ -238,19 +238,19 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 										min={0}
 										max={200}
 										chevronSize='sm'
-										className='bg-white/5 border-white/20 text-white mt-1'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'
 									/>
 								)}
 							/>
 							{errors.stops_taken && (
-								<p className='text-red-400 text-xs mt-1'>
+								<p className='text-[var(--input-error-text)] text-xs mt-1'>
 									{errors.stops_taken.message}
 								</p>
 							)}
 						</div>
 
 						{stopsGiven + stopsTaken > 200 && (
-							<p className='text-red-400 text-xs'>
+							<p className='text-[var(--input-error-text)] text-xs'>
 								Total sweeps cannot exceed 200
 							</p>
 						)}
@@ -259,7 +259,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 					<Button
 						type='submit'
 						disabled={isSubmitting || stopsGiven + stopsTaken > 200}
-						className='self-center w-1/2 h-10 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 mt-6'
+						className='self-center w-1/2 h-10 bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-white font-semibold shadow-lg mt-6'
 					>
 						{isSubmitting ? (
 							<>

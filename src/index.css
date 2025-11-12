@@ -36,6 +36,398 @@
   --font-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", monospace;
 }
 
+/* ============================================================================
+   THEME SYSTEM - DARK THEME
+   ============================================================================ */
+
+.dark {
+  /* Page Backgrounds */
+  --bg-page-from: var(--color-slate-900);
+  --bg-page-via: var(--color-slate-800);
+  --bg-page-to: var(--color-slate-900);
+
+  /* Surface Backgrounds */
+  --bg-surface-primary: rgba(255, 255, 255, 0.10);
+  --bg-surface-secondary: rgba(255, 255, 255, 0.05);
+  --bg-surface-tertiary: rgba(255, 255, 255, 0.03);
+
+  /* Interactive States */
+  --bg-hover: rgba(255, 255, 255, 0.10);
+  --bg-hover-surface: rgba(255, 255, 255, 0.15);
+
+  /* Status Backgrounds */
+  --bg-success: rgba(16, 185, 129, 0.20);
+  --bg-warning: rgba(245, 158, 11, 0.20);
+  --bg-error: rgba(239, 68, 68, 0.20);
+  --bg-info: rgba(14, 165, 233, 0.20);
+  --bg-neutral: rgba(100, 116, 139, 0.20);
+
+  /* Route Type Backgrounds */
+  --bg-route-normal: rgba(59, 130, 246, 0.20);
+  --bg-route-drs: rgba(168, 85, 247, 0.20);
+
+  /* Disabled State */
+  --bg-disabled: rgba(51, 65, 85, 0.50);
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: var(--color-slate-400);
+  --text-tertiary: var(--color-slate-500);
+  --text-link: var(--color-blue-400);
+  --text-link-hover: #93c5fd;
+
+  /* Semantic Text */
+  --text-success: var(--color-emerald-400);
+  --text-warning: var(--color-amber-400);
+  --text-error: var(--color-red-400);
+  --text-info: var(--color-sky-400);
+
+  /* Route Type Text */
+  --text-route-normal: var(--color-blue-400);
+  --text-route-drs: #a855f7;
+
+  /* Mileage Text */
+  --text-mileage-van: #facc15;
+  --text-mileage-paid: var(--text-primary);
+  --text-mileage-delta-good: var(--text-success);
+  --text-mileage-delta-bad: var(--text-error);
+
+  /* Financial Text */
+  --text-currency-positive: var(--color-emerald-400);
+  --text-currency-negative: var(--color-red-400);
+  --text-currency-neutral: var(--text-primary);
+
+  /* Sweeps Text */
+  --text-sweeps-given: var(--text-success);
+  --text-sweeps-taken: var(--text-error);
+
+  /* Form Text */
+  --text-placeholder: var(--color-slate-500);
+  --text-label: var(--color-slate-300);
+  --text-disabled: var(--color-slate-400);
+
+  /* Borders */
+  --border-primary: rgba(255, 255, 255, 0.20);
+  --border-secondary: rgba(255, 255, 255, 0.10);
+  --border-tertiary: rgba(255, 255, 255, 0.05);
+
+  /* Semantic Borders */
+  --border-success: rgba(16, 185, 129, 0.20);
+  --border-warning: rgba(245, 158, 11, 0.20);
+  --border-error: rgba(239, 68, 68, 0.20);
+  --border-info: rgba(14, 165, 233, 0.20);
+
+  /* Route Type Borders */
+  --border-route-normal: rgba(59, 130, 246, 0.20);
+  --border-route-drs: rgba(168, 85, 247, 0.20);
+
+  /* Focus/Active */
+  --border-focus: var(--color-blue-500);
+  --border-active: transparent;
+
+  /* Gradients */
+  --gradient-primary-from: var(--color-blue-500);
+  --gradient-primary-to: var(--color-emerald-500);
+  --gradient-primary-hover-from: var(--color-blue-600);
+  --gradient-primary-hover-to: var(--color-emerald-600);
+
+  /* Component-Specific: Navigation */
+  --nav-bg: rgba(255, 255, 255, 0.05);
+  --nav-border: rgba(255, 255, 255, 0.10);
+  --nav-logo-from: var(--color-blue-500);
+  --nav-logo-to: var(--color-emerald-500);
+  --nav-title: var(--text-primary);
+  --nav-subtitle: var(--text-secondary);
+  --nav-button-inactive-bg: rgba(255, 255, 255, 0.05);
+  --nav-button-inactive-border: rgba(255, 255, 255, 0.10);
+  --nav-button-inactive-text: var(--text-primary);
+  --nav-button-hover: rgba(255, 255, 255, 0.10);
+
+  /* Component-Specific: Tiles */
+  --tile-bg: rgba(255, 255, 255, 0.10);
+  --tile-border: rgba(255, 255, 255, 0.20);
+  --tile-hover: rgba(255, 255, 255, 0.15);
+  --tile-icon-enabled-from: var(--color-blue-500);
+  --tile-icon-enabled-to: var(--color-emerald-500);
+  --tile-icon-disabled: rgba(51, 65, 85, 0.50);
+  --tile-title: var(--text-primary);
+  --tile-title-disabled: var(--text-secondary);
+  --tile-button-bg: rgba(255, 255, 255, 0.05);
+  --tile-button-border: rgba(255, 255, 255, 0.10);
+  --tile-button-text: var(--text-primary);
+  --tile-button-hover-bg: rgba(255, 255, 255, 0.10);
+  --tile-button-hover-border: rgba(255, 255, 255, 0.20);
+
+  /* Component-Specific: Calendar */
+  --day-bg-empty: rgba(255, 255, 255, 0.05);
+  --day-bg-work: rgba(255, 255, 255, 0.10);
+  --day-border: rgba(255, 255, 255, 0.10);
+  --day-hover: rgba(255, 255, 255, 0.15);
+  --day-date: var(--text-primary);
+  --day-name: var(--text-secondary);
+
+  /* Component-Specific: Forms */
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: rgba(255, 255, 255, 0.20);
+  --input-text: var(--text-primary);
+  --input-placeholder: var(--color-slate-500);
+  --input-label: var(--color-slate-300);
+  --input-focus-ring: var(--color-blue-500);
+  --input-error-border: rgba(239, 68, 68, 0.50);
+  --input-error-text: var(--color-red-400);
+
+  /* Component-Specific: Buttons */
+  --button-primary-from: var(--color-blue-500);
+  --button-primary-to: var(--color-emerald-500);
+  --button-primary-hover-from: var(--color-blue-600);
+  --button-primary-hover-to: var(--color-emerald-600);
+  --button-primary-bg: rgba(255, 255, 255, 0.10);
+  --button-primary-border: rgba(255, 255, 255, 0.15);
+  --button-primary-text: var(--text-primary);
+  --button-primary-hover: rgba(255, 255, 255, 0.15);
+  --button-warning-from: var(--color-amber-500);
+  --button-warning-to: #f97316;
+  --button-warning-hover-from: var(--color-amber-600);
+  --button-warning-hover-to: #ea580c;
+  --button-secondary-bg: rgba(255, 255, 255, 0.05);
+  --button-secondary-border: rgba(255, 255, 255, 0.10);
+  --button-secondary-text: var(--text-primary);
+  --button-secondary-hover: rgba(255, 255, 255, 0.10);
+  --button-ghost-text: var(--color-blue-400);
+  --button-ghost-hover: #93c5fd;
+  --button-destructive-border: rgba(239, 68, 68, 0.50);
+  --button-destructive-text: var(--color-red-400);
+  --button-destructive-hover: rgba(239, 68, 68, 0.10);
+
+  /* Component-Specific: Modals */
+  --modal-bg: rgba(15, 23, 42, 0.95);
+  --modal-border: rgba(255, 255, 255, 0.20);
+  --modal-title: var(--text-primary);
+  --modal-description: var(--text-secondary);
+  --modal-overlay: rgba(0, 0, 0, 0.70);
+
+  /* Component-Specific: Badges */
+  --badge-success-bg: rgba(16, 185, 129, 0.20);
+  --badge-success-text: var(--color-emerald-400);
+  --badge-success-border: rgba(16, 185, 129, 0.20);
+  --badge-warning-bg: rgba(245, 158, 11, 0.20);
+  --badge-warning-text: var(--color-amber-400);
+  --badge-warning-border: rgba(245, 158, 11, 0.20);
+  --badge-error-bg: rgba(239, 68, 68, 0.20);
+  --badge-error-text: var(--color-red-400);
+  --badge-error-border: rgba(239, 68, 68, 0.20);
+  --badge-info-bg: rgba(14, 165, 233, 0.20);
+  --badge-info-text: var(--color-sky-400);
+  --badge-info-border: rgba(14, 165, 233, 0.20);
+  --badge-neutral-bg: rgba(100, 116, 139, 0.20);
+  --badge-neutral-text: var(--color-slate-400);
+  --badge-neutral-border: rgba(100, 116, 139, 0.20);
+
+  /* Component-Specific: Finance */
+  --finance-total: var(--text-primary);
+  --finance-base: var(--text-primary);
+  --finance-bonus: var(--color-emerald-400);
+  --finance-positive: var(--color-emerald-400);
+  --finance-negative: var(--color-red-400);
+  --finance-heading: var(--text-secondary);
+}
+
+/* ============================================================================
+   THEME SYSTEM - LIGHT THEME
+   ============================================================================ */
+
+.light {
+  /* Page Backgrounds */
+  --bg-page-from: #f5f5f4;
+  --bg-page-via: #fafaf9;
+  --bg-page-to: #f5f5f4;
+
+  /* Surface Backgrounds */
+  --bg-surface-primary: rgba(255, 255, 255, 0.80);
+  --bg-surface-secondary: rgba(255, 255, 255, 0.60);
+  --bg-surface-tertiary: rgba(255, 255, 255, 0.40);
+
+  /* Interactive States */
+  --bg-hover: rgba(0, 0, 0, 0.05);
+  --bg-hover-surface: rgba(0, 0, 0, 0.08);
+
+  /* Status Backgrounds */
+  --bg-success: rgba(16, 185, 129, 0.12);
+  --bg-warning: rgba(245, 158, 11, 0.12);
+  --bg-error: rgba(239, 68, 68, 0.12);
+  --bg-info: rgba(14, 165, 233, 0.12);
+  --bg-neutral: rgba(120, 113, 108, 0.12);
+
+  /* Route Type Backgrounds */
+  --bg-route-normal: rgba(59, 130, 246, 0.12);
+  --bg-route-drs: rgba(168, 85, 247, 0.12);
+
+  /* Disabled State */
+  --bg-disabled: rgba(214, 211, 209, 0.60);
+
+  /* Text Colors */
+  --text-primary: #1c1917;
+  --text-secondary: #44403c;
+  --text-tertiary: #57534e;
+  --text-link: #2563eb;
+  --text-link-hover: #1d4ed8;
+
+  /* Semantic Text */
+  --text-success: #047857;
+  --text-warning: #b45309;
+  --text-error: #b91c1c;
+  --text-info: #0369a1;
+
+  /* Route Type Text */
+  --text-route-normal: #1d4ed8;
+  --text-route-drs: #7e22ce;
+
+  /* Mileage Text */
+  --text-mileage-van: #a16207;
+  --text-mileage-paid: var(--text-primary);
+  --text-mileage-delta-good: var(--text-success);
+  --text-mileage-delta-bad: var(--text-error);
+
+  /* Financial Text */
+  --text-currency-positive: #047857;
+  --text-currency-negative: #b91c1c;
+  --text-currency-neutral: var(--text-primary);
+
+  /* Sweeps Text */
+  --text-sweeps-given: var(--text-success);
+  --text-sweeps-taken: var(--text-error);
+
+  /* Form Text */
+  --text-placeholder: #a8a29e;
+  --text-label: #44403c;
+  --text-disabled: #a8a29e;
+
+  /* Borders */
+  --border-primary: rgba(0, 0, 0, 0.12);
+  --border-secondary: rgba(0, 0, 0, 0.08);
+  --border-tertiary: rgba(0, 0, 0, 0.04);
+
+  /* Semantic Borders */
+  --border-success: rgba(5, 150, 105, 0.25);
+  --border-warning: rgba(217, 119, 6, 0.25);
+  --border-error: rgba(220, 38, 38, 0.25);
+  --border-info: rgba(2, 132, 199, 0.25);
+
+  /* Route Type Borders */
+  --border-route-normal: rgba(37, 99, 235, 0.25);
+  --border-route-drs: rgba(147, 51, 234, 0.25);
+
+  /* Focus/Active */
+  --border-focus: var(--color-blue-500);
+  --border-active: transparent;
+
+  /* Gradients */
+  --gradient-primary-from: var(--color-blue-500);
+  --gradient-primary-to: var(--color-emerald-500);
+  --gradient-primary-hover-from: var(--color-blue-600);
+  --gradient-primary-hover-to: var(--color-emerald-600);
+
+  /* Component-Specific: Navigation */
+  --nav-bg: rgba(255, 255, 255, 0.80);
+  --nav-border: rgba(0, 0, 0, 0.08);
+  --nav-logo-from: var(--color-blue-500);
+  --nav-logo-to: var(--color-emerald-500);
+  --nav-title: var(--text-primary);
+  --nav-subtitle: var(--text-secondary);
+  --nav-button-inactive-bg: rgba(0, 0, 0, 0.05);
+  --nav-button-inactive-border: rgba(0, 0, 0, 0.08);
+  --nav-button-inactive-text: var(--text-primary);
+  --nav-button-hover: rgba(0, 0, 0, 0.08);
+
+  /* Component-Specific: Tiles */
+  --tile-bg: rgba(255, 255, 255, 0.80);
+  --tile-border: rgba(0, 0, 0, 0.12);
+  --tile-hover: rgba(0, 0, 0, 0.05);
+  --tile-icon-enabled-from: var(--color-blue-500);
+  --tile-icon-enabled-to: var(--color-emerald-500);
+  --tile-icon-disabled: rgba(214, 211, 209, 0.60);
+  --tile-title: var(--text-primary);
+  --tile-title-disabled: var(--text-secondary);
+  --tile-button-bg: rgba(0, 0, 0, 0.05);
+  --tile-button-border: rgba(0, 0, 0, 0.15);
+  --tile-button-text: var(--text-primary);
+  --tile-button-hover-bg: rgba(0, 0, 0, 0.10);
+  --tile-button-hover-border: rgba(0, 0, 0, 0.20);
+
+  /* Component-Specific: Calendar */
+  --day-bg-empty: rgba(255, 255, 255, 0.40);
+  --day-bg-work: rgba(255, 255, 255, 0.80);
+  --day-border: rgba(0, 0, 0, 0.08);
+  --day-hover: rgba(0, 0, 0, 0.05);
+  --day-date: var(--text-primary);
+  --day-name: var(--text-secondary);
+
+  /* Component-Specific: Forms */
+  --input-bg: rgba(255, 255, 255, 0.80);
+  --input-border: rgba(0, 0, 0, 0.12);
+  --input-text: var(--text-primary);
+  --input-placeholder: #a8a29e;
+  --input-label: #44403c;
+  --input-focus-ring: var(--color-blue-500);
+  --input-error-border: rgba(220, 38, 38, 0.50);
+  --input-error-text: #b91c1c;
+
+  /* Component-Specific: Buttons */
+  --button-primary-from: var(--color-blue-500);
+  --button-primary-to: var(--color-emerald-500);
+  --button-primary-hover-from: var(--color-blue-600);
+  --button-primary-hover-to: var(--color-emerald-600);
+  --button-primary-bg: rgba(0, 0, 0, 0.08);
+  --button-primary-border: rgba(0, 0, 0, 0.15);
+  --button-primary-text: var(--text-primary);
+  --button-primary-hover: rgba(0, 0, 0, 0.12);
+  --button-warning-from: var(--color-amber-500);
+  --button-warning-to: #f97316;
+  --button-warning-hover-from: var(--color-amber-600);
+  --button-warning-hover-to: #ea580c;
+  --button-secondary-bg: rgba(0, 0, 0, 0.05);
+  --button-secondary-border: rgba(0, 0, 0, 0.12);
+  --button-secondary-text: var(--text-primary);
+  --button-secondary-hover: rgba(0, 0, 0, 0.08);
+  --button-ghost-text: #2563eb;
+  --button-ghost-hover: #1d4ed8;
+  --button-destructive-border: rgba(220, 38, 38, 0.50);
+  --button-destructive-text: #b91c1c;
+  --button-destructive-hover: rgba(220, 38, 38, 0.10);
+
+  /* Component-Specific: Modals */
+  --modal-bg: rgba(250, 250, 249, 0.98);
+  --modal-border: rgba(0, 0, 0, 0.12);
+  --modal-title: var(--text-primary);
+  --modal-description: var(--text-secondary);
+  --modal-overlay: rgba(0, 0, 0, 0.50);
+
+  /* Component-Specific: Badges */
+  --badge-success-bg: rgba(16, 185, 129, 0.12);
+  --badge-success-text: #047857;
+  --badge-success-border: rgba(5, 150, 105, 0.25);
+  --badge-warning-bg: rgba(245, 158, 11, 0.12);
+  --badge-warning-text: #b45309;
+  --badge-warning-border: rgba(217, 119, 6, 0.25);
+  --badge-error-bg: rgba(239, 68, 68, 0.12);
+  --badge-error-text: #b91c1c;
+  --badge-error-border: rgba(220, 38, 38, 0.25);
+  --badge-info-bg: rgba(14, 165, 233, 0.12);
+  --badge-info-text: #0369a1;
+  --badge-info-border: rgba(2, 132, 199, 0.25);
+  --badge-neutral-bg: rgba(120, 113, 108, 0.12);
+  --badge-neutral-text: #44403c;
+  --badge-neutral-border: rgba(87, 83, 78, 0.25);
+
+  /* Component-Specific: Finance */
+  --finance-total: var(--text-primary);
+  --finance-base: var(--text-primary);
+  --finance-bonus: #047857;
+  --finance-positive: #047857;
+  --finance-negative: #b91c1c;
+  --finance-heading: var(--text-secondary);
+}
+
 /* Prevent horizontal scrolling on mobile devices */
 html, body {
   overflow-x: hidden;

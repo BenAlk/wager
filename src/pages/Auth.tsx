@@ -83,34 +83,34 @@ export default function Auth() {
 	}
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4'>
+		<div className='min-h-screen bg-gradient-to-br from-[var(--bg-page-from)] via-[var(--bg-page-via)] to-[var(--bg-page-to)] flex items-center justify-center p-4'>
 			{/* Ambient Glow */}
 			<div className='absolute inset-0 overflow-hidden pointer-events-none'>
-				<div className='absolute -top-1/2 -right-1/2 w-full h-full bg-blue-500/5 rounded-full blur-3xl'></div>
-				<div className='absolute -bottom-1/2 -left-1/2 w-full h-full bg-emerald-500/5 rounded-full blur-3xl'></div>
+				<div className='absolute -top-1/2 -right-1/2 w-full h-full bg-[var(--gradient-primary-from)]/5 rounded-full blur-3xl'></div>
+				<div className='absolute -bottom-1/2 -left-1/2 w-full h-full bg-[var(--gradient-primary-to)]/5 rounded-full blur-3xl'></div>
 			</div>
 
 			{/* Auth Card */}
-			<Card className='relative w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl p-8'>
+			<Card className='relative w-full max-w-md bg-[var(--bg-surface-primary)] backdrop-blur-xl border border-[var(--border-primary)] shadow-2xl p-8'>
 				{/* Logo/Header */}
 				<div className='flex flex-col items-center mb-8'>
-					<div className='w-16 h-16 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-blue-500/25'>
-						<TrendingUp className='w-8 h-8 text-white' />
+					<div className='w-16 h-16 bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-[var(--gradient-primary-from)]/25'>
+						<TrendingUp className='w-8 h-8 text-[var(--text-primary)]' />
 					</div>
-					<h1 className='text-3xl font-bold text-white mb-2'>Wager</h1>
-					<p className='text-slate-400 text-center'>
+					<h1 className='text-3xl font-bold text-[var(--text-primary)] mb-2'>Wager</h1>
+					<p className='text-[var(--text-secondary)] text-center'>
 						Track your pay, predict your earnings
 					</p>
 				</div>
 
 				{/* Tab Switcher */}
-				<div className='flex gap-2 p-1 bg-white/5 rounded-lg mb-6'>
+				<div className='flex gap-2 p-1 bg-[var(--bg-surface-secondary)] rounded-lg mb-6'>
 					<button
 						onClick={() => setIsLogin(true)}
 						className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${
 							isLogin
-								? 'bg-white text-slate-900 shadow-lg'
-								: 'text-slate-300 hover:text-white cursor-pointer'
+								? 'bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-[var(--text-primary)] shadow-lg'
+								: 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer'
 						}`}
 					>
 						Login
@@ -119,8 +119,8 @@ export default function Auth() {
 						onClick={() => setIsLogin(false)}
 						className={`flex-1 py-2.5 rounded-lg font-medium transition-all ${
 							!isLogin
-								? 'bg-white text-slate-900 shadow-lg'
-								: 'text-slate-300 hover:text-white cursor-pointer'
+								? 'bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] text-[var(--text-primary)] shadow-lg'
+								: 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer'
 						}`}
 					>
 						Sign Up
@@ -139,7 +139,7 @@ export default function Auth() {
 						<div>
 							<Label
 								htmlFor='displayName'
-								className='text-slate-200'
+								className='text-[var(--input-label)]'
 							>
 								Display Name
 							</Label>
@@ -148,11 +148,11 @@ export default function Auth() {
 								type='text'
 								placeholder='Ben'
 								{...registerSignUp('displayName')}
-								className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
-									focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
+								className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
+									focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
 							/>
 							{signUpErrors.displayName && (
-								<p className='text-xs text-red-400 mt-1.5'>
+								<p className='text-xs text-[var(--input-error-text)] mt-1.5'>
 									{signUpErrors.displayName.message as string}
 								</p>
 							)}
@@ -162,7 +162,7 @@ export default function Auth() {
 					<div>
 						<Label
 							htmlFor='email'
-							className='text-slate-200'
+							className='text-[var(--input-label)]'
 						>
 							Email
 						</Label>
@@ -171,11 +171,11 @@ export default function Auth() {
 							type='email'
 							placeholder='you@example.com'
 							{...(isLogin ? registerLogin('email') : registerSignUp('email'))}
-							className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
-								focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
+							className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
+								focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
 						/>
 						{errors.email && (
-							<p className='text-xs text-red-400 mt-1.5'>
+							<p className='text-xs text-[var(--input-error-text)] mt-1.5'>
 								{errors.email.message as string}
 							</p>
 						)}
@@ -184,7 +184,7 @@ export default function Auth() {
 					<div>
 						<Label
 							htmlFor='password'
-							className='text-slate-200'
+							className='text-[var(--input-label)]'
 						>
 							Password
 						</Label>
@@ -195,16 +195,16 @@ export default function Auth() {
 							{...(isLogin
 								? registerLogin('password')
 								: registerSignUp('password'))}
-							className='mt-1.5 bg-white/5 border-white/10 text-white placeholder-slate-500
-								focus:ring-2 focus:ring-inset focus:ring-blue-500 focus:border-transparent'
+							className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
+								focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
 						/>
 						{errors.password ? (
-							<p className='text-xs text-red-400 mt-1.5'>
+							<p className='text-xs text-[var(--input-error-text)] mt-1.5'>
 								{errors.password.message as string}
 							</p>
 						) : (
 							!isLogin && (
-								<p className='text-xs text-slate-400 mt-1.5'>
+								<p className='text-xs text-[var(--text-secondary)] mt-1.5'>
 									At least 6 characters
 								</p>
 							)
@@ -214,10 +214,10 @@ export default function Auth() {
 					<Button
 						type='submit'
 						disabled={isSubmitting}
-						className='w-full bg-gradient-to-r from-blue-500 to-emerald-500
-							hover:from-blue-600 hover:to-emerald-600
-							text-white font-semibold py-6 rounded-lg
-							shadow-lg shadow-blue-500/25
+						className='w-full bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)]
+							hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)]
+							text-[var(--text-primary)] font-semibold py-6 rounded-lg
+							shadow-lg shadow-[var(--gradient-primary-from)]/25
 							transition-all transform hover:scale-[1.02] active:scale-[0.98]
 							disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
 					>
@@ -230,7 +230,7 @@ export default function Auth() {
 				</form>
 
 				{/* Footer */}
-				<p className='text-center text-slate-400 text-sm mt-6'>
+				<p className='text-center text-[var(--text-secondary)] text-sm mt-6'>
 					Built for Amazon DSP couriers
 				</p>
 			</Card>

@@ -119,11 +119,11 @@ export default function WeekSummary({
 
 	if (!weekData || !weekData.work_days || weekData.work_days.length === 0) {
 		return (
-			<div className='bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-8'>
-				<h3 className='text-xl font-bold text-white mb-4'>
+			<div className='bg-[var(--bg-surface-secondary)] backdrop-blur-sm border border-[var(--border-secondary)] rounded-2xl p-6 mb-8'>
+				<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>
 					Week {weekNumber} Summary
 				</h3>
-				<p className='text-slate-400 text-center py-8'>
+				<p className='text-[var(--text-secondary)] text-center py-8'>
 					No work days logged for this week
 				</p>
 			</div>
@@ -288,16 +288,16 @@ export default function WeekSummary({
 	}
 
 	return (
-		<div className='bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 lg:p-8 mb-8'>
+		<div className='bg-[var(--bg-surface-secondary)] backdrop-blur-xl border border-[var(--border-secondary)] rounded-2xl p-6 lg:p-8 mb-8'>
 			<div className='flex items-center justify-between mb-6'>
-				<h3 className='text-2xl font-bold text-white'>
+				<h3 className='text-2xl font-bold text-[var(--text-primary)]'>
 					Week {weekNumber} Summary
 				</h3>
 				<Button
 					onClick={() => setShowClearConfirm(true)}
 					variant='ghost'
 					size='sm'
-					className='text-red-400 hover:text-red-300 hover:bg-red-500/10'
+					className='text-[var(--button-destructive-text)] hover:text-[var(--text-error)] hover:bg-[var(--button-destructive-hover)]'
 				>
 					<Trash2 className='w-4 h-4 mr-2' />
 					Clear Week
@@ -308,10 +308,10 @@ export default function WeekSummary({
 			<div className='space-y-3 mb-6'>
 				{/* Base Pay */}
 				<div className='flex items-center justify-between'>
-					<span className='text-sm sm:text-lg text-slate-400'>
+					<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 						Base Pay ({daysWorked} {daysWorked === 1 ? 'day' : 'days'})
 					</span>
-					<span className='text-sm sm:text-lg font-mono font-semibold text-white'>
+					<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-base)]'>
 						£{(breakdown.basePay / 100).toFixed(2)}
 					</span>
 				</div>
@@ -319,10 +319,10 @@ export default function WeekSummary({
 				{/* 6-Day Bonus */}
 				{breakdown.sixDayBonus > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-sm sm:text-lg text-emerald-400'>
+						<span className='text-sm sm:text-lg text-[var(--finance-bonus)]'>
 							6-Day Bonus
 						</span>
-						<span className='text-sm sm:text-lg font-mono font-semibold text-emerald-400'>
+						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-bonus)]'>
 							+ £{(breakdown.sixDayBonus / 100).toFixed(2)}
 						</span>
 					</div>
@@ -331,15 +331,15 @@ export default function WeekSummary({
 				{/* Sweeps */}
 				{breakdown.sweepAdjustment !== 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-sm sm:text-lg text-slate-400'>
+						<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 							Sweeps {<br></br>} ({breakdown.stopsGiven} you helped,{' '}
 							{breakdown.stopsTaken} helped you)
 						</span>
 						<span
 							className={`text-sm sm:text-lg font-mono font-semibold ${
 								breakdown.sweepAdjustment > 0
-									? 'text-emerald-400'
-									: 'text-red-400'
+									? 'text-[var(--finance-positive)]'
+									: 'text-[var(--finance-negative)]'
 							}`}
 						>
 							{breakdown.sweepAdjustment > 0 ? '+ ' : '- '}£
@@ -356,8 +356,8 @@ export default function WeekSummary({
 								onSubmit={handleMileageSubmit(onMileageRateSubmit)}
 								className='flex items-center gap-2 flex-1'
 							>
-								<span className='text-slate-400'>Rate:</span>
-								<span className='text-slate-400 font-mono'>£</span>
+								<span className='text-[var(--text-secondary)]'>Rate:</span>
+								<span className='text-[var(--text-secondary)] font-mono'>£</span>
 								<Controller
 									name='mileage_rate'
 									control={mileageControl}
@@ -369,17 +369,17 @@ export default function WeekSummary({
 											min={0}
 											max={1}
 											chevronSize='sm'
-											className='w-24 h-8 bg-white/5 border-white/10 text-white font-mono text-sm px-2'
+											className='w-24 h-8 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] font-mono text-sm px-2'
 										/>
 									)}
 								/>
-								<span className='text-slate-400 text-sm'>/mi</span>
+								<span className='text-[var(--text-secondary)] text-sm'>/mi</span>
 								<Button
 									type='submit'
 									variant='ghost'
 									size='sm'
 									disabled={isSavingMileageRate}
-									className='text-emerald-400 hover:text-emerald-300 h-8 px-2'
+									className='text-[var(--text-success)] hover:text-[var(--finance-positive)] h-8 px-2'
 								>
 									<Check className='w-4 h-4' />
 								</Button>
@@ -388,12 +388,12 @@ export default function WeekSummary({
 									variant='ghost'
 									size='sm'
 									onClick={handleCancelMileageEdit}
-									className='text-slate-400 hover:text-white h-8 px-2'
+									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] h-8 px-2'
 								>
 									<X className='w-4 h-4' />
 								</Button>
 								{mileageErrors.mileage_rate && (
-									<p className='text-red-400 text-xs'>
+									<p className='text-[var(--input-error-text)] text-xs'>
 										{mileageErrors.mileage_rate.message}
 									</p>
 								)}
@@ -401,7 +401,7 @@ export default function WeekSummary({
 						) : (
 							<>
 								<div className='flex items-center gap-2'>
-									<span className='text-sm sm:text-lg text-slate-400'>
+									<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 										Mileage ({breakdown.totalAmazonMiles.toFixed(1)} mi × £
 										{((weekData?.mileage_rate || 1988) / 10000).toFixed(4)})
 									</span>
@@ -410,13 +410,13 @@ export default function WeekSummary({
 											variant='ghost'
 											size='sm'
 											onClick={handleEditMileageRate}
-											className='text-slate-400 h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 cursor-pointer border-2 hover:text-yellow-400'
+											className='text-[var(--text-secondary)] h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 cursor-pointer border-2 hover:text-[var(--text-mileage-van)]'
 										>
 											<Pencil className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 										</Button>
 									)}
 								</div>
-								<span className='text-sm sm:text-lg font-mono font-semibold text-emerald-400'>
+								<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-positive)]'>
 									+ £{(breakdown.mileagePayment / 100).toFixed(2)}
 								</span>
 							</>
@@ -428,10 +428,10 @@ export default function WeekSummary({
 				{breakdown.vanDeduction > 0 && (
 					<div>
 						<div className='flex items-center justify-between'>
-							<span className='text-sm sm:text-lg text-slate-400'>
+							<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 								Van Hire
 							</span>
-							<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
+							<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-negative)]'>
 								- £{(breakdown.vanDeduction / 100).toFixed(2)}
 							</span>
 						</div>
@@ -442,7 +442,7 @@ export default function WeekSummary({
 									.map((van, idx) => (
 										<div
 											key={idx}
-											className='flex items-center justify-between text-xs sm:text-sm text-slate-500'
+											className='flex items-center justify-between text-xs sm:text-sm text-[var(--text-tertiary)]'
 										>
 											<span>
 												{van.registration} ({van.days} day
@@ -459,10 +459,10 @@ export default function WeekSummary({
 				{/* Deposit Payment */}
 				{breakdown.depositPayment > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-sm sm:text-lg text-slate-400'>
+						<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 							Deposit Payment
 						</span>
-						<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
+						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-negative)]'>
 							- £{(breakdown.depositPayment / 100).toFixed(2)}
 						</span>
 					</div>
@@ -471,10 +471,10 @@ export default function WeekSummary({
 				{/* Invoicing Service */}
 				{breakdown.invoicingCost > 0 && (
 					<div className='flex items-center justify-between'>
-						<span className='text-sm sm:text-lg text-slate-400'>
+						<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 							Invoicing ({weekInvoicingService})
 						</span>
-						<span className='text-sm sm:text-lg font-mono font-semibold text-red-400'>
+						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-negative)]'>
 							- £{(breakdown.invoicingCost / 100).toFixed(2)}
 						</span>
 					</div>
@@ -482,39 +482,39 @@ export default function WeekSummary({
 			</div>
 
 			{/* Standard Pay Total */}
-			<div className='border-t border-white/20 pt-4 mb-6'>
+			<div className='border-t border-[var(--border-primary)] pt-4 mb-6'>
 				<div className='flex items-center justify-between mb-2'>
-					<span className='text-lg font-semibold text-slate-200'>
+					<span className='text-lg font-semibold text-[var(--text-secondary)]'>
 						Standard Pay
 					</span>
-					<span className='text-sm sm:text-lg font-mono font-bold text-white'>
+					<span className='text-sm sm:text-lg font-mono font-bold text-[var(--finance-total)]'>
 						£{(breakdown.standardPay / 100).toFixed(2)}
 					</span>
 				</div>
-				<p className='text-sm sm:text-lg  text-slate-400'>
+				<p className='text-sm sm:text-lg  text-[var(--finance-heading)]'>
 					Paid Week {standardPayWeek.weekNumber} ({standardPayWeek.month})
 				</p>
 			</div>
 
 			{/* Performance Bonus Section */}
-			<div className='border-t border-white/20 pt-4'>
+			<div className='border-t border-[var(--border-primary)] pt-4'>
 				{!areRankingsAvailable ? (
 					// Rankings not available yet
-					<div className='bg-white/5 border border-white/10 rounded-lg p-4'>
+					<div className='bg-[var(--bg-surface-secondary)] border border-[var(--border-secondary)] rounded-lg p-4'>
 						<div className='flex items-center gap-2 mb-3'>
-							<AlertCircle className='w-5 h-5 text-slate-400' />
-							<h4 className='text-lg font-semibold text-white'>
+							<AlertCircle className='w-5 h-5 text-[var(--text-secondary)]' />
+							<h4 className='text-lg font-semibold text-[var(--text-primary)]'>
 								Performance Rankings
 							</h4>
 						</div>
-						<p className='text-slate-400 text-sm'>
+						<p className='text-[var(--text-secondary)] text-sm'>
 							Rankings will be available from{' '}
-							<span className='font-semibold text-white'>
+							<span className='font-semibold text-[var(--text-primary)]'>
 								Week {adjustedRankingsWeek}
 							</span>{' '}
 							onwards.
 						</p>
-						<p className='text-slate-500 text-xs mt-2'>
+						<p className='text-[var(--text-tertiary)] text-xs mt-2'>
 							Amazon typically releases performance rankings on Thursday of Week
 							N+2 (two weeks after your work week).
 						</p>
@@ -522,12 +522,12 @@ export default function WeekSummary({
 				) : !hasBonusRankings || isEditingRankings ? (
 					<form
 						onSubmit={handleRankingsSubmit(onRankingsSubmit)}
-						className='bg-white/5 border border-white/10 rounded-lg p-4'
+						className='bg-[var(--bg-surface-secondary)] border border-[var(--border-secondary)] rounded-lg p-4'
 					>
 						<div className='flex items-center justify-between mb-4'>
 							<div className='flex items-center gap-2'>
-								<AlertCircle className='w-5 h-5 text-amber-400' />
-								<h4 className='text-lg font-semibold text-white'>
+								<AlertCircle className='w-5 h-5 text-[var(--text-warning)]' />
+								<h4 className='text-lg font-semibold text-[var(--text-primary)]'>
 									Performance Rankings
 								</h4>
 							</div>
@@ -537,14 +537,14 @@ export default function WeekSummary({
 									variant='ghost'
 									size='sm'
 									onClick={handleCancelRankingsEdit}
-									className='text-slate-400 hover:text-white'
+									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
 								>
 									<X className='w-4 h-4 mr-1' />
 									Cancel
 								</Button>
 							)}
 						</div>
-						<p className='text-sm text-slate-400 mb-4'>
+						<p className='text-sm text-[var(--text-secondary)] mb-4'>
 							{isEditingRankings
 								? 'Update your performance rankings'
 								: "Enter rankings when they're released (usually Thursday after the work week)"}
@@ -557,7 +557,7 @@ export default function WeekSummary({
 								control={rankingsControl}
 								render={({ field }) => (
 									<div>
-										<Label className='text-slate-200 mb-2 block'>
+										<Label className='text-[var(--input-label)] mb-2 block'>
 											Your Performance
 										</Label>
 										<div className='space-y-1'>
@@ -568,8 +568,8 @@ export default function WeekSummary({
 													onClick={() => field.onChange(level)}
 													className={`w-full py-2 px-3 rounded-lg border text-sm transition-all ${
 														field.value === level
-															? 'bg-blue-500/20 border-blue-500 text-blue-400'
-															: 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 cursor-pointer'
+															? 'bg-[var(--bg-route-normal)] border-[var(--border-route-normal)] text-[var(--text-route-normal)]'
+															: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
 													}`}
 												>
 													{level}
@@ -577,7 +577,7 @@ export default function WeekSummary({
 											))}
 										</div>
 										{rankingsErrors.individual_level && (
-											<p className='text-red-400 text-xs mt-1'>
+											<p className='text-[var(--input-error-text)] text-xs mt-1'>
 												{rankingsErrors.individual_level.message}
 											</p>
 										)}
@@ -591,7 +591,7 @@ export default function WeekSummary({
 								control={rankingsControl}
 								render={({ field }) => (
 									<div>
-										<Label className='text-slate-200 mb-2 block'>
+										<Label className='text-[var(--input-label)] mb-2 block'>
 											Company Performance
 										</Label>
 										<div className='space-y-1'>
@@ -602,8 +602,8 @@ export default function WeekSummary({
 													onClick={() => field.onChange(level)}
 													className={`w-full py-2 px-3 rounded-lg border text-sm transition-all ${
 														field.value === level
-															? 'bg-emerald-500/20 border-emerald-500 text-emerald-400'
-															: 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 cursor-pointer'
+															? 'bg-[var(--bg-success)] border-[var(--border-success)] text-[var(--text-success)]'
+															: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
 													}`}
 												>
 													{level}
@@ -611,7 +611,7 @@ export default function WeekSummary({
 											))}
 										</div>
 										{rankingsErrors.company_level && (
-											<p className='text-red-400 text-xs mt-1'>
+											<p className='text-[var(--input-error-text)] text-xs mt-1'>
 												{rankingsErrors.company_level.message}
 											</p>
 										)}
@@ -623,7 +623,7 @@ export default function WeekSummary({
 						<Button
 							type='submit'
 							disabled={isSavingRankings}
-							className='w-full bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
+							className='w-full bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)] cursor-pointer'
 						>
 							{isSavingRankings ? 'Saving...' : 'Save Rankings'}
 						</Button>
@@ -631,31 +631,31 @@ export default function WeekSummary({
 				) : (
 					<>
 						<div className='flex items-center justify-between mb-2'>
-							<span className='text-sm sm:text-lg text-slate-400'>
+							<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 								Performance Bonus ({daysWorked}{' '}
 								{daysWorked === 1 ? 'day' : 'days'})
 								<Button
 									variant='ghost'
 									size='sm'
 									onClick={handleEditRankings}
-									className='text-slate-400 h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 ml-1 sm:ml-2 cursor-pointer border-2 hover:text-yellow-400'
+									className='text-[var(--text-secondary)] h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 ml-1 sm:ml-2 cursor-pointer border-2 hover:text-[var(--text-mileage-van)]'
 								>
 									<Pencil className='w-3 h-3 sm:w-4 sm:h-4' />
 								</Button>
 							</span>
 
 							<div className='flex items-center gap-2'>
-								<span className='text-sm sm:text-lg font-mono font-semibold text-emerald-400'>
+								<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-positive)]'>
 									+ £{(weekData.bonus_amount / 100).toFixed(2)}
 								</span>
 							</div>
 						</div>
-						<div className='text-sm sm:text-lg text-slate-400 mb-2'>
+						<div className='text-sm sm:text-lg text-[var(--finance-heading)] mb-2'>
 							Individual: {weekData.individual_level} | Company:{' '}
 							{weekData.company_level}
 						</div>
 						{bonusPayWeek && (
-							<p className='text-sm sm:text-lg text-slate-400'>
+							<p className='text-sm sm:text-lg text-[var(--finance-heading)]'>
 								Paid Week {bonusPayWeek.weekNumber} ({bonusPayWeek.month})
 							</p>
 						)}
@@ -664,15 +664,15 @@ export default function WeekSummary({
 			</div>
 
 			{/* Total Expected */}
-			<div className='border-t border-white/20 pt-4 mt-6'>
+			<div className='border-t border-[var(--border-primary)] pt-4 mt-6'>
 				<div className='flex items-center justify-between'>
-					<span className='text-xl font-bold text-white'>Total Earnings</span>
+					<span className='text-xl font-bold text-[var(--finance-total)]'>Total Earnings</span>
 					<span
 						className={
 							'text-lg sm:text-4xl font-mono font-bold animate-pulse ' +
 							(breakdown.standardPay + (weekData.bonus_amount || 0) < 0
-								? 'text-red-400'
-								: 'text-emerald-400')
+								? 'text-[var(--finance-negative)]'
+								: 'text-[var(--finance-positive)]')
 						}
 					>
 						£
@@ -686,13 +686,13 @@ export default function WeekSummary({
 
 			{/* Mileage Discrepancy Warning */}
 			{breakdown.mileageDiscrepancy > 0 && (
-				<div className='mt-6 bg-amber-500/10 border border-amber-500/20 rounded-lg p-4'>
-					<p className='text-amber-400 font-medium mb-1'>Mileage Discrepancy</p>
-					<p className='text-sm text-amber-400/80'>
+				<div className='mt-6 bg-[var(--bg-warning)] border border-[var(--border-warning)] rounded-lg p-4'>
+					<p className='text-[var(--text-warning)] font-medium mb-1'>Mileage Discrepancy</p>
+					<p className='text-sm text-[var(--text-warning)]/80'>
 						Van logged {breakdown.totalVanMiles.toFixed(1)} miles vs Amazon paid{' '}
 						{breakdown.totalAmazonMiles.toFixed(1)} miles
 					</p>
-					<p className='text-sm text-amber-400/80 mt-1'>
+					<p className='text-sm text-[var(--text-warning)]/80 mt-1'>
 						Estimated fuel loss: £
 						{(breakdown.mileageDiscrepancyValue / 100).toFixed(2)}
 					</p>

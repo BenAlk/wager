@@ -23,11 +23,11 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 	const getVanTypeColor = (type: string | null) => {
 		switch (type) {
 			case 'Fleet':
-				return 'bg-purple-500/20 text-purple-400 border-purple-500/30'
+				return 'bg-[var(--bg-van-fleet)] text-[var(--text-van-fleet)] border-[var(--border-van-fleet)]'
 			case 'Flexi':
-				return 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+				return 'bg-[var(--bg-van-flexi)] text-[var(--text-van-flexi)] border-[var(--border-van-flexi)]'
 			default:
-				return 'bg-slate-500/20 text-slate-400 border-slate-500/30'
+				return 'bg-[var(--bg-surface-tertiary)] text-[var(--text-secondary)] border-[var(--border-secondary)]'
 		}
 	}
 
@@ -40,19 +40,19 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 	const durationWeeks = Math.floor(durationDays / 7)
 
 	return (
-		<Card className='bg-white/10 backdrop-blur-xl border-white/20 p-6 hover:bg-white/[0.12] transition-colors'>
+		<Card className='bg-[var(--bg-surface-primary)] backdrop-blur-xl border-[var(--border-primary)] p-6 hover:bg-[var(--tile-hover)] transition-colors'>
 			<div className='flex items-start justify-between mb-4'>
 				<div className='flex items-start gap-4'>
-					<div className='p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-emerald-500/20 border border-white/10'>
-						<Truck className='w-6 h-6 text-white' />
+					<div className='p-3 rounded-xl bg-gradient-to-br from-[var(--tile-icon-enabled-from)] to-[var(--tile-icon-enabled-to)] border border-[var(--border-secondary)]'>
+						<Truck className='w-6 h-6 text-[var(--text-primary)]' />
 					</div>
 					<div>
 						<div className='flex items-center gap-3 mb-2'>
-							<h3 className='text-xl font-bold text-white'>
+							<h3 className='text-xl font-bold text-[var(--text-primary)]'>
 								{van.registration}
 							</h3>
 							{isActive && (
-								<Badge className='bg-emerald-500/20 text-emerald-400 border-emerald-500/30'>
+								<Badge className='bg-[var(--bg-success)] text-[var(--text-success)] border-[var(--border-success)]'>
 									Active
 								</Badge>
 							)}
@@ -62,7 +62,7 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 								</Badge>
 							)}
 						</div>
-						<div className='flex items-center gap-4 text-sm text-slate-400'>
+						<div className='flex items-center gap-4 text-sm text-[var(--text-secondary)]'>
 							<div className='flex items-center gap-1'>
 								<Calendar className='w-4 h-4' />
 								<span>{formatDate(van.on_hire_date)}</span>
@@ -76,7 +76,7 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 									</div>
 								</>
 							)}
-							{!van.off_hire_date && <span className='text-emerald-400'>Ongoing</span>}
+							{!van.off_hire_date && <span className='text-[var(--text-success)]'>Ongoing</span>}
 						</div>
 					</div>
 				</div>
@@ -84,7 +84,7 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 					variant='ghost'
 					size='icon'
 					onClick={() => onEdit(van)}
-					className='text-slate-400 hover:text-white hover:bg-white/10'
+					className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 				>
 					<Edit className='w-4 h-4' />
 				</Button>
@@ -92,39 +92,39 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 
 			<div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
 				<div>
-					<p className='text-slate-400 text-sm mb-1'>Weekly Rate</p>
-					<p className='text-lg font-mono font-bold text-white'>
+					<p className='text-[var(--text-secondary)] text-sm mb-1'>Weekly Rate</p>
+					<p className='text-lg font-mono font-bold text-[var(--text-primary)]'>
 						{formatCurrency(van.weekly_rate)}
 					</p>
 				</div>
 				<div>
-					<p className='text-slate-400 text-sm mb-1'>Duration</p>
-					<p className='text-lg font-bold text-white'>
+					<p className='text-[var(--text-secondary)] text-sm mb-1'>Duration</p>
+					<p className='text-lg font-bold text-[var(--text-primary)]'>
 						{durationWeeks}w {durationDays % 7}d
 					</p>
 				</div>
 				<div>
-					<p className='text-slate-400 text-sm mb-1'>Status</p>
+					<p className='text-[var(--text-secondary)] text-sm mb-1'>Status</p>
 					{van.deposit_refunded ? (
-						<p className='text-emerald-400 font-semibold flex items-center gap-1'>
+						<p className='text-[var(--text-success)] font-semibold flex items-center gap-1'>
 							<CheckCircle2 className='w-4 h-4' />
 							Refunded
 						</p>
 					) : van.off_hire_date && van.deposit_hold_until ? (
-						<p className='text-yellow-400 font-semibold'>
+						<p className='text-[var(--text-warning)] font-semibold'>
 							Hold until {formatDate(van.deposit_hold_until)}
 						</p>
 					) : isActive ? (
-						<p className='text-blue-400 font-semibold'>Active</p>
+						<p className='text-[var(--text-info)] font-semibold'>Active</p>
 					) : (
-						<p className='text-slate-400 font-semibold'>Completed</p>
+						<p className='text-[var(--text-secondary)] font-semibold'>Completed</p>
 					)}
 				</div>
 			</div>
 
 			{van.notes && (
-				<div className='mt-4 pt-4 border-t border-white/10'>
-					<p className='text-slate-400 text-sm'>{van.notes}</p>
+				<div className='mt-4 pt-4 border-t border-[var(--border-secondary)]'>
+					<p className='text-[var(--text-secondary)] text-sm'>{van.notes}</p>
 				</div>
 			)}
 		</Card>

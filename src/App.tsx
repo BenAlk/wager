@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { AuthProvider, useAuth } from '@/hooks/useAuth'
 import { Toaster } from '@/components/ui/sonner'
 import { AnimatePresence } from 'framer-motion'
 import { PageTransition } from '@/components/shared/PageTransition'
 import { LoadingScreen } from '@/components/shared/LoadingScreen'
 import { MainLayout } from '@/components/layout/MainLayout'
+import { useThemeStore } from '@/store/themeStore'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
 import Calendar from '@/pages/Calendar'
@@ -104,6 +106,13 @@ function AnimatedRoutes() {
 }
 
 function App() {
+	const { theme, setTheme } = useThemeStore()
+
+	// Initialize theme on mount
+	useEffect(() => {
+		setTheme(theme) // Ensures class is applied
+	}, [])
+
 	return (
 		<BrowserRouter>
 			<AuthProvider>

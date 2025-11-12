@@ -122,11 +122,11 @@ export function QuickAddOdometerTile({
 			>
 				<div className='flex flex-col h-full'>
 					<div className='space-y-4 flex-1'>
-						<div className='bg-white/5 rounded-lg p-4'>
+						<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
 							<div className='flex justify-between items-start mb-2'>
 								<div>
-									<p className='text-slate-400 text-xs'>Van Logged Miles</p>
-									<p className='text-white font-semibold text-2xl'>
+									<p className='text-[var(--text-secondary)] text-xs'>Van Logged Miles</p>
+									<p className='text-[var(--text-primary)] font-semibold text-2xl'>
 										{todayWork.van_logged_miles}
 									</p>
 								</div>
@@ -134,13 +134,13 @@ export function QuickAddOdometerTile({
 									variant='ghost'
 									size='icon'
 									onClick={() => setIsEditing(true)}
-									className='text-slate-400 hover:text-white hover:bg-white/10 h-8 w-8'
+									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8'
 								>
-									<Pencil className='w-4 h-4 text-yellow-400' />
+									<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' />
 								</Button>
 							</div>
 						</div>
-						<p className='text-slate-400 text-xs text-center'>
+						<p className='text-[var(--text-secondary)] text-xs text-center'>
 							Odometer logged for today
 						</p>
 					</div>
@@ -157,7 +157,7 @@ export function QuickAddOdometerTile({
 		>
 			{!hasWorkToday ? (
 				<div className='text-center py-8'>
-					<p className='text-slate-400 text-sm'>
+					<p className='text-[var(--text-secondary)] text-sm'>
 						Add work for today first to log miles
 					</p>
 				</div>
@@ -170,7 +170,7 @@ export function QuickAddOdometerTile({
 						<div>
 							<Label
 								htmlFor='van_logged_miles'
-								className='text-slate-300 text-sm pt-5'
+								className='text-[var(--input-label)] text-sm pt-5'
 							>
 								Van Logged Miles
 							</Label>
@@ -185,12 +185,12 @@ export function QuickAddOdometerTile({
 										min={0}
 										chevronSize='sm'
 										placeholder='Enter total miles'
-										className='bg-white/5 border-white/20 text-white mt-1'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'
 									/>
 								)}
 							/>
 							{errors.van_logged_miles && (
-								<p className='text-red-400 text-xs mt-1'>
+								<p className='text-[var(--input-error-text)] text-xs mt-1'>
 									{errors.van_logged_miles.message}
 								</p>
 							)}
@@ -200,7 +200,7 @@ export function QuickAddOdometerTile({
 					<Button
 						type='submit'
 						disabled={isSubmitting}
-						className='self-center w-1/2 h-10 mt-auto bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+						className='self-center w-1/2 h-10 mt-auto bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-white font-semibold shadow-lg'
 					>
 						{isSubmitting ? (
 							<>

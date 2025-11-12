@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { useAuth } from '@/hooks/useAuth'
 import { logout } from '@/lib/auth'
 import { Calendar, Home, LogOut, Settings, TrendingUp, Truck } from 'lucide-react'
@@ -41,30 +42,30 @@ export function MainLayout() {
 	const isActive = (path: string) => location.pathname === path
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'>
+		<div className='min-h-screen bg-gradient-to-br from-[var(--bg-page-from)] via-[var(--bg-page-via)] to-[var(--bg-page-to)]'>
 			{/* Header */}
-			<header className='border-b border-white/10 bg-white/5 backdrop-blur-xl'>
+			<header className='border-b border-[var(--nav-border)] bg-[var(--nav-bg)] backdrop-blur-xl'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
 					<div className='flex items-center justify-between'>
 						{/* Left: Logo & Page Title */}
 						<div className='flex items-center gap-2 sm:gap-3'>
 							<div
-								className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg'
+								className='w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[var(--nav-logo-from)] to-[var(--nav-logo-to)] rounded-xl flex items-center justify-center shadow-lg'
 								role='img'
 								aria-label='Wager logo'
 							>
-								<TrendingUp className='w-5 h-5 sm:w-6 sm:h-6 text-white' aria-hidden='true' />
+								<TrendingUp className='w-5 h-5 sm:w-6 sm:h-6 text-[var(--text-primary)]' aria-hidden='true' />
 							</div>
 							<div className='hidden sm:block'>
-								<h1 className='text-2xl font-bold text-white'>Wager</h1>
-								<p className='text-slate-400 text-sm'>
+								<h1 className='text-2xl font-bold text-[var(--nav-title)]'>Wager</h1>
+								<p className='text-[var(--nav-subtitle)] text-sm'>
 									{location.pathname === '/dashboard'
 										? `Welcome back, ${user?.user_metadata.display_name}`
 										: pageInfo.title}
 								</p>
 							</div>
 							<div className='block sm:hidden'>
-								<h1 className='text-lg font-bold text-white'>Wager</h1>
+								<h1 className='text-lg font-bold text-[var(--nav-title)]'>Wager</h1>
 							</div>
 						</div>
 
@@ -76,8 +77,8 @@ export function MainLayout() {
 								size='icon-sm'
 								className={`${
 									isActive('/dashboard')
-										? 'bg-gradient-to-r from-blue-500 to-emerald-500 border-transparent text-white'
-										: 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+										? 'bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] border-[var(--border-active)] text-[var(--text-primary)]'
+										: 'bg-[var(--nav-button-inactive-bg)] border-[var(--nav-button-inactive-border)] text-[var(--nav-button-inactive-text)] hover:bg-[var(--nav-button-hover)]'
 								} sm:size-9 md:h-9 md:w-auto md:px-4 cursor-pointer`}
 								aria-label='Go to dashboard page'
 								aria-current={isActive('/dashboard') ? 'page' : undefined}
@@ -91,8 +92,8 @@ export function MainLayout() {
 								size='icon-sm'
 								className={`${
 									isActive('/calendar')
-										? 'bg-gradient-to-r from-blue-500 to-emerald-500 border-transparent text-white'
-										: 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+										? 'bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] border-[var(--border-active)] text-[var(--text-primary)]'
+										: 'bg-[var(--nav-button-inactive-bg)] border-[var(--nav-button-inactive-border)] text-[var(--nav-button-inactive-text)] hover:bg-[var(--nav-button-hover)]'
 								} sm:size-9 md:h-9 md:w-auto md:px-4 cursor-pointer`}
 								aria-label='Go to calendar page'
 								aria-current={isActive('/calendar') ? 'page' : undefined}
@@ -106,8 +107,8 @@ export function MainLayout() {
 								size='icon-sm'
 								className={`${
 									isActive('/vans')
-										? 'bg-gradient-to-r from-blue-500 to-emerald-500 border-transparent text-white'
-										: 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+										? 'bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] border-[var(--border-active)] text-[var(--text-primary)]'
+										: 'bg-[var(--nav-button-inactive-bg)] border-[var(--nav-button-inactive-border)] text-[var(--nav-button-inactive-text)] hover:bg-[var(--nav-button-hover)]'
 								} sm:size-9 md:h-9 md:w-auto md:px-4 cursor-pointer`}
 								aria-label='Go to van management page'
 								aria-current={isActive('/vans') ? 'page' : undefined}
@@ -121,8 +122,8 @@ export function MainLayout() {
 								size='icon-sm'
 								className={`${
 									isActive('/settings')
-										? 'bg-gradient-to-r from-blue-500 to-emerald-500 border-transparent text-white'
-										: 'bg-white/5 border-white/10 text-white hover:bg-white/10'
+										? 'bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] border-[var(--border-active)] text-[var(--text-primary)]'
+										: 'bg-[var(--nav-button-inactive-bg)] border-[var(--nav-button-inactive-border)] text-[var(--nav-button-inactive-text)] hover:bg-[var(--nav-button-hover)]'
 								} sm:size-9 md:h-9 md:w-auto md:px-4 cursor-pointer`}
 								aria-label='Go to settings page'
 								aria-current={isActive('/settings') ? 'page' : undefined}
@@ -130,11 +131,12 @@ export function MainLayout() {
 								<Settings className='w-4 h-4 md:mr-2' aria-hidden='true' />
 								<span className='hidden md:inline'>Settings</span>
 							</Button>
+							<ThemeToggle />
 							<Button
 								onClick={handleLogout}
 								variant='outline'
 								size='icon-sm'
-								className='bg-white/5 border-white/10 text-white hover:bg-white/10 sm:size-9 md:h-9 md:w-auto md:px-4 cursor-pointer'
+								className='bg-[var(--nav-button-inactive-bg)] border-[var(--nav-button-inactive-border)] text-[var(--nav-button-inactive-text)] hover:bg-[var(--nav-button-hover)] sm:size-9 md:h-9 md:w-auto md:px-4 cursor-pointer'
 								aria-label='Log out of your account'
 							>
 								<LogOut className='w-4 h-4 md:mr-2' aria-hidden='true' />

@@ -182,8 +182,8 @@ export default function VanManagement() {
 
 	if (isLoading) {
 		return (
-			<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center'>
-				<p className='text-white text-lg'>Loading van hires...</p>
+			<div className='min-h-screen bg-gradient-to-br from-[var(--bg-page-from)] via-[var(--bg-page-via)] to-[var(--bg-page-to)] flex items-center justify-center'>
+				<p className='text-[var(--text-primary)] text-lg'>Loading van hires...</p>
 			</div>
 		)
 	}
@@ -206,7 +206,7 @@ export default function VanManagement() {
 						</Button> */}
 						<Button
 							onClick={handleNewVan}
-							className='text-xs sm:text-xl bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+							className='text-xs sm:text-xl bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 							disabled={activeVan !== null}
 						>
 							<Plus className='w-4 h-4 mr-2' />
@@ -216,23 +216,23 @@ export default function VanManagement() {
 				</div>
 
 				{/* Deposit Summary Card */}
-				<Card className='bg-white/10 backdrop-blur-xl border-white/20 p-6 mb-8'>
+				<Card className='bg-[var(--bg-surface-primary)] backdrop-blur-xl border-[var(--border-primary)] p-6 mb-8'>
 					<div className='flex items-start justify-between mb-4'>
 						<div>
-							<h2 className='text-xl font-semibold text-white mb-2'>
+							<h2 className='text-xl font-semibold text-[var(--text-primary)] mb-2'>
 								Deposit Summary
 							</h2>
-							<p className='text-slate-400 text-sm'>
+							<p className='text-[var(--text-secondary)] text-sm'>
 								Cumulative deposit across all van hires
 							</p>
 						</div>
 						<div className='flex items-center gap-2'>
 							{isDepositComplete ? (
-								<Badge className='bg-emerald-500/20 text-emerald-400 border-emerald-500/30'>
+								<Badge className='bg-[var(--bg-success)] text-[var(--text-success)] border-[var(--border-success)]'>
 									Complete
 								</Badge>
 							) : (
-								<Badge className='bg-blue-500/20 text-blue-400 border-blue-500/30'>
+								<Badge className='bg-[var(--bg-info)] text-[var(--text-info)] border-[var(--border-info)]'>
 									In Progress
 								</Badge>
 							)}
@@ -240,7 +240,7 @@ export default function VanManagement() {
 								variant='outline'
 								size='sm'
 								onClick={() => setShowDepositModal(true)}
-								className='border-white/20 text-white hover:bg-white/10 text-xs'
+								className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)] text-xs'
 							>
 								Set Deposit
 							</Button>
@@ -249,20 +249,20 @@ export default function VanManagement() {
 
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 						<div>
-							<p className='text-slate-400 text-sm mb-1'>Total Paid</p>
-							<p className='text-2xl font-mono font-bold text-white'>
+							<p className='text-[var(--text-secondary)] text-sm mb-1'>Total Paid</p>
+							<p className='text-2xl font-mono font-bold text-[var(--text-primary)]'>
 								{formatCurrency(totalDepositPaid)}
 							</p>
 						</div>
 						<div>
-							<p className='text-slate-400 text-sm mb-1'>Remaining</p>
-							<p className='text-2xl font-mono font-bold text-white'>
+							<p className='text-[var(--text-secondary)] text-sm mb-1'>Remaining</p>
+							<p className='text-2xl font-mono font-bold text-[var(--text-primary)]'>
 								{formatCurrency(depositRemaining)}
 							</p>
 						</div>
 						<div>
-							<p className='text-slate-400 text-sm mb-1'>Target</p>
-							<p className='text-2xl font-mono font-bold text-slate-400'>
+							<p className='text-[var(--text-secondary)] text-sm mb-1'>Target</p>
+							<p className='text-2xl font-mono font-bold text-[var(--text-secondary)]'>
 								£500.00
 							</p>
 						</div>
@@ -270,9 +270,9 @@ export default function VanManagement() {
 
 					{/* Progress Bar */}
 					<div className='mt-6'>
-						<div className='w-full bg-white/10 rounded-full h-3 overflow-hidden'>
+						<div className='w-full bg-[var(--bg-surface-tertiary)] rounded-full h-3 overflow-hidden'>
 							<div
-								className='bg-gradient-to-r from-blue-500 to-emerald-500 h-full transition-all duration-500'
+								className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] h-full transition-all duration-500'
 								style={{
 									width: `${Math.min(100, (totalDepositPaid / 50000) * 100)}%`,
 								}}
@@ -283,14 +283,14 @@ export default function VanManagement() {
 
 				{/* Active Van Alert */}
 				{activeVan && (
-					<Card className='bg-blue-500/10 backdrop-blur-xl border-blue-500/30 p-4 mb-6'>
+					<Card className='bg-[var(--bg-info)] backdrop-blur-xl border-[var(--border-info)] p-4 mb-6'>
 						<div className='flex items-center gap-3'>
-							<AlertCircle className='w-5 h-5 text-blue-400' />
+							<AlertCircle className='w-5 h-5 text-[var(--text-info)]' />
 							<div>
-								<p className='text-blue-400 font-semibold'>
+								<p className='text-[var(--text-info)] font-semibold'>
 									You have an active van hire
 								</p>
-								<p className='text-blue-300 text-sm'>
+								<p className='text-[var(--text-info)]/80 text-sm'>
 									Off-hire your current van ({activeVan.registration}) before
 									adding a new one
 								</p>
@@ -301,19 +301,19 @@ export default function VanManagement() {
 
 				{/* Van Hires List */}
 				<div className='space-y-4'>
-					<h2 className='text-xl font-semibold text-white'>Van Hire History</h2>
+					<h2 className='text-xl font-semibold text-[var(--text-primary)]'>Van Hire History</h2>
 
 					{allVans.filter(v => v.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT').length === 0 ? (
-						<Card className='bg-white/5 backdrop-blur-xl border-white/10 p-12'>
+						<Card className='bg-[var(--bg-surface-secondary)] backdrop-blur-xl border-[var(--border-secondary)] p-12'>
 							<div className='text-center'>
-								<Truck className='w-16 h-16 text-slate-600 mx-auto mb-4' />
-								<p className='text-slate-400 text-lg mb-2'>No van hires yet</p>
-								<p className='text-slate-500 text-sm mb-6'>
+								<Truck className='w-16 h-16 text-[var(--text-tertiary)] mx-auto mb-4' />
+								<p className='text-[var(--text-secondary)] text-lg mb-2'>No van hires yet</p>
+								<p className='text-[var(--text-tertiary)] text-sm mb-6'>
 									Add your first van hire to start tracking costs and deposits
 								</p>
 								<Button
 									onClick={handleNewVan}
-									className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+									className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 								>
 									<Plus className='w-4 h-4 mr-2' />
 									Add Van Hire
@@ -347,23 +347,23 @@ export default function VanManagement() {
 
 			{/* Manual Deposit Adjustment Modal */}
 			{showDepositModal && (
-				<div className='fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4'>
-					<Card className='bg-slate-900 border-white/20 max-w-md w-full p-6'>
-						<h3 className='text-xl font-bold text-white mb-4'>Set Manual Deposit</h3>
+				<div className='fixed inset-0 bg-[var(--modal-overlay)] flex items-center justify-center z-50 p-4'>
+					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
+						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>Set Manual Deposit</h3>
 
-						<div className='bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-4'>
-							<p className='text-blue-400 text-sm font-semibold mb-2'>
+						<div className='bg-[var(--bg-info)] border border-[var(--border-info)] rounded-lg p-4 mb-4'>
+							<p className='text-[var(--text-info)] text-sm font-semibold mb-2'>
 								💡 Deposits Already Paid
 							</p>
-							<p className='text-blue-200 text-sm leading-relaxed'>
+							<p className='text-[var(--text-info)]/80 text-sm leading-relaxed'>
 								Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted.
 							</p>
-							<p className='text-blue-300 text-xs mt-2'>
+							<p className='text-[var(--text-info)]/90 text-xs mt-2'>
 								Deposit limit: £500
 							</p>
 						</div>
 
-						<Label htmlFor='deposit_amount' className='text-white'>
+						<Label htmlFor='deposit_amount' className='text-[var(--input-label)]'>
 							Total Deposit Paid (£) *
 						</Label>
 						<NumberInput
@@ -374,9 +374,9 @@ export default function VanManagement() {
 							max={500}
 							chevronSize='sm'
 							placeholder='e.g., 250.00'
-							className='bg-white/5 border-white/20 text-white mt-2 mb-2'
+							className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2 mb-2'
 						/>
-						<p className='text-slate-400 text-xs mb-4'>
+						<p className='text-[var(--text-secondary)] text-xs mb-4'>
 							Maximum: £500.00
 						</p>
 
@@ -385,7 +385,7 @@ export default function VanManagement() {
 								variant='outline'
 								onClick={handleClearDeposit}
 								disabled={isAdjusting || totalDepositPaid === 0}
-								className='border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300'
+								className='border-[var(--border-error)] text-[var(--text-error)] hover:bg-[var(--bg-error)]'
 							>
 								Clear Deposits
 							</Button>
@@ -397,14 +397,14 @@ export default function VanManagement() {
 										setDepositAdjustment('')
 									}}
 									disabled={isAdjusting}
-									className='border-white/20 text-white hover:bg-white/10'
+									className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 								>
 									Cancel
 								</Button>
 								<Button
 									onClick={handleSetDeposit}
 									disabled={isAdjusting}
-									className='bg-gradient-to-r from-blue-500 to-emerald-500'
+									className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 								>
 									{isAdjusting ? 'Setting...' : 'Set Deposit'}
 								</Button>

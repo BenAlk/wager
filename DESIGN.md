@@ -1,5 +1,7 @@
 # Wager - Design System & Principles
 
+**Status**: Updated Jan 12, 2025 - Dual theme system implemented
+
 ## Design Philosophy
 
 Wager is built for couriers who need quick, accurate information about their pay. The design should be:
@@ -37,23 +39,45 @@ Wager is built for couriers who need quick, accurate information about their pay
 
 ### Neutral Colors
 
-**Slate** - Base backgrounds, text
+**Slate** - Dark theme base colors
 
-- `slate-50`: `#f8fafc` - Light mode backgrounds (if needed)
-- `slate-200`: `#e2e8f0` - Light mode text
-- `slate-300`: `#cbd5e1` - Borders, dividers (light)
-- `slate-400`: `#94a3b8` - Muted text, placeholders
-- `slate-500`: `#64748b` - Secondary text
-- `slate-600`: `#475569` - Body text (light mode)
+- `slate-400`: `#94a3b8` - Secondary text (dark theme)
+- `slate-500`: `#64748b` - Tertiary text, placeholders
 - `slate-700`: `#334155` - Dark surfaces
-- `slate-800`: `#1e293b` - Dark backgrounds
+- `slate-800`: `#1e293b` - Dark backgrounds (via)
 - `slate-900`: `#0f172a` - Primary dark background
 
-**Dark Mode First**: Default to dark theme
+**Stone** - Light theme base colors (warm, no flashbang)
 
+- `stone-50`: `#fafaf9` - Light backgrounds (via)
+- `stone-100`: `#f5f5f4` - Primary light background
+- `stone-600`: `#57534e` - Tertiary text (light theme)
+- `stone-700`: `#44403c` - Secondary text (light theme)
+- `stone-900`: `#1c1917` - Primary text (light theme)
+
+### Theme System Implementation
+
+**Default Theme**: Dark mode (courier-friendly for early mornings/night shifts)
+
+**Dark Theme**:
 - Background: `gradient-to-br from-slate-900 via-slate-800 to-slate-900`
 - Cards: `bg-white/10` with `backdrop-blur-xl`
 - Borders: `border-white/20` or `border-white/10`
+- Modals: `rgba(15, 23, 42, 0.95)` - 95% opaque slate
+- Text: White primary, slate-400 secondary
+
+**Light Theme**:
+- Background: `gradient-to-br from-stone-100 via-stone-50 to-stone-100`
+- Cards: `bg-white/80` with `backdrop-blur-xl`
+- Borders: `border-black/12` or `border-black/08`
+- Modals: `rgba(250, 250, 249, 0.98)` - 98% opaque warm white
+- Text: Stone-900 primary, stone-700 secondary
+
+**Implementation**:
+- All colors use CSS custom properties (CSS variables)
+- Theme switching via class on `<html>` element (`.dark` or `.light`)
+- Persistence via localStorage with Zustand
+- 40+ components converted to use theme variables
 
 ### Semantic Colors
 

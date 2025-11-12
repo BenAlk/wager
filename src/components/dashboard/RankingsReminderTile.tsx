@@ -130,19 +130,19 @@ export function RankingsReminderTile() {
 		return (
 			<DashboardTile title='Performance Rankings' icon={Award}>
 				<div className='text-center py-4'>
-					<p className='text-slate-300 text-sm mb-2'>
+					<p className='text-[var(--text-primary)] text-sm mb-2'>
 						Week {weekNMinus2Info.week} rankings entered
 					</p>
 					<div className='flex justify-center gap-4 text-xs'>
 						<div>
-							<span className='text-slate-400'>Individual: </span>
-							<span className='text-emerald-400'>
+							<span className='text-[var(--text-secondary)]'>Individual: </span>
+							<span className='text-[var(--text-success)]'>
 								{weekNMinus2Data.week.individual_level}
 							</span>
 						</div>
 						<div>
-							<span className='text-slate-400'>Company: </span>
-							<span className='text-emerald-400'>
+							<span className='text-[var(--text-secondary)]'>Company: </span>
+							<span className='text-[var(--text-success)]'>
 								{weekNMinus2Data.week.company_level}
 							</span>
 						</div>
@@ -157,10 +157,10 @@ export function RankingsReminderTile() {
 		return (
 			<DashboardTile title='Performance Rankings' icon={Award}>
 				<div className='text-center py-4'>
-					<p className='text-slate-400 text-sm mb-2'>
+					<p className='text-[var(--text-secondary)] text-sm mb-2'>
 						Week {weekNMinus2Info.week}
 					</p>
-					<p className='text-slate-500 text-xs'>
+					<p className='text-[var(--text-tertiary)] text-xs'>
 						No bonus eligible - no days worked
 					</p>
 				</div>
@@ -177,12 +177,12 @@ export function RankingsReminderTile() {
 		<>
 			<DashboardTile title='Rankings Reminder' icon={Award}>
 				<div className='flex flex-col min-h-full justify-evenly items-center py-4'>
-					<p className='text-amber-400 text-sm'>
+					<p className='text-[var(--text-warning)] text-sm'>
 						Week {weekNMinus2Info.week} rankings are missing!
 					</p>
 					<Button
 						onClick={() => setShowModal(true)}
-						className='w-1/2 h-10 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600'
+						className='w-1/2 h-10 bg-gradient-to-r from-[var(--button-warning-from)] to-[var(--button-warning-to)] hover:from-[var(--button-warning-hover-from)] hover:to-[var(--button-warning-hover-to)] text-[var(--text-primary)]'
 					>
 						Enter Rankings Now
 					</Button>
@@ -191,17 +191,17 @@ export function RankingsReminderTile() {
 
 			{/* Rankings Modal */}
 			{showModal && (
-				<div className='fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4'>
-					<Card className='bg-slate-900 border-white/20 max-w-md w-full p-6'>
+				<div className='fixed inset-0 bg-[var(--modal-overlay)] backdrop-blur-sm flex items-center justify-center z-50 p-4'>
+					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
 						<div className='flex items-center justify-between mb-4'>
-							<h3 className='text-xl font-bold text-white'>
+							<h3 className='text-xl font-bold text-[var(--text-primary)]'>
 								Enter Rankings - Week {weekNMinus2Info.week}
 							</h3>
 							<Button
 								variant='ghost'
 								size='icon'
 								onClick={() => setShowModal(false)}
-								className='text-slate-400 hover:text-white hover:bg-white/10'
+								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 							>
 								<X className='w-5 h-5' />
 							</Button>
@@ -209,7 +209,7 @@ export function RankingsReminderTile() {
 
 						<form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
 							<div>
-								<Label htmlFor='individual_level' className='text-white'>
+								<Label htmlFor='individual_level' className='text-[var(--input-label)]'>
 									Individual Level
 								</Label>
 								<Controller
@@ -217,16 +217,16 @@ export function RankingsReminderTile() {
 									control={control}
 									render={({ field }) => (
 										<Select value={field.value} onValueChange={field.onChange}>
-											<SelectTrigger className='bg-white/5 border-white/20 text-white mt-2'>
+											<SelectTrigger className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'>
 												<SelectValue />
 											</SelectTrigger>
-											<SelectContent className='bg-slate-900 border-white/20'>
+											<SelectContent className='bg-[var(--modal-bg)] border-[var(--modal-border)]'>
 												{['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+'].map(
 													(level) => (
 														<SelectItem
 															key={level}
 															value={level}
-															className='text-white hover:bg-white/10 focus:bg-white/10'
+															className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 														>
 															{level}
 														</SelectItem>
@@ -239,7 +239,7 @@ export function RankingsReminderTile() {
 							</div>
 
 							<div>
-								<Label htmlFor='company_level' className='text-white'>
+								<Label htmlFor='company_level' className='text-[var(--input-label)]'>
 									Company Level
 								</Label>
 								<Controller
@@ -247,16 +247,16 @@ export function RankingsReminderTile() {
 									control={control}
 									render={({ field }) => (
 										<Select value={field.value} onValueChange={field.onChange}>
-											<SelectTrigger className='bg-white/5 border-white/20 text-white mt-2'>
+											<SelectTrigger className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'>
 												<SelectValue />
 											</SelectTrigger>
-											<SelectContent className='bg-slate-900 border-white/20'>
+											<SelectContent className='bg-[var(--modal-bg)] border-[var(--modal-border)]'>
 												{['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+'].map(
 													(level) => (
 														<SelectItem
 															key={level}
 															value={level}
-															className='text-white hover:bg-white/10 focus:bg-white/10'
+															className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 														>
 															{level}
 														</SelectItem>
@@ -269,11 +269,11 @@ export function RankingsReminderTile() {
 							</div>
 
 							{projectedBonus > 0 && (
-								<div className='bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3'>
-									<p className='text-emerald-400 text-sm'>
+								<div className='bg-[var(--bg-success)] border border-[var(--border-success)] rounded-lg p-3'>
+									<p className='text-[var(--text-success)] text-sm'>
 										Projected Bonus: £{(projectedBonus / 100).toFixed(2)}
 									</p>
-									<p className='text-emerald-400/70 text-xs mt-1'>
+									<p className='text-[var(--text-success)]/70 text-xs mt-1'>
 										{daysWorked} days × £{(dailyBonusRate / 100).toFixed(2)}/day
 									</p>
 								</div>
@@ -285,14 +285,14 @@ export function RankingsReminderTile() {
 									variant='outline'
 									onClick={() => setShowModal(false)}
 									disabled={isSubmitting}
-									className='border-white/20 text-white hover:bg-white/10'
+									className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 								>
 									Cancel
 								</Button>
 								<Button
 									type='submit'
 									disabled={isSubmitting}
-									className='w-full h-10 bg-gradient-to-r from-blue-500 to-emerald-500'
+									className='w-full h-10 bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 								>
 									{isSubmitting ? (
 										<>

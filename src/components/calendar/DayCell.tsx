@@ -35,7 +35,7 @@ export default function DayCell({
 
 	if (loading) {
 		return (
-			<div className='bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4 animate-pulse'>
+			<div className='bg-[var(--day-bg-empty)] backdrop-blur-sm border border-[var(--day-border)] rounded-lg p-4 animate-pulse'>
 				<div className='h-32'></div>
 			</div>
 		)
@@ -45,33 +45,33 @@ export default function DayCell({
 	if (!workDay) {
 		return (
 			<div
-				className={`bg-white/5 backdrop-blur-sm border rounded-lg p-4 transition-all hover:bg-white/10 ${
+				className={`bg-[var(--day-bg-empty)] backdrop-blur-sm border rounded-lg p-4 transition-all hover:bg-[var(--day-hover)] ${
 					isToday
-						? 'border-blue-500 shadow-lg shadow-blue-500/20'
-						: 'border-white/10'
+						? 'border-[var(--border-focus)] shadow-lg shadow-[var(--border-focus)]/20'
+						: 'border-[var(--day-border)]'
 				} ${isFuture ? 'opacity-50' : ''}`}
 			>
 				<div className='flex flex-col h-full min-h-[160px]'>
 					<div className='text-center mb-4'>
-						<div className='text-xs text-slate-400'>{dayName}</div>
-						<div className='text-lg font-semibold text-white'>{dayNumber}</div>
+						<div className='text-xs text-[var(--day-name)]'>{dayName}</div>
+						<div className='text-lg font-semibold text-[var(--day-date)]'>{dayNumber}</div>
 					</div>
 					<div className='flex-1 flex items-center justify-center'>
 						<div className='text-center'>
-							<div className='text-sm text-slate-400 mb-12 '>OFF</div>
+							<div className='text-sm text-[var(--text-secondary)] mb-12 '>OFF</div>
 							{!isFuture &&
 								(canAddWorkDay ? (
 									<Button
 										onClick={onEdit}
 										size='sm'
 										variant='ghost'
-										className='text-blue-400 hover:text-blue-300 hover:bg-white/5 cursor-pointer'
+										className='text-[var(--button-ghost-text)] hover:text-[var(--button-ghost-hover)] hover:bg-[var(--bg-hover)] cursor-pointer'
 									>
 										<Plus className='w-4 h-4 mr-1' />
 										Add
 									</Button>
 								) : (
-									<div className='text-xs text-amber-400/60'>Max 6 days</div>
+									<div className='text-xs text-[var(--text-warning)]/60'>Max 6 days</div>
 								))}
 						</div>
 					</div>
@@ -86,24 +86,24 @@ export default function DayCell({
 
 	return (
 		<div
-			className={`bg-white/10 backdrop-blur-xl border rounded-lg p-4 transition-all hover:shadow-xl hover:-translate-y-0.5 ${
+			className={`bg-[var(--day-bg-work)] backdrop-blur-xl border rounded-lg p-4 transition-all hover:shadow-xl hover:-translate-y-0.5 ${
 				isToday
-					? 'border-blue-500 shadow-lg shadow-blue-500/20'
-					: 'border-white/20'
+					? 'border-[var(--border-focus)] shadow-lg shadow-[var(--border-focus)]/20'
+					: 'border-[var(--day-border)]'
 			}`}
 		>
 			<div className='flex flex-col h-full min-h-[160px]'>
 				{/* Header */}
 				<div className='flex items-center justify-between mb-3'>
 					<div>
-						<div className='text-xs text-slate-400'>{dayName}</div>
-						<div className='text-lg font-semibold text-white'>{dayNumber}</div>
+						<div className='text-xs text-[var(--day-name)]'>{dayName}</div>
+						<div className='text-lg font-semibold text-[var(--day-date)]'>{dayNumber}</div>
 					</div>
 					<div
 						className={`px-2 py-1 rounded-md flex items-center gap-1 ${
 							isNormal
-								? 'bg-blue-500/20 text-blue-400'
-								: 'bg-purple-500/20 text-purple-400'
+								? 'bg-[var(--bg-route-normal)] text-[var(--text-route-normal)]'
+								: 'bg-[var(--bg-route-drs)] text-[var(--text-route-drs)]'
 						}`}
 					>
 						{isNormal ? (
@@ -119,7 +119,7 @@ export default function DayCell({
 
 				{/* Daily Rate */}
 				<div className='mb-2'>
-					<div className='text-xl font-mono font-bold text-white'>
+					<div className='text-xl font-mono font-bold text-[var(--text-primary)]'>
 						£{(workDay.daily_rate / 100).toFixed(2)}
 					</div>
 				</div>
@@ -127,14 +127,14 @@ export default function DayCell({
 				{/* Sweeps */}
 				{(workDay.stops_given > 0 || workDay.stops_taken > 0) && (
 					<div className='flex items-center gap-1 mb-1'>
-						<span className='text-slate-400 text-xs'>🔄</span>
+						<span className='text-[var(--text-secondary)] text-xs'>🔄</span>
 						<span
 							className={`text-sm font-semibold ${
 								netSweeps > 0
-									? 'text-emerald-400'
+									? 'text-[var(--text-sweeps-given)]'
 									: netSweeps < 0
-									? 'text-red-400'
-									: 'text-slate-400'
+									? 'text-[var(--text-sweeps-taken)]'
+									: 'text-[var(--text-secondary)]'
 							}`}
 						>
 							{netSweeps > 0 ? '+' : ''}
@@ -150,16 +150,16 @@ export default function DayCell({
 						<div className='flex justify-between gap-5'>
 							{(workDay.van_logged_miles ?? 0) > 0 && (
 								<div className='flex items-center gap-1'>
-									<span className='text-yellow-400 text-xs'>📌</span>
-									<span className='text-sm font-medium text-yellow-400'>
+									<span className='text-[var(--text-mileage-van)] text-xs'>📌</span>
+									<span className='text-sm font-medium text-[var(--text-mileage-van)]'>
 										{workDay.van_logged_miles}m
 									</span>
 								</div>
 							)}
 							{(workDay.amazon_paid_miles ?? 0) > 0 && (
 								<div className='flex items-center gap-1'>
-									<span className='text-slate-400 text-xs'>📍</span>
-									<span className='text-sm font-medium text-white'>
+									<span className='text-[var(--text-secondary)] text-xs'>📍</span>
+									<span className='text-sm font-medium text-[var(--text-mileage-paid)]'>
 										{workDay.amazon_paid_miles}m
 									</span>
 								</div>
@@ -169,18 +169,18 @@ export default function DayCell({
 							{(workDay.van_logged_miles ?? 0) > 0 &&
 								(workDay.amazon_paid_miles ?? 0) > 0 && (
 									<div className='flex items-center justify-center gap-1 mt-0.5'>
-										<span className='text-xs text-slate-500'>Δ</span>
+										<span className='text-xs text-[var(--text-tertiary)]'>Δ</span>
 										<span
 											className={`text-xs font-medium ${
 												(workDay.van_logged_miles ?? 0) -
 													(workDay.amazon_paid_miles ?? 0) >
 												0
-													? 'text-red-400'
+													? 'text-[var(--text-mileage-delta-bad)]'
 													: (workDay.van_logged_miles ?? 0) -
 															(workDay.amazon_paid_miles ?? 0) <
 													  0
-													? 'text-emerald-400'
-													: 'text-slate-400'
+													? 'text-[var(--text-mileage-delta-good)]'
+													: 'text-[var(--text-secondary)]'
 											}`}
 										>
 											{(workDay.van_logged_miles ?? 0) -
@@ -204,7 +204,7 @@ export default function DayCell({
 						onClick={onEdit}
 						size='sm'
 						variant='ghost'
-						className='w-full text-blue-400 hover:text-blue-300 hover:bg-white/5 cursor-pointer'
+						className='w-full text-[var(--button-ghost-text)] hover:text-[var(--button-ghost-hover)] hover:bg-[var(--bg-hover)] cursor-pointer'
 					>
 						Edit
 					</Button>

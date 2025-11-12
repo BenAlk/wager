@@ -181,11 +181,11 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 				icon={Briefcase}
 			>
 				<div className='space-y-4'>
-					<div className='bg-white/5 rounded-lg p-4'>
+					<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
 						<div className='flex justify-between items-start mb-2'>
 							<div>
-								<p className='text-slate-400 text-xs'>Route Type</p>
-								<p className='text-white font-semibold'>
+								<p className='text-[var(--text-secondary)] text-xs'>Route Type</p>
+								<p className='text-[var(--text-primary)] font-semibold'>
 									{todayWork.route_type}
 								</p>
 							</div>
@@ -193,19 +193,19 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								variant='ghost'
 								size='icon'
 								onClick={() => setIsEditing(true)}
-								className='text-slate-400 hover:text-white hover:bg-white/10 h-8 w-8'
+								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8'
 							>
-								<Pencil className='w-4 h-4 text-yellow-400' />
+								<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' />
 							</Button>
 						</div>
 						<div>
-							<p className='text-slate-400 text-xs'>Route Number</p>
-							<p className='text-white font-semibold'>
+							<p className='text-[var(--text-secondary)] text-xs'>Route Number</p>
+							<p className='text-[var(--text-primary)] font-semibold'>
 								{todayWork.route_number}
 							</p>
 						</div>
 					</div>
-					<p className='text-slate-400 text-xs text-center'>
+					<p className='text-[var(--text-secondary)] text-xs text-center'>
 						Work logged for today
 					</p>
 				</div>
@@ -226,7 +226,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					<div>
 						<Label
 							htmlFor='route_type'
-							className='text-slate-300 text-sm'
+							className='text-[var(--input-label)] text-sm'
 						>
 							Route Type
 						</Label>
@@ -238,20 +238,20 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 									value={field.value}
 									onValueChange={field.onChange}
 								>
-									<SelectTrigger className='bg-white/5 border-white/20 text-white mt-1'>
+									<SelectTrigger className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'>
 										<SelectValue />
 									</SelectTrigger>
-									<SelectContent className='bg-slate-900 border-white/20'>
+									<SelectContent className='bg-[var(--modal-bg)] border-[var(--modal-border)]'>
 										<SelectItem
 											value='Normal'
-											className='text-white hover:bg-white/10 focus:bg-white/10'
+											className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 										>
 											Normal (£
 											{((settings?.normal_rate || 16000) / 100).toFixed(0)})
 										</SelectItem>
 										<SelectItem
 											value='DRS'
-											className='text-white hover:bg-white/10 focus:bg-white/10'
+											className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 										>
 											DRS (£{((settings?.drs_rate || 10000) / 100).toFixed(0)})
 										</SelectItem>
@@ -264,7 +264,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					<div>
 						<Label
 							htmlFor='route_number'
-							className='text-slate-300 text-sm'
+							className='text-[var(--input-label)] text-sm'
 						>
 							Route Number
 						</Label>
@@ -276,12 +276,12 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 									{...field}
 									id='route_number'
 									placeholder='e.g., DA01'
-									className='bg-white/5 border-white/20 text-white mt-1'
+									className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'
 								/>
 							)}
 						/>
 						{errors.route_number && (
-							<p className='text-red-400 text-xs mt-1'>
+							<p className='text-[var(--input-error-text)] text-xs mt-1'>
 								{errors.route_number.message}
 							</p>
 						)}
@@ -291,7 +291,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 				<Button
 					type='submit'
 					disabled={isSubmitting}
-					className='self-center w-1/2 h-10 mt-auto bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+					className='self-center w-1/2 h-10 mt-auto bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-white font-semibold shadow-lg'
 				>
 					{isSubmitting ? (
 						<>

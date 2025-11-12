@@ -260,7 +260,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
 			transition={{ duration: 0.2 }}
-			className='fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4'
+			className='fixed inset-0 bg-[var(--modal-overlay)] backdrop-blur-sm flex items-center justify-center z-50 p-4'
 		>
 			<motion.div
 				initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -268,18 +268,18 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 				exit={{ opacity: 0, scale: 0.95, y: 20 }}
 				transition={{ duration: 0.2, ease: 'easeOut' }}
 			>
-				<Card className='bg-slate-900 border-white/20 max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
+				<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-2xl w-full max-h-[90vh] overflow-y-auto'>
 				<div className='p-6'>
 					{/* Header */}
 					<div className='flex items-center justify-between mb-6'>
-						<h2 className='text-2xl font-bold text-white'>
+						<h2 className='text-2xl font-bold text-[var(--text-primary)]'>
 							{isEditMode ? 'Edit Van Hire' : 'New Van Hire'}
 						</h2>
 						<Button
 							variant='ghost'
 							size='icon'
 							onClick={onClose}
-							className='text-slate-400 hover:text-white hover:bg-white/10'
+							className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 						>
 							<X className='w-5 h-5' />
 						</Button>
@@ -294,7 +294,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 						<div>
 							<Label
 								htmlFor='registration'
-								className='text-white'
+								className='text-[var(--input-label)]'
 							>
 								Registration Number *
 							</Label>
@@ -306,12 +306,12 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 										{...field}
 										id='registration'
 										placeholder='e.g., AB12 CDE'
-										className='bg-white/5 border-white/20 text-white mt-2'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'
 									/>
 								)}
 							/>
 							{errors.registration && (
-								<p className='text-red-400 text-sm mt-1'>
+								<p className='text-[var(--input-error-text)] text-sm mt-1'>
 									{errors.registration.message}
 								</p>
 							)}
@@ -322,7 +322,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							<div>
 								<Label
 									htmlFor='van_type'
-									className='text-white'
+									className='text-[var(--input-label)]'
 								>
 									Van Type
 								</Label>
@@ -336,19 +336,19 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 												field.onChange(value as VanType)
 											}
 										>
-											<SelectTrigger className='bg-white/5 border-white/20 text-white mt-2'>
+											<SelectTrigger className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'>
 												<SelectValue placeholder='Select type' />
 											</SelectTrigger>
-											<SelectContent className='bg-slate-900 border-white/20'>
+											<SelectContent className='bg-[var(--modal-bg)] border-[var(--modal-border)]'>
 												<SelectItem
 													value='Fleet'
-													className='text-white hover:bg-white/10 focus:bg-white/10'
+													className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 												>
 													Fleet (£250/week)
 												</SelectItem>
 												<SelectItem
 													value='Flexi'
-													className='text-white hover:bg-white/10 focus:bg-white/10'
+													className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 												>
 													Flexi (£100-£250/week)
 												</SelectItem>
@@ -361,7 +361,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							<div>
 								<Label
 									htmlFor='weekly_rate'
-									className='text-white'
+									className='text-[var(--input-label)]'
 								>
 									Weekly Rate (£) *
 								</Label>
@@ -376,12 +376,12 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 											min={0}
 											max={1000}
 											chevronSize='sm'
-											className='bg-white/5 border-white/20 text-white mt-2'
+											className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'
 										/>
 									)}
 								/>
 								{errors.weekly_rate && (
-									<p className='text-red-400 text-sm mt-1'>
+									<p className='text-[var(--input-error-text)] text-sm mt-1'>
 										{errors.weekly_rate.message}
 									</p>
 								)}
@@ -393,7 +393,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							<div>
 								<Label
 									htmlFor='on_hire_date'
-									className='text-white'
+									className='text-[var(--input-label)]'
 								>
 									On-Hire Date *
 								</Label>
@@ -406,12 +406,12 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 											id='on_hire_date'
 											type='date'
 											lang='en-GB'
-											className='bg-white/5 border-white/20 text-white mt-2'
+											className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'
 										/>
 									)}
 								/>
 								{errors.on_hire_date && (
-									<p className='text-red-400 text-sm mt-1'>
+									<p className='text-[var(--input-error-text)] text-sm mt-1'>
 										{errors.on_hire_date.message}
 									</p>
 								)}
@@ -420,7 +420,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							<div>
 								<Label
 									htmlFor='off_hire_date'
-									className='text-white'
+									className='text-[var(--input-label)]'
 								>
 									Off-Hire Date
 								</Label>
@@ -434,17 +434,17 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 											id='off_hire_date'
 											type='date'
 											lang='en-GB'
-											className='bg-white/5 border-white/20 text-white mt-2'
+											className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'
 											disabled={isEditMode && !van?.off_hire_date}
 										/>
 									)}
 								/>
 								{errors.off_hire_date ? (
-									<p className='text-red-400 text-xs mt-1'>
+									<p className='text-[var(--input-error-text)] text-xs mt-1'>
 										{errors.off_hire_date.message}
 									</p>
 								) : (
-									<p className='text-slate-400 text-xs mt-1'>
+									<p className='text-[var(--text-secondary)] text-xs mt-1'>
 										Leave empty if currently on-hire
 									</p>
 								)}
@@ -453,15 +453,15 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 
 						{/* Deposit Status (Read-Only) */}
 						{isEditMode && van && (
-							<div className='bg-white/5 border border-white/20 rounded-lg p-4'>
-								<p className='text-slate-400 text-sm mb-2'>Deposit Status</p>
+							<div className='bg-[var(--bg-surface-secondary)] border border-[var(--border-secondary)] rounded-lg p-4'>
+								<p className='text-[var(--text-secondary)] text-sm mb-2'>Deposit Status</p>
 								<div className='flex items-center justify-between'>
-									<span className='text-white'>Current Deposit:</span>
-									<span className='text-white font-mono font-semibold'>
+									<span className='text-[var(--text-primary)]'>Current Deposit:</span>
+									<span className='text-[var(--text-primary)] font-mono font-semibold'>
 										£{(van.deposit_paid / 100).toFixed(2)}
 									</span>
 								</div>
-								<p className='text-slate-500 text-xs mt-2'>
+								<p className='text-[var(--text-tertiary)] text-xs mt-2'>
 									Deposits are automatically calculated by the system based on
 									weeks with any van
 								</p>
@@ -472,7 +472,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 						<div>
 							<Label
 								htmlFor='notes'
-								className='text-white'
+								className='text-[var(--input-label)]'
 							>
 								Notes
 							</Label>
@@ -485,26 +485,26 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 										value={field.value ?? ''}
 										id='notes'
 										placeholder='Additional notes about this van hire...'
-										className='bg-white/5 border-white/20 text-white mt-2 min-h-[100px]'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2 min-h-[100px]'
 									/>
 								)}
 							/>
 							{errors.notes && (
-								<p className='text-red-400 text-sm mt-1'>
+								<p className='text-[var(--input-error-text)] text-sm mt-1'>
 									{errors.notes.message}
 								</p>
 							)}
 						</div>
 
 						{/* Actions */}
-						<div className='pt-4 border-t border-white/20 space-y-3'>
+						<div className='pt-4 border-t border-[var(--modal-border)] space-y-3'>
 							{/* Off-Hire Button (Full Width) */}
 							{isEditMode && van && !van.off_hire_date && (
 								<Button
 									type='button'
 									variant='outline'
 									onClick={() => setShowOffHire(true)}
-									className='w-full border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10'
+									className='w-full border-[var(--border-warning)] text-[var(--text-warning)] hover:bg-[var(--bg-warning)]'
 								>
 									Off-Hire Van
 								</Button>
@@ -520,7 +520,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 												variant='outline'
 												onClick={() => setShowDeleteConfirm(true)}
 												disabled={isDeleting || isSubmitting}
-												className='border-red-500/30 text-red-400 hover:bg-red-500/10'
+												className='border-[var(--border-error)] text-[var(--text-error)] hover:bg-[var(--bg-error)]'
 											>
 												<Trash2 className='w-4 h-4 mr-2' />
 												Delete
@@ -532,7 +532,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 														type='button'
 														variant='outline'
 														onClick={() => setShowRefund(true)}
-														className='border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10'
+														className='border-[var(--border-success)] text-[var(--text-success)] hover:bg-[var(--bg-success)]'
 													>
 														Refund Deposit
 													</Button>
@@ -547,14 +547,14 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 										variant='outline'
 										onClick={onClose}
 										disabled={isSubmitting}
-										className='border-white/20 text-white hover:bg-white/10'
+										className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 									>
 										Cancel
 									</Button>
 									<Button
 										type='submit'
 										disabled={isSubmitting}
-										className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600'
+										className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 									>
 										{isSubmitting ? (
 											<Loader2 className='w-4 h-4 mr-2 animate-spin' />
@@ -601,20 +601,20 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 
 			{/* Off-Hire Dialog */}
 			{showOffHire && (
-				<div className='fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4'>
-					<Card className='bg-slate-900 border-white/20 max-w-md w-full p-6'>
-						<h3 className='text-xl font-bold text-white mb-4'>Off-Hire Van</h3>
-						<p className='text-slate-400 mb-4'>
+				<div className='fixed inset-0 bg-[var(--modal-overlay)] flex items-center justify-center z-[60] p-4'>
+					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
+						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>Off-Hire Van</h3>
+						<p className='text-[var(--text-secondary)] mb-4'>
 							Enter the date when the van was returned. The deposit will be held
 							for 6 weeks.
 						</p>
 
 						{/* Important Info Box */}
-						<div className='bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4'>
-							<p className='text-blue-400 text-sm font-semibold mb-1'>
+						<div className='bg-[var(--bg-info)] border border-[var(--border-info)] rounded-lg p-3 mb-4'>
+							<p className='text-[var(--text-info)] text-sm font-semibold mb-1'>
 								Important: Same-Day Van Swaps
 							</p>
-							<p className='text-blue-300 text-xs'>
+							<p className='text-[var(--text-info)]/80 text-xs'>
 								The off-hire date is the <strong>last day</strong> you had the
 								van. If you're picking up a new van the same morning you're
 								returning this one, off-hire this van on the{' '}
@@ -625,7 +625,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 
 						<Label
 							htmlFor='off_hire_input'
-							className='text-white'
+							className='text-[var(--input-label)]'
 						>
 							Off-Hire Date *
 						</Label>
@@ -635,19 +635,19 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							value={offHireDateInput}
 							onChange={(e) => setOffHireDateInput(e.target.value)}
 							lang='en-GB'
-							className='bg-white/5 border-white/20 text-white mt-2 mb-4'
+							className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2 mb-4'
 						/>
 						<div className='flex gap-2 justify-end'>
 							<Button
 								variant='outline'
 								onClick={() => setShowOffHire(false)}
-								className='border-white/20 text-white hover:bg-white/10'
+								className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 							>
 								Cancel
 							</Button>
 							<Button
 								onClick={handleOffHire}
-								className='bg-gradient-to-r from-blue-500 to-emerald-500'
+								className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 							>
 								Confirm Off-Hire
 							</Button>
@@ -658,17 +658,17 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 
 			{/* Refund Dialog */}
 			{showRefund && (
-				<div className='fixed inset-0 bg-black/80 flex items-center justify-center z-[60] p-4'>
-					<Card className='bg-slate-900 border-white/20 max-w-md w-full p-6'>
-						<h3 className='text-xl font-bold text-white mb-4'>
+				<div className='fixed inset-0 bg-[var(--modal-overlay)] flex items-center justify-center z-[60] p-4'>
+					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
+						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>
 							Refund Deposit
 						</h3>
-						<p className='text-slate-400 mb-4'>
+						<p className='text-[var(--text-secondary)] mb-4'>
 							Enter the refund amount (after deducting any damage costs).
 						</p>
 						<Label
 							htmlFor='refund_input'
-							className='text-white'
+							className='text-[var(--input-label)]'
 						>
 							Refund Amount (£) *
 						</Label>
@@ -678,22 +678,22 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							step='0.01'
 							value={refundAmountInput}
 							onChange={(e) => setRefundAmountInput(e.target.value)}
-							className='bg-white/5 border-white/20 text-white mt-2 mb-2'
+							className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2 mb-2'
 						/>
-						<p className='text-slate-400 text-xs mb-4'>
+						<p className='text-[var(--text-secondary)] text-xs mb-4'>
 							Max: £{van ? (van.deposit_paid / 100).toFixed(2) : '0.00'}
 						</p>
 						<div className='flex gap-2 justify-end'>
 							<Button
 								variant='outline'
 								onClick={() => setShowRefund(false)}
-								className='border-white/20 text-white hover:bg-white/10'
+								className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 							>
 								Cancel
 							</Button>
 							<Button
 								onClick={handleRefund}
-								className='bg-gradient-to-r from-emerald-500 to-blue-500'
+								className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 							>
 								Confirm Refund
 							</Button>

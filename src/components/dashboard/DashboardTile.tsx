@@ -21,9 +21,9 @@ export function DashboardTile({
 	return (
 		<Card
 			className={cn(
-				'bg-white/10 backdrop-blur-xl border-white/20 p-6 transition-all h-full min-h-[280px] flex flex-col',
+				'bg-[var(--tile-bg)] backdrop-blur-xl border-[var(--tile-border)] p-6 transition-all h-full min-h-[280px] flex flex-col',
 				disabled && 'opacity-50 cursor-not-allowed',
-				!disabled && 'hover:bg-white/[0.15]',
+				!disabled && 'hover:bg-[var(--tile-hover)]',
 				className
 			)}
 		>
@@ -33,17 +33,17 @@ export function DashboardTile({
 						className={cn(
 							'p-2 rounded-lg',
 							disabled
-								? 'bg-slate-700/50'
-								: 'bg-gradient-to-r from-blue-500 to-emerald-500'
+								? 'bg-[var(--tile-icon-disabled)]'
+								: 'bg-gradient-to-r from-[var(--tile-icon-enabled-from)] to-[var(--tile-icon-enabled-to)]'
 						)}
 					>
-						<Icon className='w-5 h-5 text-white' />
+						<Icon className='w-5 h-5 text-[var(--text-primary)]' />
 					</div>
 				)}
 				<h3
 					className={cn(
 						'text-lg font-semibold',
-						disabled ? 'text-slate-400' : 'text-white'
+						disabled ? 'text-[var(--tile-title-disabled)]' : 'text-[var(--tile-title)]'
 					)}
 				>
 					{title}

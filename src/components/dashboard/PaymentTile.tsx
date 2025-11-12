@@ -118,22 +118,22 @@ export function PaymentTile() {
 		<DashboardTile title='Payment This Week' icon={Banknote}>
 			{loading ? (
 				<div className='text-center py-8'>
-					<div className='text-slate-400'>Loading...</div>
+					<div className='text-[var(--text-secondary)]'>Loading...</div>
 				</div>
 			) : (
 				<div className='text-center py-4'>
-					<div className='text-sm text-slate-400 mb-2'>
+					<div className='text-sm text-[var(--text-secondary)] mb-2'>
 						Expected in your account
 					</div>
 					<div
 						className={
 							'text-4xl font-mono font-bold ' +
-							(totalPayment < 0 ? 'text-red-400' : 'text-emerald-400')
+							(totalPayment < 0 ? 'text-[var(--finance-negative)]' : 'text-[var(--finance-positive)]')
 						}
 					>
 						£{(totalPayment / 100).toFixed(2)}
 					</div>
-					<div className='text-xs text-slate-500 mt-2'>
+					<div className='text-xs text-[var(--text-tertiary)] mt-2'>
 						Week {currentWeek}, {currentYear}
 					</div>
 				</div>
