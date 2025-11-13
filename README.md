@@ -143,9 +143,9 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
   - **Quick Add Work**: Create/edit today's work with route type & number, auto-rate calculation, contextual button text ("Add Work" vs "Confirm Edits")
   - **Quick Add Sweeps**: Update sweeps for today, shows entered data with edit button, color-coded display (red/green)
   - **Quick Add Odometer**: Log van miles for today, shows entered data with edit button, yellow van theme 🚐
-  - **Payment Tile**: Week N-2 standard pay + Week N-6 bonus with full breakdown
+  - **Payment Tile**: Clickable tile with detailed modal breakdown showing Week N-2 standard pay + Week N-6 bonus with all components
   - **Rankings Reminder**: Week N-2 rankings entry with projected bonus, smart placeholders (entered/no work/missing)
-  - **Van Status Tile**: Shows active or last van with deposit progress, quick off-hire button
+  - **Van Status Tile**: Shows active or last van with deposit progress, quick off-hire button, placeholder state when no van
 - **Responsive Tile Ordering**: Different layouts for mobile vs desktop (CSS Grid with order utilities)
 - **Consistent UX**: All buttons positioned at bottom, uniform sizing (w-full h-10), flexbox layout
 - **Real-time Sync**: Dashboard updates automatically sync with calendar via weeks store cache
@@ -197,9 +197,20 @@ wager/
 │   │   │   ├── QuickAddSweepsTile.tsx    # Log sweeps with edit mode
 │   │   │   ├── QuickAddOdometerTile.tsx  # Log van miles with edit mode
 │   │   │   ├── RankingsReminderTile.tsx  # Week N-2 rankings entry
-│   │   │   ├── PaymentTile.tsx           # Week N-2 + N-6 pay breakdown
-│   │   │   ├── VanStatusTile.tsx         # Active/last van with quick off-hire
+│   │   │   ├── PaymentTile.tsx           # Clickable tile with modal breakdown
+│   │   │   ├── VanStatusTile.tsx         # Active/last van with placeholder state
 │   │   │   └── DashboardTile.tsx         # Base wrapper component
+│   │   ├── onboarding/      # Onboarding flow (10 components)
+│   │   │   ├── OnboardingModal.tsx       # 6-step wizard with database persistence
+│   │   │   ├── TourGuide.tsx             # Interactive 6-stop dashboard tour
+│   │   │   ├── TourHighlight.tsx         # Highlight with adaptive positioning
+│   │   │   ├── WelcomeStep.tsx           # Welcome screen
+│   │   │   ├── PayRatesStep.tsx          # Pay rates configuration
+│   │   │   ├── InvoicingStep.tsx         # Invoicing service selection
+│   │   │   ├── VanHireStep.tsx           # Van hire options
+│   │   │   ├── VanHireFormStep.tsx       # Van details form
+│   │   │   ├── SuccessStep.tsx           # Completion screen
+│   │   │   └── SampleDataBadge.tsx       # Floating badge during tour
 │   │   ├── settings/        # Settings forms
 │   │   └── shared/          # Reusable components
 │   ├── lib/
@@ -412,15 +423,13 @@ wager/
   - [x] Add dashboard tile animations (staggered fade-in/slide-up)
   - [x] Add button hover/active states with subtle scale
   - [x] Add cursor pointer to all interactive buttons
-- [ ] Implement keyboard shortcuts
-  - [ ] Week navigation (arrow keys, today shortcut)
-  - [ ] Quick add work (keyboard shortcut)
-  - [ ] Calendar shortcuts (n for new day, e for edit)
-- [ ] Create onboarding flow
-  - [ ] Welcome screen for new users
-  - [ ] Initial settings wizard
-  - [ ] Feature tour/tooltips
-  - [ ] Sample data for first-time experience
+- [x] Create onboarding flow
+  - [x] Welcome screen for new users
+  - [x] Initial settings wizard (6-step guided flow)
+  - [x] Feature tour with interactive highlights (6 dashboard stops)
+  - [x] Sample data mode during tour
+  - [x] Skip functionality with confirmation
+  - [x] Database-backed completion tracking per user
 - [x] Improve accessibility
   - [x] ARIA labels on interactive elements
   - [x] Semantic HTML throughout
@@ -428,6 +437,10 @@ wager/
   - [x] Screen reader support
   - [ ] Keyboard navigation testing
   - [ ] WCAG 2.1 AA compliance audit
+- [ ] Implement keyboard shortcuts (future enhancement)
+  - [ ] Week navigation (arrow keys, today shortcut)
+  - [ ] Quick add work (keyboard shortcut)
+  - [ ] Calendar shortcuts (n for new day, e for edit)
 
 ### Phase 16: Testing & Deployment
 

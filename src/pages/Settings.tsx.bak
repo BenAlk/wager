@@ -361,12 +361,12 @@ export default function Settings() {
 							<div>
 								<Label
 									htmlFor='drsRate'
-									style={{ color: 'var(--input-label)' }}
+									className='text-slate-200'
 								>
 									DRS/Missort Route Rate
 								</Label>
 								<div className='mt-2 relative'>
-									<span className='absolute left-4 top-1/2 -translate-y-1/2 font-mono z-10' style={{ color: 'var(--input-placeholder)' }}>
+									<span className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-mono z-10'>
 										£
 									</span>
 									<Controller
@@ -380,17 +380,17 @@ export default function Settings() {
 												min={0}
 												max={10000}
 												placeholder='100'
-												className='pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500' style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--input-text)' }}
+												className='bg-white/5 border-white/10 text-white pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
 											/>
 										)}
 									/>
 								</div>
 								{errors.drsRate && (
-									<p className='text-sm mt-1' style={{ color: 'var(--input-error-text)' }}>
+									<p className='text-red-400 text-sm mt-1'>
 										{errors.drsRate.message}
 									</p>
 								)}
-								<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
+								<p className='text-xs text-slate-500 mt-1'>
 									Default: £100 per day
 								</p>
 							</div>
@@ -399,12 +399,12 @@ export default function Settings() {
 							<div>
 								<Label
 									htmlFor='mileageRate'
-									style={{ color: 'var(--input-label)' }}
+									className='text-slate-200'
 								>
 									Mileage Rate (per mile)
 								</Label>
 								<div className='mt-2 relative'>
-									<span className='absolute left-4 top-1/2 -translate-y-1/2 font-mono z-10' style={{ color: 'var(--input-placeholder)' }}>
+									<span className='absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-mono z-10'>
 										£
 									</span>
 									<Controller
@@ -419,17 +419,17 @@ export default function Settings() {
 												min={0}
 												max={1}
 												placeholder='0.1988'
-												className='pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500' style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--input-text)' }}
+												className='bg-white/5 border-white/10 text-white pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
 											/>
 										)}
 									/>
 								</div>
 								{errors.mileageRate && (
-									<p className='text-sm mt-1' style={{ color: 'var(--input-error-text)' }}>
+									<p className='text-red-400 text-sm mt-1'>
 										{errors.mileageRate.message}
 									</p>
 								)}
-								<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
+								<p className='text-xs text-slate-500 mt-1'>
 									Default: £0.1988/mile (19.88p). Amazon adjusts this based on
 									fuel prices.
 								</p>
@@ -447,11 +447,11 @@ export default function Settings() {
 					</Card>
 
 					{/* Invoicing Service Card */}
-					<Card className='backdrop-blur-xl p-6' style={{ backgroundColor: 'var(--bg-surface-primary)', borderColor: 'var(--border-primary)' }}>
-						<h2 className='text-xl font-semibold mb-4' style={{ color: 'var(--text-primary)' }}>
+					<Card className='bg-white/10 backdrop-blur-xl border-white/20 p-6'>
+						<h2 className='text-xl font-semibold text-white mb-4'>
 							Invoicing & Accounting
 						</h2>
-						<p className='text-sm mb-6' style={{ color: 'var(--text-secondary)' }}>
+						<p className='text-sm text-slate-400 mb-6'>
 							Choose how you handle invoicing and tax returns. Costs are
 							deducted from your weekly standard pay.
 						</p>
@@ -459,7 +459,7 @@ export default function Settings() {
 						<div>
 							<Label
 								htmlFor='invoicingService'
-								style={{ color: 'var(--input-label)' }}
+								className='text-slate-200'
 							>
 								Service Provider
 							</Label>
@@ -473,26 +473,26 @@ export default function Settings() {
 									>
 										<SelectTrigger
 											id='invoicingService'
-											style={{ backgroundColor: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--input-text)' }} className='focus:ring-2 focus:ring-blue-500 mt-2 cursor-pointer'
+											className='bg-white/5 border-white/10 text-white focus:ring-2 focus:ring-blue-500 mt-2 cursor-pointer'
 										>
 											<SelectValue placeholder='Select invoicing service' />
 										</SelectTrigger>
-										<SelectContent style={{ backgroundColor: 'var(--modal-bg)', borderColor: 'var(--border-primary)' }} className=''>
+										<SelectContent className='bg-slate-800 border-white/10'>
 											<SelectItem
 												value='Self-Invoicing'
-												style={{ color: 'var(--text-primary)' }} className='cursor-pointer hover:opacity-80'
+												className='text-white cursor-pointer hover:bg-white/5'
 											>
 												Self-Invoicing (£0/week)
 											</SelectItem>
 											<SelectItem
 												value='Verso-Basic'
-												style={{ color: 'var(--text-primary)' }} className='cursor-pointer hover:opacity-80'
+												className='text-white cursor-pointer hover:bg-white/5'
 											>
 												Verso Basic (£10/week)
 											</SelectItem>
 											<SelectItem
 												value='Verso-Full'
-												style={{ color: 'var(--text-primary)' }} className='cursor-pointer hover:opacity-80'
+												className='text-white cursor-pointer hover:bg-white/5'
 											>
 												Verso Full (£30/week)
 											</SelectItem>
@@ -501,7 +501,7 @@ export default function Settings() {
 								)}
 							/>
 							{errors.invoicingService && (
-								<p className='text-sm mt-1' style={{ color: 'var(--input-error-text)' }}>
+								<p className='text-red-400 text-sm mt-1'>
 									{errors.invoicingService.message}
 								</p>
 							)}
@@ -511,16 +511,16 @@ export default function Settings() {
 								name='invoicingService'
 								control={control}
 								render={({ field }) => (
-									<div className='mt-4 p-4 rounded-lg' style={{ backgroundColor: 'var(--bg-surface-secondary)', borderColor: 'var(--border-secondary)' }}>
+									<div className='mt-4 p-4 bg-white/5 border border-white/10 rounded-lg'>
 										<div className='flex items-center justify-between mb-2'>
-											<span className='text-sm font-medium' style={{ color: 'var(--text-primary)' }}>
+											<span className='text-sm font-medium text-slate-200'>
 												{field.value.replace('-', ' ')}
 											</span>
 											<span className='text-sm font-mono font-semibold text-emerald-400'>
 												{getInvoicingCost(field.value)}/week
 											</span>
 										</div>
-										<p className='text-xs' style={{ color: 'var(--text-secondary)' }}>
+										<p className='text-xs text-slate-400'>
 											{getInvoicingDescription(field.value)}
 										</p>
 									</div>
@@ -530,16 +530,16 @@ export default function Settings() {
 					</Card>
 
 					{/* Onboarding Card */}
-					<Card className='backdrop-blur-xl p-6' style={{ backgroundColor: 'var(--bg-surface-primary)', borderColor: 'var(--border-primary)' }}>
-						<h2 className='text-xl font-semibold mb-4' style={{ color: 'var(--text-primary)' }}>Onboarding</h2>
-						<p className='text-sm mb-4' style={{ color: 'var(--text-secondary)' }}>
+					<Card className='bg-white/10 backdrop-blur-xl border-white/20 p-6'>
+						<h2 className='text-xl font-semibold text-white mb-4'>Onboarding</h2>
+						<p className='text-sm text-slate-400 mb-4'>
 							Restart the onboarding wizard to see the setup process again or take the sample data tour.
 						</p>
 						<Button
 							type='button'
 							onClick={() => setIsRestartOnboardingOpen(true)}
 							variant='outline'
-							style={{ backgroundColor: 'var(--button-secondary-bg)', borderColor: 'var(--button-secondary-border)', color: 'var(--button-secondary-text)' }} className='hover:opacity-90'
+							className='bg-white/5 border-white/10 text-white hover:bg-white/10'
 						>
 							Restart Onboarding
 						</Button>
@@ -551,7 +551,7 @@ export default function Settings() {
 							type='button'
 							variant='outline'
 							onClick={() => navigate('/dashboard')}
-							style={{ backgroundColor: 'var(--button-secondary-bg)', borderColor: 'var(--button-secondary-border)', color: 'var(--button-secondary-text)' }} className='hover:opacity-90'
+							className='bg-white/5 border-white/10 text-white hover:bg-white/10'
 						>
 							Cancel
 						</Button>
@@ -583,7 +583,7 @@ export default function Settings() {
 							<h3 className='text-lg font-medium text-red-300 mb-2'>
 								Delete Account
 							</h3>
-							<p className='text-sm mb-4' style={{ color: 'var(--text-secondary)' }}>
+							<p className='text-sm text-slate-400 mb-4'>
 								Permanently delete your account and all associated data. This action
 								cannot be undone.
 							</p>

@@ -24,6 +24,8 @@ export interface Database {
           display_name: string | null
           start_week: number
           start_year: number
+          onboarding_completed: boolean
+          onboarding_completed_at: string | null
           created_at: string
           updated_at: string
         }
@@ -32,6 +34,8 @@ export interface Database {
           display_name?: string | null
           start_week: number
           start_year: number
+          onboarding_completed?: boolean
+          onboarding_completed_at?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -40,6 +44,8 @@ export interface Database {
           display_name?: string | null
           start_week?: number
           start_year?: number
+          onboarding_completed?: boolean
+          onboarding_completed_at?: string | null
           created_at?: string
           updated_at?: string
         }

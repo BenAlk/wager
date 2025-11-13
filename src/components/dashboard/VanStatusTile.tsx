@@ -42,12 +42,9 @@ export function VanStatusTile() {
 	// Use activeVan if available, otherwise use lastVan
 	const displayVan = activeVan || lastVan
 
-	if (!displayVan) {
-		return null
-	}
-
-	const depositProgress = (totalDepositPaid / 50000) * 100
-	const isOffHired = !!displayVan.off_hire_date
+	const depositPaid = totalDepositPaid
+	const depositProgress = (depositPaid / 50000) * 100
+	const isOffHired = displayVan ? !!displayVan.off_hire_date : false
 
 	const handleOffHire = async () => {
 		if (!activeVan || !offHireDateInput) {
@@ -77,59 +74,69 @@ export function VanStatusTile() {
 
 	return (
 		<>
-			<DashboardTile title='Van Status' icon={Truck}>
-				<div className='flex flex-col h-full'>
-					<div className='space-y-4 flex-1'>
-						<div>
-							<div className='flex items-center justify-between mb-1'>
-								<p className='text-[var(--text-secondary)] text-sm'>
-									{isOffHired ? 'Last Van' : 'Current Van'}
+			<DashboardTile title='Van Status' icon={Truck} data-tour='van-status'>
+				{!displayVan ? (
+					<div className='flex flex-col items-center justify-center h-full py-8 text-center'>
+						<Truck className='w-12 h-12 text-[var(--text-tertiary)] mb-3 opacity-40' />
+						<p className='text-[var(--text-secondary)] text-sm mb-2'>No Van On Hire</p>
+						<p className='text-[var(--text-tertiary)] text-xs'>
+							Visit Van Management to add a van hire
+						</p>
+					</div>
+				) : (
+					<div className='flex flex-col h-full'>
+						<div className='space-y-4 flex-1'>
+							<div>
+								<div className='flex items-center justify-between mb-1'>
+									<p className='text-[var(--text-secondary)] text-sm'>
+										{isOffHired ? 'Last Van' : 'Current Van'}
+									</p>
+									{isOffHired && (
+										<span className='text-xs text-[var(--text-warning)] bg-[var(--bg-warning)] px-2 py-1 rounded'>
+											Off-Hired
+										</span>
+									)}
+								</div>
+								<p className='text-[var(--text-primary)] font-bold text-lg'>
+									{displayVan.registration}
 								</p>
-								{isOffHired && (
-									<span className='text-xs text-[var(--text-warning)] bg-[var(--bg-warning)] px-2 py-1 rounded'>
-										Off-Hired
-									</span>
+								<p className='text-[var(--text-secondary)] text-xs'>
+									{displayVan.van_type} - £{(displayVan.weekly_rate / 100).toFixed(0)}
+									/week
+								</p>
+								{isOffHired && displayVan.off_hire_date && (
+									<p className='text-[var(--text-tertiary)] text-xs mt-1'>
+										Off-hired: {new Date(displayVan.off_hire_date).toLocaleDateString()}
+									</p>
 								)}
 							</div>
-							<p className='text-[var(--text-primary)] font-bold text-lg'>
-								{displayVan.registration}
-							</p>
-							<p className='text-[var(--text-secondary)] text-xs'>
-								{displayVan.van_type} - £{(displayVan.weekly_rate / 100).toFixed(0)}
-								/week
-							</p>
-							{isOffHired && displayVan.off_hire_date && (
-								<p className='text-[var(--text-tertiary)] text-xs mt-1'>
-									Off-hired: {new Date(displayVan.off_hire_date).toLocaleDateString()}
-								</p>
-							)}
+
+							<div>
+								<div className='flex items-center justify-between mb-2'>
+									<p className='text-[var(--text-secondary)] text-sm'>Deposit Progress</p>
+									<p className='text-[var(--text-primary)] text-sm font-mono'>
+										£{(totalDepositPaid / 100).toFixed(2)} / £500
+									</p>
+								</div>
+								<div className='w-full bg-[var(--bg-surface-tertiary)] rounded-full h-2'>
+									<div
+										className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] h-2 rounded-full transition-all'
+										style={{ width: `${Math.min(depositProgress, 100)}%` }}
+									/>
+								</div>
+							</div>
 						</div>
 
-						<div>
-							<div className='flex items-center justify-between mb-2'>
-								<p className='text-[var(--text-secondary)] text-sm'>Deposit Progress</p>
-								<p className='text-[var(--text-primary)] text-sm font-mono'>
-									£{(totalDepositPaid / 100).toFixed(2)} / £500
-								</p>
-							</div>
-							<div className='w-full bg-[var(--bg-surface-tertiary)] rounded-full h-2'>
-								<div
-									className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] h-2 rounded-full transition-all'
-									style={{ width: `${Math.min(depositProgress, 100)}%` }}
-								/>
-							</div>
-						</div>
+						{!isOffHired && (
+							<Button
+								onClick={() => setShowOffHireModal(true)}
+								className='w-full h-10 mt-auto bg-gradient-to-r from-[var(--button-warning-from)] to-[var(--button-warning-to)] hover:from-[var(--button-warning-hover-from)] hover:to-[var(--button-warning-hover-to)] text-[var(--text-primary)]'
+							>
+								Off-Hire Van
+							</Button>
+						)}
 					</div>
-
-					{!isOffHired && (
-						<Button
-							onClick={() => setShowOffHireModal(true)}
-							className='w-full h-10 mt-auto bg-gradient-to-r from-[var(--button-warning-from)] to-[var(--button-warning-to)] hover:from-[var(--button-warning-hover-from)] hover:to-[var(--button-warning-hover-to)] text-[var(--text-primary)]'
-						>
-							Off-Hire Van
-						</Button>
-					)}
-				</div>
+				)}
 			</DashboardTile>
 
 			{/* Off-Hire Modal */}

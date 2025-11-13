@@ -71,6 +71,7 @@ export function MainLayout() {
 
 						{/* Right: Navigation */}
 						<nav aria-label='Main navigation' className='flex items-center gap-1 sm:gap-2'>
+							<ThemeToggle />
 							<Button
 								onClick={() => navigate('/dashboard')}
 								variant='outline'
@@ -131,7 +132,6 @@ export function MainLayout() {
 								<Settings className='w-4 h-4 md:mr-2' aria-hidden='true' />
 								<span className='hidden md:inline'>Settings</span>
 							</Button>
-							<ThemeToggle />
 							<Button
 								onClick={handleLogout}
 								variant='outline'

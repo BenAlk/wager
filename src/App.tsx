@@ -7,6 +7,8 @@ import { PageTransition } from '@/components/shared/PageTransition'
 import { LoadingScreen } from '@/components/shared/LoadingScreen'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { useThemeStore } from '@/store/themeStore'
+import { useOnboardingStore, useAuthStore } from '@/store'
+import { OnboardingModal, TourGuide, SampleDataBadge } from '@/components/onboarding'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
 import Calendar from '@/pages/Calendar'
@@ -107,17 +109,39 @@ function AnimatedRoutes() {
 
 function App() {
 	const { theme, setTheme } = useThemeStore()
+	const { userProfile } = useAuthStore()
+	const { startOnboarding, hasSkippedOnboarding } = useOnboardingStore()
 
 	// Initialize theme on mount
 	useEffect(() => {
 		setTheme(theme) // Ensures class is applied
 	}, [])
 
+	// Check if user needs onboarding
+	useEffect(() => {
+		// Use database as source of truth for onboarding status
+		// This ensures each user gets onboarding regardless of browser/localStorage state
+		if (userProfile) {
+			const dbCompleted = userProfile.onboarding_completed ?? false
+
+			// If database shows not completed AND user hasn't skipped, trigger onboarding
+			if (!dbCompleted && !hasSkippedOnboarding) {
+				// Small delay to let the dashboard load first
+				setTimeout(() => {
+					startOnboarding()
+				}, 500)
+			}
+		}
+	}, [userProfile, startOnboarding, hasSkippedOnboarding])
+
 	return (
 		<BrowserRouter>
 			<AuthProvider>
 				<AnimatedRoutes />
 				<Toaster />
+				<OnboardingModal />
+				<TourGuide />
+				<SampleDataBadge />
 			</AuthProvider>
 		</BrowserRouter>
 	)

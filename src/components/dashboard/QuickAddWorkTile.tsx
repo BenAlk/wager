@@ -179,6 +179,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 			<DashboardTile
 				title='Quick Add Work'
 				icon={Briefcase}
+				data-tour='quick-add-work'
 			>
 				<div className='space-y-4'>
 					<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
@@ -217,6 +218,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 		<DashboardTile
 			title='Quick Add Work'
 			icon={Briefcase}
+			data-tour='quick-add-work'
 		>
 			<form
 				onSubmit={handleSubmit(onSubmit)}

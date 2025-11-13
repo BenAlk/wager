@@ -131,10 +131,12 @@ export default function PaymentThisWeek({
 		return (
 			<div className='bg-[var(--bg-surface-primary)] backdrop-blur-sm border border-[var(--border-primary)] rounded-2xl p-6 mb-8'>
 				<div className='flex items-center gap-3 mb-4'>
-					<div className='w-10 h-10 bg-[var(--tile-icon-enabled-from)] rounded-lg flex items-center justify-center'>
+					<div className='w-10 h-10 bg-gradient-to-r from-[var(--tile-icon-enabled-from)] to-[var(--tile-icon-enabled-to)] rounded-lg flex items-center justify-center'>
 						<Banknote className='w-6 h-6 text-[var(--text-primary)]' />
 					</div>
-					<h3 className='text-xl font-bold text-[var(--text-primary)]'>Payment This Week</h3>
+					<h3 className='text-xl font-bold text-[var(--text-primary)]'>
+						Payment This Week
+					</h3>
 				</div>
 				<p className='text-[var(--text-secondary)] text-center py-4'>
 					No payment expected this week
@@ -285,7 +287,9 @@ export default function PaymentThisWeek({
 					<span
 						className={
 							'text-lg sm:text-4xl font-mono font-bold animate-pulse ' +
-							(totalPayment < 0 ? 'text-[var(--finance-negative)]' : 'text-[var(--finance-positive)]')
+							(totalPayment < 0
+								? 'text-[var(--finance-negative)]'
+								: 'text-[var(--finance-positive)]')
 						}
 					>
 						£{(totalPayment / 100).toFixed(2)}

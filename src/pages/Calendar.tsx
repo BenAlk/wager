@@ -235,27 +235,29 @@ export default function Calendar() {
 			{/* Main Content */}
 			<main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
 				{/* Week Navigation */}
-				<div className='mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4'>
-					<div className='flex items-center gap-3'>
+				<div className='mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4' data-tour='week-nav'>
+					<div className='flex items-center gap-3' data-tour='calendar-navigation'>
 						<Button
 							onClick={goToPreviousWeek}
 							variant='ghost'
 							size='icon'
-							className='text-white hover:bg-white/10 cursor-pointer'
+							className='hover:bg-white/10 cursor-pointer'
+							style={{ color: 'var(--text-primary)' }}
 						>
 							<ChevronLeft className='w-5 h-5' />
 						</Button>
 						<div className='text-center min-w-[280px]'>
-							<h2 className='text-2xl font-bold text-white'>
+							<h2 className='text-2xl font-bold' style={{ color: 'var(--text-primary)' }}>
 								Week {currentWeek.week}
 							</h2>
-							<p className='text-sm text-slate-400'>{dateRangeText}</p>
+							<p className='text-sm' style={{ color: 'var(--text-secondary)' }}>{dateRangeText}</p>
 						</div>
 						<Button
 							onClick={goToNextWeek}
 							variant='ghost'
 							size='icon'
-							className='text-white hover:bg-white/10 cursor-pointer'
+							className='hover:bg-white/10 cursor-pointer'
+							style={{ color: 'var(--text-primary)' }}
 						>
 							<ChevronRight className='w-5 h-5' />
 						</Button>
@@ -273,7 +275,7 @@ export default function Calendar() {
 						</Button> */}
 						<Button
 							onClick={goToToday}
-							className='bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white cursor-pointer'
+							className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--button-primary-text)] cursor-pointer'
 						>
 							Today
 						</Button>
@@ -282,31 +284,36 @@ export default function Calendar() {
 
 				{/* Calendar Grid */}
 				<div className='grid grid-cols-1 lg:grid-cols-7 gap-4 mb-8'>
-					{weekDates.map((date) => (
-						<DayCell
-							key={date.toISOString()}
-							date={date}
-							weekData={currentWeekData}
-							onEdit={() => setEditingDate(date)}
-							loading={loading}
-						/>
+					{weekDates.map((date, index) => (
+						<div key={date.toISOString()} data-tour={index === 0 ? 'day-cell' : undefined}>
+							<DayCell
+								date={date}
+								weekData={currentWeekData}
+								onEdit={() => setEditingDate(date)}
+								loading={loading}
+							/>
+						</div>
 					))}
 				</div>
 
 				{/* Week Summary */}
-				<WeekSummary
-					weekData={currentWeekData}
-					weekNumber={currentWeek.week}
-					year={currentWeek.year}
-				/>
+				<div data-tour='week-summary'>
+					<WeekSummary
+						weekData={currentWeekData}
+						weekNumber={currentWeek.week}
+						year={currentWeek.year}
+					/>
+				</div>
 
 				{/* Payment This Week */}
-				<PaymentThisWeek
-					weekNumber={currentWeek.week}
-					year={currentWeek.year}
-					weekNMinus2Data={weekNMinus2Data}
-					weekNMinus6Data={weekNMinus6Data}
-				/>
+				<div data-tour='payment-this-week'>
+					<PaymentThisWeek
+						weekNumber={currentWeek.week}
+						year={currentWeek.year}
+						weekNMinus2Data={weekNMinus2Data}
+						weekNMinus6Data={weekNMinus6Data}
+					/>
+				</div>
 			</main>
 
 			{/* Day Edit Modal */}

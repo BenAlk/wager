@@ -9,6 +9,7 @@ interface DashboardTileProps {
 	children: ReactNode
 	className?: string
 	disabled?: boolean
+	'data-tour'?: string
 }
 
 export function DashboardTile({
@@ -17,9 +18,11 @@ export function DashboardTile({
 	children,
 	className,
 	disabled = false,
+	'data-tour': dataTour,
 }: DashboardTileProps) {
 	return (
 		<Card
+			data-tour={dataTour}
 			className={cn(
 				'bg-[var(--tile-bg)] backdrop-blur-xl border-[var(--tile-border)] p-6 transition-all h-full min-h-[280px] flex flex-col',
 				disabled && 'opacity-50 cursor-not-allowed',

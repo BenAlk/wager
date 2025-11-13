@@ -191,6 +191,8 @@ export default function VanManagement() {
 	return (
 		<div>
 			<div className='container mx-auto px-4 py-8 max-w-6xl'>
+				{/* Top Section: Add Van & Deposit Tracking */}
+				<div data-tour='van-management-top'>
 				{/* Actions Bar */}
 				<div className='flex items-center justify-end mb-8'>
 					<div className='flex gap-2'>
@@ -280,7 +282,11 @@ export default function VanManagement() {
 						</div>
 					</div>
 				</Card>
+				</div>
+				{/* End Top Section */}
 
+				{/* Bottom Section: Van History */}
+				<div data-tour='van-management-bottom'>
 				{/* Active Van Alert */}
 				{activeVan && (
 					<Card className='bg-[var(--bg-info)] backdrop-blur-xl border-[var(--border-info)] p-4 mb-6'>
@@ -335,6 +341,8 @@ export default function VanManagement() {
 						</div>
 					)}
 				</div>
+				</div>
+				{/* End Bottom Section */}
 			</div>
 
 			{/* Van Hire Modal */}
