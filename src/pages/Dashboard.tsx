@@ -41,6 +41,7 @@ export default function Dashboard() {
 	return (
 		<div className='p-4 md:p-8'>
 			<div className='max-w-7xl mx-auto'>
+				<h1 className='sr-only'>Dashboard</h1>
 				{/* Dashboard Grid */}
 				<main aria-label='Dashboard tiles' className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 					{/* Quick Add Work - Mobile: 1st, Desktop: Top-left */}

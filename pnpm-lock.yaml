@@ -99,6 +99,9 @@ importers:
         specifier: ^5.0.8
         version: 5.0.8(@types/react@19.2.2)(react@19.2.0)
     devDependencies:
+      '@axe-core/react':
+        specifier: ^4.11.0
+        version: 4.11.0
       '@eslint/js':
         specifier: ^9.36.0
         version: 9.37.0
@@ -147,6 +150,9 @@ packages:
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
+
+  '@axe-core/react@4.11.0':
+    resolution: {integrity: sha512-ko5hYRmdLzbsxagsb0u3GD8IqtZa+vUJZ4K4+z8qjsHGrHBNBps5Sy0EIfSL8whzyIKBQ3xYa1reK1QenIAkyw==}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -1267,6 +1273,10 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
+  axe-core@4.11.0:
+    resolution: {integrity: sha512-ilYanEU8vxxBexpJd8cWM4ElSQq4QctCLKih0TSfjIfCQTeyH/6zVrmIJfLPrKTKJRbiG+cfnZbQIjAlJmF1jQ==}
+    engines: {node: '>=4'}
+
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
@@ -1904,6 +1914,9 @@ packages:
     resolution: {integrity: sha512-tmbWg6W31tQLeB5cdIBOicJDJRR2KzXsV7uSK9iNfLWQ5bIZfxuPEHp7M8wiHyHnn0DD1i7w3Zmin0FtkrwoCQ==}
     engines: {node: '>=0.10.0'}
 
+  requestidlecallback@0.3.0:
+    resolution: {integrity: sha512-TWHFkT7S9p7IxLC5A1hYmAYQx2Eb9w1skrXmQ+dS1URyvR8tenMLl4lHbqEOUnpEYxNKpkVMXUgknVpBZWXXfQ==}
+
   resolve-from@4.0.0:
     resolution: {integrity: sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==}
     engines: {node: '>=4'}
@@ -2213,6 +2226,11 @@ packages:
 snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
+
+  '@axe-core/react@4.11.0':
+    dependencies:
+      axe-core: 4.11.0
+      requestidlecallback: 0.3.0
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -3313,6 +3331,8 @@ snapshots:
       postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
+  axe-core@4.11.0: {}
+
   balanced-match@1.0.2: {}
 
   baseline-browser-mapping@2.8.14: {}
@@ -3874,6 +3894,8 @@ snapshots:
       '@types/react': 19.2.2
 
   react@19.2.0: {}
+
+  requestidlecallback@0.3.0: {}
 
   resolve-from@4.0.0: {}
 

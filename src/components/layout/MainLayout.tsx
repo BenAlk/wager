@@ -43,6 +43,13 @@ export function MainLayout() {
 
 	return (
 		<div className='min-h-screen bg-gradient-to-br from-[var(--bg-page-from)] via-[var(--bg-page-via)] to-[var(--bg-page-to)]'>
+			{/* Skip to main content link for keyboard navigation */}
+			<a
+				href='#main-content'
+				className='sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--bg-surface-primary)] focus:text-[var(--text-primary)] focus:rounded-md focus:border focus:border-[var(--border-primary)] focus:shadow-lg'
+			>
+				Skip to main content
+			</a>
 			{/* Header */}
 			<header className='border-b border-[var(--nav-border)] bg-[var(--nav-bg)] backdrop-blur-xl'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
@@ -148,7 +155,9 @@ export function MainLayout() {
 			</header>
 
 			{/* Main Content - Outlet for nested routes */}
-			<Outlet />
+			<div id='main-content'>
+				<Outlet />
+			</div>
 		</div>
 	)
 }

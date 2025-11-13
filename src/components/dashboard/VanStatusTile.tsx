@@ -150,8 +150,9 @@ export function VanStatusTile() {
 								size='icon'
 								onClick={() => setShowOffHireModal(false)}
 								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
+								aria-label='Close van details'
 							>
-								<X className='w-5 h-5' />
+								<X className='w-5 h-5' aria-hidden='true' />
 							</Button>
 						</div>
 

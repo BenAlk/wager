@@ -234,6 +234,7 @@ export default function Calendar() {
 		<div>
 			{/* Main Content */}
 			<main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+				<h1 className='sr-only'>Calendar - Week {currentWeek.week}</h1>
 				{/* Week Navigation */}
 				<div className='mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4' data-tour='week-nav'>
 					<div className='flex items-center gap-3' data-tour='calendar-navigation'>
@@ -243,8 +244,9 @@ export default function Calendar() {
 							size='icon'
 							className='hover:bg-white/10 cursor-pointer'
 							style={{ color: 'var(--text-primary)' }}
+							aria-label='Go to previous week'
 						>
-							<ChevronLeft className='w-5 h-5' />
+							<ChevronLeft className='w-5 h-5' aria-hidden='true' />
 						</Button>
 						<div className='text-center min-w-[280px]'>
 							<h2 className='text-2xl font-bold' style={{ color: 'var(--text-primary)' }}>
@@ -258,8 +260,9 @@ export default function Calendar() {
 							size='icon'
 							className='hover:bg-white/10 cursor-pointer'
 							style={{ color: 'var(--text-primary)' }}
+							aria-label='Go to next week'
 						>
-							<ChevronRight className='w-5 h-5' />
+							<ChevronRight className='w-5 h-5' aria-hidden='true' />
 						</Button>
 					</div>
 					<div className='flex gap-2'>

@@ -191,6 +191,7 @@ export default function VanManagement() {
 	return (
 		<div>
 			<div className='container mx-auto px-4 py-8 max-w-6xl'>
+				<h1 className='sr-only'>Van Management</h1>
 				{/* Top Section: Add Van & Deposit Tracking */}
 				<div data-tour='van-management-top'>
 				{/* Actions Bar */}

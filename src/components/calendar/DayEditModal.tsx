@@ -251,8 +251,9 @@ export default function DayEditModal({
 						variant='ghost'
 						size='icon'
 						className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
+						aria-label='Close work day form'
 					>
-						<X className='w-5 h-5' />
+						<X className='w-5 h-5' aria-hidden='true' />
 					</Button>
 				</div>
 

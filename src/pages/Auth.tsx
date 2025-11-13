@@ -147,6 +147,7 @@ export default function Auth() {
 								id='displayName'
 								type='text'
 								placeholder='Ben'
+								autoComplete='name'
 								{...registerSignUp('displayName')}
 								className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
 									focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
@@ -170,6 +171,7 @@ export default function Auth() {
 							id='email'
 							type='email'
 							placeholder='you@example.com'
+							autoComplete='email'
 							{...(isLogin ? registerLogin('email') : registerSignUp('email'))}
 							className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
 								focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
@@ -192,6 +194,7 @@ export default function Auth() {
 							id='password'
 							type='password'
 							placeholder='••••••••'
+							autoComplete={isLogin ? 'current-password' : 'new-password'}
 							{...(isLogin
 								? registerLogin('password')
 								: registerSignUp('password'))}

@@ -131,9 +131,12 @@ export function PaymentTile() {
 						<div className='text-[var(--text-secondary)]'>Loading...</div>
 					</div>
 				) : (
-					<div
-						className={`text-center py-4 ${hasPaymentData ? 'cursor-pointer hover:bg-[var(--bg-hover)] rounded-lg transition-colors' : ''}`}
+					<button
+						type='button'
+						className={`w-full text-center py-4 bg-transparent border-0 font-inherit ${hasPaymentData ? 'cursor-pointer hover:bg-[var(--bg-hover)] rounded-lg transition-colors' : 'cursor-default'}`}
 						onClick={() => hasPaymentData && setShowModal(true)}
+						disabled={!hasPaymentData}
+						aria-label={hasPaymentData ? 'View payment breakdown' : undefined}
 					>
 						<div className='text-sm text-[var(--text-secondary)] mb-2'>
 							Expected in your account
@@ -154,7 +157,7 @@ export function PaymentTile() {
 								Tap for breakdown
 							</div>
 						)}
-					</div>
+					</button>
 				)}
 			</DashboardTile>
 
@@ -176,8 +179,9 @@ export function PaymentTile() {
 								size='icon'
 								onClick={() => setShowModal(false)}
 								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
+								aria-label='Close payment breakdown'
 							>
-								<X className='w-5 h-5' />
+								<X className='w-5 h-5' aria-hidden='true' />
 							</Button>
 						</div>
 

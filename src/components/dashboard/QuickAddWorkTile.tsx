@@ -195,8 +195,9 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								size='icon'
 								onClick={() => setIsEditing(true)}
 								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8'
+								aria-label="Edit today's work"
 							>
-								<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' />
+								<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' aria-hidden='true' />
 							</Button>
 						</div>
 						<div>
