@@ -26,9 +26,6 @@ interface OnboardingState {
   hasCompletedOnboarding: boolean
   hasSkippedOnboarding: boolean // User clicked "I'll Set Up Later"
 
-  // Sample data mode (for guided tour)
-  isSampleDataMode: boolean
-
   // Guided tour progress
   isGuidedTourActive: boolean
   currentTourStep: TourStep | null
@@ -45,10 +42,6 @@ interface OnboardingState {
   setStep: (step: number) => void
   completeOnboarding: () => void
   skipOnboarding: () => void
-
-  // Sample data actions
-  enableSampleDataMode: () => void
-  disableSampleDataMode: () => void
 
   // Guided tour actions
   startGuidedTour: () => void
@@ -84,7 +77,7 @@ const TOUR_STEPS: TourStep[] = [
 /**
  * Onboarding Store
  *
- * Manages the onboarding wizard flow and guided tour with sample data.
+ * Manages the onboarding wizard flow and guided tour.
  * Persists completion state to localStorage to prevent showing again.
  */
 export const useOnboardingStore = create<OnboardingState>()(
@@ -96,7 +89,6 @@ export const useOnboardingStore = create<OnboardingState>()(
         isOnboardingOpen: false,
         hasCompletedOnboarding: false,
         hasSkippedOnboarding: false,
-        isSampleDataMode: false,
         isGuidedTourActive: false,
         currentTourStep: null,
         tourStepIndex: 0,
@@ -174,29 +166,6 @@ export const useOnboardingStore = create<OnboardingState>()(
           )
         },
 
-        // Enable sample data mode
-        enableSampleDataMode: () => {
-          set(
-            { isSampleDataMode: true },
-            false,
-            'onboarding/enableSampleData'
-          )
-        },
-
-        // Disable sample data mode
-        disableSampleDataMode: () => {
-          set(
-            {
-              isSampleDataMode: false,
-              isGuidedTourActive: false,
-              currentTourStep: null,
-              tourStepIndex: 0,
-            },
-            false,
-            'onboarding/disableSampleData'
-          )
-        },
-
         // Start guided tour
         startGuidedTour: () => {
           set(
@@ -204,7 +173,6 @@ export const useOnboardingStore = create<OnboardingState>()(
               isGuidedTourActive: true,
               currentTourStep: TOUR_STEPS[0],
               tourStepIndex: 0,
-              isSampleDataMode: true,
             },
             false,
             'onboarding/startTour'
@@ -260,7 +228,6 @@ export const useOnboardingStore = create<OnboardingState>()(
               isGuidedTourActive: false,
               currentTourStep: null,
               tourStepIndex: 0,
-              isSampleDataMode: false,
             },
             false,
             'onboarding/completeTour'
@@ -274,7 +241,6 @@ export const useOnboardingStore = create<OnboardingState>()(
               isGuidedTourActive: false,
               currentTourStep: null,
               tourStepIndex: 0,
-              isSampleDataMode: false,
             },
             false,
             'onboarding/exitTour'
@@ -307,7 +273,6 @@ export const useOnboardingStore = create<OnboardingState>()(
               isOnboardingOpen: false,
               hasCompletedOnboarding: false,
               hasSkippedOnboarding: false,
-              isSampleDataMode: false,
               isGuidedTourActive: false,
               currentTourStep: null,
               tourStepIndex: 0,
@@ -337,9 +302,6 @@ export const useOnboardingStore = create<OnboardingState>()(
  */
 export const selectShouldShowOnboarding = (state: OnboardingState) =>
   !state.hasCompletedOnboarding && !state.hasSkippedOnboarding
-
-export const selectIsInTour = (state: OnboardingState) =>
-  state.isGuidedTourActive && state.isSampleDataMode
 
 export const selectTourProgress = (state: OnboardingState) => ({
   current: state.tourStepIndex + 1,

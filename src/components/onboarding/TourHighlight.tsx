@@ -31,69 +31,85 @@ export function TourHighlight({
   totalSteps,
 }: TourHighlightProps) {
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null)
-  const [messagePosition, setMessagePosition] = useState<'top' | 'bottom' | 'left' | 'right'>('bottom')
+  const [messageAtTop, setMessageAtTop] = useState(false)
   const messageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Find target element and get its position
+    let retryTimeoutId: NodeJS.Timeout
+    let initialDelayTimeoutId: ReturnType<typeof setTimeout>
+    let recalcDelayTimeoutId: ReturnType<typeof setTimeout>
+
+    // Find target element and highlight it
     const findAndHighlightTarget = () => {
       const target = document.querySelector(targetSelector)
       if (!target) {
-        // Retry after a short delay if target not found (page may still be loading)
-        setTimeout(findAndHighlightTarget, 100)
+        // Retry after a short delay if target not found
+        retryTimeoutId = setTimeout(findAndHighlightTarget, 100)
         return
       }
 
-      // Determine best position for message box
+      // Scroll to top of page first to ensure consistent positioning
+      window.scrollTo({ top: 0, behavior: 'auto' })
+
+      // Then scroll element into view
+      target.scrollIntoView({ behavior: 'auto', block: 'center' })
+
+      // Calculate position immediately after instant scroll
+      const rect = target.getBoundingClientRect()
+      setTargetRect(rect)
+
+      // Determine if message should be at top or bottom
+      // If element is in bottom half of screen, show message at top
       const viewportHeight = window.innerHeight
-      const viewportWidth = window.innerWidth
-      const isMobile = viewportWidth < 768 // md breakpoint
-      const messageHeight = isMobile ? 180 : 200 // Compact on mobile
-      const messageWidth = isMobile ? viewportWidth - 32 : 400 // Full width on mobile with padding
+      const elementMiddle = rect.top + rect.height / 2
+      setMessageAtTop(elementMiddle > viewportHeight / 2)
 
-      // Scroll target into view first
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      // Recalculate after a brief moment to catch any layout shifts
+      // This fixes issues when elements settle after initial render (animations, etc.)
+      recalcDelayTimeoutId = setTimeout(() => {
+        const updatedRect = target.getBoundingClientRect()
+        setTargetRect(updatedRect)
 
-      // Wait for scroll animation to complete
-      // Smooth scrolling can take up to 1000ms for far elements
-      // We use a longer delay to ensure accuracy
-      setTimeout(() => {
+        const updatedMiddle = updatedRect.top + updatedRect.height / 2
+        setMessageAtTop(updatedMiddle > viewportHeight / 2)
+      }, 300)
+    }
+
+    // Add a small initial delay to let the page render after route change
+    // This is especially important on mobile when navigating between routes
+    // Extended delay for dashboard animations to complete
+    initialDelayTimeoutId = setTimeout(() => {
+      findAndHighlightTarget()
+    }, 400)
+
+    // Re-calculate on resize
+    const handleResize = () => {
+      const target = document.querySelector(targetSelector)
+      if (target) {
         const rect = target.getBoundingClientRect()
         setTargetRect(rect)
 
-        // On mobile, always use top or bottom for compact layout
-        if (isMobile) {
-          // Check if element is in top half or bottom half
-          const elementMiddle = rect.top + rect.height / 2
-          if (elementMiddle < viewportHeight / 2) {
-            // Element in top half, show message at bottom
-            setMessagePosition('bottom')
-          } else {
-            // Element in bottom half, show message at top
-            setMessagePosition('top')
-          }
-        } else {
-          // Desktop: Prefer bottom, but check if there's space
-          if (rect.bottom + messageHeight + 20 < viewportHeight) {
-            setMessagePosition('bottom')
-          } else if (rect.top - messageHeight - 20 > 0) {
-            setMessagePosition('top')
-          } else if (rect.right + messageWidth + 20 < viewportWidth) {
-            setMessagePosition('right')
-          } else if (rect.left - messageWidth - 20 > 0) {
-            setMessagePosition('left')
-          } else {
-            setMessagePosition('bottom') // Default fallback
-          }
-        }
-      }, 1000)
+        // Update message position based on element location
+        const viewportHeight = window.innerHeight
+        const elementMiddle = rect.top + rect.height / 2
+        setMessageAtTop(elementMiddle > viewportHeight / 2)
+      }
     }
 
-    findAndHighlightTarget()
+    window.addEventListener('resize', handleResize)
 
-    // Re-calculate on resize
-    window.addEventListener('resize', findAndHighlightTarget)
-    return () => window.removeEventListener('resize', findAndHighlightTarget)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      if (retryTimeoutId) {
+        clearTimeout(retryTimeoutId)
+      }
+      if (initialDelayTimeoutId) {
+        clearTimeout(initialDelayTimeoutId)
+      }
+      if (recalcDelayTimeoutId) {
+        clearTimeout(recalcDelayTimeoutId)
+      }
+    }
   }, [targetSelector])
 
   if (!targetRect) return null
@@ -101,7 +117,7 @@ export function TourHighlight({
   // Calculate highlight padding based on target
   const getHighlightPadding = () => {
     // Week navigation needs less padding (it's small buttons)
-    if (targetSelector.includes('calendar-navigation')) {
+    if (targetSelector.includes('week-nav')) {
       return { top: 4, right: 4, bottom: 4, left: 4 }
     }
     // Week summary needs more padding to capture the whole card
@@ -113,61 +129,6 @@ export function TourHighlight({
   }
 
   const highlightPadding = getHighlightPadding()
-
-  // Calculate message box position
-  const getMessageStyle = (): React.CSSProperties => {
-    const isMobile = window.innerWidth < 768
-    const padding = isMobile ? 16 : 20
-
-    switch (messagePosition) {
-      case 'bottom':
-        if (isMobile) {
-          return {
-            position: 'fixed',
-            bottom: padding,
-            left: padding,
-            right: padding,
-            maxWidth: 'none',
-          }
-        }
-        return {
-          position: 'fixed',
-          top: targetRect.bottom + padding,
-          left: Math.max(padding, Math.min(targetRect.left, window.innerWidth - 400 - padding)),
-          maxWidth: '400px',
-        }
-      case 'top':
-        if (isMobile) {
-          return {
-            position: 'fixed',
-            top: padding,
-            left: padding,
-            right: padding,
-            maxWidth: 'none',
-          }
-        }
-        return {
-          position: 'fixed',
-          bottom: window.innerHeight - targetRect.top + padding,
-          left: Math.max(padding, Math.min(targetRect.left, window.innerWidth - 400 - padding)),
-          maxWidth: '400px',
-        }
-      case 'right':
-        return {
-          position: 'fixed',
-          top: Math.max(padding, targetRect.top),
-          left: targetRect.right + padding,
-          maxWidth: '400px',
-        }
-      case 'left':
-        return {
-          position: 'fixed',
-          top: Math.max(padding, targetRect.top),
-          right: window.innerWidth - targetRect.left + padding,
-          maxWidth: '400px',
-        }
-    }
-  }
 
   return (
 		<AnimatePresence>
@@ -220,15 +181,20 @@ export function TourHighlight({
 					}}
 				/>
 
-				{/* Message box */}
+				{/* Message box - Fixed position (top or bottom based on element location) */}
 				<motion.div
 					ref={messageRef}
-					initial={{ opacity: 0, y: messagePosition === 'bottom' ? -20 : 20 }}
+					initial={{ opacity: 0, y: messageAtTop ? -20 : 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					exit={{ opacity: 0 }}
 					className='pointer-events-auto border-2 border-blue-500/50 rounded-xl shadow-2xl p-4 md:p-6'
 					style={{
-						...getMessageStyle(),
+						position: 'fixed',
+						...(messageAtTop ? { top: '20px' } : { bottom: '20px' }),
+						left: '16px',
+						right: '16px',
+						maxWidth: '500px',
+						margin: '0 auto',
 						zIndex: 100,
 						backgroundColor: 'var(--modal-bg)',
 					}}

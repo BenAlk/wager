@@ -8,7 +8,7 @@ import { LoadingScreen } from '@/components/shared/LoadingScreen'
 import { MainLayout } from '@/components/layout/MainLayout'
 import { useThemeStore } from '@/store/themeStore'
 import { useOnboardingStore, useAuthStore } from '@/store'
-import { OnboardingModal, TourGuide, SampleDataBadge } from '@/components/onboarding'
+import { OnboardingModal, TourGuide } from '@/components/onboarding'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
 import Calendar from '@/pages/Calendar'
@@ -141,7 +141,6 @@ function App() {
 				<Toaster />
 				<OnboardingModal />
 				<TourGuide />
-				<SampleDataBadge />
 			</AuthProvider>
 		</BrowserRouter>
 	)

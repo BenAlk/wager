@@ -118,11 +118,7 @@ export function OnboardingModal() {
       setWantsSampleDataTour(true)
       completeOnboarding()
 
-      toast.success('Sample data loaded for tour!')
-
       // Start guided tour after modal exit animation (300ms delay)
-      // The startGuidedTour() function automatically enables isSampleDataMode
-      // which makes useSampleOrRealData() hook return SAMPLE_DATA
       setTimeout(() => {
         startGuidedTour()
       }, 300)

@@ -235,8 +235,6 @@ export default function Settings() {
 			const { startGuidedTour } = useOnboardingStore.getState()
 			startGuidedTour()
 		}, 300)
-
-		toast.success('Starting guided tour with sample data')
 	}
 
 	/**
