@@ -59,7 +59,7 @@ export default function Settings() {
 	const { user } = useAuth()
 	const { settings, isLoading, isSaving, setSettings, setSaving } =
 		useSettingsStore()
-	const { resetOnboarding, startOnboarding } = useOnboardingStore()
+	const { resetOnboarding } = useOnboardingStore()
 
 	const [loadingSettings, setLoadingSettings] = useState(true)
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
