@@ -42,7 +42,6 @@ export { useThemeStore } from './themeStore'
 export {
 	useOnboardingStore,
 	selectShouldShowOnboarding,
-	selectIsInTour,
 	selectTourProgress,
 } from './onboardingStore'
 export type { TourStep } from './onboardingStore'
