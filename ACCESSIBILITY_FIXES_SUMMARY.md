@@ -3,7 +3,7 @@
 **WCAG 2.1 AA Compliance Improvements**
 
 ---
-
+of
 ## Overview
 
 All critical and high-priority accessibility issues have been successfully implemented and tested. The application now meets approximately **90-95% WCAG 2.1 AA compliance** (up from ~65%).

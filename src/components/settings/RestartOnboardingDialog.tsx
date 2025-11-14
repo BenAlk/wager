@@ -65,7 +65,7 @@ export function RestartOnboardingDialog({
                   Tour Only
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Keep your data and just view the guided tour with sample data. Your real data won't be affected.
+                  Keep your data and just view the interactive dashboard tour. Your real data won't be affected.
                 </p>
               </div>
             </div>

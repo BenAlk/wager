@@ -77,14 +77,14 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
         </div>
       </div>
 
-      {/* Sample Data Option */}
+      {/* Interactive Tour Option */}
       <div className="p-4 bg-gradient-to-r from-blue-500/10 to-emerald-500/10 border border-blue-500/20 rounded-lg space-y-3">
         <div className="flex items-start gap-3">
           <Eye className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <h3 className="font-semibold text-foreground text-sm">Want to see how it works first?</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Take a quick guided tour with sample data to explore all features
+              Take a quick guided tour of the dashboard to explore all features
             </p>
           </div>
         </div>
@@ -94,7 +94,7 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
           className="w-full border-blue-500/30 hover:border-blue-500 hover:bg-blue-500/10"
         >
           <Eye className="w-4 h-4 mr-2" />
-          View Sample Data Tour
+          Take Interactive Tour
         </Button>
       </div>
 

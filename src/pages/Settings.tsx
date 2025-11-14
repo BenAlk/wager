@@ -531,7 +531,7 @@ export default function Settings() {
 					<Card className='backdrop-blur-xl p-6' style={{ backgroundColor: 'var(--bg-surface-primary)', borderColor: 'var(--border-primary)' }}>
 						<h2 className='text-xl font-semibold mb-4' style={{ color: 'var(--text-primary)' }}>Onboarding</h2>
 						<p className='text-sm mb-4' style={{ color: 'var(--text-secondary)' }}>
-							Restart the onboarding wizard to see the setup process again or take the sample data tour.
+							Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour.
 						</p>
 						<Button
 							type='button'
