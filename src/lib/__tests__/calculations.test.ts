@@ -41,7 +41,6 @@ import {
 	calculateVanProRata,
 	calculateDepositPayment,
 	calculateWeeklyVanCost,
-	calculateWeeklyVanCosts,
 
 	// Invoicing
 	calculateInvoicingCost,

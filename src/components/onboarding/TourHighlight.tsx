@@ -35,7 +35,7 @@ export function TourHighlight({
   const messageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let retryTimeoutId: NodeJS.Timeout
+    let retryTimeoutId: ReturnType<typeof setTimeout>
     let initialDelayTimeoutId: ReturnType<typeof setTimeout>
     let recalcDelayTimeoutId: ReturnType<typeof setTimeout>
 
