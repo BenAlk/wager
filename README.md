@@ -482,12 +482,8 @@ wager/
   - [x] All 5 tables have RLS enabled (users, user_settings, weeks, work_days, van_hires)
   - [x] Delete account SECURITY DEFINER function verified secure
   - [x] Documentation: [RLS_ISOLATION_TEST_PLAN.md](RLS_ISOLATION_TEST_PLAN.md), [RLS_TESTING_SETUP.md](RLS_TESTING_SETUP.md)
-- [ ] Cross-browser testing
-- [ ] Mobile device testing
 - [x] Deploy to Netlify (production)
 - [x] WCAG 2.1 AA accessibility audit (90-95% compliant)
-- [ ] Manual accessibility testing (screen reader, keyboard-only)
-- [ ] Color contrast verification (both themes)
 - [ ] Beta testing with team
 
 ## Testing
@@ -497,6 +493,7 @@ wager/
 **Vitest 4.0.8** + **React Testing Library** + **happy-dom**
 
 **Test Coverage: 92/92 tests passing (100% success rate)**
+
 - 52 calculation tests
 - 40 date system tests
 - 26 RLS isolation tests (written, verified via production)
@@ -512,16 +509,18 @@ pnpm test -- --watch             # Watch mode for development
 
 ### Test Suites
 
-#### 1. Calculation Tests (52 tests) - [src/lib/__tests__/calculations.test.ts](src/lib/__tests__/calculations.test.ts)
+#### 1. Calculation Tests (52 tests) - [src/lib/**tests**/calculations.test.ts](src/lib/__tests__/calculations.test.ts)
 
 Complete coverage of all pay calculation logic:
 
 **Helper Functions (5 tests)**
+
 - Currency conversion (pence ↔ pounds with fractional rounding)
 - Currency formatting (£160.00 display)
 - Mileage formatting (100.00 mi display)
 
 **Daily Calculations (9 tests)**
+
 - Daily pay (Normal £160, DRS £100)
 - Daily sweeps (stops given/taken at £1 per stop)
 - Daily mileage pay (19.88p per mile)
@@ -529,6 +528,7 @@ Complete coverage of all pay calculation logic:
 - Daily totals (base + sweeps + mileage)
 
 **Weekly Calculations (6 tests)**
+
 - Weekly base pay aggregation
 - 6-day bonus (flat £30 for exactly 6 days)
 - Weekly sweeps aggregation
@@ -536,6 +536,7 @@ Complete coverage of all pay calculation logic:
 - Weekly mileage discrepancy tracking
 
 **Performance Bonus (6 tests)**
+
 - Daily bonus rate calculation
 - Fantastic+ (both): £16/day
 - Mixed Fantastic/Fantastic+: £8/day
@@ -543,17 +544,20 @@ Complete coverage of all pay calculation logic:
 - Weekly bonus (rate × days worked)
 
 **Van Calculations (7 tests)**
+
 - Pro-rata cost (weekly_rate / 7 × days)
 - Deposit progression (£25 weeks 1-2, £50 after)
 - £500 deposit maximum
 - Weekly van cost with deposit
 
 **Invoicing Costs (3 tests)**
+
 - Self-Invoicing: £0/week
 - Verso Basic: £10/week
 - Verso Full: £30/week
 
 **Validation Functions (7 tests)**
+
 - 6-day bonus eligibility
 - 7-day work detection (illegal)
 - Sweeps limit (max 200/day)
@@ -561,34 +565,39 @@ Complete coverage of all pay calculation logic:
 - Weekly validation
 
 **Integration Tests (2 tests)**
+
 - Complete weekly pay breakdown (6-day week)
 - Mixed route types without bonus
 
-#### 2. Date System Tests (40 tests) - [src/lib/__tests__/dates.test.ts](src/lib/__tests__/dates.test.ts)
+#### 2. Date System Tests (40 tests) - [src/lib/**tests**/dates.test.ts](src/lib/__tests__/dates.test.ts)
 
 Complete coverage of custom week calculation system:
+
 - Sunday-Saturday week structure
 - Week 1 calculation (Sunday after Dec 31)
 - Week 53 edge cases (≥Dec 24 requirement)
 - Payment timing (Week N+2 standard, Week N+6 bonus)
 - Year boundary handling
 
-#### 3. RLS Isolation Tests (26 tests) - [src/lib/__tests__/rls-isolation.test.ts](src/lib/__tests__/rls-isolation.test.ts)
+#### 3. RLS Isolation Tests (26 tests) - [src/lib/**tests**/rls-isolation.test.ts](src/lib/__tests__/rls-isolation.test.ts)
 
 Complete coverage of Row Level Security (RLS) multi-user data isolation:
 
 **Users Table (4 tests)**
+
 - User can only view own profile
 - User cannot view other users' profiles
 - User cannot update other users' profiles
 - User cannot insert profiles for other users
 
 **User Settings Table (3 tests)**
+
 - User can only view own settings
 - User cannot view other users' settings
 - User cannot update other users' settings
 
 **Weeks Table (5 tests)**
+
 - User can only view own weeks
 - User cannot view other users' weeks
 - User cannot update other users' weeks
@@ -596,6 +605,7 @@ Complete coverage of Row Level Security (RLS) multi-user data isolation:
 - User cannot insert weeks for other users
 
 **Work Days Table (6 tests)**
+
 - User can only view own work days
 - User cannot view other users' work days (via week_id)
 - User cannot insert work days for other users' weeks
@@ -604,6 +614,7 @@ Complete coverage of Row Level Security (RLS) multi-user data isolation:
 - EXISTS subquery protection via week ownership
 
 **Van Hires Table (5 tests)**
+
 - User can only view own van hires
 - User cannot view other users' van hires
 - User cannot update other users' van hires
@@ -611,11 +622,13 @@ Complete coverage of Row Level Security (RLS) multi-user data isolation:
 - User cannot insert van hires for other users
 
 **Edge Cases (3 tests)**
+
 - Unauthenticated clients see zero rows
 - Unauthenticated clients cannot insert data
 - Delete account SECURITY DEFINER function secured
 
 **Status**: Test suite written but cannot execute in Vitest due to JWT authentication limitations. RLS verified via:
+
 - ✅ Database policy inspection (24 policies via `pg_policies`)
 - ✅ Production validation (12 real users, zero incidents)
 - ✅ All 5 tables have RLS enabled
@@ -625,14 +638,15 @@ See [RLS_ISOLATION_TEST_PLAN.md](RLS_ISOLATION_TEST_PLAN.md) and [RLS_TESTING_SE
 ### Test Configuration
 
 **vitest.config.ts**
+
 ```typescript
 export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true,
-    environment: 'happy-dom',
-    setupFiles: ['./src/test/setup.ts'],
-  },
+	plugins: [react()],
+	test: {
+		globals: true,
+		environment: 'happy-dom',
+		setupFiles: ['./src/test/setup.ts'],
+	},
 })
 ```
 
@@ -645,11 +659,13 @@ The app is deployed on Netlify Free tier at: **wager.netlify.app**
 #### Configuration Files
 
 1. **`public/_redirects`** - Single-line file for SPA routing:
+
    ```
    /*    /index.html   200
    ```
 
 2. **`netlify.toml`** - Full build configuration:
+
    ```toml
    [build]
      command = "pnpm run build"
@@ -682,6 +698,7 @@ These files solve the "Page Not Found" error when directly navigating to routes 
 #### Environment Variables (Netlify Dashboard)
 
 Required environment variables in Netlify:
+
 - `VITE_SUPABASE_URL` - Your Supabase project URL
 - `VITE_SUPABASE_ANON_KEY` - Your Supabase anonymous key
 
