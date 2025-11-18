@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import type { Week, WorkDay } from '@/types/database'
 import { format, isAfter, isSameDay } from 'date-fns'
-import { Package, Plus, Truck, FileText } from 'lucide-react'
+import { Package, Plus, Truck } from 'lucide-react'
 
 interface DayCellProps {
 	date: Date
@@ -54,11 +54,15 @@ export default function DayCell({
 				<div className='flex flex-col h-full min-h-[160px]'>
 					<div className='text-center mb-4'>
 						<div className='text-xs text-[var(--day-name)]'>{dayName}</div>
-						<div className='text-lg font-semibold text-[var(--day-date)]'>{dayNumber}</div>
+						<div className='text-lg font-semibold text-[var(--day-date)]'>
+							{dayNumber}
+						</div>
 					</div>
 					<div className='flex-1 flex items-center justify-center'>
 						<div className='text-center'>
-							<div className='text-sm text-[var(--text-secondary)] mb-12 '>OFF</div>
+							<div className='text-sm text-[var(--text-secondary)] mb-12 '>
+								OFF
+							</div>
 							{!isFuture &&
 								(canAddWorkDay ? (
 									<Button
@@ -71,7 +75,9 @@ export default function DayCell({
 										Add
 									</Button>
 								) : (
-									<div className='text-xs text-[var(--text-warning)]/60'>Max 6 days</div>
+									<div className='text-xs text-[var(--text-warning)]/60'>
+										Max 6 days
+									</div>
 								))}
 						</div>
 					</div>
@@ -97,7 +103,9 @@ export default function DayCell({
 				<div className='flex items-center justify-between mb-3'>
 					<div>
 						<div className='text-xs text-[var(--day-name)]'>{dayName}</div>
-						<div className='text-lg font-semibold text-[var(--day-date)]'>{dayNumber}</div>
+						<div className='text-lg font-semibold text-[var(--day-date)]'>
+							{dayNumber}
+						</div>
 					</div>
 					<div
 						className={`px-2 py-1 rounded-md flex items-center gap-1 ${
@@ -150,7 +158,9 @@ export default function DayCell({
 						<div className='flex justify-between gap-5'>
 							{(workDay.van_logged_miles ?? 0) > 0 && (
 								<div className='flex items-center gap-1'>
-									<span className='text-[var(--text-mileage-van)] text-xs'>📌</span>
+									<span className='text-[var(--text-mileage-van)] text-xs'>
+										📌
+									</span>
 									<span className='text-sm font-medium text-[var(--text-mileage-van)]'>
 										{workDay.van_logged_miles}m
 									</span>
@@ -158,7 +168,9 @@ export default function DayCell({
 							)}
 							{(workDay.amazon_paid_miles ?? 0) > 0 && (
 								<div className='flex items-center gap-1'>
-									<span className='text-[var(--text-secondary)] text-xs'>📍</span>
+									<span className='text-[var(--text-secondary)] text-xs'>
+										📍
+									</span>
 									<span className='text-sm font-medium text-[var(--text-mileage-paid)]'>
 										{workDay.amazon_paid_miles}m
 									</span>
@@ -169,7 +181,9 @@ export default function DayCell({
 							{(workDay.van_logged_miles ?? 0) > 0 &&
 								(workDay.amazon_paid_miles ?? 0) > 0 && (
 									<div className='flex items-center justify-center gap-1 mt-0.5'>
-										<span className='text-xs text-[var(--text-tertiary)]'>Δ</span>
+										<span className='text-xs text-[var(--text-tertiary)]'>
+											Δ
+										</span>
 										<span
 											className={`text-xs font-medium ${
 												(workDay.van_logged_miles ?? 0) -
@@ -201,7 +215,9 @@ export default function DayCell({
 				{/* Route Number */}
 				{workDay.route_number && (
 					<div className='mb-2'>
-						<div className='text-xs text-[var(--text-secondary)] mb-0.5'>Route</div>
+						<div className='text-xs text-[var(--text-secondary)] mb-0.5'>
+							Route
+						</div>
 						<div className='text-sm font-medium text-[var(--text-primary)]'>
 							{workDay.route_number}
 						</div>
