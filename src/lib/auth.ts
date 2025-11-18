@@ -110,29 +110,13 @@ export async function getCurrentUser() {
 /**
  * Check if an email address is already registered
  * Uses auth metadata check when email confirmation is enabled
+ * NOTE: This function is deprecated - duplicate detection now happens in signUp()
  */
-export async function checkEmailExists(email: string): Promise<boolean> {
-	try {
-		// Try to sign in with a random impossible password
-		// If user exists, we'll get "Invalid login credentials"
-		// If user doesn't exist, we'll also get "Invalid login credentials"
-		// But we can check the error details to differentiate
-
-		// Alternative: Use the Admin API (requires service role key)
-		// For now, we'll use a workaround: attempt signup and check response
-
-		// Actually, the best approach with email confirmation enabled is to
-		// check the users table directly using RPC or a custom query
-		// But due to RLS, we need to query auth.users which isn't directly accessible
-
-		// Workaround: We'll just let the signup proceed and catch the identities check
-		// This function is deprecated for now
-		console.warn('checkEmailExists is not reliable with email confirmation enabled')
-		return false
-	} catch (err) {
-		console.error('Exception checking email existence:', err)
-		return false
-	}
+export async function checkEmailExists(_email: string): Promise<boolean> {
+	// This function is deprecated
+	// Duplicate email detection now happens in signUp() by checking the identities array
+	// when email confirmation is enabled in Supabase
+	return false
 }
 
 /**
