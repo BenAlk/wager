@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Briefcase, Loader2, Pencil } from 'lucide-react'
+import { Briefcase, Loader2, Pencil, FileText } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -182,8 +182,8 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 				data-tour='quick-add-work'
 			>
 				<div className='space-y-4'>
-					<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
-						<div className='flex justify-between items-start mb-2'>
+					<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4 space-y-2'>
+						<div className='flex justify-between items-start'>
 							<div>
 								<p className='text-[var(--text-secondary)] text-xs'>Route Type</p>
 								<p className='text-[var(--text-primary)] font-semibold'>
@@ -200,11 +200,31 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' aria-hidden='true' />
 							</Button>
 						</div>
-						<div>
-							<p className='text-[var(--text-secondary)] text-xs'>Route Number</p>
-							<p className='text-[var(--text-primary)] font-semibold'>
-								{todayWork.route_number}
-							</p>
+						<div className='flex justify-between items-start'>
+							<div>
+								<p className='text-[var(--text-secondary)] text-xs'>Route Number</p>
+								<p className='text-[var(--text-primary)] font-semibold'>
+									{todayWork.route_number}
+								</p>
+							</div>
+							{todayWork.route_number && (
+								<Button
+									variant='ghost'
+									size='icon'
+									onClick={() => {
+										const formData = {
+											RouteNumber: todayWork.route_number,
+											Date: todayWork.date,
+										}
+										const url = `https://www.cognitoforms.com/CEMPSUKLTD1/ReceiptOfWorkAndDailyVanChecks2?entry=${encodeURIComponent(JSON.stringify(formData))}`
+										window.open(url, '_blank')
+									}}
+									className='text-[var(--text-link)] hover:text-[var(--text-link-hover)] hover:bg-[var(--bg-hover)] h-8 w-8'
+									aria-label='Submit Receipt of Work'
+								>
+									<FileText className='w-4 h-4' aria-hidden='true' />
+								</Button>
+							)}
 						</div>
 					</div>
 					<p className='text-[var(--text-secondary)] text-xs text-center'>

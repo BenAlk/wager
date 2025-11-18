@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import type { Week, WorkDay } from '@/types/database'
 import { format, isAfter, isSameDay } from 'date-fns'
-import { Package, Plus, Truck } from 'lucide-react'
+import { Package, Plus, Truck, FileText } from 'lucide-react'
 
 interface DayCellProps {
 	date: Date
@@ -198,7 +198,17 @@ export default function DayCell({
 					</div>
 				)}
 
-				{/* Edit Button */}
+				{/* Route Number */}
+				{workDay.route_number && (
+					<div className='mb-2'>
+						<div className='text-xs text-[var(--text-secondary)] mb-0.5'>Route</div>
+						<div className='text-sm font-medium text-[var(--text-primary)]'>
+							{workDay.route_number}
+						</div>
+					</div>
+				)}
+
+				{/* Action Buttons */}
 				<div className='mt-auto'>
 					<Button
 						onClick={onEdit}
