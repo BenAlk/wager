@@ -10,6 +10,7 @@ import { useThemeStore } from '@/store/themeStore'
 import { useOnboardingStore, useAuthStore } from '@/store'
 import { OnboardingModal, TourGuide } from '@/components/onboarding'
 import Auth from '@/pages/Auth'
+import ResetPassword from '@/pages/ResetPassword'
 import Dashboard from '@/pages/Dashboard'
 import Calendar from '@/pages/Calendar'
 import Settings from '@/pages/Settings'
@@ -59,6 +60,14 @@ function AnimatedRoutes() {
 								<Auth />
 							</PageTransition>
 						</PublicRoute>
+					}
+				/>
+				<Route
+					path='/reset-password'
+					element={
+						<PageTransition>
+							<ResetPassword />
+						</PageTransition>
 					}
 				/>
 				<Route

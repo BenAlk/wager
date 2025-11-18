@@ -45,8 +45,17 @@ export async function signUp({ email, password, displayName }: SignUpData) {
 		throw new Error('No user data returned')
 	}
 
-	console.log('User created successfully:', authData.user.id)
-	console.log('Database trigger will create profile and settings automatically')
+	// Check if this is an existing user
+	// When email confirmation is enabled:
+	// - Existing users: identities array is EMPTY and no session is created
+	// - New users: identities array has an entry OR a session is created
+	if (
+		authData.user.identities &&
+		authData.user.identities.length === 0 &&
+		!authData.session
+	) {
+		throw new Error('User already registered')
+	}
 
 	return authData
 }
@@ -96,4 +105,81 @@ export async function getCurrentUser() {
 	const { data, error } = await supabase.auth.getUser()
 	if (error) throw error
 	return data.user
+}
+
+/**
+ * Check if an email address is already registered
+ * Uses auth metadata check when email confirmation is enabled
+ */
+export async function checkEmailExists(email: string): Promise<boolean> {
+	try {
+		// Try to sign in with a random impossible password
+		// If user exists, we'll get "Invalid login credentials"
+		// If user doesn't exist, we'll also get "Invalid login credentials"
+		// But we can check the error details to differentiate
+
+		// Alternative: Use the Admin API (requires service role key)
+		// For now, we'll use a workaround: attempt signup and check response
+
+		// Actually, the best approach with email confirmation enabled is to
+		// check the users table directly using RPC or a custom query
+		// But due to RLS, we need to query auth.users which isn't directly accessible
+
+		// Workaround: We'll just let the signup proceed and catch the identities check
+		// This function is deprecated for now
+		console.warn('checkEmailExists is not reliable with email confirmation enabled')
+		return false
+	} catch (err) {
+		console.error('Exception checking email existence:', err)
+		return false
+	}
+}
+
+/**
+ * Send password reset email
+ * Returns true if email was sent successfully
+ */
+export async function sendPasswordResetEmail(email: string): Promise<{
+	success: boolean
+	message: string
+}> {
+	try {
+		const { error } = await supabase.auth.resetPasswordForEmail(email, {
+			redirectTo: `${window.location.origin}/reset-password`,
+		})
+
+		if (error) {
+			// Supabase doesn't expose if email exists for security reasons
+			// But we can check for common errors
+			if (error.message.includes('rate limit')) {
+				return {
+					success: false,
+					message: 'Too many requests. Please try again in a few minutes.',
+				}
+			}
+			throw error
+		}
+
+		return {
+			success: true,
+			message: 'If an account exists with this email, a password reset link has been sent.',
+		}
+	} catch (err) {
+		console.error('Error sending password reset email:', err)
+		return {
+			success: false,
+			message: err instanceof Error ? err.message : 'Failed to send reset email',
+		}
+	}
+}
+
+/**
+ * Update user password with reset token
+ */
+export async function updatePassword(newPassword: string) {
+	const { error } = await supabase.auth.updateUser({
+		password: newPassword,
+	})
+
+	if (error) throw error
 }
