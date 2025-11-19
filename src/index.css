@@ -488,3 +488,43 @@ html, body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================================
+   CUSTOM TAB STYLES (for Settings page)
+   ============================================================================ */
+
+/* Tabs - Inactive state */
+.tab-trigger-text {
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+/* Tab trigger backgrounds - Target only tab triggers, not other elements */
+button[role="tab"][data-state="inactive"] {
+  background-color: transparent;
+}
+
+button[role="tab"][data-state="active"] {
+  background: linear-gradient(to right, var(--gradient-primary-from), var(--gradient-primary-to));
+  border: 1px solid transparent;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.15), 0 2px 4px -1px rgba(16, 185, 129, 0.10);
+}
+
+button[role="tab"][data-state="active"] .tab-trigger-text {
+  color: #ffffff !important;
+}
+
+/* Tab trigger hover (only for inactive tabs) */
+button[role="tab"][data-state="inactive"]:hover {
+  background-color: var(--bg-hover);
+}
+
+button[role="tab"][data-state="inactive"]:hover .tab-trigger-text {
+  color: var(--text-primary);
+}
+
+/* Tab content - remove any default backgrounds */
+[role="tabpanel"] {
+  background-color: transparent !important;
+  border: none !important;
+}

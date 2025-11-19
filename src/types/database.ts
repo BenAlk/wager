@@ -22,6 +22,8 @@ export interface Database {
         Row: {
           id: string
           display_name: string | null
+          first_name: string | null
+          last_name: string | null
           start_week: number
           start_year: number
           onboarding_completed: boolean
@@ -32,6 +34,8 @@ export interface Database {
         Insert: {
           id: string
           display_name?: string | null
+          first_name?: string | null
+          last_name?: string | null
           start_week: number
           start_year: number
           onboarding_completed?: boolean
@@ -42,6 +46,8 @@ export interface Database {
         Update: {
           id?: string
           display_name?: string | null
+          first_name?: string | null
+          last_name?: string | null
           start_week?: number
           start_year?: number
           onboarding_completed?: boolean

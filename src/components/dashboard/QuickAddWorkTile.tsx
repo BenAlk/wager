@@ -13,6 +13,7 @@ import {
 	updateWorkDay,
 } from '@/lib/api/weeks'
 import { dateToWeekNumber } from '@/lib/dates'
+import { useAuthStore } from '@/store/authStore'
 import { useSettingsStore } from '@/store/settingsStore'
 import { useWeeksStore, getWeekKey } from '@/store/weeksStore'
 import type { WorkDay } from '@/types/database'
@@ -42,6 +43,7 @@ interface QuickAddWorkTileProps {
 
 export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 	const { user } = useAuth()
+	const { userProfile } = useAuthStore()
 	const { settings } = useSettingsStore()
 	const updateWorkDayInStore = useWeeksStore((state) => state.updateWorkDay)
 	const addWorkDayToStore = useWeeksStore((state) => state.addWorkDay)
@@ -215,6 +217,18 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 										const formData = {
 											RouteNumber: todayWork.route_number,
 											Date: todayWork.date,
+											Name: {
+												First: userProfile?.first_name || '',
+												Last: userProfile?.last_name || '',
+											},
+											Tolls: ['NO TOLLS'],
+											Declaration: {
+												Name: {
+													First: userProfile?.first_name || '',
+													Last: userProfile?.last_name || '',
+												},
+												Date: todayWork.date,
+											},
 										}
 										const url = `https://www.cognitoforms.com/CEMPSUKLTD1/ReceiptOfWorkAndDailyVanChecks2?entry=${encodeURIComponent(JSON.stringify(formData))}`
 										window.open(url, '_blank')

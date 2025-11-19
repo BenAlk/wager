@@ -21,6 +21,16 @@ const signUpSchema = loginSchema.extend({
 		.string()
 		.min(1, 'Display name is required')
 		.max(50, 'Display name must be less than 50 characters'),
+	firstName: z
+		.string()
+		.max(50, 'First name must be less than 50 characters')
+		.optional()
+		.or(z.literal('')),
+	lastName: z
+		.string()
+		.max(50, 'Last name must be less than 50 characters')
+		.optional()
+		.or(z.literal('')),
 })
 
 const forgotPasswordSchema = z.object({
@@ -51,6 +61,8 @@ export default function Auth() {
 			email: '',
 			password: '',
 			displayName: '',
+			firstName: '',
+			lastName: '',
 		},
 	})
 
@@ -101,10 +113,10 @@ export default function Auth() {
 				toast.success('Welcome back!', { duration: 3000 })
 				navigate('/dashboard')
 			} else {
-				const { email, password, displayName } = data as SignUpFormData
+				const { email, password, displayName, firstName, lastName } = data as SignUpFormData
 
 				try {
-					await signUp({ email, password, displayName })
+					await signUp({ email, password, displayName, firstName, lastName })
 					toast.success('Account created successfully!', { duration: 3000 })
 					navigate('/dashboard')
 				} catch (signupErr) {
@@ -300,28 +312,78 @@ export default function Auth() {
 					>
 					{/* Display Name - Animated */}
 					{!isLogin && (
-						<div>
-							<Label
-								htmlFor='displayName'
-								className='text-[var(--input-label)]'
-							>
-								Display Name
-							</Label>
-							<Input
-								id='displayName'
-								type='text'
-								placeholder='Ben'
-								autoComplete='name'
-								{...registerSignUp('displayName')}
-								className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
-									focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
-							/>
-							{signUpErrors.displayName && (
-								<p className='text-xs text-[var(--input-error-text)] mt-1.5'>
-									{signUpErrors.displayName.message as string}
-								</p>
-							)}
-						</div>
+						<>
+							<div>
+								<Label
+									htmlFor='displayName'
+									className='text-[var(--input-label)]'
+								>
+									Display Name <span className='text-[var(--text-error)]'>*</span>
+								</Label>
+								<Input
+									id='displayName'
+									type='text'
+									placeholder='Speedy McDelivery'
+									autoComplete='name'
+									{...registerSignUp('displayName')}
+									className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
+										focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
+								/>
+								{signUpErrors.displayName && (
+									<p className='text-xs text-[var(--input-error-text)] mt-1.5'>
+										{signUpErrors.displayName.message as string}
+									</p>
+								)}
+							</div>
+
+							{/* First Name */}
+							<div>
+								<Label
+									htmlFor='firstName'
+									className='text-[var(--input-label)]'
+								>
+									First Name <span className='text-xs text-[var(--text-tertiary)]'>(optional)</span>
+								</Label>
+								<Input
+									id='firstName'
+									type='text'
+									placeholder='John'
+									autoComplete='given-name'
+									{...registerSignUp('firstName')}
+									className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
+										focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
+								/>
+								{signUpErrors.firstName && (
+									<p className='text-xs text-[var(--input-error-text)] mt-1.5'>
+										{signUpErrors.firstName.message as string}
+									</p>
+								)}
+							</div>
+
+							{/* Last Name */}
+							<div>
+								<Label
+									htmlFor='lastName'
+									className='text-[var(--input-label)]'
+								>
+									Last Name <span className='text-xs text-[var(--text-tertiary)]'>(optional)</span>
+								</Label>
+								<Input
+									id='lastName'
+									type='text'
+									placeholder='Doe'
+									autoComplete='family-name'
+									{...registerSignUp('lastName')}
+									className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
+										focus:ring-2 focus:ring-inset focus:ring-[var(--input-focus-ring)] focus:border-transparent'
+								/>
+								{signUpErrors.lastName && (
+									<p className='text-xs text-[var(--input-error-text)] mt-1.5'>
+										{signUpErrors.lastName.message as string}
+									</p>
+								)}
+							</div>
+						</>
 					)}
 
 					<div>

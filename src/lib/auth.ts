@@ -4,6 +4,8 @@ export interface SignUpData {
 	email: string
 	password: string
 	displayName: string
+	firstName?: string
+	lastName?: string
 }
 
 export interface LoginData {
@@ -15,7 +17,7 @@ export interface LoginData {
  * Sign up a new user
  * Creates user account and profile in users table
  */
-export async function signUp({ email, password, displayName }: SignUpData) {
+export async function signUp({ email, password, displayName, firstName, lastName }: SignUpData) {
 	// Get current week and year for start_week/start_year
 	// TODO: Replace with proper week calculation function when implemented
 	const now = new Date()
@@ -31,6 +33,8 @@ export async function signUp({ email, password, displayName }: SignUpData) {
 			emailRedirectTo: window.location.origin,
 			data: {
 				display_name: displayName,
+				first_name: firstName || null,
+				last_name: lastName || null,
 				start_week: startWeek,
 				start_year: startYear,
 			},

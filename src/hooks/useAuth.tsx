@@ -9,12 +9,14 @@ interface AuthContextType {
 	user: User | null
 	session: Session | null
 	loading: boolean
+	refreshUser: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType>({
 	user: null,
 	session: null,
 	loading: true,
+	refreshUser: async () => {},
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -79,8 +81,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		return () => subscription.unsubscribe()
 	}, [])
 
+	// Function to refresh user data (useful after profile updates)
+	const refreshUser = async () => {
+		if (!user?.id) return
+
+		try {
+			// Fetch updated user profile
+			const { data: userProfile, error: profileError } = await supabase
+				.from('users')
+				.select('*')
+				.eq('id', user.id)
+				.single()
+
+			if (profileError) {
+				console.error('Error refreshing user profile:', profileError)
+			} else {
+				// Update auth store with updated profile
+				setAuthUser(user, userProfile)
+			}
+		} catch (error) {
+			console.error('Error refreshing user:', error)
+		}
+	}
+
 	return (
-		<AuthContext.Provider value={{ user, session, loading }}>
+		<AuthContext.Provider value={{ user, session, loading, refreshUser }}>
 			{children}
 		</AuthContext.Provider>
 	)
