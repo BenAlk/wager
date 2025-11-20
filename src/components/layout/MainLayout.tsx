@@ -1,13 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { ThemeToggle } from '@/components/ui/theme-toggle'
-import { useAuth } from '@/hooks/useAuth'
 import { logout } from '@/lib/auth'
+import { useAuthStore, selectDisplayName } from '@/store/authStore'
 import { Calendar, Home, LogOut, Settings, TrendingUp, Truck } from 'lucide-react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export function MainLayout() {
-	const { user } = useAuth()
+	const displayName = useAuthStore(selectDisplayName)
 	const navigate = useNavigate()
 	const location = useLocation()
 
@@ -67,7 +67,7 @@ export function MainLayout() {
 								<h1 className='text-2xl font-bold text-[var(--nav-title)]'>Wager</h1>
 								<p className='text-[var(--nav-subtitle)] text-sm'>
 									{location.pathname === '/dashboard'
-										? `Welcome back, ${user?.user_metadata.display_name}`
+										? `Welcome back, ${displayName}`
 										: pageInfo.title}
 								</p>
 							</div>

@@ -118,4 +118,4 @@ export const selectUserStartWeek = (state: AuthState) => ({
 })
 
 export const selectDisplayName = (state: AuthState) =>
-	state.userProfile?.display_name ?? 'there'
+	state.userProfile?.display_name ?? 'Package Ninja'
