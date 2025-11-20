@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { supabase, SUPABASE_AUTH_STORAGE_KEY } from './supabase'
 
 export interface SignUpData {
 	email: string
@@ -11,6 +11,7 @@ export interface SignUpData {
 export interface LoginData {
 	email: string
 	password: string
+	rememberMe?: boolean
 }
 
 /**
@@ -66,14 +67,30 @@ export async function signUp({ email, password, displayName, firstName, lastName
 
 /**
  * Log in an existing user
+ * @param rememberMe - If true, session persists for 30 days. If false, session clears on browser close.
  */
-export async function login({ email, password }: LoginData) {
+export async function login({ email, password, rememberMe = true }: LoginData) {
 	const { data, error } = await supabase.auth.signInWithPassword({
 		email,
 		password,
 	})
 
 	if (error) throw error
+
+	// Handle session storage based on rememberMe preference
+	if (data.session && !rememberMe) {
+		// Move session from localStorage to sessionStorage
+		// This makes it ephemeral (clears on browser close)
+		const sessionData = localStorage.getItem(SUPABASE_AUTH_STORAGE_KEY)
+
+		if (sessionData) {
+			// Move to sessionStorage
+			sessionStorage.setItem(SUPABASE_AUTH_STORAGE_KEY, sessionData)
+			// Remove from localStorage
+			localStorage.removeItem(SUPABASE_AUTH_STORAGE_KEY)
+		}
+	}
+
 	return data
 }
 

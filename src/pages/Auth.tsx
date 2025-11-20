@@ -14,6 +14,7 @@ import { z } from 'zod'
 const loginSchema = z.object({
 	email: z.string().email('Invalid email address'),
 	password: z.string().min(6, 'Password must be at least 6 characters'),
+	rememberMe: z.boolean().optional(),
 })
 
 const signUpSchema = loginSchema.extend({
@@ -52,6 +53,7 @@ export default function Auth() {
 		defaultValues: {
 			email: '',
 			password: '',
+			rememberMe: true,
 		},
 	})
 
@@ -108,8 +110,8 @@ export default function Auth() {
 	const onSubmit = async (data: LoginFormData | SignUpFormData) => {
 		try {
 			if (isLogin) {
-				const { email, password } = data as LoginFormData
-				await login({ email, password })
+				const { email, password, rememberMe } = data as LoginFormData
+				await login({ email, password, rememberMe: rememberMe ?? true })
 				toast.success('Welcome back!', { duration: 3000 })
 				navigate('/dashboard')
 			} else {
@@ -441,6 +443,26 @@ export default function Auth() {
 							)
 						)}
 					</div>
+
+					{/* Remember Me Checkbox - Only show on login */}
+					{isLogin && (
+						<div className='flex items-center gap-2'>
+							<input
+								id='rememberMe'
+								type='checkbox'
+								{...registerLogin('rememberMe')}
+								className='w-4 h-4 rounded border-[var(--input-border)] bg-[var(--input-bg)]
+									text-[var(--gradient-primary-from)] focus:ring-2 focus:ring-[var(--input-focus-ring)]
+									focus:ring-offset-0 cursor-pointer'
+							/>
+							<Label
+								htmlFor='rememberMe'
+								className='text-sm text-[var(--text-secondary)] cursor-pointer'
+							>
+								Remember me for 30 days
+							</Label>
+						</div>
+					)}
 
 					<Button
 						type='submit'

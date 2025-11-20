@@ -10,4 +10,8 @@ if (!supabaseUrl || !supabaseAnonKey) {
   )
 }
 
+// Create a simple storage key based on the Supabase URL
+const projectRef = supabaseUrl.split('//')[1]?.split('.')[0] || 'default'
+export const SUPABASE_AUTH_STORAGE_KEY = `sb-${projectRef}-auth-token`
+
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
