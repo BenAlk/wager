@@ -528,3 +528,21 @@ button[role="tab"][data-state="inactive"]:hover .tab-trigger-text {
   background-color: transparent !important;
   border: none !important;
 }
+
+/* ============================================================================
+   CUSTOM ANIMATIONS
+   ============================================================================ */
+
+/* Pulse animation for Receipt of Work button - goes from emerald-500 to bright emerald-300 */
+@keyframes pulse-emerald {
+  0%, 100% {
+    color: #10b981; /* emerald-500 */
+  }
+  50% {
+    color: #6ee7b7; /* emerald-300 - brighter */
+  }
+}
+
+.animate-pulse-emerald {
+  animation: pulse-emerald 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

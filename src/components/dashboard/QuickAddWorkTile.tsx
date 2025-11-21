@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Briefcase, Loader2, Pencil, FileText } from 'lucide-react'
+import { Briefcase, FileText, Loader2, Pencil } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -15,7 +15,7 @@ import {
 import { dateToWeekNumber } from '@/lib/dates'
 import { useAuthStore } from '@/store/authStore'
 import { useSettingsStore } from '@/store/settingsStore'
-import { useWeeksStore, getWeekKey } from '@/store/weeksStore'
+import { getWeekKey, useWeeksStore } from '@/store/weeksStore'
 import type { WorkDay } from '@/types/database'
 
 import { Button } from '@/components/ui/button'
@@ -53,6 +53,8 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 
 	const today = new Date()
 	const todayString = today.toISOString().split('T')[0]
+	const currentHour = today.getHours()
+	const isAfter3pm = currentHour >= 15
 
 	const {
 		control,
@@ -187,7 +189,9 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4 space-y-2'>
 						<div className='flex justify-between items-start'>
 							<div>
-								<p className='text-[var(--text-secondary)] text-xs'>Route Type</p>
+								<p className='text-[var(--text-secondary)] text-xs'>
+									Route Type
+								</p>
 								<p className='text-[var(--text-primary)] font-semibold'>
 									{todayWork.route_type}
 								</p>
@@ -196,15 +200,20 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								variant='ghost'
 								size='icon'
 								onClick={() => setIsEditing(true)}
-								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8'
+								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8 px-5'
 								aria-label="Edit today's work"
 							>
-								<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' aria-hidden='true' />
+								<Pencil
+									className='w-4 h-4 text-[var(--text-mileage-van)]'
+									aria-hidden='true'
+								/>
 							</Button>
 						</div>
 						<div className='flex justify-between items-start'>
 							<div>
-								<p className='text-[var(--text-secondary)] text-xs'>Route Number</p>
+								<p className='text-[var(--text-secondary)] text-xs'>
+									Route Number
+								</p>
 								<p className='text-[var(--text-primary)] font-semibold'>
 									{todayWork.route_number}
 								</p>
@@ -212,7 +221,6 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 							{todayWork.route_number && (
 								<Button
 									variant='ghost'
-									size='icon'
 									onClick={() => {
 										const formData = {
 											RouteNumber: todayWork.route_number,
@@ -230,20 +238,38 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 												Date: todayWork.date,
 											},
 										}
-										const url = `https://www.cognitoforms.com/CEMPSUKLTD1/ReceiptOfWorkAndDailyVanChecks2?entry=${encodeURIComponent(JSON.stringify(formData))}`
+										const url = `https://www.cognitoforms.com/CEMPSUKLTD1/ReceiptOfWorkAndDailyVanChecks2?entry=${encodeURIComponent(
+											JSON.stringify(formData)
+										)}`
 										window.open(url, '_blank')
 									}}
-									className='text-[var(--text-link)] hover:text-[var(--text-link-hover)] hover:bg-[var(--bg-hover)] h-8 w-8'
+									className={`flex flex-col items-center gap-0.5 h-auto py-1 px-2 ${
+										isAfter3pm ? 'animate-pulse-emerald' : 'text-emerald-500'
+									} hover:text-emerald-400 hover:bg-[var(--bg-hover)]`}
 									aria-label='Submit Receipt of Work'
 								>
-									<FileText className='w-4 h-4' aria-hidden='true' />
+									<FileText
+										className='w-4 h-4'
+										aria-hidden='true'
+									/>
+									<span className='text-[0.5rem] font-medium leading-none'>
+										RoW
+									</span>
 								</Button>
 							)}
 						</div>
 					</div>
-					<p className='text-[var(--text-secondary)] text-xs text-center'>
-						Work logged for today
-					</p>
+					<div className='space-y-1'>
+						<p className='text-[var(--text-secondary)] text-xs text-center'>
+							Work logged for today
+						</p>
+						{isAfter3pm && (
+							<p className='text-red-500 text-xs text-center font-medium'>
+								Remember to fill in your receipt of work using the green button
+								above
+							</p>
+						)}
+					</div>
 				</div>
 			</DashboardTile>
 		)

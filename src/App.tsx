@@ -9,6 +9,7 @@ import { MainLayout } from '@/components/layout/MainLayout'
 import { useThemeStore } from '@/store/themeStore'
 import { useOnboardingStore, useAuthStore } from '@/store'
 import { OnboardingModal, TourGuide } from '@/components/onboarding'
+import { PWAUpdatePrompt } from '@/components/PWAUpdatePrompt'
 import Auth from '@/pages/Auth'
 import ResetPassword from '@/pages/ResetPassword'
 import Dashboard from '@/pages/Dashboard'
@@ -150,6 +151,7 @@ function App() {
 				<Toaster />
 				<OnboardingModal />
 				<TourGuide />
+				<PWAUpdatePrompt />
 			</AuthProvider>
 		</BrowserRouter>
 	)
