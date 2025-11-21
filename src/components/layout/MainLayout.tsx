@@ -51,7 +51,7 @@ export function MainLayout() {
 				Skip to main content
 			</a>
 			{/* Header */}
-			<header className='border-b border-[var(--nav-border)] bg-[var(--nav-bg)] backdrop-blur-xl'>
+			<header className='fixed top-0 left-0 right-0 z-50 border-b border-[var(--nav-border)] bg-[var(--nav-bg)] backdrop-blur-xl shadow-lg'>
 				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4'>
 					<div className='flex items-center justify-between'>
 						{/* Left: Logo & Page Title */}
@@ -155,7 +155,7 @@ export function MainLayout() {
 			</header>
 
 			{/* Main Content - Outlet for nested routes */}
-			<div id='main-content'>
+			<div id='main-content' className='pt-[88px]'>
 				<Outlet />
 			</div>
 		</div>
