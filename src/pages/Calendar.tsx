@@ -237,7 +237,7 @@ export default function Calendar() {
 				<h1 className='sr-only'>Calendar - Week {currentWeek.week}</h1>
 				{/* Week Navigation */}
 				<div className='mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4' data-tour='week-nav'>
-					<div className='flex items-center gap-3' data-tour='calendar-navigation'>
+					<div className='flex items-center gap-2' data-tour='calendar-navigation'>
 						<Button
 							onClick={goToPreviousWeek}
 							variant='ghost'
@@ -248,7 +248,7 @@ export default function Calendar() {
 						>
 							<ChevronLeft className='w-5 h-5' aria-hidden='true' />
 						</Button>
-						<div className='text-center min-w-[280px]'>
+						<div className='text-center min-w-[275px]'>
 							<h2 className='text-2xl font-bold' style={{ color: 'var(--text-primary)' }}>
 								Week {currentWeek.week}
 							</h2>
