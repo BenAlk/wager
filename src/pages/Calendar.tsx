@@ -248,7 +248,7 @@ export default function Calendar() {
 						>
 							<ChevronLeft className='w-5 h-5' aria-hidden='true' />
 						</Button>
-						<div className='text-center min-w-[275px]'>
+						<div className='text-center min-w-[270px]'>
 							<h2 className='text-2xl font-bold' style={{ color: 'var(--text-primary)' }}>
 								Week {currentWeek.week}
 							</h2>
