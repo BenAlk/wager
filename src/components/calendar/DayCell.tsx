@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import type { Week, WorkDay } from '@/types/database'
 import { format, isAfter, isSameDay } from 'date-fns'
-import { Package, Plus, Truck } from 'lucide-react'
+import { Gauge, Package, Plus, Truck } from 'lucide-react'
 
 interface DayCellProps {
 	date: Date
@@ -155,12 +155,10 @@ export default function DayCell({
 				{((workDay.amazon_paid_miles ?? 0) > 0 ||
 					(workDay.van_logged_miles ?? 0) > 0) && (
 					<div className='mb-3'>
-						<div className='flex justify-between gap-5'>
+						<div className='flex justify-evenly pr-1 gap-2'>
 							{(workDay.van_logged_miles ?? 0) > 0 && (
 								<div className='flex items-center gap-1'>
-									<span className='text-[var(--text-mileage-van)] text-xs'>
-										📌
-									</span>
+									<Gauge className='w-3 h-3 text-[var(--text-mileage-van)]' />
 									<span className='text-sm font-medium text-[var(--text-mileage-van)]'>
 										{workDay.van_logged_miles}m
 									</span>
@@ -168,8 +166,8 @@ export default function DayCell({
 							)}
 							{(workDay.amazon_paid_miles ?? 0) > 0 && (
 								<div className='flex items-center gap-1'>
-									<span className='text-[var(--text-secondary)] text-xs'>
-										📍
+									<span className='text-[var(--text-mileage-paid)] text-xs'>
+										📌
 									</span>
 									<span className='text-sm font-medium text-[var(--text-mileage-paid)]'>
 										{workDay.amazon_paid_miles}m
@@ -181,7 +179,7 @@ export default function DayCell({
 							{(workDay.van_logged_miles ?? 0) > 0 &&
 								(workDay.amazon_paid_miles ?? 0) > 0 && (
 									<div className='flex items-center justify-center gap-1 mt-0.5'>
-										<span className='text-xs text-[var(--text-tertiary)]'>
+										<span className='text-xs text-[var(--color-blue-400)]'>
 											Δ
 										</span>
 										<span

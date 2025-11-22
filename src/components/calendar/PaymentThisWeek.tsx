@@ -1,10 +1,11 @@
+import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import { calculateWeeklyPayBreakdown } from '@/lib/calculations'
 import { getPreviousWeek, getWeekDateRange } from '@/lib/dates'
 import { useVanStore } from '@/store/vanStore'
 import type { VanHire, Week } from '@/types/database'
-import { AlertCircle, Banknote } from 'lucide-react'
+import { AlertCircle, Banknote, ChevronDown, ChevronUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -25,6 +26,7 @@ export default function PaymentThisWeek({
 	const { user } = useAuth()
 	const { allVans } = useVanStore()
 	const [weekNMinus2VanHires, setWeekNMinus2VanHires] = useState<VanHire[]>([])
+	const [isExpanded, setIsExpanded] = useState(false)
 
 	// Calculate what weeks the payments are from
 	const weekNMinus2Info = getPreviousWeek(weekNumber, year, 2)
@@ -147,14 +149,48 @@ export default function PaymentThisWeek({
 
 	return (
 		<div className='bg-[var(--bg-surface-primary)] backdrop-blur-xl border border-[var(--border-primary)] rounded-2xl p-6 lg:p-8'>
-			<div className='flex items-center justify-center gap-3 mb-6'>
-				<div className='w-10 h-10 bg-[var(--button-primary-bg)] rounded-lg flex items-center justify-center'>
-					<Banknote className='w-6 h-6 text-[var(--text-primary)]' />
+			{/* Header */}
+			<div
+				className='flex items-center justify-between mb-4 cursor-pointer'
+				onClick={() => setIsExpanded(!isExpanded)}
+			>
+				<div className='flex items-center gap-3'>
+					<div className='w-10 h-10 bg-gradient-to-r from-[var(--tile-icon-enabled-from)] to-[var(--tile-icon-enabled-to)] rounded-lg flex items-center justify-center'>
+						<Banknote className='w-6 h-6 text-[var(--text-primary)]' />
+					</div>
+					<h3 className='text-xl sm:text-2xl font-bold text-[var(--text-primary)]'>
+						Payment This Week
+					</h3>
 				</div>
-				<h3 className='text-xl sm:text-2xl font-bold text-[var(--text-primary)]'>
-					Payment This Week
-				</h3>
+				<Button
+					variant='ghost'
+					size='sm'
+					className='text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+				>
+					{isExpanded ? <ChevronUp className='w-5 h-5' /> : <ChevronDown className='w-5 h-5' />}
+				</Button>
 			</div>
+
+			{/* Total Payment - Always Visible */}
+			<div className='flex items-center justify-between mb-6'>
+				<span className='text-lg font-semibold text-[var(--text-secondary)]'>
+					Total Payment
+				</span>
+				<span
+					className={
+						'text-2xl sm:text-3xl font-mono font-bold ' +
+						(totalPayment < 0
+							? 'text-[var(--finance-negative)]'
+							: 'text-[var(--finance-positive)]')
+					}
+				>
+					£{(totalPayment / 100).toFixed(2)}
+				</span>
+			</div>
+
+			{/* Expandable Content */}
+			{isExpanded && (
+				<div>
 
 			<div className='space-y-3 mb-6'>
 				{/* Standard Pay from Week N-2 */}
@@ -278,27 +314,11 @@ export default function PaymentThisWeek({
 				)}
 			</div>
 
-			{/* Total Payment */}
-			<div className='border-t border-[var(--border-primary)] pt-6'>
-				<div className='flex items-center justify-between'>
-					<span className='text-xs sm:text-2xl font-bold text-[var(--text-primary)]'>
-						Total Payment (Week {weekNumber})
-					</span>
-					<span
-						className={
-							'text-lg sm:text-4xl font-mono font-bold animate-pulse ' +
-							(totalPayment < 0
-								? 'text-[var(--finance-negative)]'
-								: 'text-[var(--finance-positive)]')
-						}
-					>
-						£{(totalPayment / 100).toFixed(2)}
-					</span>
-				</div>
-				<p className='text-xs text-[var(--text-tertiary)] mt-2 text-center sm:text-right'>
+				<p className='text-xs text-[var(--text-tertiary)] mt-4 text-center sm:text-right'>
 					Expected in your bank account this week
 				</p>
-			</div>
+				</div>
+			)}
 		</div>
 	)
 }

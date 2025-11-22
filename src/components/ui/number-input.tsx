@@ -57,7 +57,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 		const htmlStep = typeof step === 'number' && step < 0.01 ? 'any' : step
 
 		const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-			const newValue = e.target.value === '' ? 0 : parseInt(e.target.value, 10)
+			const newValue = e.target.value === '' ? 0 : parseFloat(e.target.value)
 			if (isNaN(newValue)) return
 
 			// Apply min/max constraints
@@ -85,8 +85,12 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
 					)}
 					value={localValue}
 					onChange={handleInputChange}
+					onFocus={(e) => {
+						e.target.select()
+						props.onFocus?.(e)
+					}}
 					min={min}
-				step={htmlStep}
+					step={htmlStep}
 					max={max}
 					ref={ref}
 					{...props}

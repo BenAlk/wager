@@ -23,7 +23,7 @@ import { useVanStore } from '@/store/vanStore'
 import { useWeeksStore } from '@/store/weeksStore'
 import type { PerformanceLevel, VanHire, Week } from '@/types/database'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { AlertCircle, Check, Pencil, Trash2, X } from 'lucide-react'
+import { AlertCircle, Check, ChevronDown, ChevronUp, FileText, Pencil, Trash2, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -73,6 +73,7 @@ export default function WeekSummary({
 	const [showClearConfirm, setShowClearConfirm] = useState(false)
 	const [isClearing, setIsClearing] = useState(false)
 	const [weekVanHires, setWeekVanHires] = useState<VanHire[]>([])
+	const [isExpanded, setIsExpanded] = useState(false)
 
 	// Rankings form
 	const {
@@ -120,9 +121,14 @@ export default function WeekSummary({
 	if (!weekData || !weekData.work_days || weekData.work_days.length === 0) {
 		return (
 			<div className='bg-[var(--bg-surface-secondary)] backdrop-blur-sm border border-[var(--border-secondary)] rounded-2xl p-6 mb-8'>
-				<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>
-					Week {weekNumber} Summary
-				</h3>
+				<div className='flex items-center gap-3 mb-4'>
+					<div className='w-10 h-10 bg-gradient-to-r from-[var(--tile-icon-enabled-from)] to-[var(--tile-icon-enabled-to)] rounded-lg flex items-center justify-center'>
+						<FileText className='w-6 h-6 text-[var(--text-primary)]' />
+					</div>
+					<h3 className='text-xl font-bold text-[var(--text-primary)]'>
+						Week {weekNumber} Summary
+					</h3>
+				</div>
 				<p className='text-[var(--text-secondary)] text-center py-8'>
 					No work days logged for this week
 				</p>
@@ -289,20 +295,52 @@ export default function WeekSummary({
 
 	return (
 		<div className='bg-[var(--bg-surface-secondary)] backdrop-blur-xl border border-[var(--border-secondary)] rounded-2xl p-6 lg:p-8 mb-8'>
-			<div className='flex items-center justify-between mb-6'>
-				<h3 className='text-2xl font-bold text-[var(--text-primary)]'>
-					Week {weekNumber} Summary
-				</h3>
+			{/* Header */}
+			<div
+				className='flex items-center justify-between mb-4 cursor-pointer'
+				onClick={() => setIsExpanded(!isExpanded)}
+			>
+				<div className='flex items-center gap-3'>
+					<div className='w-10 h-10 bg-gradient-to-r from-[var(--tile-icon-enabled-from)] to-[var(--tile-icon-enabled-to)] rounded-lg flex items-center justify-center'>
+						<FileText className='w-6 h-6 text-[var(--text-primary)]' />
+					</div>
+					<h3 className='text-2xl font-bold text-[var(--text-primary)]'>
+						Week {weekNumber} Summary
+					</h3>
+				</div>
 				<Button
-					onClick={() => setShowClearConfirm(true)}
 					variant='ghost'
 					size='sm'
-					className='text-[var(--button-destructive-text)] hover:text-[var(--text-error)] hover:bg-[var(--button-destructive-hover)]'
+					className='text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
 				>
-					<Trash2 className='w-4 h-4 mr-2' />
-					Clear Week
+					{isExpanded ? <ChevronUp className='w-5 h-5' /> : <ChevronDown className='w-5 h-5' />}
 				</Button>
 			</div>
+
+			{/* Total Earnings - Always Visible */}
+			<div className='flex items-center justify-between mb-6'>
+				<span className='text-lg font-semibold text-[var(--text-secondary)]'>
+					Total Earnings
+				</span>
+				<span
+					className={
+						'text-2xl sm:text-3xl font-mono font-bold ' +
+						(breakdown.standardPay + (weekData.bonus_amount || 0) < 0
+							? 'text-[var(--finance-negative)]'
+							: 'text-[var(--finance-positive)]')
+					}
+				>
+					£
+					{(
+						(breakdown.standardPay + (weekData.bonus_amount || 0)) /
+						100
+					).toFixed(2)}
+				</span>
+			</div>
+
+			{/* Expandable Content */}
+			{isExpanded && (
+				<div>
 
 			{/* Pay Breakdown */}
 			<div className='space-y-3 mb-6'>
@@ -410,7 +448,7 @@ export default function WeekSummary({
 											variant='ghost'
 											size='sm'
 											onClick={handleEditMileageRate}
-											className='text-[var(--text-secondary)] h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 cursor-pointer border-2 hover:text-[var(--text-mileage-van)]'
+											className='text-yellow-500 h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 cursor-pointer'
 										>
 											<Pencil className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
 										</Button>
@@ -663,27 +701,6 @@ export default function WeekSummary({
 				)}
 			</div>
 
-			{/* Total Expected */}
-			<div className='border-t border-[var(--border-primary)] pt-4 mt-6'>
-				<div className='flex items-center justify-between'>
-					<span className='text-xl font-bold text-[var(--finance-total)]'>Total Earnings</span>
-					<span
-						className={
-							'text-lg sm:text-4xl font-mono font-bold animate-pulse ' +
-							(breakdown.standardPay + (weekData.bonus_amount || 0) < 0
-								? 'text-[var(--finance-negative)]'
-								: 'text-[var(--finance-positive)]')
-						}
-					>
-						£
-						{(
-							(breakdown.standardPay + (weekData.bonus_amount || 0)) /
-							100
-						).toFixed(2)}
-					</span>
-				</div>
-			</div>
-
 			{/* Mileage Discrepancy Warning */}
 			{breakdown.mileageDiscrepancy > 0 && (
 				<div className='mt-6 bg-[var(--bg-warning)] border border-[var(--border-warning)] rounded-lg p-4'>
@@ -696,6 +713,24 @@ export default function WeekSummary({
 						Estimated fuel loss: £
 						{(breakdown.mileageDiscrepancyValue / 100).toFixed(2)}
 					</p>
+				</div>
+			)}
+
+				{/* Clear Week Button */}
+				<div className='mt-6 pt-6 border-t border-[var(--border-primary)] flex justify-end'>
+					<Button
+						onClick={(e) => {
+							e.stopPropagation()
+							setShowClearConfirm(true)
+						}}
+						variant='ghost'
+						size='sm'
+						className='text-[var(--button-destructive-text)] hover:text-[var(--text-error)] hover:bg-[var(--button-destructive-hover)]'
+					>
+						<Trash2 className='w-4 h-4 mr-2' />
+						Clear Week
+					</Button>
+				</div>
 				</div>
 			)}
 
