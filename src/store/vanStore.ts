@@ -53,14 +53,18 @@ export const useVanStore = create<VanState>()(
 
 			// Set all van hires
 			setAllVans: (vans) => {
-				// Calculate total deposit across all vans
-				const totalDeposit = vans.reduce(
-					(sum, van) => sum + (van.deposit_paid ?? 0),
-					0
-				)
+				// Calculate total deposit across all vans (exclude manual adjustment entry)
+				const totalDeposit = vans
+					.filter(v => v.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT')
+					.reduce(
+						(sum, van) => sum + (van.deposit_paid ?? 0),
+						0
+					)
 
-				// Find active van (off_hire_date is NULL)
-				const active = vans.find((v) => v.off_hire_date === null) ?? null
+				// Find active van (off_hire_date is NULL, not manual adjustment)
+				const active = vans.find((v) =>
+					v.off_hire_date === null && v.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT'
+				) ?? null
 
 				set(
 					{
@@ -82,14 +86,18 @@ export const useVanStore = create<VanState>()(
 							v.id === vanId ? { ...v, ...updates } : v
 						)
 
-						// Recalculate total deposit
-						const totalDeposit = updatedVans.reduce(
-							(sum, van) => sum + (van.deposit_paid ?? 0),
-							0
-						)
+						// Recalculate total deposit (exclude manual adjustment entry)
+						const totalDeposit = updatedVans
+							.filter(v => v.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT')
+							.reduce(
+								(sum, van) => sum + (van.deposit_paid ?? 0),
+								0
+							)
 
-						// Recalculate active van (van with no off_hire_date)
-						const active = updatedVans.find((v) => v.off_hire_date === null) ?? null
+						// Recalculate active van (van with no off_hire_date, not manual adjustment)
+						const active = updatedVans.find((v) =>
+							v.off_hire_date === null && v.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT'
+						) ?? null
 
 						return {
 							allVans: updatedVans,
@@ -105,12 +113,20 @@ export const useVanStore = create<VanState>()(
 			// Add new van hire (optimistic)
 			addVan: (van) => {
 				set(
-					(state) => ({
-						allVans: [...state.allVans, van],
-						activeVan: van.off_hire_date === null ? van : state.activeVan,
-						totalDepositPaid:
-							state.totalDepositPaid + (van.deposit_paid ?? 0),
-					}),
+					(state) => {
+						// Only add to deposit total if not a manual adjustment
+						const depositIncrease = van.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT'
+							? (van.deposit_paid ?? 0)
+							: 0
+
+						return {
+							allVans: [...state.allVans, van],
+							activeVan: van.off_hire_date === null && van.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT'
+								? van
+								: state.activeVan,
+							totalDepositPaid: state.totalDepositPaid + depositIncrease,
+						}
+					},
 					false,
 					'van/addVan'
 				)
@@ -123,12 +139,16 @@ export const useVanStore = create<VanState>()(
 						const removedVan = state.allVans.find((v) => v.id === vanId)
 						const filteredVans = state.allVans.filter((v) => v.id !== vanId)
 
+						// Only subtract from deposit total if not a manual adjustment
+						const depositDecrease = removedVan?.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT'
+							? (removedVan?.deposit_paid ?? 0)
+							: 0
+
 						return {
 							allVans: filteredVans,
 							activeVan:
 								state.activeVan?.id === vanId ? null : state.activeVan,
-							totalDepositPaid:
-								state.totalDepositPaid - (removedVan?.deposit_paid ?? 0),
+							totalDepositPaid: state.totalDepositPaid - depositDecrease,
 						}
 					},
 					false,
