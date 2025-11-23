@@ -26,6 +26,7 @@ import {
 /**
  * Settings form validation schema
  * Note: Form stores values in PENCE for easier validation/submission
+ * Note: mileageRate is excluded from settings - adjusted per-week in calendar
  */
 const settingsSchema = z.object({
 	normalRate: z
@@ -38,11 +39,6 @@ const settingsSchema = z.object({
 		.int('Rate must be a whole number')
 		.min(0, 'Rate must be positive')
 		.max(1000000, 'Rate too high'), // Max £10,000 (in pence)
-	mileageRate: z
-		.number({ message: 'Mileage rate is required' })
-		.int('Rate must be a whole number')
-		.min(0, 'Rate must be positive')
-		.max(10000, 'Rate too high'), // Max £1 per mile (10000 = 100p/mile in storage format)
 	invoicingService: z.enum(['Self-Invoicing', 'Verso-Basic', 'Verso-Full']),
 })
 
@@ -64,7 +60,6 @@ export function FinanceSettings() {
 		defaultValues: {
 			normalRate: 16000, // £160 in pence
 			drsRate: 10000, // £100 in pence
-			mileageRate: 1988, // 19.88p per mile (stored as pence per 100 miles)
 			invoicingService: 'Self-Invoicing',
 		},
 	})
@@ -82,7 +77,6 @@ export function FinanceSettings() {
 				reset({
 					normalRate: data.normal_rate,
 					drsRate: data.drs_rate,
-					mileageRate: data.mileage_rate,
 					invoicingService: data.invoicing_service as InvoicingService,
 				})
 			} catch (err) {
@@ -110,7 +104,6 @@ export function FinanceSettings() {
 				.update({
 					normal_rate: data.normalRate,
 					drs_rate: data.drsRate,
-					mileage_rate: data.mileageRate,
 					invoicing_service: data.invoicingService,
 				})
 				.eq('user_id', user.id)
@@ -121,12 +114,12 @@ export function FinanceSettings() {
 				return
 			}
 
-			// Update store with new values
+			// Update store with new values (keep existing mileage_rate)
 			setSettings({
 				user_id: user.id,
 				normal_rate: data.normalRate,
 				drs_rate: data.drsRate,
-				mileage_rate: data.mileageRate,
+				mileage_rate: settings?.mileage_rate || 1988, // Preserve existing mileage rate
 				invoicing_service: data.invoicingService,
 				created_at: settings?.created_at || new Date().toISOString(),
 				updated_at: new Date().toISOString(),
@@ -288,51 +281,6 @@ export function FinanceSettings() {
 						)}
 						<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
 							Default: £100 per day
-						</p>
-					</div>
-
-					{/* Mileage Rate */}
-					<div>
-						<Label htmlFor='mileageRate' style={{ color: 'var(--input-label)' }}>
-							Mileage Rate (per mile)
-						</Label>
-						<div className='mt-2 relative'>
-							<span
-								className='absolute left-4 top-1/2 -translate-y-1/2 font-mono z-10'
-								style={{ color: 'var(--input-placeholder)' }}
-							>
-								£
-							</span>
-							<Controller
-								name='mileageRate'
-								control={control}
-								render={({ field }) => (
-									<NumberInput
-										id='mileageRate'
-										value={parseFloat((field.value / 10000).toFixed(4))}
-										onChange={(value) => field.onChange(Math.round(value * 10000))}
-										step={0.0001}
-										min={0}
-										max={1}
-										placeholder='0.1988'
-										className='pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
-										style={{
-											backgroundColor: 'var(--input-bg)',
-											borderColor: 'var(--input-border)',
-											color: 'var(--input-text)',
-										}}
-									/>
-								)}
-							/>
-						</div>
-						{errors.mileageRate && (
-							<p className='text-sm mt-1' style={{ color: 'var(--input-error-text)' }}>
-								{errors.mileageRate.message}
-							</p>
-						)}
-						<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
-							Default: £0.1988/mile (19.88p). Amazon adjusts this based on fuel
-							prices.
 						</p>
 					</div>
 
