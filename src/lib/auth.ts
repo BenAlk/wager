@@ -132,8 +132,9 @@ export async function getCurrentUser() {
  * Check if an email address is already registered
  * Uses auth metadata check when email confirmation is enabled
  * NOTE: This function is deprecated - duplicate detection now happens in signUp()
+ * @deprecated Use signUp() directly - it handles duplicate detection via identities array
  */
-export async function checkEmailExists(_email: string): Promise<boolean> {
+export async function checkEmailExists(): Promise<boolean> {
 	// This function is deprecated
 	// Duplicate email detection now happens in signUp() by checking the identities array
 	// when email confirmation is enabled in Supabase

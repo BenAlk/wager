@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { toast } from 'sonner'
 import { Award, Loader2, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
 import { fetchWeekWithWorkDays, updateWeekRankings } from '@/lib/api/weeks'
-import { getPreviousWeek, dateToWeekNumber } from '@/lib/dates'
 import { getDailyBonusRate } from '@/lib/calculations'
+import { dateToWeekNumber, getPreviousWeek } from '@/lib/dates'
+import type { Week, WorkDay } from '@/types'
 
-import { DashboardTile } from './DashboardTile'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
@@ -21,31 +21,39 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
+import { DashboardTile } from './DashboardTile'
 
 const rankingsSchema = z.object({
-	individual_level: z.enum(['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+']),
+	individual_level: z.enum([
+		'Poor',
+		'Fair',
+		'Great',
+		'Fantastic',
+		'Fantastic+',
+	]),
 	company_level: z.enum(['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+']),
 })
 
 type RankingsFormData = z.infer<typeof rankingsSchema>
 
+interface WeekWithWorkDays {
+	week: Week
+	workDays: WorkDay[]
+}
+
 export function RankingsReminderTile() {
 	const { user } = useAuth()
 	const [showModal, setShowModal] = useState(false)
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	const [weekNMinus2Data, setWeekNMinus2Data] = useState<any>(null)
+	const [weekNMinus2Data, setWeekNMinus2Data] =
+		useState<WeekWithWorkDays | null>(null)
 	const [missingRankings, setMissingRankings] = useState(false)
 
 	const today = new Date()
 	const { week: currentWeek, year: currentYear } = dateToWeekNumber(today)
 	const weekNMinus2Info = getPreviousWeek(currentWeek, currentYear, 2)
 
-	const {
-		control,
-		handleSubmit,
-		watch,
-		reset,
-	} = useForm<RankingsFormData>({
+	const { control, handleSubmit, watch, reset } = useForm<RankingsFormData>({
 		resolver: zodResolver(rankingsSchema),
 		defaultValues: {
 			individual_level: 'Fantastic',
@@ -81,11 +89,13 @@ export function RankingsReminderTile() {
 				weekNMinus2Info.year
 			)
 
-			// Set a marker object if result is null (no week data at all)
-			setWeekNMinus2Data(result || { week: {}, workDays: [] })
+			// Store the result (null if no week exists yet)
+			setWeekNMinus2Data(result)
 
-			const hasWorkDays = result && result.workDays && result.workDays.length > 0
-			const hasRankings = result?.week.individual_level && result?.week.company_level
+			const hasWorkDays =
+				result && result.workDays && result.workDays.length > 0
+			const hasRankings =
+				result?.week.individual_level && result?.week.company_level
 
 			setMissingRankings(Boolean(hasWorkDays && !hasRankings))
 		}
@@ -109,11 +119,11 @@ export function RankingsReminderTile() {
 				toast.success('Rankings saved!', { duration: 3000 })
 				setShowModal(false)
 				setMissingRankings(false)
-			// Update the weekNMinus2Data with the new rankings
-			setWeekNMinus2Data({
-				...weekNMinus2Data,
-				week: updated,
-			})
+				// Update the weekNMinus2Data with the new rankings
+				setWeekNMinus2Data({
+					...weekNMinus2Data,
+					week: updated,
+				})
 			} else {
 				toast.error('Failed to save rankings')
 			}
@@ -126,9 +136,16 @@ export function RankingsReminderTile() {
 	}
 
 	// Show placeholder if rankings exist
-	if (!missingRankings && weekNMinus2Data && weekNMinus2Data.week.individual_level) {
+	if (
+		!missingRankings &&
+		weekNMinus2Data &&
+		weekNMinus2Data.week.individual_level
+	) {
 		return (
-			<DashboardTile title='Performance Rankings' icon={Award}>
+			<DashboardTile
+				title='Performance Rankings'
+				icon={Award}
+			>
 				<div className='text-center py-4'>
 					<p className='text-[var(--text-primary)] text-sm mb-2'>
 						Week {weekNMinus2Info.week} rankings entered
@@ -155,7 +172,10 @@ export function RankingsReminderTile() {
 	// Show placeholder if no work days exist for week N-2
 	if (!missingRankings && weekNMinus2Data) {
 		return (
-			<DashboardTile title='Performance Rankings' icon={Award}>
+			<DashboardTile
+				title='Performance Rankings'
+				icon={Award}
+			>
 				<div className='text-center py-4'>
 					<p className='text-[var(--text-secondary)] text-sm mb-2'>
 						Week {weekNMinus2Info.week}
@@ -175,7 +195,10 @@ export function RankingsReminderTile() {
 
 	return (
 		<>
-			<DashboardTile title='Rankings Reminder' icon={Award}>
+			<DashboardTile
+				title='Rankings Reminder'
+				icon={Award}
+			>
 				<div className='flex flex-col min-h-full justify-evenly items-center py-4'>
 					<p className='text-[var(--text-warning)] text-sm'>
 						Week {weekNMinus2Info.week} rankings are missing!
@@ -204,35 +227,51 @@ export function RankingsReminderTile() {
 								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 								aria-label='Close rankings entry'
 							>
-								<X className='w-5 h-5' aria-hidden='true' />
+								<X
+									className='w-5 h-5'
+									aria-hidden='true'
+								/>
 							</Button>
 						</div>
 
-						<form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+						<form
+							onSubmit={handleSubmit(onSubmit)}
+							className='space-y-4'
+						>
 							<div>
-								<Label htmlFor='individual_level' className='text-[var(--input-label)]'>
+								<Label
+									htmlFor='individual_level'
+									className='text-[var(--input-label)]'
+								>
 									Individual Level
 								</Label>
 								<Controller
 									name='individual_level'
 									control={control}
 									render={({ field }) => (
-										<Select value={field.value} onValueChange={field.onChange}>
+										<Select
+											value={field.value}
+											onValueChange={field.onChange}
+										>
 											<SelectTrigger className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'>
 												<SelectValue />
 											</SelectTrigger>
 											<SelectContent className='bg-[var(--modal-bg)] border-[var(--modal-border)]'>
-												{['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+'].map(
-													(level) => (
-														<SelectItem
-															key={level}
-															value={level}
-															className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
-														>
-															{level}
-														</SelectItem>
-													)
-												)}
+												{[
+													'Poor',
+													'Fair',
+													'Great',
+													'Fantastic',
+													'Fantastic+',
+												].map((level) => (
+													<SelectItem
+														key={level}
+														value={level}
+														className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
+													>
+														{level}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 									)}
@@ -240,29 +279,39 @@ export function RankingsReminderTile() {
 							</div>
 
 							<div>
-								<Label htmlFor='company_level' className='text-[var(--input-label)]'>
+								<Label
+									htmlFor='company_level'
+									className='text-[var(--input-label)]'
+								>
 									Company Level
 								</Label>
 								<Controller
 									name='company_level'
 									control={control}
 									render={({ field }) => (
-										<Select value={field.value} onValueChange={field.onChange}>
+										<Select
+											value={field.value}
+											onValueChange={field.onChange}
+										>
 											<SelectTrigger className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'>
 												<SelectValue />
 											</SelectTrigger>
 											<SelectContent className='bg-[var(--modal-bg)] border-[var(--modal-border)]'>
-												{['Poor', 'Fair', 'Great', 'Fantastic', 'Fantastic+'].map(
-													(level) => (
-														<SelectItem
-															key={level}
-															value={level}
-															className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
-														>
-															{level}
-														</SelectItem>
-													)
-												)}
+												{[
+													'Poor',
+													'Fair',
+													'Great',
+													'Fantastic',
+													'Fantastic+',
+												].map((level) => (
+													<SelectItem
+														key={level}
+														value={level}
+														className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
+													>
+														{level}
+													</SelectItem>
+												))}
 											</SelectContent>
 										</Select>
 									)}
@@ -293,7 +342,7 @@ export function RankingsReminderTile() {
 								<Button
 									type='submit'
 									disabled={isSubmitting}
-									className='w-full h-10 bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
+									className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 								>
 									{isSubmitting ? (
 										<>

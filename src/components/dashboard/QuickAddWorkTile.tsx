@@ -165,9 +165,9 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					toast.error('Failed to add work')
 				}
 			}
-		} catch (error: any) {
+		} catch (error) {
 			console.error('Error adding/updating work:', error)
-			if (error.message?.includes('duplicate')) {
+			if (error instanceof Error && error.message?.includes('duplicate')) {
 				toast.error('Work already exists for today')
 			} else {
 				toast.error('An error occurred')

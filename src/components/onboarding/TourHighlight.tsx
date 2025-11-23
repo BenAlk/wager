@@ -35,9 +35,8 @@ export function TourHighlight({
   const messageRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let retryTimeoutId: ReturnType<typeof setTimeout>
-    let initialDelayTimeoutId: ReturnType<typeof setTimeout>
-    let recalcDelayTimeoutId: ReturnType<typeof setTimeout>
+    let retryTimeoutId: ReturnType<typeof setTimeout> | undefined
+    let recalcDelayTimeoutId: ReturnType<typeof setTimeout> | undefined
 
     // Find target element and highlight it
     const findAndHighlightTarget = () => {
@@ -78,7 +77,7 @@ export function TourHighlight({
     // Add a small initial delay to let the page render after route change
     // This is especially important on mobile when navigating between routes
     // Extended delay for dashboard animations to complete
-    initialDelayTimeoutId = setTimeout(() => {
+    const initialDelayTimeoutId = setTimeout(() => {
       findAndHighlightTarget()
     }, 400)
 
@@ -100,15 +99,9 @@ export function TourHighlight({
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      if (retryTimeoutId) {
-        clearTimeout(retryTimeoutId)
-      }
-      if (initialDelayTimeoutId) {
-        clearTimeout(initialDelayTimeoutId)
-      }
-      if (recalcDelayTimeoutId) {
-        clearTimeout(recalcDelayTimeoutId)
-      }
+      clearTimeout(retryTimeoutId)
+      clearTimeout(initialDelayTimeoutId)
+      clearTimeout(recalcDelayTimeoutId)
     }
   }, [targetSelector])
 

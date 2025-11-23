@@ -70,7 +70,7 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
       }
 
       // Step 2: Call the delete function (which will cascade delete all user data)
-      // @ts-ignore - RPC function not in generated types yet
+      // @ts-expect-error - RPC function not in generated types yet
       const { error: deleteError } = await supabase.rpc('delete_user_account')
 
       if (deleteError) {
