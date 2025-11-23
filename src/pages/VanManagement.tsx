@@ -234,11 +234,11 @@ export default function VanManagement() {
 								<Badge className='bg-[var(--bg-success)] text-[var(--text-success)] border-[var(--border-success)]'>
 									Complete
 								</Badge>
-							) : (
+							) : totalDepositPaid > 0 ? (
 								<Badge className='bg-[var(--bg-info)] text-[var(--text-info)] border-[var(--border-info)]'>
 									In Progress
 								</Badge>
-							)}
+							) : null}
 							<Button
 								variant='outline'
 								size='sm'
