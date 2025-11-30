@@ -1065,8 +1065,8 @@ final_pay = calculated_weekly_pay - deposit_shortfall
 - **DSP**: Delivery Service Partner (company that contracts with Amazon)
 - **DRS/Missort Route**: Cleanup parcels that didn't make it into correct bags in time (not area-specific, smaller routes)
 - **Sweep/Sweeping**: Taking delivery stops from another driver who's behind
-- **Stops Given**: Stops you took from others (positive to your pay)
-- **Stops Taken**: Stops others took from you (negative to your pay)
+- **Stops You Swept** (stops_given): Stops you took from behind drivers (positive to your pay, +£1 each)
+- **Stops Others Swept For You** (stops_taken): Stops others took from you (negative to your pay, -£1 each)
 - **Fantastic/Fantastic+**: Top two performance tiers (eligible for bonuses)
 - **Rankings**: Performance levels released Week N+2 (Thursday) for Week N work
 - **On-hire**: Taking possession of a rental van

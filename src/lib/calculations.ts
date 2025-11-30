@@ -120,11 +120,11 @@ export function calculateDailyPay(workDay: WorkDay): number {
 
 /**
  * Calculate net sweeps for a single day
- * Formula: (stops_given - stops_taken) � �1
+ * Formula: (stops_taken - stops_given) × £1
  */
 export function calculateDailySweeps(workDay: WorkDay): number {
-	const netStops = workDay.stops_given - workDay.stops_taken
-	return netStops * 100 // Convert to pence (�1 = 100p)
+	const netStops = workDay.stops_taken - workDay.stops_given
+	return netStops * 100 // Convert to pence (£1 = 100p)
 }
 
 /**

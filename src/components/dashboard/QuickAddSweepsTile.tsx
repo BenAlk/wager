@@ -141,11 +141,11 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 						<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
 							<div className='flex justify-between items-start mb-3'>
 								<div className='flex-1'>
-									<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops Given</p>
-									<p className='text-[var(--text-sweeps-taken)] font-semibold text-lg'>
-										{todayWork.stops_given}
+									<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops You Swept</p>
+									<p className='text-[var(--text-sweeps-given)] font-semibold text-lg'>
+										{todayWork.stops_taken}
 									</p>
-									<p className='text-[var(--text-tertiary)] text-xs'>Others took from you</p>
+									<p className='text-[var(--text-tertiary)] text-xs'>You helped behind drivers</p>
 								</div>
 								<Button
 									variant='ghost'
@@ -158,11 +158,11 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 								</Button>
 							</div>
 							<div>
-								<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops Taken</p>
-								<p className='text-[var(--text-sweeps-given)] font-semibold text-lg'>
-									{todayWork.stops_taken}
+								<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops Others Swept For You</p>
+								<p className='text-[var(--text-sweeps-taken)] font-semibold text-lg'>
+									{todayWork.stops_given}
 								</p>
-								<p className='text-[var(--text-tertiary)] text-xs'>You took from others</p>
+								<p className='text-[var(--text-tertiary)] text-xs'>Others helped you</p>
 							</div>
 						</div>
 						<p className='text-[var(--text-secondary)] text-xs text-center'>
@@ -194,39 +194,10 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 					<div className='space-y-2 w-2/3'>
 						<div>
 							<Label
-								htmlFor='stops_given'
-								className='text-[var(--input-label)] text-sm'
-							>
-								Stops Given (Others took from you)
-							</Label>
-							<Controller
-								name='stops_given'
-								control={control}
-								render={({ field }) => (
-									<NumberInput
-										id='stops_given'
-										value={field.value}
-										onChange={field.onChange}
-										min={0}
-										max={200}
-										chevronSize='sm'
-										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)]'
-									/>
-								)}
-							/>
-							{errors.stops_given && (
-								<p className='text-[var(--input-error-text)] text-xs mt-1'>
-									{errors.stops_given.message}
-								</p>
-							)}
-						</div>
-
-						<div>
-							<Label
 								htmlFor='stops_taken'
 								className='text-[var(--input-label)] text-sm'
 							>
-								Stops Taken (You took from others)
+								Stops You Swept (You helped)
 							</Label>
 							<Controller
 								name='stops_taken'
@@ -239,13 +210,42 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 										min={0}
 										max={200}
 										chevronSize='sm'
-										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)]'
 									/>
 								)}
 							/>
 							{errors.stops_taken && (
 								<p className='text-[var(--input-error-text)] text-xs mt-1'>
 									{errors.stops_taken.message}
+								</p>
+							)}
+						</div>
+
+						<div>
+							<Label
+								htmlFor='stops_given'
+								className='text-[var(--input-label)] text-sm'
+							>
+								Stops Others Swept For You
+							</Label>
+							<Controller
+								name='stops_given'
+								control={control}
+								render={({ field }) => (
+									<NumberInput
+										id='stops_given'
+										value={field.value}
+										onChange={field.onChange}
+										min={0}
+										max={200}
+										chevronSize='sm'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'
+									/>
+								)}
+							/>
+							{errors.stops_given && (
+								<p className='text-[var(--input-error-text)] text-xs mt-1'>
+									{errors.stops_given.message}
 								</p>
 							)}
 						</div>

@@ -321,40 +321,10 @@ export default function DayEditModal({
 						<div className='grid grid-cols-2 gap-4'>
 							<div>
 								<Label
-									htmlFor='stops_given'
+									htmlFor='stops_taken'
 									className='text-[var(--text-sweeps-given)] font-medium flex items-center gap-1'
 								>
-									<span>✓</span> Stops You Helped With
-								</Label>
-								<Controller
-									name='stops_given'
-									control={control}
-									render={({ field }) => (
-										<NumberInput
-											{...field}
-											id='stops_given'
-											min={0}
-											max={200}
-											chevronSize='sm'
-											className='mt-2 bg-[var(--bg-success)] border-[var(--border-success)] text-[var(--input-text)] focus:ring-[var(--text-success)]'
-										/>
-									)}
-								/>
-								<p className='text-xs text-[var(--text-sweeps-given)]/60 mt-1'>
-									Stops you took from others (+£1 each)
-								</p>
-								{errors.stops_given && (
-									<p className='text-[var(--input-error-text)] text-sm mt-1'>
-										{errors.stops_given.message}
-									</p>
-								)}
-							</div>
-							<div>
-								<Label
-									htmlFor='stops_taken'
-									className='text-[var(--text-sweeps-taken)] font-medium flex items-center gap-1'
-								>
-									<span>✗</span> Stops Others Helped With
+									<span>✓</span> Stops You Swept
 								</Label>
 								<Controller
 									name='stops_taken'
@@ -366,16 +336,46 @@ export default function DayEditModal({
 											min={0}
 											max={200}
 											chevronSize='sm'
+											className='mt-2 bg-[var(--bg-success)] border-[var(--border-success)] text-[var(--input-text)] focus:ring-[var(--text-success)]'
+										/>
+									)}
+								/>
+								<p className='text-xs text-[var(--text-sweeps-given)]/60 mt-1'>
+									You helped behind drivers (+£1 each)
+								</p>
+								{errors.stops_taken && (
+									<p className='text-[var(--input-error-text)] text-sm mt-1'>
+										{errors.stops_taken.message}
+									</p>
+								)}
+							</div>
+							<div>
+								<Label
+									htmlFor='stops_given'
+									className='text-[var(--text-sweeps-taken)] font-medium flex items-center gap-1'
+								>
+									<span>✗</span> Stops Others Swept For You
+								</Label>
+								<Controller
+									name='stops_given'
+									control={control}
+									render={({ field }) => (
+										<NumberInput
+											{...field}
+											id='stops_given'
+											min={0}
+											max={200}
+											chevronSize='sm'
 											className='mt-2 bg-[var(--bg-error)] border-[var(--border-error)] text-[var(--input-text)] focus:ring-[var(--text-error)]'
 										/>
 									)}
 								/>
 								<p className='text-xs text-[var(--text-sweeps-taken)]/60 mt-1'>
-									Stops others took from you (-£1 each)
+									Others helped you (-£1 each)
 								</p>
-								{errors.stops_taken && (
+								{errors.stops_given && (
 									<p className='text-[var(--input-error-text)] text-sm mt-1'>
-										{errors.stops_taken.message}
+										{errors.stops_given.message}
 									</p>
 								)}
 							</div>
