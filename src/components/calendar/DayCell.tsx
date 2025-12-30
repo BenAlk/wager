@@ -156,23 +156,38 @@ export default function DayCell({
 					(workDay.van_logged_miles ?? 0) > 0) && (
 					<div className='mb-3'>
 						<div className='flex justify-evenly pr-1 gap-2'>
-							{(workDay.van_logged_miles ?? 0) > 0 && (
+							{/* Show only odometer if no Amazon data (estimated) */}
+							{(workDay.van_logged_miles ?? 0) > 0 &&
+							(workDay.amazon_paid_miles ?? 0) === 0 ? (
 								<div className='flex items-center gap-1'>
-									<Gauge className='w-3 h-3 text-[var(--text-mileage-van)]' />
-									<span className='text-sm font-medium text-[var(--text-mileage-van)]'>
-										{workDay.van_logged_miles}m
+									<Gauge className='w-3 h-3 text-amber-400' />
+									<span className='text-sm font-medium text-amber-400'>
+										{workDay.van_logged_miles}m*
 									</span>
 								</div>
-							)}
-							{(workDay.amazon_paid_miles ?? 0) > 0 && (
-								<div className='flex items-center gap-1'>
-									<span className='text-[var(--text-mileage-paid)] text-xs'>
-										📌
-									</span>
-									<span className='text-sm font-medium text-[var(--text-mileage-paid)]'>
-										{workDay.amazon_paid_miles}m
-									</span>
-								</div>
+							) : (
+								<>
+									{/* Show odometer (for discrepancy tracking) */}
+									{(workDay.van_logged_miles ?? 0) > 0 && (
+										<div className='flex items-center gap-1'>
+											<Gauge className='w-3 h-3 text-[var(--text-mileage-van)]' />
+											<span className='text-sm font-medium text-[var(--text-mileage-van)]'>
+												{workDay.van_logged_miles}m
+											</span>
+										</div>
+									)}
+									{/* Show Amazon miles (actual payment) */}
+									{(workDay.amazon_paid_miles ?? 0) > 0 && (
+										<div className='flex items-center gap-1'>
+											<span className='text-[var(--text-mileage-paid)] text-xs'>
+												📌
+											</span>
+											<span className='text-sm font-medium text-[var(--text-mileage-paid)]'>
+												{workDay.amazon_paid_miles}m
+											</span>
+										</div>
+									)}
+								</>
 							)}
 						</div>
 						<div>

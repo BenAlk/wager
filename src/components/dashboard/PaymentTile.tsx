@@ -226,8 +226,13 @@ export function PaymentTile() {
 										{standardPayBreakdown.mileagePayment > 0 && (
 											<div className='flex justify-between'>
 												<span className='text-[var(--text-primary)]'>Mileage</span>
-												<span className='font-mono text-[var(--finance-positive)]'>
+												<span className='font-mono text-[var(--finance-positive)] flex items-center gap-1.5'>
 													+£{(standardPayBreakdown.mileagePayment / 100).toFixed(2)}
+													{standardPayBreakdown.mileageIsEstimated && (
+														<span className='text-[0.65rem] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400'>
+															Est
+														</span>
+													)}
 												</span>
 											</div>
 										)}
@@ -261,6 +266,29 @@ export function PaymentTile() {
 												£{(standardPayBreakdown.standardPay / 100).toFixed(2)}
 											</span>
 										</div>
+
+										{/* Brief mileage disclaimer */}
+										{(standardPayBreakdown.mileageIsEstimated ||
+											standardPayBreakdown.hasMissingMileageData) && (
+											<div className='mt-2 pt-2 border-t border-[var(--border-secondary)]'>
+												{standardPayBreakdown.mileageIsEstimated && (
+													<div className='flex items-center gap-1.5 text-xs text-amber-400'>
+														<span className='text-[0.65rem] px-1 py-0.5 rounded bg-amber-500/20'>
+															⚠
+														</span>
+														<span>Includes estimated mileage</span>
+													</div>
+												)}
+												{standardPayBreakdown.hasMissingMileageData && (
+													<div className='flex items-center gap-1.5 text-xs text-red-400 mt-1'>
+														<span className='text-[0.65rem] px-1 py-0.5 rounded bg-red-500/20'>
+															!
+														</span>
+														<span>Missing mileage data</span>
+													</div>
+												)}
+											</div>
+										)}
 									</div>
 								</div>
 							)}

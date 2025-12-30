@@ -130,15 +130,52 @@ export function calculateDailySweeps(workDay: WorkDay): number {
 }
 
 /**
- * Calculate mileage pay for a single day
- * Formula: amazon_paid_miles × (mileage_rate / 100)
+ * Calculate mileage pay for a single day with estimation support
+ *
+ * Priority hierarchy:
+ * 1. Amazon paid miles (most accurate) - actual payment
+ * 2. Odometer miles (estimate) - uses van logged miles as estimate
+ * 3. No data - returns 0 with warning flag
+ *
+ * Formula: miles × (mileage_rate / 100)
  * Note: mileage_rate is stored as hundredths of a penny (e.g., 1988 = 19.88p/mile)
  * Example: 100 miles × (1988 / 100) = 100 × 19.88p = 1988p = £19.88
  */
-export function calculateDailyMileagePay(workDay: WorkDay): number {
-	const miles = workDay.amazon_paid_miles ?? 0
+export function calculateDailyMileagePay(workDay: WorkDay): {
+	pay: number
+	miles: number
+	isEstimate: boolean
+	hasNoMileageData: boolean
+} {
 	const rate = workDay.mileage_rate // Stored as hundredths of a penny (e.g., 1988 = 19.88p/mile)
-	return Math.round((miles * rate) / 100) // Calculate: miles × pence-per-mile
+
+	// Priority 1: Use Amazon paid miles (actual)
+	if (workDay.amazon_paid_miles != null && workDay.amazon_paid_miles > 0) {
+		return {
+			pay: Math.round((workDay.amazon_paid_miles * rate) / 100),
+			miles: workDay.amazon_paid_miles,
+			isEstimate: false,
+			hasNoMileageData: false,
+		}
+	}
+
+	// Priority 2: Use odometer as estimate
+	if (workDay.van_logged_miles != null && workDay.van_logged_miles > 0) {
+		return {
+			pay: Math.round((workDay.van_logged_miles * rate) / 100),
+			miles: workDay.van_logged_miles,
+			isEstimate: true,
+			hasNoMileageData: false,
+		}
+	}
+
+	// Priority 3: No mileage data
+	return {
+		pay: 0,
+		miles: 0,
+		isEstimate: false,
+		hasNoMileageData: true,
+	}
 }
 
 /**
@@ -170,9 +207,9 @@ export function calculateMileageDiscrepancy(workDay: WorkDay): {
 export function calculateDailyTotal(workDay: WorkDay): number {
 	const basePay = calculateDailyPay(workDay) // Includes device payment
 	const sweeps = calculateDailySweeps(workDay)
-	const mileage = calculateDailyMileagePay(workDay)
+	const mileageCalc = calculateDailyMileagePay(workDay)
 
-	return basePay + sweeps + mileage
+	return basePay + sweeps + mileageCalc.pay
 }
 
 // ============================================================================
@@ -205,11 +242,44 @@ export function calculateWeeklySweeps(workDays: WorkDay[]): number {
 }
 
 /**
- * Calculate weekly mileage pay
+ * Calculate weekly mileage pay with estimation tracking
  * Sum of all daily mileage payments
  */
-export function calculateWeeklyMileagePay(workDays: WorkDay[]): number {
-	return workDays.reduce((sum, day) => sum + calculateDailyMileagePay(day), 0)
+export function calculateWeeklyMileagePay(workDays: WorkDay[]): {
+	totalPay: number
+	isEstimated: boolean
+	hasMissingData: boolean
+	estimatedDaysCount: number
+	missingMileageDaysCount: number
+} {
+	let totalPay = 0
+	let isEstimated = false
+	let hasMissingData = false
+	let estimatedDaysCount = 0
+	let missingMileageDaysCount = 0
+
+	workDays.forEach((day) => {
+		const mileageCalc = calculateDailyMileagePay(day)
+		totalPay += mileageCalc.pay
+
+		if (mileageCalc.isEstimate) {
+			isEstimated = true
+			estimatedDaysCount++
+		}
+
+		if (mileageCalc.hasNoMileageData) {
+			hasMissingData = true
+			missingMileageDaysCount++
+		}
+	})
+
+	return {
+		totalPay,
+		isEstimated,
+		hasMissingData,
+		estimatedDaysCount,
+		missingMileageDaysCount,
+	}
 }
 
 /**
@@ -230,7 +300,8 @@ export function calculateWeeklyMileage(workDays: WorkDay[]): {
 	workDays.forEach((day) => {
 		totalAmazonMiles += day.amazon_paid_miles ?? 0
 		totalVanMiles += day.van_logged_miles ?? 0
-		totalMileagePay += calculateDailyMileagePay(day)
+		const mileageCalc = calculateDailyMileagePay(day)
+		totalMileagePay += mileageCalc.pay
 
 		const discrepancy = calculateMileageDiscrepancy(day)
 		totalDiscrepancyValue += discrepancy.discrepancyValue
@@ -577,7 +648,7 @@ export function calculateWeeklyPay(
 	const basePay = calculateWeeklyBasePay(workDays)
 	const sixDayBonus = calculateSixDayBonus(workDays)
 	const sweeps = calculateWeeklySweeps(workDays)
-	const mileage = calculateWeeklyMileagePay(workDays)
+	const mileageCalc = calculateWeeklyMileagePay(workDays)
 
 	// Calculate van costs
 	const vanCosts = calculateWeeklyVanCost(
@@ -595,7 +666,7 @@ export function calculateWeeklyPay(
 		basePay +
 		sixDayBonus +
 		sweeps +
-		mileage -
+		mileageCalc.totalPay -
 		vanCosts.vanCost -
 		vanCosts.depositPayment -
 		invoicingCost
@@ -607,7 +678,7 @@ export function calculateWeeklyPay(
 		basePay,
 		sixDayBonus,
 		sweeps,
-		mileage,
+		mileage: mileageCalc.totalPay,
 		vanCost: vanCosts.vanCost,
 		depositPayment: vanCosts.depositPayment,
 		invoicingCost,
@@ -801,6 +872,10 @@ export interface WeeklyPayBreakdownSimple {
 	stopsGiven: number
 	stopsTaken: number
 	mileagePayment: number
+	mileageIsEstimated: boolean
+	hasMissingMileageData: boolean
+	estimatedDaysCount: number
+	missingMileageDaysCount: number
 	totalAmazonMiles: number
 	totalVanMiles: number
 	mileageDiscrepancy: number
@@ -836,7 +911,7 @@ export function calculateWeeklyPayBreakdown(
 	const devicePayment = workDays.length * DEVICE_PAYMENT // £1.80 per day
 	const sixDayBonus = calculateSixDayBonus(workDays)
 	const sweepAdjustment = calculateWeeklySweeps(workDays)
-	const mileagePayment = calculateWeeklyMileagePay(workDays)
+	const mileageCalc = calculateWeeklyMileagePay(workDays)
 
 	// Sweep stats
 	const stopsGiven = workDays.reduce((sum, day) => sum + day.stops_given, 0)
@@ -883,7 +958,7 @@ export function calculateWeeklyPayBreakdown(
 		devicePayment +
 		sixDayBonus +
 		sweepAdjustment +
-		mileagePayment -
+		mileageCalc.totalPay -
 		vanDeduction -
 		depositPayment -
 		invoicingCost
@@ -895,7 +970,11 @@ export function calculateWeeklyPayBreakdown(
 		sweepAdjustment,
 		stopsGiven,
 		stopsTaken,
-		mileagePayment,
+		mileagePayment: mileageCalc.totalPay,
+		mileageIsEstimated: mileageCalc.isEstimated,
+		hasMissingMileageData: mileageCalc.hasMissingData,
+		estimatedDaysCount: mileageCalc.estimatedDaysCount,
+		missingMileageDaysCount: mileageCalc.missingMileageDaysCount,
 		totalAmazonMiles: mileageStats.totalAmazonMiles,
 		totalVanMiles: mileageStats.totalVanMiles,
 		mileageDiscrepancy: mileageStats.totalDiscrepancyMiles,

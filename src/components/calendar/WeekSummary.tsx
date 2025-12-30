@@ -408,76 +408,108 @@ export default function WeekSummary({
 
 				{/* Mileage */}
 				{breakdown.mileagePayment > 0 && (
-					<div className='flex items-center justify-between'>
-						{isEditingMileageRate ? (
-							<form
-								onSubmit={handleMileageSubmit(onMileageRateSubmit)}
-								className='flex items-center gap-2 flex-1'
-							>
-								<span className='text-[var(--text-secondary)]'>Rate:</span>
-								<span className='text-[var(--text-secondary)] font-mono'>£</span>
-								<Controller
-									name='mileage_rate'
-									control={mileageControl}
-									render={({ field }) => (
-										<NumberInput
-											value={field.value / 10000}
-											onChange={(value) => field.onChange(Math.round(value * 10000))}
-											step={0.0001}
-											min={0}
-											max={1}
-											chevronSize='sm'
-											className='w-24 h-8 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] font-mono text-sm px-2'
-										/>
+					<div className='space-y-2'>
+						<div className='flex items-center justify-between'>
+							{isEditingMileageRate ? (
+								<form
+									onSubmit={handleMileageSubmit(onMileageRateSubmit)}
+									className='flex items-center gap-2 flex-1'
+								>
+									<span className='text-[var(--text-secondary)]'>Rate:</span>
+									<span className='text-[var(--text-secondary)] font-mono'>£</span>
+									<Controller
+										name='mileage_rate'
+										control={mileageControl}
+										render={({ field }) => (
+											<NumberInput
+												value={field.value / 10000}
+												onChange={(value) => field.onChange(Math.round(value * 10000))}
+												step={0.0001}
+												min={0}
+												max={1}
+												chevronSize='sm'
+												className='w-24 h-8 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] font-mono text-sm px-2'
+											/>
+										)}
+									/>
+									<span className='text-[var(--text-secondary)] text-sm'>/mi</span>
+									<Button
+										type='submit'
+										variant='ghost'
+										size='sm'
+										disabled={isSavingMileageRate}
+										className='text-[var(--text-success)] hover:text-[var(--finance-positive)] h-8 px-2'
+									>
+										<Check className='w-4 h-4' />
+									</Button>
+									<Button
+										type='button'
+										variant='ghost'
+										size='sm'
+										onClick={handleCancelMileageEdit}
+										className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] h-8 px-2'
+									>
+										<X className='w-4 h-4' />
+									</Button>
+									{mileageErrors.mileage_rate && (
+										<p className='text-[var(--input-error-text)] text-xs'>
+											{mileageErrors.mileage_rate.message}
+										</p>
 									)}
-								/>
-								<span className='text-[var(--text-secondary)] text-sm'>/mi</span>
-								<Button
-									type='submit'
-									variant='ghost'
-									size='sm'
-									disabled={isSavingMileageRate}
-									className='text-[var(--text-success)] hover:text-[var(--finance-positive)] h-8 px-2'
-								>
-									<Check className='w-4 h-4' />
-								</Button>
-								<Button
-									type='button'
-									variant='ghost'
-									size='sm'
-									onClick={handleCancelMileageEdit}
-									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] h-8 px-2'
-								>
-									<X className='w-4 h-4' />
-								</Button>
-								{mileageErrors.mileage_rate && (
-									<p className='text-[var(--input-error-text)] text-xs'>
-										{mileageErrors.mileage_rate.message}
-									</p>
-								)}
-							</form>
-						) : (
-							<>
-								<div className='flex items-center gap-2'>
-									<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-										Mileage ({breakdown.totalAmazonMiles.toFixed(1)} mi × £
-										{((weekData?.mileage_rate || 1988) / 10000).toFixed(4)})
+								</form>
+							) : (
+								<>
+									<div className='flex items-center gap-2'>
+										<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
+											Mileage ({breakdown.totalAmazonMiles.toFixed(1)} mi × £
+											{((weekData?.mileage_rate || 1988) / 10000).toFixed(4)})
+										</span>
+										{weekData && (
+											<Button
+												variant='ghost'
+												size='sm'
+												onClick={handleEditMileageRate}
+												className='text-yellow-500 h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 cursor-pointer'
+											>
+												<Pencil className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
+											</Button>
+										)}
+									</div>
+									<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-positive)]'>
+										+ £{(breakdown.mileagePayment / 100).toFixed(2)}
+										{breakdown.mileageIsEstimated && (
+											<span className='text-xs ml-1.5 px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400'>
+												Est
+											</span>
+										)}
 									</span>
-									{weekData && (
-										<Button
-											variant='ghost'
-											size='sm'
-											onClick={handleEditMileageRate}
-											className='text-yellow-500 h-5 w-5 sm:h-6 sm:w-6 p-1 sm:p-2 cursor-pointer'
-										>
-											<Pencil className='w-2.5 h-2.5 sm:w-3 sm:h-3' />
-										</Button>
-									)}
+								</>
+							)}
+						</div>
+
+						{/* Mileage Estimation Disclaimer */}
+						{breakdown.mileageIsEstimated && (
+							<div className='flex items-start gap-2 p-2.5 sm:p-3 bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 dark:border-amber-500/20 rounded-lg'>
+								<AlertCircle className='w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0' />
+								<div className='text-xs text-amber-400'>
+									<strong>Mileage Estimate:</strong> Payment calculated using odometer miles
+									({breakdown.estimatedDaysCount} {breakdown.estimatedDaysCount === 1 ? 'day' : 'days'}).
+									Actual payment may differ based on Amazon's mileage calculations and rates.
+									Update with Amazon mileage data for accuracy.
 								</div>
-								<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-positive)]'>
-									+ £{(breakdown.mileagePayment / 100).toFixed(2)}
-								</span>
-							</>
+							</div>
+						)}
+
+						{/* Missing Mileage Data Warning */}
+						{breakdown.hasMissingMileageData && (
+							<div className='flex items-start gap-2 p-2.5 sm:p-3 bg-red-500/10 dark:bg-red-500/10 border border-red-500/20 dark:border-red-500/20 rounded-lg'>
+								<AlertCircle className='w-4 h-4 text-red-400 mt-0.5 flex-shrink-0' />
+								<div className='text-xs text-red-400'>
+									<strong>Missing Mileage Data:</strong> No mileage entered for {breakdown.missingMileageDaysCount}
+									{breakdown.missingMileageDaysCount === 1 ? ' day' : ' days'}.
+									Payment total will be inaccurate until mileage is added.
+								</div>
+							</div>
 						)}
 					</div>
 				)}

@@ -237,8 +237,13 @@ export default function PaymentThisWeek({
 							{standardPayBreakdown.mileagePayment > 0 && (
 								<div className='text-sm sm:text-lg flex justify-between'>
 									<span>Mileage</span>
-									<span className='text-[var(--finance-positive)]'>
+									<span className='text-[var(--finance-positive)] flex items-center gap-1.5'>
 										+£{(standardPayBreakdown.mileagePayment / 100).toFixed(2)}
+										{standardPayBreakdown.mileageIsEstimated && (
+											<span className='text-[0.65rem] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400'>
+												Est
+											</span>
+										)}
 									</span>
 								</div>
 							)}
@@ -274,6 +279,28 @@ export default function PaymentThisWeek({
 									£{(standardPayBreakdown.standardPay / 100).toFixed(2)}
 								</span>
 							</div>
+
+							{/* Mileage Estimation Disclaimer */}
+							{standardPayBreakdown.mileageIsEstimated && (
+								<div className='flex items-start gap-2 p-2 sm:p-2.5 bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 dark:border-amber-500/20 rounded-lg mt-3'>
+									<AlertCircle className='w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0' />
+									<p className='text-xs text-amber-400'>
+										Payment includes estimated mileage ({standardPayBreakdown.estimatedDaysCount}{' '}
+										{standardPayBreakdown.estimatedDaysCount === 1 ? 'day' : 'days'}). Actual may vary.
+									</p>
+								</div>
+							)}
+
+							{/* Missing Mileage Data Warning */}
+							{standardPayBreakdown.hasMissingMileageData && (
+								<div className='flex items-start gap-2 p-2 sm:p-2.5 bg-red-500/10 dark:bg-red-500/10 border border-red-500/20 dark:border-red-500/20 rounded-lg mt-3'>
+									<AlertCircle className='w-3.5 h-3.5 text-red-400 mt-0.5 flex-shrink-0' />
+									<p className='text-xs text-red-400'>
+										Missing mileage data ({standardPayBreakdown.missingMileageDaysCount}{' '}
+										{standardPayBreakdown.missingMileageDaysCount === 1 ? 'day' : 'days'}). Total may be inaccurate.
+									</p>
+								</div>
+							)}
 						</div>
 					</div>
 				)}
