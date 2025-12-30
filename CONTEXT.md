@@ -25,6 +25,10 @@ The app solves this by automating all calculations and providing visibility into
 - **Normal Route**: £160/day (default, customizable in settings)
 - **DRS/Missort Route**: £100/day (default, customizable in settings)
   - DRS = Cleanup parcels that didn't make it into correct bags in time (not area-specific, smaller routes)
+- **Device Payment**: £1.80/day (fixed payment for using Amazon Flex app on personal phone)
+  - Automatically applied to every work day
+  - Calculated as: days_worked × £1.80
+  - Paid with standard pay in Week N+2
 - **6-Day Week Bonus**: Flat £30 bonus (6 days × £5/day) added to weekly pay when working exactly 6 days
   - Applied as separate line item, not baked into daily rate
   - Works with ANY route type combination (6 Normal, 6 DRS, or mixed)
@@ -84,13 +88,13 @@ Users can choose between self-invoicing or using Verso (requires Ltd company set
 
 ### Pay Timing
 
-- **Standard Pay** (base + 6-day bonus + sweeps + mileage - van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
+- **Standard Pay** (base + device + 6-day bonus + sweeps + mileage - van costs): Paid **2 weeks in arrears** (Week N work paid in Week N+2)
 - **Performance Bonus**: Paid **6 weeks after work** (Week N work, bonus received in Week N+6)
   - The bonus arrives in the same payment as Week N+4 standard pay (both received in Week N+6)
 - **Example Timeline**:
   - Week 32: Work 6 days, eligible for performance bonus
   - Week 33 (Thursday): Rankings released, enter performance levels
-  - Week 34: Receive standard pay for Week 32 (base + 6-day bonus + sweeps + mileage - van costs)
+  - Week 34: Receive standard pay for Week 32 (base + device + 6-day bonus + sweeps + mileage - van costs)
   - Week 38: Receive payment containing Week 36 standard pay + Week 32 performance bonus
 
 ### Bonus System
@@ -555,6 +559,7 @@ invoicing_cost =
 // Standard pay for Week N (received in Week N+2)
 standard_pay =
 	base_pay +
+	device_payment +
 	six_day_bonus +
 	sweep_adjustment +
 	mileage_payment -

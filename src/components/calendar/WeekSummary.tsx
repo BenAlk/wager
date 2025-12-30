@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import {
 	deleteWeek as deleteWeekAPI,
+	fetchWeekWithWorkDays,
 	updateWeekMileageRate,
 	updateWeekRankings,
 } from '@/lib/api/weeks'
@@ -65,7 +66,7 @@ export default function WeekSummary({
 	year,
 }: WeekSummaryProps) {
 	const { user } = useAuth()
-	const { updateWeek, deleteWeek } = useWeeksStore()
+	const { updateWeek, deleteWeek, setWeek } = useWeeksStore()
 	const { allVans } = useVanStore()
 
 	const [isEditingRankings, setIsEditingRankings] = useState(false)
@@ -255,8 +256,15 @@ export default function WeekSummary({
 		if (!weekData || !user) return
 
 		try {
+			// Update the mileage rate on the week and all work days
 			await updateWeekMileageRate(weekData.id, data.mileage_rate)
-			updateWeek(weekData.id, { mileage_rate: data.mileage_rate })
+
+			// Refetch the week data to get updated work days with new mileage rate
+			const result = await fetchWeekWithWorkDays(user.id, weekNumber, year)
+			if (result) {
+				setWeek(result.week, result.workDays)
+			}
+
 			toast.success('Mileage rate updated!')
 			setIsEditingMileageRate(false)
 		} catch (error) {
@@ -353,6 +361,18 @@ export default function WeekSummary({
 						£{(breakdown.basePay / 100).toFixed(2)}
 					</span>
 				</div>
+
+				{/* Device Payment */}
+				{breakdown.devicePayment > 0 && (
+					<div className='flex items-center justify-between'>
+						<span className='text-sm sm:text-lg text-[var(--finance-positive)]'>
+							Device Payment ({daysWorked} {daysWorked === 1 ? 'day' : 'days'})
+						</span>
+						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-positive)]'>
+							+ £{(breakdown.devicePayment / 100).toFixed(2)}
+						</span>
+					</div>
+				)}
 
 				{/* 6-Day Bonus */}
 				{breakdown.sixDayBonus > 0 && (

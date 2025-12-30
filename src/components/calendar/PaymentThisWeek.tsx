@@ -203,6 +203,14 @@ export default function PaymentThisWeek({
 									+£{(standardPayBreakdown.basePay / 100).toFixed(2)}
 								</span>
 							</div>
+							{standardPayBreakdown.devicePayment > 0 && (
+								<div className='flex justify-between'>
+									<span className='text-sm sm:text-lg'>Device Payment</span>
+									<span className='text-sm sm:text-lg text-[var(--finance-positive)]'>
+										+£{(standardPayBreakdown.devicePayment / 100).toFixed(2)}
+									</span>
+								</div>
+							)}
 							{standardPayBreakdown.sixDayBonus > 0 && (
 								<div className='flex justify-between'>
 									<span className='text-sm sm:text-lg'>6-Day Bonus</span>

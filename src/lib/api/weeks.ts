@@ -178,6 +178,7 @@ export async function updateWeekMileageRate(
 	weekId: string,
 	mileageRate: number
 ): Promise<Week> {
+	// Update the week's mileage rate
 	const { data, error } = await supabase
 		.from('weeks')
 		.update({
@@ -189,6 +190,16 @@ export async function updateWeekMileageRate(
 
 	if (error) throw error;
 	if (!data) throw new Error('Failed to update week mileage rate');
+
+	// Also update all work days in this week to use the new mileage rate
+	const { error: workDaysError } = await supabase
+		.from('work_days')
+		.update({
+			mileage_rate: mileageRate,
+		})
+		.eq('week_id', weekId);
+
+	if (workDaysError) throw workDaysError;
 
 	return data;
 }

@@ -37,6 +37,7 @@ export const DEFAULT_MILEAGE_RATE = 1988 // 19.88p per mile (stored as pence per
  * Fixed bonus amounts
  */
 export const SIX_DAY_BONUS = 3000 // �30.00 (6 days � �5)
+export const DEVICE_PAYMENT = 180 // £1.80 per day (Amazon Flex app usage)
 export const MAX_DEPOSIT = 50000 // �500.00
 export const DEPOSIT_RATE_FIRST_TWO_WEEKS = 2500 // �25.00/week
 export const DEPOSIT_RATE_AFTER_TWO_WEEKS = 5000 // �50.00/week
@@ -112,10 +113,11 @@ export function formatMileage(miles: number): string {
 
 /**
  * Calculate pay for a single work day
- * Returns the daily rate based on route type
+ * Returns the daily rate based on route type plus device payment
+ * Includes £1.80 device payment for using Amazon Flex app
  */
 export function calculateDailyPay(workDay: WorkDay): number {
-	return workDay.daily_rate // Already stored in pence
+	return workDay.daily_rate + DEVICE_PAYMENT // Already stored in pence
 }
 
 /**
@@ -163,10 +165,10 @@ export function calculateMileageDiscrepancy(workDay: WorkDay): {
 
 /**
  * Calculate total pay for a single day
- * Includes: base pay + sweeps + mileage
+ * Includes: base pay + device payment + sweeps + mileage
  */
 export function calculateDailyTotal(workDay: WorkDay): number {
-	const basePay = calculateDailyPay(workDay)
+	const basePay = calculateDailyPay(workDay) // Includes device payment
 	const sweeps = calculateDailySweeps(workDay)
 	const mileage = calculateDailyMileagePay(workDay)
 
@@ -793,6 +795,7 @@ export function validateWeeklyWorkDays(workDays: WorkDay[]): {
 
 export interface WeeklyPayBreakdownSimple {
 	basePay: number
+	devicePayment: number
 	sixDayBonus: number
 	sweepAdjustment: number
 	stopsGiven: number
@@ -830,6 +833,7 @@ export function calculateWeeklyPayBreakdown(
 ): WeeklyPayBreakdownSimple {
 	// Base pay components
 	const basePay = calculateWeeklyBasePay(workDays)
+	const devicePayment = workDays.length * DEVICE_PAYMENT // £1.80 per day
 	const sixDayBonus = calculateSixDayBonus(workDays)
 	const sweepAdjustment = calculateWeeklySweeps(workDays)
 	const mileagePayment = calculateWeeklyMileagePay(workDays)
@@ -876,6 +880,7 @@ export function calculateWeeklyPayBreakdown(
 	// Standard pay total
 	const standardPay =
 		basePay +
+		devicePayment +
 		sixDayBonus +
 		sweepAdjustment +
 		mileagePayment -
@@ -885,6 +890,7 @@ export function calculateWeeklyPayBreakdown(
 
 	return {
 		basePay,
+		devicePayment,
 		sixDayBonus,
 		sweepAdjustment,
 		stopsGiven,

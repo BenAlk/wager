@@ -4,6 +4,7 @@ import {
 	DEFAULT_NORMAL_RATE,
 	DEFAULT_DRS_RATE,
 	SIX_DAY_BONUS,
+	DEVICE_PAYMENT,
 	BONUS_BOTH_FANTASTIC_PLUS,
 	BONUS_MIXED_FANTASTIC,
 	DEPOSIT_RATE_FIRST_TWO_WEEKS,
@@ -155,22 +156,22 @@ describe('Conversion Functions', () => {
 
 describe('Daily Calculations', () => {
 	describe('calculateDailyPay', () => {
-		it('returns the daily rate for a work day', () => {
+		it('returns the daily rate plus device payment for a work day', () => {
 			const normalDay = createWorkDay({ route_type: 'Normal', daily_rate: DEFAULT_NORMAL_RATE })
-			expect(calculateDailyPay(normalDay)).toBe(DEFAULT_NORMAL_RATE)
+			expect(calculateDailyPay(normalDay)).toBe(DEFAULT_NORMAL_RATE + DEVICE_PAYMENT) // £160 + £1.80
 
 			const drsDay = createWorkDay({ route_type: 'DRS', daily_rate: DEFAULT_DRS_RATE })
-			expect(calculateDailyPay(drsDay)).toBe(DEFAULT_DRS_RATE)
+			expect(calculateDailyPay(drsDay)).toBe(DEFAULT_DRS_RATE + DEVICE_PAYMENT) // £100 + £1.80
 		})
 	})
 
 	describe('calculateDailySweeps', () => {
 		it('calculates sweep adjustments correctly', () => {
 			const day1 = createWorkDay({ stops_given: 10, stops_taken: 5 })
-			expect(calculateDailySweeps(day1)).toBe(500) // +£5
+			expect(calculateDailySweeps(day1)).toBe(-500) // -£5
 
 			const day2 = createWorkDay({ stops_given: 5, stops_taken: 10 })
-			expect(calculateDailySweeps(day2)).toBe(-500) // -£5
+			expect(calculateDailySweeps(day2)).toBe(500) // +£5
 
 			const day3 = createWorkDay({ stops_given: 10, stops_taken: 10 })
 			expect(calculateDailySweeps(day3)).toBe(0) // £0
@@ -237,12 +238,12 @@ describe('Daily Calculations', () => {
 				route_type: 'Normal',
 				daily_rate: DEFAULT_NORMAL_RATE, // £160
 				stops_given: 10,
-				stops_taken: 5, // +£5 sweep
+				stops_taken: 5, // -£5 sweep (taken - given = 5 - 10 = -5)
 				amazon_paid_miles: 100, // +£19.88 mileage
 			})
 			const total = calculateDailyTotal(day)
-			// £160 + £5 + £19.88 = £184.88 = 18488 pence
-			expect(total).toBe(18488)
+			// £160 + £1.80 (device) - £5 + £19.88 = £176.68 = 17668 pence
+			expect(total).toBe(17668)
 		})
 	})
 })
@@ -292,12 +293,12 @@ describe('Weekly Calculations', () => {
 	describe('calculateWeeklySweeps', () => {
 		it('sums all sweep adjustments', () => {
 			const workDays = [
-				createWorkDay({ stops_given: 10, stops_taken: 5 }), // +£5
-				createWorkDay({ stops_given: 5, stops_taken: 10 }), // -£5
-				createWorkDay({ stops_given: 20, stops_taken: 0 }),  // +£20
+				createWorkDay({ stops_given: 10, stops_taken: 5 }), // -£5
+				createWorkDay({ stops_given: 5, stops_taken: 10 }), // +£5
+				createWorkDay({ stops_given: 20, stops_taken: 0 }),  // -£20
 			]
-			// +£5 - £5 + £20 = £20 = 2000 pence
-			expect(calculateWeeklySweeps(workDays)).toBe(2000)
+			// -£5 + £5 - £20 = -£20 = -2000 pence
+			expect(calculateWeeklySweeps(workDays)).toBe(-2000)
 		})
 	})
 
@@ -597,11 +598,14 @@ describe('calculateWeeklyPayBreakdown - Integration Tests', () => {
 		// Base pay: 6 × £160 = £960
 		expect(breakdown.basePay).toBe(96000)
 
+		// Device payment: 6 × £1.80 = £10.80
+		expect(breakdown.devicePayment).toBe(1080)
+
 		// 6-day bonus: £30
 		expect(breakdown.sixDayBonus).toBe(SIX_DAY_BONUS)
 
-		// Sweeps: 6 × (10-5) = 30 stops = £30
-		expect(breakdown.sweepAdjustment).toBe(3000)
+		// Sweeps: 6 × (5-10) = -30 stops = -£30
+		expect(breakdown.sweepAdjustment).toBe(-3000)
 
 		// Mileage: 6 × 100 miles × £0.1988 = £119.28
 		expect(breakdown.mileagePayment).toBe(11928)
@@ -609,8 +613,8 @@ describe('calculateWeeklyPayBreakdown - Integration Tests', () => {
 		// Invoicing: £0 (self-invoicing)
 		expect(breakdown.invoicingCost).toBe(0)
 
-		// Standard pay: £960 + £30 + £30 + £119.28 = £1139.28
-		expect(breakdown.standardPay).toBe(113928)
+		// Standard pay: £960 + £10.80 + £30 - £30 + £119.28 = £1090.08
+		expect(breakdown.standardPay).toBe(109008)
 	})
 
 	it('calculates mixed route types without bonus', () => {
@@ -626,13 +630,16 @@ describe('calculateWeeklyPayBreakdown - Integration Tests', () => {
 		// Base pay: (2 × £160) + (2 × £100) = £520
 		expect(breakdown.basePay).toBe(52000)
 
+		// Device payment: 4 × £1.80 = £7.20
+		expect(breakdown.devicePayment).toBe(720)
+
 		// No 6-day bonus (only 4 days)
 		expect(breakdown.sixDayBonus).toBe(0)
 
 		// Invoicing: £10 (Verso Basic)
 		expect(breakdown.invoicingCost).toBe(1000)
 
-		// Standard pay: £520 - £10 = £510
-		expect(breakdown.standardPay).toBe(51000)
+		// Standard pay: £520 + £7.20 - £10 = £517.20
+		expect(breakdown.standardPay).toBe(51720)
 	})
 })
