@@ -21,6 +21,7 @@ import type { WorkDay } from '@/types/database'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { NumberInput } from '@/components/ui/number-input'
 import {
 	Select,
 	SelectContent,
@@ -31,9 +32,22 @@ import {
 import { DashboardTile } from './DashboardTile'
 
 const workSchema = z.object({
-	route_type: z.enum(['Normal', 'DRS']),
+	route_type: z.enum(['Normal', 'DRS', 'Manual']),
 	route_number: z.string().min(1, 'Route number required'),
-})
+	daily_rate: z.number().min(1).optional(),
+}).refine(
+	(data) => {
+		// If Manual route, daily_rate is required
+		if (data.route_type === 'Manual') {
+			return data.daily_rate && data.daily_rate > 0
+		}
+		return true
+	},
+	{
+		message: 'Daily rate is required for manual route entries',
+		path: ['daily_rate'],
+	}
+)
 
 type WorkFormData = z.infer<typeof workSchema>
 
@@ -60,14 +74,18 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 		control,
 		handleSubmit,
 		reset,
+		watch,
 		formState: { errors },
 	} = useForm<WorkFormData>({
 		resolver: zodResolver(workSchema),
 		defaultValues: {
 			route_type: 'Normal',
 			route_number: '',
+			daily_rate: undefined,
 		},
 	})
+
+	const routeType = watch('route_type')
 
 	// Fetch today's work on mount
 	useEffect(() => {
@@ -87,8 +105,9 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 	useEffect(() => {
 		if (isEditing && todayWork) {
 			reset({
-				route_type: todayWork.route_type as 'Normal' | 'DRS',
+				route_type: todayWork.route_type as 'Normal' | 'DRS' | 'Manual',
 				route_number: todayWork.route_number || '',
+				daily_rate: todayWork.route_type === 'Manual' ? todayWork.daily_rate : undefined,
 			})
 		}
 	}, [isEditing, todayWork, reset])
@@ -104,9 +123,11 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 			if (isEditing && todayWork) {
 				// Determine daily rate from route type
 				const dailyRate =
-					data.route_type === 'Normal'
-						? settings?.normal_rate || 16000
-						: settings?.drs_rate || 10000
+					data.route_type === 'Manual'
+						? data.daily_rate || 0
+						: data.route_type === 'Normal'
+							? settings?.normal_rate || 16000
+							: settings?.drs_rate || 10000
 
 				const updated = await updateWorkDay(todayWork.id, {
 					route_type: data.route_type,
@@ -135,9 +156,11 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 
 				// Determine daily rate from route type
 				const dailyRate =
-					data.route_type === 'Normal'
-						? settings?.normal_rate || 16000
-						: settings?.drs_rate || 10000
+					data.route_type === 'Manual'
+						? data.daily_rate || 0
+						: data.route_type === 'Normal'
+							? settings?.normal_rate || 16000
+							: settings?.drs_rate || 10000
 
 				// Create work day
 				const workDay = await createWorkDay({
@@ -194,6 +217,11 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								</p>
 								<p className='text-[var(--text-primary)] font-semibold'>
 									{todayWork.route_type}
+									{todayWork.route_type === 'Manual' && (
+										<span className='text-xs text-[var(--text-secondary)] ml-1'>
+											(£{(todayWork.daily_rate / 100).toFixed(2)})
+										</span>
+									)}
 								</p>
 							</div>
 							<Button
@@ -318,11 +346,50 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 										>
 											DRS (£{((settings?.drs_rate || 10000) / 100).toFixed(0)})
 										</SelectItem>
+										<SelectItem
+											value='Manual'
+											className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
+										>
+											Manual (Custom)
+										</SelectItem>
 									</SelectContent>
 								</Select>
 							)}
 						/>
 					</div>
+
+					{routeType === 'Manual' && (
+						<div>
+							<Label
+								htmlFor='daily_rate'
+								className='text-[var(--input-label)] text-sm'
+							>
+								Daily Rate (£) *
+							</Label>
+							<Controller
+								name='daily_rate'
+								control={control}
+								render={({ field }) => (
+									<NumberInput
+										{...field}
+										id='daily_rate'
+										value={field.value ? field.value / 100 : undefined}
+										onChange={(val) => field.onChange(val ? Math.round(val * 100) : undefined)}
+										min={0.01}
+										step={0.01}
+										placeholder='e.g. 180.00'
+										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1 font-mono'
+										chevronSize='sm'
+									/>
+								)}
+							/>
+							{errors.daily_rate && (
+								<p className='text-[var(--input-error-text)] text-xs mt-1'>
+									{errors.daily_rate.message}
+								</p>
+							)}
+						</div>
+					)}
 
 					<div>
 						<Label
@@ -354,7 +421,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 				<Button
 					type='submit'
 					disabled={isSubmitting}
-					className='self-center w-1/2 h-10 mt-auto bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-white font-semibold shadow-lg'
+					className='self-center w-1/2 h-10 mt-2 bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-white font-semibold shadow-lg'
 				>
 					{isSubmitting ? (
 						<>

@@ -25,14 +25,27 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 
 const workDaySchema = z.object({
-	route_type: z.enum(['Normal', 'DRS']),
+	route_type: z.enum(['Normal', 'DRS', 'Manual']),
 	route_number: z.string().optional(),
+	daily_rate: z.number().min(1).optional(), // Required when Manual route type
 	stops_given: z.number().min(0).max(200),
 	stops_taken: z.number().min(0).max(200),
 	amazon_paid_miles: z.number().min(0).optional(),
 	van_logged_miles: z.number().min(0).optional(),
 	notes: z.string().optional(),
-})
+}).refine(
+	(data) => {
+		// If Manual route, daily_rate is required
+		if (data.route_type === 'Manual') {
+			return data.daily_rate && data.daily_rate > 0
+		}
+		return true
+	},
+	{
+		message: 'Daily rate is required for manual route entries',
+		path: ['daily_rate'],
+	}
+)
 
 type WorkDayFormData = z.infer<typeof workDaySchema>
 
@@ -87,6 +100,7 @@ export default function DayEditModal({
 			? {
 					route_type: existingWorkDay.route_type,
 					route_number: existingWorkDay.route_number || '',
+					daily_rate: existingWorkDay.route_type === 'Manual' ? existingWorkDay.daily_rate : undefined,
 					stops_given: existingWorkDay.stops_given,
 					stops_taken: existingWorkDay.stops_taken,
 					amazon_paid_miles: existingWorkDay.amazon_paid_miles || undefined,
@@ -96,6 +110,7 @@ export default function DayEditModal({
 			: {
 					route_type: 'Normal',
 					route_number: '',
+					daily_rate: undefined,
 					stops_given: 0,
 					stops_taken: 0,
 					amazon_paid_miles: undefined,
@@ -105,12 +120,15 @@ export default function DayEditModal({
 	})
 
 	const routeType = watch('route_type')
+	const manualRate = watch('daily_rate')
 
 	// Calculate daily rate based on route type
 	const dailyRate =
-		routeType === 'Normal'
-			? currentSettings.normal_rate
-			: currentSettings.drs_rate
+		routeType === 'Manual'
+			? (manualRate || 0)
+			: routeType === 'Normal'
+				? currentSettings.normal_rate
+				: currentSettings.drs_rate
 
 	const onSubmit = async (data: WorkDayFormData) => {
 		try {
@@ -265,11 +283,14 @@ export default function DayEditModal({
 					{/* Route Type */}
 					<div>
 						<Label className='text-[var(--input-label)]'>Route Type</Label>
-						<div className='flex gap-3 mt-2'>
+						<div className='grid grid-cols-3 gap-3 mt-2'>
 							<button
 								type='button'
-								onClick={() => setValue('route_type', 'Normal')}
-								className={`flex-1 py-3 px-4 rounded-lg border transition-all ${
+								onClick={() => {
+									setValue('route_type', 'Normal')
+									setValue('daily_rate', undefined)
+								}}
+								className={`py-3 px-4 rounded-lg border transition-all ${
 									routeType === 'Normal'
 										? 'bg-[var(--bg-route-normal)] border-[var(--border-route-normal)] text-[var(--text-route-normal)]'
 										: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
@@ -282,8 +303,11 @@ export default function DayEditModal({
 							</button>
 							<button
 								type='button'
-								onClick={() => setValue('route_type', 'DRS')}
-								className={`flex-1 py-3 px-4 rounded-lg border transition-all ${
+								onClick={() => {
+									setValue('route_type', 'DRS')
+									setValue('daily_rate', undefined)
+								}}
+								className={`py-3 px-4 rounded-lg border transition-all ${
 									routeType === 'DRS'
 										? 'bg-[var(--bg-route-drs)] border-[var(--border-route-drs)] text-[var(--text-route-drs)]'
 										: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
@@ -294,8 +318,57 @@ export default function DayEditModal({
 									£{(currentSettings.drs_rate / 100).toFixed(2)}
 								</div>
 							</button>
+							<button
+								type='button'
+								onClick={() => setValue('route_type', 'Manual')}
+								className={`py-3 px-4 rounded-lg border transition-all ${
+									routeType === 'Manual'
+										? 'bg-[var(--bg-route-normal)] border-[var(--border-route-normal)] text-[var(--text-route-normal)]'
+										: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
+								}`}
+							>
+								<div className='font-semibold'>Manual</div>
+								<div className='text-xs'>Custom Rate</div>
+							</button>
 						</div>
 					</div>
+
+					{/* Manual Rate Input - Only shown when Manual is selected */}
+					{routeType === 'Manual' && (
+						<div>
+							<Label
+								htmlFor='daily_rate'
+								className='text-[var(--input-label)]'
+							>
+								Daily Rate (£) <span className='text-[var(--text-error)]'>*</span>
+							</Label>
+							<Controller
+								name='daily_rate'
+								control={control}
+								render={({ field }) => (
+									<NumberInput
+										{...field}
+										id='daily_rate'
+										value={field.value ? field.value / 100 : undefined}
+										onChange={(val) => field.onChange(val ? Math.round(val * 100) : undefined)}
+										min={0.01}
+										step={0.01}
+										placeholder='Enter rate (e.g. 180.00 for LWB, 195.00 for 9.5hr)'
+										className='mt-2 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] font-mono'
+										chevronSize='sm'
+									/>
+								)}
+							/>
+							<p className='text-xs text-[var(--text-secondary)] mt-1'>
+								For special routes: LWB (£180-200), 9.5hr (£195), etc.
+							</p>
+							{errors.daily_rate && (
+								<p className='text-[var(--input-error-text)] text-sm mt-1'>
+									{errors.daily_rate.message}
+								</p>
+							)}
+						</div>
+					)}
 
 					{/* Route Number */}
 					<div>

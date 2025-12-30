@@ -154,7 +154,7 @@ export interface Database {
           id: string
           week_id: string
           date: string
-          route_type: 'Normal' | 'DRS'
+          route_type: 'Normal' | 'DRS' | 'Manual'
           route_number: string | null
           daily_rate: number
           stops_given: number
@@ -170,7 +170,7 @@ export interface Database {
           id?: string
           week_id: string
           date: string
-          route_type: 'Normal' | 'DRS'
+          route_type: 'Normal' | 'DRS' | 'Manual'
           route_number?: string | null
           daily_rate: number
           stops_given?: number
@@ -301,6 +301,6 @@ export type VanHire = Tables<'van_hires'>
 
 // Enum types
 export type PerformanceLevel = 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
-export type RouteType = 'Normal' | 'DRS'
+export type RouteType = 'Normal' | 'DRS' | 'Manual'
 export type VanType = 'Fleet' | 'Flexi'
 export type InvoicingService = 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'

@@ -25,6 +25,11 @@ The app solves this by automating all calculations and providing visibility into
 - **Normal Route**: £160/day (default, customizable in settings)
 - **DRS/Missort Route**: £100/day (default, customizable in settings)
   - DRS = Cleanup parcels that didn't make it into correct bags in time (not area-specific, smaller routes)
+- **Manual Entry**: Custom rate per day (entered per work day, not a global setting)
+  - Used for special routes with higher pay: LWB routes (£180-200), 9.5-hour routes (£195), etc.
+  - Rate entered in pounds when selecting Manual route type
+  - Stored in pence like all other rates (18000 = £180.00)
+  - No settings default - must be entered each time
 - **Device Payment**: £1.80/day (fixed payment for using Amazon Flex app on personal phone)
   - Automatically applied to every work day
   - Calculated as: days_worked × £1.80

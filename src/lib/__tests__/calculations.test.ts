@@ -163,6 +163,14 @@ describe('Daily Calculations', () => {
 			const drsDay = createWorkDay({ route_type: 'DRS', daily_rate: DEFAULT_DRS_RATE })
 			expect(calculateDailyPay(drsDay)).toBe(DEFAULT_DRS_RATE + DEVICE_PAYMENT) // £100 + £1.80
 		})
+
+		it('returns the manual daily rate plus device payment for Manual route type', () => {
+			const manualDay = createWorkDay({ route_type: 'Manual', daily_rate: 18000 }) // £180 for LWB route
+			expect(calculateDailyPay(manualDay)).toBe(18000 + DEVICE_PAYMENT) // £180 + £1.80
+
+			const manual9_5hr = createWorkDay({ route_type: 'Manual', daily_rate: 19500 }) // £195 for 9.5hr route
+			expect(calculateDailyPay(manual9_5hr)).toBe(19500 + DEVICE_PAYMENT) // £195 + £1.80
+		})
 	})
 
 	describe('calculateDailySweeps', () => {
@@ -262,6 +270,17 @@ describe('Weekly Calculations', () => {
 			]
 			// £160 + £160 + £100 = £420 = 42000 pence
 			expect(calculateWeeklyBasePay(workDays)).toBe(42000)
+		})
+
+		it('sums mixed route types including Manual routes', () => {
+			const workDays = [
+				createWorkDay({ route_type: 'Normal', daily_rate: DEFAULT_NORMAL_RATE }), // £160
+				createWorkDay({ route_type: 'DRS', daily_rate: DEFAULT_DRS_RATE }),       // £100
+				createWorkDay({ route_type: 'Manual', daily_rate: 18000 }),              // £180 (LWB)
+				createWorkDay({ route_type: 'Manual', daily_rate: 19500 }),              // £195 (9.5hr)
+			]
+			// £160 + £100 + £180 + £195 = £635 = 63500 pence
+			expect(calculateWeeklyBasePay(workDays)).toBe(63500)
 		})
 
 		it('returns 0 for empty array', () => {

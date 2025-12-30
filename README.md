@@ -68,6 +68,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 
 - **Normal Routes**: £160/day (customizable in settings)
 - **DRS/Missort Routes**: £100/day (customizable in settings)
+- **Manual Entry Routes**: Custom daily rate for special routes (LWB, 9.5hr, etc.) - entered per work day
 - **Device Payment**: £1.80/day (automatic payment for using Amazon Flex app on personal phone)
 - **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days (any route type combination)
 - **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), performance bonuses received 6 weeks after work (Week N+6)

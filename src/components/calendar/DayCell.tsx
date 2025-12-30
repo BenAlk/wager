@@ -88,6 +88,8 @@ export default function DayCell({
 
 	// Work day cell
 	const isNormal = workDay.route_type === 'Normal'
+	const isDRS = workDay.route_type === 'DRS'
+	const isManual = workDay.route_type === 'Manual'
 	const netSweeps = workDay.stops_taken - workDay.stops_given
 
 	return (
@@ -111,16 +113,20 @@ export default function DayCell({
 						className={`px-2 py-1 rounded-md flex items-center gap-1 ${
 							isNormal
 								? 'bg-[var(--bg-route-normal)] text-[var(--text-route-normal)]'
-								: 'bg-[var(--bg-route-drs)] text-[var(--text-route-drs)]'
+								: isDRS
+									? 'bg-[var(--bg-route-drs)] text-[var(--text-route-drs)]'
+									: 'bg-[var(--bg-route-normal)] text-[var(--text-route-normal)]'
 						}`}
 					>
 						{isNormal ? (
 							<Truck className='w-4 h-4' />
-						) : (
+						) : isDRS ? (
 							<Package className='w-4 h-4' />
+						) : (
+							<Truck className='w-4 h-4' />
 						)}
 						<span className='text-xs font-medium'>
-							{isNormal ? 'Std.' : 'DRS'}
+							{isNormal ? 'Std.' : isDRS ? 'DRS' : 'Manual'}
 						</span>
 					</div>
 				</div>
