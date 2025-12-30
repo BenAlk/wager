@@ -89,7 +89,6 @@ export default function DayCell({
 	// Work day cell
 	const isNormal = workDay.route_type === 'Normal'
 	const isDRS = workDay.route_type === 'DRS'
-	const isManual = workDay.route_type === 'Manual'
 	const netSweeps = workDay.stops_taken - workDay.stops_given
 
 	return (

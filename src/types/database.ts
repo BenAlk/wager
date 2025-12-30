@@ -186,7 +186,7 @@ export interface Database {
           id?: string
           week_id?: string
           date?: string
-          route_type?: 'Normal' | 'DRS'
+          route_type?: 'Normal' | 'DRS' | 'Manual'
           route_number?: string | null
           daily_rate?: number
           stops_given?: number
