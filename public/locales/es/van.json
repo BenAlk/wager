@@ -1,0 +1,63 @@
+{
+  "card": {
+    "active": "Active [Español]",
+    "ongoing": "Ongoing [Español]",
+    "weeklyRate": "Weekly Rate [Español]",
+    "duration": "Duration [Español]",
+    "status": "Status [Español]",
+    "refunded": "Refunded [Español]",
+    "holdUntil": "Hold until {{date}}",
+    "statusActive": "Active [Español]",
+    "completed": "Completed [Español]"
+  },
+  "modal": {
+    "titleEdit": "Edit Van Hire [Español]",
+    "titleNew": "New Van Hire [Español]",
+    "registrationLabel": "Registration Number * [Español]",
+    "registrationPlaceholder": "e.g., AB12 CDE [Español]",
+    "vanTypeLabel": "Van Type [Español]",
+    "vanTypePlaceholder": "Select type [Español]",
+    "vanTypeFleet": "Fleet (£250/week) [Español]",
+    "vanTypeFlexi": "Flexi (£100-£250/week) [Español]",
+    "weeklyRateLabel": "Weekly Rate (£) * [Español]",
+    "onHireDateLabel": "On-Hire Date * [Español]",
+    "offHireDateLabel": "Off-Hire Date [Español]",
+    "offHireDateHelp": "Leave empty if currently on-hire [Español]",
+    "depositStatusTitle": "Deposit Status [Español]",
+    "depositCurrent": "Current Deposit: [Español]",
+    "depositAutoNote": "Deposits are automatically calculated by the system based on weeks with any van [Español]",
+    "notesLabel": "Notes [Español]",
+    "notesPlaceholder": "Additional notes about this van hire... [Español]",
+    "offHireButton": "Off-Hire Van [Español]",
+    "deleteButton": "Delete [Español]",
+    "refundDepositButton": "Refund Deposit [Español]",
+    "cancelButton": "Cancel [Español]",
+    "updateButton": "Update [Español]",
+    "createButton": "Create [Español]"
+  },
+  "offHireDialog": {
+    "title": "Off-Hire Van [Español]",
+    "description": "Enter the date when the van was returned. The deposit will be held for 6 weeks. [Español]",
+    "infoTitle": "Important: Same-Day Van Swaps [Español]",
+    "infoDescription": "The off-hire date is the last day you had the van. If you're picking up a new van the same morning you're returning this one, off-hire this van on the previous day to avoid counting the same day twice. [Español]",
+    "dateLabel": "Off-Hire Date * [Español]",
+    "cancelButton": "Cancel [Español]",
+    "confirmButton": "Confirm Off-Hire [Español]"
+  },
+  "refundDialog": {
+    "title": "Refund Deposit [Español]",
+    "description": "Enter the refund amount (after deducting any damage costs). [Español]",
+    "amountLabel": "Refund Amount (£) * [Español]",
+    "maxLabel": "Max: £{{amount}}",
+    "cancelButton": "Cancel [Español]",
+    "confirmButton": "Confirm Refund [Español]"
+  },
+  "deleteDialog": {
+    "title": "Delete Van Hire? [Español]",
+    "description": "Are you sure you want to delete this van hire? [Español]",
+    "registration": "{{registration}}",
+    "warning": "This action cannot be undone. [Español]",
+    "confirmButton": "Delete [Español]",
+    "cancelButton": "Cancel [Español]"
+  }
+}

@@ -1,6 +1,7 @@
 import { Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { NumberInput } from '@/components/ui/number-input'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface PayRatesStepProps {
   normalRate: number // in pounds
@@ -19,15 +20,17 @@ export function PayRatesStep({
   onNext,
   onBack,
 }: PayRatesStepProps) {
+  const { t } = useTranslation('onboarding')
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground">
-          Your Daily Pay Rates
+          {t('payRates.title')}
         </h2>
         <p className="text-muted-foreground">
-          These rates are used to calculate your weekly earnings
+          {t('payRates.subtitle')}
         </p>
       </div>
 
@@ -36,7 +39,7 @@ export function PayRatesStep({
         {/* Normal Route Rate */}
         <div className="space-y-2">
           <label htmlFor="normal-rate" className="text-sm font-medium text-foreground block">
-            Normal Route Rate
+            {t('payRates.normalRouteRate')}
           </label>
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-mono">
@@ -52,7 +55,7 @@ export function PayRatesStep({
               className="pl-8"
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-              / day
+              {t('payRates.perDay')}
             </span>
           </div>
         </div>
@@ -60,7 +63,7 @@ export function PayRatesStep({
         {/* DRS Route Rate */}
         <div className="space-y-2">
           <label htmlFor="drs-rate" className="text-sm font-medium text-foreground block">
-            DRS Route Rate
+            {t('payRates.drsRouteRate')}
           </label>
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-mono">
@@ -76,7 +79,7 @@ export function PayRatesStep({
               className="pl-8"
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
-              / day
+              {t('payRates.perDay')}
             </span>
           </div>
         </div>
@@ -87,10 +90,10 @@ export function PayRatesStep({
         <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
         <div className="space-y-1">
           <p className="text-sm font-medium text-foreground">
-            Not sure about your rates?
+            {t('payRates.disclaimer.title')}
           </p>
           <p className="text-xs text-muted-foreground">
-            Check with your manager to confirm your exact daily rates. You can always update these later in Settings.
+            {t('payRates.disclaimer.description')}
           </p>
         </div>
       </div>
@@ -98,7 +101,7 @@ export function PayRatesStep({
       {/* Progress + Actions */}
       <div className="space-y-4 pt-2">
         <div className="text-center">
-          <span className="text-sm text-muted-foreground">Step 1 of 4</span>
+          <span className="text-sm text-muted-foreground">{t('payRates.step')}</span>
         </div>
 
         <div className="flex gap-3">
@@ -107,13 +110,13 @@ export function PayRatesStep({
             variant="outline"
             className="flex-1"
           >
-            Back
+            {t('common:actions.back')}
           </Button>
           <Button
             onClick={onNext}
             className="flex-1 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white font-semibold"
           >
-            Next
+            {t('common:actions.next')}
           </Button>
         </div>
       </div>

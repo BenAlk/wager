@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
+import { useTranslation } from '@/i18n/useTranslation'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchUserSettings } from '@/lib/api/settings'
 import { supabase } from '@/lib/supabase'
@@ -28,23 +29,35 @@ import {
  * Note: Form stores values in PENCE for easier validation/submission
  * Note: mileageRate is excluded from settings - adjusted per-week in calendar
  */
-const settingsSchema = z.object({
-	normalRate: z
-		.number({ message: 'Normal rate is required' })
-		.int('Rate must be a whole number')
-		.min(0, 'Rate must be positive')
-		.max(1000000, 'Rate too high'), // Max £10,000 (in pence)
-	drsRate: z
-		.number({ message: 'DRS rate is required' })
-		.int('Rate must be a whole number')
-		.min(0, 'Rate must be positive')
-		.max(1000000, 'Rate too high'), // Max £10,000 (in pence)
-	invoicingService: z.enum(['Self-Invoicing', 'Verso-Basic', 'Verso-Full']),
-})
+const createSettingsSchema = (t: (key: string, params?: any) => string) =>
+	z.object({
+		normalRate: z
+			.number({ message: t('validation:finance.normalRateRequired') })
+			.int(t('validation:finance.rateWhole'))
+			.min(0, t('validation:finance.ratePositive'))
+			.max(1000000, t('validation:finance.rateTooHigh')),
+		lwbRate: z
+			.number({ message: t('validation:finance.lwbRateRequired') })
+			.int(t('validation:finance.rateWhole'))
+			.min(0, t('validation:finance.ratePositive'))
+			.max(1000000, t('validation:finance.rateTooHigh')),
+		drsRate: z
+			.number({ message: t('validation:finance.drsRateRequired') })
+			.int(t('validation:finance.rateWhole'))
+			.min(0, t('validation:finance.ratePositive'))
+			.max(1000000, t('validation:finance.rateTooHigh')),
+		invoicingService: z.enum(['Self-Invoicing', 'Verso-Basic', 'Verso-Full']),
+	})
 
-type SettingsFormData = z.infer<typeof settingsSchema>
+type SettingsFormData = {
+	normalRate: number
+	lwbRate: number
+	drsRate: number
+	invoicingService: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
+}
 
 export function FinanceSettings() {
+	const { t } = useTranslation('settings')
 	const { user } = useAuth()
 	const { settings, isSaving, setSettings, setSaving } = useSettingsStore()
 
@@ -56,9 +69,10 @@ export function FinanceSettings() {
 		reset,
 		formState: { errors, isDirty },
 	} = useForm<SettingsFormData>({
-		resolver: zodResolver(settingsSchema),
+		resolver: zodResolver(createSettingsSchema(t)),
 		defaultValues: {
-			normalRate: 16000, // £160 in pence
+			normalRate: 15700, // £157 in pence
+			lwbRate: 17100, // £171 in pence
 			drsRate: 10000, // £100 in pence
 			invoicingService: 'Self-Invoicing',
 		},
@@ -76,12 +90,13 @@ export function FinanceSettings() {
 				setSettings(data)
 				reset({
 					normalRate: data.normal_rate,
+					lwbRate: data.lwb_rate,
 					drsRate: data.drs_rate,
 					invoicingService: data.invoicing_service as InvoicingService,
 				})
 			} catch (err) {
 				console.error('Error in loadSettings:', err)
-				toast.error('Failed to load settings')
+				toast.error(t('toast:settings.saveFailed'))
 			} finally {
 				setLoadingSettings(false)
 			}
@@ -103,6 +118,7 @@ export function FinanceSettings() {
 				.from('user_settings')
 				.update({
 					normal_rate: data.normalRate,
+					lwb_rate: data.lwbRate,
 					drs_rate: data.drsRate,
 					invoicing_service: data.invoicingService,
 				})
@@ -110,7 +126,7 @@ export function FinanceSettings() {
 
 			if (error) {
 				console.error('Error saving settings:', error)
-				toast.error('Failed to save settings')
+				toast.error(t('toast:settings.saveFailed'))
 				return
 			}
 
@@ -118,6 +134,7 @@ export function FinanceSettings() {
 			setSettings({
 				user_id: user.id,
 				normal_rate: data.normalRate,
+				lwb_rate: data.lwbRate,
 				drs_rate: data.drsRate,
 				mileage_rate: settings?.mileage_rate || 1988, // Preserve existing mileage rate
 				invoicing_service: data.invoicingService,
@@ -128,11 +145,11 @@ export function FinanceSettings() {
 			// Reset form to mark as clean
 			reset(data)
 
-			toast.success('Settings saved successfully!')
+			toast.success(t('toast:settings.saved'))
 		} catch (err) {
 			console.error('Error in onSubmit:', err)
-			toast.error('Failed to save settings')
-		} finally {
+			toast.error(t('toast:settings.saveFailed'))
+		} finally{
 			setSaving(false)
 		}
 	}
@@ -143,11 +160,11 @@ export function FinanceSettings() {
 	const getInvoicingCost = (service: InvoicingService): string => {
 		switch (service) {
 			case 'Self-Invoicing':
-				return '£0'
+				return t('finance.selfInvoicingCost')
 			case 'Verso-Basic':
-				return '£10'
+				return t('finance.versoBasicCost')
 			case 'Verso-Full':
-				return '£30'
+				return t('finance.versoFullCost')
 		}
 	}
 
@@ -157,11 +174,11 @@ export function FinanceSettings() {
 	const getInvoicingDescription = (service: InvoicingService): string => {
 		switch (service) {
 			case 'Self-Invoicing':
-				return 'Handle your own invoicing and tax returns'
+				return t('finance.selfInvoicingDescription')
 			case 'Verso-Basic':
-				return 'Professional invoicing + public liability insurance (requires Ltd company)'
+				return t('finance.versoBasicDescription')
 			case 'Verso-Full':
-				return 'Full invoicing + accounting + tax returns + insurance (requires Ltd company)'
+				return t('finance.versoFullDescription')
 		}
 	}
 
@@ -170,7 +187,7 @@ export function FinanceSettings() {
 			<div className='flex items-center justify-center py-8'>
 				<div className='flex items-center gap-2' style={{ color: 'var(--text-primary)' }}>
 					<Loader2 className='w-6 h-6 animate-spin' />
-					<p className='text-lg'>Loading settings...</p>
+					<p className='text-lg'>{t('finance.loadingSettings')}</p>
 				</div>
 			</div>
 		)
@@ -187,21 +204,20 @@ export function FinanceSettings() {
 				}}
 			>
 				<h2 className='text-xl font-semibold mb-4' style={{ color: 'var(--text-primary)' }}>
-					Pay Rates
+					{t('finance.title')}
 				</h2>
 				<p className='text-sm' style={{ color: 'var(--text-secondary)' }}>
-					Set your daily pay rates. These will be used to calculate your weekly
-					earnings.
+					{t('finance.description')}
 				</p>
 				<p className='mb-6' style={{ color: 'var(--text-error)' }}>
-					These should only be changed on the week that pay rates change.
+					{t('finance.warning')}
 				</p>
 
 				<div className='space-y-4'>
 					{/* Normal Route Rate */}
 					<div>
 						<Label htmlFor='normalRate' style={{ color: 'var(--input-label)' }}>
-							Normal Route Rate
+							{t('finance.normalRate')}
 						</Label>
 						<div className='mt-2 relative'>
 							<span
@@ -220,7 +236,7 @@ export function FinanceSettings() {
 										onChange={(value) => field.onChange(value * 100)}
 										min={0}
 										max={10000}
-										placeholder='160'
+										placeholder='157'
 										className='pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
 										style={{
 											backgroundColor: 'var(--input-bg)',
@@ -237,14 +253,57 @@ export function FinanceSettings() {
 							</p>
 						)}
 						<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
-							Default: £160 per day
+							{t('finance.normalRateDefault')}
+						</p>
+					</div>
+
+					{/* LWB Route Rate */}
+					<div>
+						<Label htmlFor='lwbRate' style={{ color: 'var(--input-label)' }}>
+							{t('finance.lwbRate')}
+						</Label>
+						<div className='mt-2 relative'>
+							<span
+								className='absolute left-4 top-1/2 -translate-y-1/2 font-mono z-10'
+								style={{ color: 'var(--input-placeholder)' }}
+							>
+								£
+							</span>
+							<Controller
+								name='lwbRate'
+								control={control}
+								render={({ field }) => (
+									<NumberInput
+										id='lwbRate'
+										value={field.value / 100}
+										onChange={(value) => field.onChange(value * 100)}
+										min={0}
+										max={10000}
+										placeholder='171'
+										className='pl-8 h-12 font-mono focus:ring-2 focus:ring-blue-500'
+										style={{
+											backgroundColor: 'var(--input-bg)',
+											borderColor: 'var(--input-border)',
+											color: 'var(--input-text)',
+										}}
+									/>
+								)}
+							/>
+						</div>
+						{errors.lwbRate && (
+							<p className='text-sm mt-1' style={{ color: 'var(--input-error-text)' }}>
+								{errors.lwbRate.message}
+							</p>
+						)}
+						<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
+							{t('finance.lwbRateDefault')}
 						</p>
 					</div>
 
 					{/* DRS Route Rate */}
 					<div>
 						<Label htmlFor='drsRate' style={{ color: 'var(--input-label)' }}>
-							DRS/Missort Route Rate
+							{t('finance.drsRate')}
 						</Label>
 						<div className='mt-2 relative'>
 							<span
@@ -280,15 +339,14 @@ export function FinanceSettings() {
 							</p>
 						)}
 						<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
-							Default: £100 per day
+							{t('finance.drsRateDefault')}
 						</p>
 					</div>
 
 					{/* 6-Day Bonus Info */}
 					<div className='mt-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg'>
 						<p className='text-sm text-emerald-400'>
-							<strong>6-Day Week Bonus:</strong> You automatically receive a flat £30
-							bonus when working exactly 6 days in a week (any route type combination).
+							<strong>{t('finance.sixDayBonusTitle')}</strong> {t('finance.sixDayBonusDescription')}
 						</p>
 					</div>
 				</div>
@@ -303,16 +361,15 @@ export function FinanceSettings() {
 				}}
 			>
 				<h2 className='text-xl font-semibold mb-4' style={{ color: 'var(--text-primary)' }}>
-					Invoicing & Accounting
+					{t('finance.invoicingTitle')}
 				</h2>
 				<p className='text-sm mb-6' style={{ color: 'var(--text-secondary)' }}>
-					Choose how you handle invoicing and tax returns. Costs are deducted from your
-					weekly standard pay.
+					{t('finance.invoicingDescription')}
 				</p>
 
 				<div>
 					<Label htmlFor='invoicingService' style={{ color: 'var(--input-label)' }}>
-						Service Provider
+						{t('finance.serviceProvider')}
 					</Label>
 					<Controller
 						name='invoicingService'
@@ -328,7 +385,7 @@ export function FinanceSettings() {
 									}}
 									className='focus:ring-2 focus:ring-blue-500 mt-2 cursor-pointer'
 								>
-									<SelectValue placeholder='Select invoicing service' />
+									<SelectValue placeholder={t('finance.serviceProviderPlaceholder')} />
 								</SelectTrigger>
 								<SelectContent
 									style={{
@@ -341,21 +398,21 @@ export function FinanceSettings() {
 										style={{ color: 'var(--text-primary)' }}
 										className='cursor-pointer hover:opacity-80'
 									>
-										Self-Invoicing (£0/week)
+										{t('domain:invoicingServices.SelfInvoicing')} ({t('finance.selfInvoicingCost')})
 									</SelectItem>
 									<SelectItem
 										value='Verso-Basic'
 										style={{ color: 'var(--text-primary)' }}
 										className='cursor-pointer hover:opacity-80'
 									>
-										Verso Basic (£10/week)
+										{t('domain:invoicingServices.VersoBasic')} ({t('finance.versoBasicCost')})
 									</SelectItem>
 									<SelectItem
 										value='Verso-Full'
 										style={{ color: 'var(--text-primary)' }}
 										className='cursor-pointer hover:opacity-80'
 									>
-										Verso Full (£30/week)
+										{t('domain:invoicingServices.VersoFull')} ({t('finance.versoFullCost')})
 									</SelectItem>
 								</SelectContent>
 							</Select>
@@ -387,7 +444,7 @@ export function FinanceSettings() {
 										{field.value.replace('-', ' ')}
 									</span>
 									<span className='text-sm font-mono font-semibold text-emerald-400'>
-										{getInvoicingCost(field.value)}/week
+										{getInvoicingCost(field.value)}
 									</span>
 								</div>
 								<p className='text-xs' style={{ color: 'var(--text-secondary)' }}>
@@ -409,12 +466,12 @@ export function FinanceSettings() {
 					{isSaving ? (
 						<>
 							<Loader2 className='w-4 h-4 mr-2 animate-spin' />
-							Saving...
+							{t('finance.savingButton')}
 						</>
 					) : (
 						<>
 							<Save className='w-4 h-4 mr-2' />
-							Save Settings
+							{t('finance.saveButton')}
 						</>
 					)}
 				</Button>

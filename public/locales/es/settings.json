@@ -1,0 +1,111 @@
+{
+  "title": "Settings [Español]",
+  "tabs": {
+    "finance": "Finance Settings [Español]",
+    "user": "User Details [Español]",
+    "language": "Language [Español]"
+  },
+  "language": {
+    "title": "Language Preference [Español]",
+    "selectLanguage": "Select Language [Español]",
+    "description": "Choose your preferred language for the app interface [Español]"
+  },
+  "finance": {
+    "title": "Pay Rates [Español]",
+    "description": "Set your daily pay rates. These will be used to calculate your weekly earnings. [Español]",
+    "warning": "These should only be changed on the week that pay rates change. [Español]",
+    "normalRate": "Normal Route Rate [Español]",
+    "drsRate": "DRS/Missort Route Rate [Español]",
+    "normalRateDefault": "Default: £160 per day [Español]",
+    "drsRateDefault": "Default: £100 per day [Español]",
+    "sixDayBonusTitle": "6-Day Week Bonus: [Español]",
+    "sixDayBonusDescription": "You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination). [Español]",
+    "invoicingTitle": "Invoicing & Accounting [Español]",
+    "invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay. [Español]",
+    "serviceProvider": "Service Provider [Español]",
+    "serviceProviderPlaceholder": "Select invoicing service [Español]",
+    "selfInvoicingCost": "£0/week [Español]",
+    "versoBasicCost": "£10/week [Español]",
+    "versoFullCost": "£30/week [Español]",
+    "selfInvoicingDescription": "Handle your own invoicing and tax returns [Español]",
+    "versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company) [Español]",
+    "versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company) [Español]",
+    "loadingSettings": "Loading settings... [Español]",
+    "savingButton": "Saving... [Español]",
+    "saveButton": "Save Settings [Español]"
+  },
+  "user": {
+    "title": "Profile Information [Español]",
+    "description": "Update your personal information. Display name is required, while first and last names are optional. [Español]",
+    "displayName": "Display Name [Español]",
+    "displayNameRequired": "Display Name * [Español]",
+    "displayNamePlaceholder": "Enter your display name [Español]",
+    "displayNameHelp": "This is how you'll be identified in the app [Español]",
+    "firstName": "First Name [Español]",
+    "firstNamePlaceholder": "Enter your first name (optional) [Español]",
+    "lastName": "Last Name [Español]",
+    "lastNamePlaceholder": "Enter your last name (optional) [Español]",
+    "loadingUser": "Loading user details... [Español]",
+    "savingButton": "Saving... [Español]",
+    "saveButton": "Save Changes [Español]",
+    "dangerZoneTitle": "Danger Zone [Español]",
+    "deleteAccountTitle": "Delete Account [Español]",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone. [Español]",
+    "deleteAccountButton": "Delete My Account [Español]"
+  },
+  "onboarding": {
+    "title": "Onboarding [Español]",
+    "description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour. [Español]",
+    "restartButton": "Restart Onboarding [Español]",
+    "tourButton": "Take Dashboard Tour [Español]"
+  },
+  "restartDialog": {
+    "title": "Restart Onboarding [Español]",
+    "description": "Choose how you'd like to restart the onboarding process [Español]",
+    "fullOnboardingTitle": "Full Onboarding [Español]",
+    "fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch. [Español]",
+    "tourOnlyTitle": "Tour Only [Español]",
+    "tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected. [Español]",
+    "warningLabel": "Full Onboarding Warning: [Español]",
+    "warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted. [Español]",
+    "cancelButton": "Cancel [Español]"
+  },
+  "deleteAccount": {
+    "warningTitle": "Delete Account - Final Warning [Español]",
+    "warningDescription": "Warning about permanent account deletion [Español]",
+    "permanentHeading": "This action is PERMANENT and IRREVERSIBLE [Español]",
+    "permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation. [Español]",
+    "dataDeletedHeading": "The following data will be permanently deleted: [Español]",
+    "dataList": {
+      "profile": "Your user profile and account settings [Español]",
+      "workDays": "All work days and weekly pay data (every week you've tracked) [Español]",
+      "vanHires": "All van hire records and deposit information [Español]",
+      "rankings": "Performance rankings history [Español]",
+      "mileage": "Mileage tracking and pay rate history [Español]",
+      "auth": "Your authentication credentials (you will be logged out) [Español]"
+    },
+    "alternativesHeading": "Consider these alternatives: [Español]",
+    "alternatives": {
+      "stopUsing": "You can simply stop using the app without deleting your account [Español]",
+      "clearWeeks": "You can clear individual weeks if you want to start fresh [Español]",
+      "resetRates": "You can reset your pay rates in Settings if they've changed [Español]"
+    },
+    "cancelButton": "Cancel (Keep My Account) [Español]",
+    "proceedButton": "I Understand - Proceed to Delete [Español]",
+    "confirmTitle": "Confirm Account Deletion [Español]",
+    "confirmDescription": "Final confirmation step for account deletion [Español]",
+    "lastChance": "Last chance: Enter your credentials to permanently delete your account [Español]",
+    "emailLabel": "Your Email Address [Español]",
+    "emailMatch": "Must match: {{email}}",
+    "passwordLabel": "Your Password [Español]",
+    "passwordPlaceholder": "Enter your password to confirm [Español]",
+    "passwordHelp": "We need to verify your identity before deletion [Español]",
+    "confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm [Español]",
+    "confirmTextPlaceholder": "DELETE MY ACCOUNT [Español]",
+    "confirmTextHelp": "Type exactly as shown (case sensitive) [Español]",
+    "finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action. [Español]",
+    "goBackButton": "Go Back [Español]",
+    "deletingButton": "Deleting Account... [Español]",
+    "deleteButton": "Delete My Account Forever [Español]"
+  }
+}

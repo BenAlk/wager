@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/i18n/useTranslation'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import { calculateWeeklyPayBreakdown } from '@/lib/calculations'
@@ -22,6 +23,7 @@ export default function PaymentThisWeek({
 	weekNMinus2Data,
 	weekNMinus6Data,
 }: PaymentThisWeekProps) {
+	const { t } = useTranslation('calendar')
 	const navigate = useNavigate()
 	const { user } = useAuth()
 	const { allVans } = useVanStore()
@@ -137,11 +139,11 @@ export default function PaymentThisWeek({
 						<Banknote className='w-6 h-6 text-[var(--text-primary)]' />
 					</div>
 					<h3 className='text-xl font-bold text-[var(--text-primary)]'>
-						Payment This Week
+						{t('paymentThisWeek.title')}
 					</h3>
 				</div>
 				<p className='text-[var(--text-secondary)] text-center py-4'>
-					No payment expected this week
+					{t('paymentThisWeek.noPayment')}
 				</p>
 			</div>
 		)
@@ -159,7 +161,7 @@ export default function PaymentThisWeek({
 						<Banknote className='w-6 h-6 text-[var(--text-primary)]' />
 					</div>
 					<h3 className='text-xl sm:text-2xl font-bold text-[var(--text-primary)]'>
-						Payment This Week
+						{t('paymentThisWeek.title')}
 					</h3>
 				</div>
 				<Button
@@ -174,7 +176,7 @@ export default function PaymentThisWeek({
 			{/* Total Payment - Always Visible */}
 			<div className='flex items-center justify-between mb-6'>
 				<span className='text-lg font-semibold text-[var(--text-secondary)]'>
-					Total Payment
+					{t('paymentThisWeek.totalPayment')}
 				</span>
 				<span
 					className={
@@ -198,14 +200,14 @@ export default function PaymentThisWeek({
 					<div className='bg-[var(--bg-surface-secondary)] border border-[var(--border-secondary)] rounded-lg p-4'>
 						<div className='text-xs text-[var(--text-tertiary)] space-y-1'>
 							<div className='flex justify-between'>
-								<span className='text-sm sm:text-lg'>Base Pay</span>
+								<span className='text-sm sm:text-lg'>{t('paymentThisWeek.basePay')}</span>
 								<span className='text-sm sm:text-lg text-[var(--finance-positive)]'>
 									+£{(standardPayBreakdown.basePay / 100).toFixed(2)}
 								</span>
 							</div>
 							{standardPayBreakdown.devicePayment > 0 && (
 								<div className='flex justify-between'>
-									<span className='text-sm sm:text-lg'>Device Payment</span>
+									<span className='text-sm sm:text-lg'>{t('paymentThisWeek.devicePayment')}</span>
 									<span className='text-sm sm:text-lg text-[var(--finance-positive)]'>
 										+£{(standardPayBreakdown.devicePayment / 100).toFixed(2)}
 									</span>
@@ -213,7 +215,7 @@ export default function PaymentThisWeek({
 							)}
 							{standardPayBreakdown.sixDayBonus > 0 && (
 								<div className='flex justify-between'>
-									<span className='text-sm sm:text-lg'>6-Day Bonus</span>
+									<span className='text-sm sm:text-lg'>{t('paymentThisWeek.sixDayBonus')}</span>
 									<span className='text-sm sm:text-lg text-[var(--finance-positive)]'>
 										+£{(standardPayBreakdown.sixDayBonus / 100).toFixed(2)}
 									</span>
@@ -221,7 +223,7 @@ export default function PaymentThisWeek({
 							)}
 							{standardPayBreakdown.sweepAdjustment !== 0 && (
 								<div className='text-sm sm:text-lg flex justify-between'>
-									<span>Sweeps</span>
+									<span>{t('paymentThisWeek.sweeps')}</span>
 									<span
 										className={
 											standardPayBreakdown.sweepAdjustment > 0
@@ -236,12 +238,12 @@ export default function PaymentThisWeek({
 							)}
 							{standardPayBreakdown.mileagePayment > 0 && (
 								<div className='text-sm sm:text-lg flex justify-between'>
-									<span>Mileage</span>
+									<span>{t('paymentThisWeek.mileage')}</span>
 									<span className='text-[var(--finance-positive)] flex items-center gap-1.5'>
 										+£{(standardPayBreakdown.mileagePayment / 100).toFixed(2)}
 										{standardPayBreakdown.mileageIsEstimated && (
 											<span className='text-[0.65rem] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400'>
-												Est
+												{t('paymentThisWeek.estimatedBadge')}
 											</span>
 										)}
 									</span>
@@ -249,7 +251,7 @@ export default function PaymentThisWeek({
 							)}
 							{standardPayBreakdown.vanDeduction > 0 && (
 								<div className='text-sm sm:text-lg flex justify-between'>
-									<span>Van Hire</span>
+									<span>{t('paymentThisWeek.vanHire')}</span>
 									<span className='text-[var(--finance-negative)]'>
 										-£{(standardPayBreakdown.vanDeduction / 100).toFixed(2)}
 									</span>
@@ -257,7 +259,7 @@ export default function PaymentThisWeek({
 							)}
 							{standardPayBreakdown.depositPayment > 0 && (
 								<div className='text-sm sm:text-lg flex justify-between'>
-									<span>Deposit Payment</span>
+									<span>{t('paymentThisWeek.depositPayment')}</span>
 									<span className='text-[var(--finance-negative)]'>
 										-£{(standardPayBreakdown.depositPayment / 100).toFixed(2)}
 									</span>
@@ -265,7 +267,7 @@ export default function PaymentThisWeek({
 							)}
 							{standardPayBreakdown.invoicingCost > 0 && (
 								<div className='text-sm sm:text-lg flex justify-between'>
-									<span>Invoicing</span>
+									<span>{t('paymentThisWeek.invoicing')}</span>
 									<span className='text-[var(--finance-negative)]'>
 										-£{(standardPayBreakdown.invoicingCost / 100).toFixed(2)}
 									</span>
@@ -273,7 +275,7 @@ export default function PaymentThisWeek({
 							)}
 							<div className='flex items-center justify-between mb-2'>
 								<span className='text-sm sm:text-xs lg:text-lg text-[var(--text-secondary)]'>
-									Standard Pay (Week {weekNMinus2Info.week})
+									{t('paymentThisWeek.standardPay', { week: weekNMinus2Info.week })}
 								</span>
 								<span className='text-lg sm:text-xl lg:text-2xl font-mono font-bold text-[var(--text-primary)]'>
 									£{(standardPayBreakdown.standardPay / 100).toFixed(2)}
@@ -285,8 +287,12 @@ export default function PaymentThisWeek({
 								<div className='flex items-start gap-2 p-2 sm:p-2.5 bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 dark:border-amber-500/20 rounded-lg mt-3'>
 									<AlertCircle className='w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0' />
 									<p className='text-xs text-amber-400'>
-										Payment includes estimated mileage ({standardPayBreakdown.estimatedDaysCount}{' '}
-										{standardPayBreakdown.estimatedDaysCount === 1 ? 'day' : 'days'}). Actual may vary.
+										{t('paymentThisWeek.mileageEstimated', {
+											count: standardPayBreakdown.estimatedDaysCount,
+											days: standardPayBreakdown.estimatedDaysCount === 1
+												? t('paymentThisWeek.mileageEstimatedDay')
+												: t('paymentThisWeek.mileageEstimatedDays')
+										})}
 									</p>
 								</div>
 							)}
@@ -296,8 +302,12 @@ export default function PaymentThisWeek({
 								<div className='flex items-start gap-2 p-2 sm:p-2.5 bg-red-500/10 dark:bg-red-500/10 border border-red-500/20 dark:border-red-500/20 rounded-lg mt-3'>
 									<AlertCircle className='w-3.5 h-3.5 text-red-400 mt-0.5 flex-shrink-0' />
 									<p className='text-xs text-red-400'>
-										Missing mileage data ({standardPayBreakdown.missingMileageDaysCount}{' '}
-										{standardPayBreakdown.missingMileageDaysCount === 1 ? 'day' : 'days'}). Total may be inaccurate.
+										{t('paymentThisWeek.missingMileageData', {
+											count: standardPayBreakdown.missingMileageDaysCount,
+											days: standardPayBreakdown.missingMileageDaysCount === 1
+												? t('paymentThisWeek.missingMileageDay')
+												: t('paymentThisWeek.missingMileageDays')
+										})}
 									</p>
 								</div>
 							)}
@@ -311,7 +321,7 @@ export default function PaymentThisWeek({
 						<div className='flex items-center justify-between'>
 							<div>
 								<span className='text-xs md:text-xl text-[var(--text-secondary)] block'>
-									Performance Bonus (Week {weekNMinus6Info.week})
+									{t('paymentThisWeek.performanceBonus', { week: weekNMinus6Info.week })}
 								</span>
 								{weekNMinus6Data && (
 									<span className='text-xs text-[var(--text-success)]'>
@@ -337,11 +347,10 @@ export default function PaymentThisWeek({
 							<AlertCircle className='w-5 h-5 text-[var(--text-warning)] flex-shrink-0 mt-0.5' />
 							<div className='flex-1'>
 								<p className='text-[var(--text-warning)] font-medium text-sm sm:text-base'>
-									Missing Performance Rankings
+									{t('paymentThisWeek.missingRankingsTitle')}
 								</p>
 								<p className='text-[var(--text-warning)] opacity-80 text-xs sm:text-sm mt-1'>
-									Week {weekNMinus6Info.week} rankings haven't been entered yet.
-									Click here to add them and estimate your bonus payment.
+									{t('paymentThisWeek.missingRankingsMessage', { week: weekNMinus6Info.week })}
 								</p>
 							</div>
 						</div>
@@ -350,7 +359,7 @@ export default function PaymentThisWeek({
 			</div>
 
 				<p className='text-xs text-[var(--text-tertiary)] mt-4 text-center sm:text-right'>
-					Expected in your bank account this week
+					{t('paymentThisWeek.expectedInBank')}
 				</p>
 				</div>
 			)}

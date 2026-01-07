@@ -1,0 +1,68 @@
+{
+  "required": "This field is required [Български]",
+  "email": {
+    "invalid": "Invalid email address [Български]",
+    "required": "Email is required [Български]"
+  },
+  "password": {
+    "minLength": "Password must be at least {{min}} characters",
+    "required": "Password is required [Български]",
+    "mismatch": "Passwords do not match [Български]"
+  },
+  "displayName": {
+    "required": "Display name is required [Български]",
+    "maxLength": "Display name must be less than {{max}} characters"
+  },
+  "firstName": {
+    "maxLength": "First name must be less than {{max}} characters"
+  },
+  "lastName": {
+    "maxLength": "Last name must be less than {{max}} characters"
+  },
+  "rate": {
+    "required": "Rate is required [Български]",
+    "positive": "Rate must be positive [Български]",
+    "tooHigh": "Rate too high [Български]",
+    "wholeNumber": "Rate must be a whole number [Български]"
+  },
+  "sweeps": {
+    "max": "Maximum {{max}} sweeps per day",
+    "negative": "Sweeps cannot be negative [Български]"
+  },
+  "mileage": {
+    "negative": "Mileage cannot be negative [Български]",
+    "required": "Mileage rate is required [Български]",
+    "max": "Mileage rate cannot exceed £{{max}} per mile"
+  },
+  "finance": {
+    "normalRateRequired": "Normal rate is required [Български]",
+    "drsRateRequired": "DRS rate is required [Български]",
+    "rateWhole": "Rate must be a whole number [Български]",
+    "ratePositive": "Rate must be positive [Български]",
+    "rateTooHigh": "Rate too high [Български]"
+  },
+  "workDay": {
+    "maxDays": "Cannot work more than 6 days per week (legal limit) [Български]",
+    "routeRequired": "Route number required [Български]",
+    "dailyRateRequired": "Daily rate is required for manual route entries [Български]"
+  },
+  "van": {
+    "registrationRequired": "Registration is required [Български]",
+    "registrationTooLong": "Registration too long [Български]",
+    "weeklyRateRequired": "Weekly rate is required [Български]",
+    "rateWholeNumber": "Rate must be a whole number [Български]",
+    "ratePositive": "Rate must be positive [Български]",
+    "rateTooHigh": "Rate too high [Български]",
+    "onHireDateRequired": "On-hire date is required [Български]",
+    "offHireDateInvalid": "Off-hire date must be on or after on-hire date [Български]",
+    "notesTooLong": "Notes too long [Български]"
+  },
+  "string": {
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be less than {{max}} characters"
+  },
+  "number": {
+    "min": "Must be at least {{min}}",
+    "max": "Must be less than {{max}}"
+  }
+}

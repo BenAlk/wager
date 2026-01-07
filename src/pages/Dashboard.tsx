@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { motion } from 'framer-motion'
 
 import { fetchWeekWithWorkDays } from '@/lib/api/weeks'
@@ -14,6 +15,7 @@ import { VanStatusTile } from '@/components/dashboard/VanStatusTile'
 import { LoadingScreen } from '@/components/shared/LoadingScreen'
 
 export default function Dashboard() {
+	const { t } = useTranslation('dashboard')
 	const { user, loading } = useAuth()
 	const [hasWorkToday, setHasWorkToday] = useState(false)
 
@@ -41,7 +43,7 @@ export default function Dashboard() {
 	return (
 		<div className='p-4 md:p-8'>
 			<div className='max-w-7xl mx-auto'>
-				<h1 className='sr-only'>Dashboard</h1>
+				<h1 className='sr-only'>{t('pageTitle')}</h1>
 				{/* Dashboard Grid */}
 				<main aria-label='Dashboard tiles' className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 					{/* Quick Add Work - Mobile: 1st, Desktop: Top-left */}

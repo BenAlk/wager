@@ -1,0 +1,111 @@
+{
+  "title": "Settings [Български]",
+  "tabs": {
+    "finance": "Finance Settings [Български]",
+    "user": "User Details [Български]",
+    "language": "Language [Български]"
+  },
+  "language": {
+    "title": "Language Preference [Български]",
+    "selectLanguage": "Select Language [Български]",
+    "description": "Choose your preferred language for the app interface [Български]"
+  },
+  "finance": {
+    "title": "Pay Rates [Български]",
+    "description": "Set your daily pay rates. These will be used to calculate your weekly earnings. [Български]",
+    "warning": "These should only be changed on the week that pay rates change. [Български]",
+    "normalRate": "Normal Route Rate [Български]",
+    "drsRate": "DRS/Missort Route Rate [Български]",
+    "normalRateDefault": "Default: £160 per day [Български]",
+    "drsRateDefault": "Default: £100 per day [Български]",
+    "sixDayBonusTitle": "6-Day Week Bonus: [Български]",
+    "sixDayBonusDescription": "You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination). [Български]",
+    "invoicingTitle": "Invoicing & Accounting [Български]",
+    "invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay. [Български]",
+    "serviceProvider": "Service Provider [Български]",
+    "serviceProviderPlaceholder": "Select invoicing service [Български]",
+    "selfInvoicingCost": "£0/week [Български]",
+    "versoBasicCost": "£10/week [Български]",
+    "versoFullCost": "£30/week [Български]",
+    "selfInvoicingDescription": "Handle your own invoicing and tax returns [Български]",
+    "versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company) [Български]",
+    "versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company) [Български]",
+    "loadingSettings": "Loading settings... [Български]",
+    "savingButton": "Saving... [Български]",
+    "saveButton": "Save Settings [Български]"
+  },
+  "user": {
+    "title": "Profile Information [Български]",
+    "description": "Update your personal information. Display name is required, while first and last names are optional. [Български]",
+    "displayName": "Display Name [Български]",
+    "displayNameRequired": "Display Name * [Български]",
+    "displayNamePlaceholder": "Enter your display name [Български]",
+    "displayNameHelp": "This is how you'll be identified in the app [Български]",
+    "firstName": "First Name [Български]",
+    "firstNamePlaceholder": "Enter your first name (optional) [Български]",
+    "lastName": "Last Name [Български]",
+    "lastNamePlaceholder": "Enter your last name (optional) [Български]",
+    "loadingUser": "Loading user details... [Български]",
+    "savingButton": "Saving... [Български]",
+    "saveButton": "Save Changes [Български]",
+    "dangerZoneTitle": "Danger Zone [Български]",
+    "deleteAccountTitle": "Delete Account [Български]",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone. [Български]",
+    "deleteAccountButton": "Delete My Account [Български]"
+  },
+  "onboarding": {
+    "title": "Onboarding [Български]",
+    "description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour. [Български]",
+    "restartButton": "Restart Onboarding [Български]",
+    "tourButton": "Take Dashboard Tour [Български]"
+  },
+  "restartDialog": {
+    "title": "Restart Onboarding [Български]",
+    "description": "Choose how you'd like to restart the onboarding process [Български]",
+    "fullOnboardingTitle": "Full Onboarding [Български]",
+    "fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch. [Български]",
+    "tourOnlyTitle": "Tour Only [Български]",
+    "tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected. [Български]",
+    "warningLabel": "Full Onboarding Warning: [Български]",
+    "warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted. [Български]",
+    "cancelButton": "Cancel [Български]"
+  },
+  "deleteAccount": {
+    "warningTitle": "Delete Account - Final Warning [Български]",
+    "warningDescription": "Warning about permanent account deletion [Български]",
+    "permanentHeading": "This action is PERMANENT and IRREVERSIBLE [Български]",
+    "permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation. [Български]",
+    "dataDeletedHeading": "The following data will be permanently deleted: [Български]",
+    "dataList": {
+      "profile": "Your user profile and account settings [Български]",
+      "workDays": "All work days and weekly pay data (every week you've tracked) [Български]",
+      "vanHires": "All van hire records and deposit information [Български]",
+      "rankings": "Performance rankings history [Български]",
+      "mileage": "Mileage tracking and pay rate history [Български]",
+      "auth": "Your authentication credentials (you will be logged out) [Български]"
+    },
+    "alternativesHeading": "Consider these alternatives: [Български]",
+    "alternatives": {
+      "stopUsing": "You can simply stop using the app without deleting your account [Български]",
+      "clearWeeks": "You can clear individual weeks if you want to start fresh [Български]",
+      "resetRates": "You can reset your pay rates in Settings if they've changed [Български]"
+    },
+    "cancelButton": "Cancel (Keep My Account) [Български]",
+    "proceedButton": "I Understand - Proceed to Delete [Български]",
+    "confirmTitle": "Confirm Account Deletion [Български]",
+    "confirmDescription": "Final confirmation step for account deletion [Български]",
+    "lastChance": "Last chance: Enter your credentials to permanently delete your account [Български]",
+    "emailLabel": "Your Email Address [Български]",
+    "emailMatch": "Must match: {{email}}",
+    "passwordLabel": "Your Password [Български]",
+    "passwordPlaceholder": "Enter your password to confirm [Български]",
+    "passwordHelp": "We need to verify your identity before deletion [Български]",
+    "confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm [Български]",
+    "confirmTextPlaceholder": "DELETE MY ACCOUNT [Български]",
+    "confirmTextHelp": "Type exactly as shown (case sensitive) [Български]",
+    "finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action. [Български]",
+    "goBackButton": "Go Back [Български]",
+    "deletingButton": "Deleting Account... [Български]",
+    "deleteButton": "Delete My Account Forever [Български]"
+  }
+}

@@ -8,6 +8,7 @@ import { AlertTriangle, Trash2, Loader2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'sonner'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface DeleteAccountModalProps {
   isOpen: boolean
@@ -17,6 +18,7 @@ interface DeleteAccountModalProps {
 export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps) {
   const navigate = useNavigate()
   const { user } = useAuth()
+  const { t } = useTranslation('settings')
   const [step, setStep] = useState<'warning' | 'confirm'>(isOpen ? 'warning' : 'warning')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -40,17 +42,17 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
   const handleDeleteAccount = async () => {
     // Validation
     if (!email || !password) {
-      toast.error('Please enter your email and password')
+      toast.error(t('toast:deleteAccount.enterCredentials'))
       return
     }
 
     if (email !== user?.email) {
-      toast.error('Email does not match your account email')
+      toast.error(t('toast:deleteAccount.emailMismatch'))
       return
     }
 
     if (confirmText !== 'DELETE MY ACCOUNT') {
-      toast.error('Please type "DELETE MY ACCOUNT" exactly to confirm')
+      toast.error(t('toast:deleteAccount.confirmTextMismatch'))
       return
     }
 
@@ -64,7 +66,7 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
       })
 
       if (signInError) {
-        toast.error('Incorrect password. Please try again.')
+        toast.error(t('toast:deleteAccount.incorrectPassword'))
         setIsDeleting(false)
         return
       }
@@ -75,7 +77,7 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
 
       if (deleteError) {
         console.error('Delete account error:', deleteError)
-        toast.error('Failed to delete account. Please contact support.')
+        toast.error(t('toast:deleteAccount.deleteFailed'))
         setIsDeleting(false)
         return
       }
@@ -83,12 +85,12 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
       // Step 3: Sign out (the auth user will be deleted on the backend)
       await supabase.auth.signOut()
 
-      toast.success('Your account has been permanently deleted')
+      toast.success(t('toast:deleteAccount.deleted'))
       navigate('/auth')
       handleClose()
     } catch (error) {
       console.error('Unexpected error during account deletion:', error)
-      toast.error('An unexpected error occurred. Please try again.')
+      toast.error(t('toast:deleteAccount.unexpectedError'))
       setIsDeleting(false)
     }
   }
@@ -100,10 +102,10 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
           <>
             <DialogTitle className="text-2xl font-bold text-red-500 flex items-center gap-3">
               <AlertTriangle className="w-8 h-8" />
-              Delete Account - Final Warning
+              {t('deleteAccount.warningTitle')}
             </DialogTitle>
             <DialogDescription className="sr-only">
-              Warning about permanent account deletion
+              {t('deleteAccount.warningDescription')}
             </DialogDescription>
 
             <div className="space-y-6 py-4">
@@ -113,11 +115,10 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
                   <AlertTriangle className="w-6 h-6 text-red-500 flex-shrink-0 mt-1" />
                   <div className="space-y-3">
                     <h3 className="text-xl font-bold text-red-400">
-                      This action is PERMANENT and IRREVERSIBLE
+                      {t('deleteAccount.permanentHeading')}
                     </h3>
                     <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
-                      Once you delete your account, there is no way to recover your data.
-                      This is not a temporary deactivation.
+                      {t('deleteAccount.permanentText')}
                     </p>
                   </div>
                 </div>
@@ -126,32 +127,32 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
               {/* What Will Be Deleted */}
               <div className="space-y-3">
                 <h4 className="text-lg font-semibold text-[var(--text-primary)]">
-                  The following data will be permanently deleted:
+                  {t('deleteAccount.dataDeletedHeading')}
                 </h4>
                 <ul className="space-y-2 text-sm text-[var(--text-secondary)]">
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">•</span>
-                    <span>Your user profile and account settings</span>
+                    <span>{t('deleteAccount.dataList.profile')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">•</span>
-                    <span>All work days and weekly pay data (every week you've tracked)</span>
+                    <span>{t('deleteAccount.dataList.workDays')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">•</span>
-                    <span>All van hire records and deposit information</span>
+                    <span>{t('deleteAccount.dataList.vanHires')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">•</span>
-                    <span>Performance rankings history</span>
+                    <span>{t('deleteAccount.dataList.rankings')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">•</span>
-                    <span>Mileage tracking and pay rate history</span>
+                    <span>{t('deleteAccount.dataList.mileage')}</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-red-500 font-bold">•</span>
-                    <span>Your authentication credentials (you will be logged out)</span>
+                    <span>{t('deleteAccount.dataList.auth')}</span>
                   </li>
                 </ul>
               </div>
@@ -159,12 +160,12 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
               {/* Alternative Actions */}
               <div className="bg-sky-500/10 border border-sky-500/30 rounded-lg p-4 space-y-2">
                 <h4 className="text-sm font-semibold text-sky-400">
-                  Consider these alternatives:
+                  {t('deleteAccount.alternativesHeading')}
                 </h4>
                 <ul className="space-y-1 text-xs text-sky-300/80">
-                  <li>• You can simply stop using the app without deleting your account</li>
-                  <li>• You can clear individual weeks if you want to start fresh</li>
-                  <li>• You can reset your pay rates in Settings if they've changed</li>
+                  <li>• {t('deleteAccount.alternatives.stopUsing')}</li>
+                  <li>• {t('deleteAccount.alternatives.clearWeeks')}</li>
+                  <li>• {t('deleteAccount.alternatives.resetRates')}</li>
                 </ul>
               </div>
             </div>
@@ -177,14 +178,14 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
                 onClick={handleClose}
                 className="bg-[var(--button-secondary-bg)] border-[var(--button-secondary-border)] text-[var(--text-primary)] hover:bg-[var(--button-secondary-hover)]"
               >
-                Cancel (Keep My Account)
+                {t('deleteAccount.cancelButton')}
               </Button>
               <Button
                 type="button"
                 onClick={handleProceedToConfirm}
                 className="bg-red-600 hover:bg-red-700 text-white"
               >
-                I Understand - Proceed to Delete
+                {t('deleteAccount.proceedButton')}
               </Button>
             </div>
           </>
@@ -192,24 +193,24 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
           <>
             <DialogTitle className="text-2xl font-bold text-red-500 flex items-center gap-3">
               <Trash2 className="w-7 h-7" />
-              Confirm Account Deletion
+              {t('deleteAccount.confirmTitle')}
             </DialogTitle>
             <DialogDescription className="sr-only">
-              Final confirmation step for account deletion
+              {t('deleteAccount.confirmDescription')}
             </DialogDescription>
 
             <div className="space-y-6 py-4">
               {/* Final Warning */}
               <div className="bg-red-500/20 border border-red-500 rounded-lg p-4">
                 <p className="text-sm text-red-300 font-medium text-center">
-                  Last chance: Enter your credentials to permanently delete your account
+                  {t('deleteAccount.lastChance')}
                 </p>
               </div>
 
               {/* Email Verification */}
               <div className="space-y-2">
                 <Label htmlFor="delete-email" className="text-[var(--text-primary)]">
-                  Your Email Address
+                  {t('deleteAccount.emailLabel')}
                 </Label>
                 <Input
                   id="delete-email"
@@ -222,55 +223,54 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
                   autoComplete="email"
                 />
                 <p className="text-xs text-[var(--text-secondary)]">
-                  Must match: {user?.email}
+                  {t('deleteAccount.emailMatch', { email: user?.email })}
                 </p>
               </div>
 
               {/* Password Verification */}
               <div className="space-y-2">
                 <Label htmlFor="delete-password" className="text-[var(--text-primary)]">
-                  Your Password
+                  {t('deleteAccount.passwordLabel')}
                 </Label>
                 <Input
                   id="delete-password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password to confirm"
+                  placeholder={t('deleteAccount.passwordPlaceholder')}
                   disabled={isDeleting}
                   className="bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--text-primary)]"
                   autoComplete="current-password"
                 />
                 <p className="text-xs text-[var(--text-secondary)]">
-                  We need to verify your identity before deletion
+                  {t('deleteAccount.passwordHelp')}
                 </p>
               </div>
 
               {/* Confirmation Text */}
               <div className="space-y-2">
                 <Label htmlFor="confirm-text" className="text-[var(--text-primary)]">
-                  Type "DELETE MY ACCOUNT" to confirm
+                  {t('deleteAccount.confirmTextLabel')}
                 </Label>
                 <Input
                   id="confirm-text"
                   type="text"
                   value={confirmText}
                   onChange={(e) => setConfirmText(e.target.value)}
-                  placeholder="DELETE MY ACCOUNT"
+                  placeholder={t('deleteAccount.confirmTextPlaceholder')}
                   disabled={isDeleting}
                   className="bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--text-primary)] font-mono"
                   autoComplete="off"
                 />
                 <p className="text-xs text-[var(--text-secondary)]">
-                  Type exactly as shown (case sensitive)
+                  {t('deleteAccount.confirmTextHelp')}
                 </p>
               </div>
 
               {/* Final Warning Text */}
               <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
                 <p className="text-xs text-yellow-300/90 text-center">
-                  After clicking "Delete My Account Forever", your data will be immediately and
-                  permanently deleted. You will be logged out and cannot undo this action.
+                  {t('deleteAccount.finalWarning')}
                 </p>
               </div>
             </div>
@@ -284,7 +284,7 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
                 disabled={isDeleting}
                 className="bg-[var(--button-secondary-bg)] border-[var(--button-secondary-border)] text-[var(--text-primary)] hover:bg-[var(--button-secondary-hover)]"
               >
-                Go Back
+                {t('deleteAccount.goBackButton')}
               </Button>
               <Button
                 type="button"
@@ -295,12 +295,12 @@ export function DeleteAccountModal({ isOpen, onClose }: DeleteAccountModalProps)
                 {isDeleting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Deleting Account...
+                    {t('deleteAccount.deletingButton')}
                   </>
                 ) : (
                   <>
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Delete My Account Forever
+                    {t('deleteAccount.deleteButton')}
                   </>
                 )}
               </Button>

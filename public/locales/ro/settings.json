@@ -1,0 +1,111 @@
+{
+  "title": "Settings [Română]",
+  "tabs": {
+    "finance": "Finance Settings [Română]",
+    "user": "User Details [Română]",
+    "language": "Language [Română]"
+  },
+  "language": {
+    "title": "Language Preference [Română]",
+    "selectLanguage": "Select Language [Română]",
+    "description": "Choose your preferred language for the app interface [Română]"
+  },
+  "finance": {
+    "title": "Pay Rates [Română]",
+    "description": "Set your daily pay rates. These will be used to calculate your weekly earnings. [Română]",
+    "warning": "These should only be changed on the week that pay rates change. [Română]",
+    "normalRate": "Normal Route Rate [Română]",
+    "drsRate": "DRS/Missort Route Rate [Română]",
+    "normalRateDefault": "Default: £160 per day [Română]",
+    "drsRateDefault": "Default: £100 per day [Română]",
+    "sixDayBonusTitle": "6-Day Week Bonus: [Română]",
+    "sixDayBonusDescription": "You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination). [Română]",
+    "invoicingTitle": "Invoicing & Accounting [Română]",
+    "invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay. [Română]",
+    "serviceProvider": "Service Provider [Română]",
+    "serviceProviderPlaceholder": "Select invoicing service [Română]",
+    "selfInvoicingCost": "£0/week [Română]",
+    "versoBasicCost": "£10/week [Română]",
+    "versoFullCost": "£30/week [Română]",
+    "selfInvoicingDescription": "Handle your own invoicing and tax returns [Română]",
+    "versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company) [Română]",
+    "versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company) [Română]",
+    "loadingSettings": "Loading settings... [Română]",
+    "savingButton": "Saving... [Română]",
+    "saveButton": "Save Settings [Română]"
+  },
+  "user": {
+    "title": "Profile Information [Română]",
+    "description": "Update your personal information. Display name is required, while first and last names are optional. [Română]",
+    "displayName": "Display Name [Română]",
+    "displayNameRequired": "Display Name * [Română]",
+    "displayNamePlaceholder": "Enter your display name [Română]",
+    "displayNameHelp": "This is how you'll be identified in the app [Română]",
+    "firstName": "First Name [Română]",
+    "firstNamePlaceholder": "Enter your first name (optional) [Română]",
+    "lastName": "Last Name [Română]",
+    "lastNamePlaceholder": "Enter your last name (optional) [Română]",
+    "loadingUser": "Loading user details... [Română]",
+    "savingButton": "Saving... [Română]",
+    "saveButton": "Save Changes [Română]",
+    "dangerZoneTitle": "Danger Zone [Română]",
+    "deleteAccountTitle": "Delete Account [Română]",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone. [Română]",
+    "deleteAccountButton": "Delete My Account [Română]"
+  },
+  "onboarding": {
+    "title": "Onboarding [Română]",
+    "description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour. [Română]",
+    "restartButton": "Restart Onboarding [Română]",
+    "tourButton": "Take Dashboard Tour [Română]"
+  },
+  "restartDialog": {
+    "title": "Restart Onboarding [Română]",
+    "description": "Choose how you'd like to restart the onboarding process [Română]",
+    "fullOnboardingTitle": "Full Onboarding [Română]",
+    "fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch. [Română]",
+    "tourOnlyTitle": "Tour Only [Română]",
+    "tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected. [Română]",
+    "warningLabel": "Full Onboarding Warning: [Română]",
+    "warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted. [Română]",
+    "cancelButton": "Cancel [Română]"
+  },
+  "deleteAccount": {
+    "warningTitle": "Delete Account - Final Warning [Română]",
+    "warningDescription": "Warning about permanent account deletion [Română]",
+    "permanentHeading": "This action is PERMANENT and IRREVERSIBLE [Română]",
+    "permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation. [Română]",
+    "dataDeletedHeading": "The following data will be permanently deleted: [Română]",
+    "dataList": {
+      "profile": "Your user profile and account settings [Română]",
+      "workDays": "All work days and weekly pay data (every week you've tracked) [Română]",
+      "vanHires": "All van hire records and deposit information [Română]",
+      "rankings": "Performance rankings history [Română]",
+      "mileage": "Mileage tracking and pay rate history [Română]",
+      "auth": "Your authentication credentials (you will be logged out) [Română]"
+    },
+    "alternativesHeading": "Consider these alternatives: [Română]",
+    "alternatives": {
+      "stopUsing": "You can simply stop using the app without deleting your account [Română]",
+      "clearWeeks": "You can clear individual weeks if you want to start fresh [Română]",
+      "resetRates": "You can reset your pay rates in Settings if they've changed [Română]"
+    },
+    "cancelButton": "Cancel (Keep My Account) [Română]",
+    "proceedButton": "I Understand - Proceed to Delete [Română]",
+    "confirmTitle": "Confirm Account Deletion [Română]",
+    "confirmDescription": "Final confirmation step for account deletion [Română]",
+    "lastChance": "Last chance: Enter your credentials to permanently delete your account [Română]",
+    "emailLabel": "Your Email Address [Română]",
+    "emailMatch": "Must match: {{email}}",
+    "passwordLabel": "Your Password [Română]",
+    "passwordPlaceholder": "Enter your password to confirm [Română]",
+    "passwordHelp": "We need to verify your identity before deletion [Română]",
+    "confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm [Română]",
+    "confirmTextPlaceholder": "DELETE MY ACCOUNT [Română]",
+    "confirmTextHelp": "Type exactly as shown (case sensitive) [Română]",
+    "finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action. [Română]",
+    "goBackButton": "Go Back [Română]",
+    "deletingButton": "Deleting Account... [Română]",
+    "deleteButton": "Delete My Account Forever [Română]"
+  }
+}

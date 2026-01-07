@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input'
 import { NumberInput } from '@/components/ui/number-input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface VanHireFormStepProps {
   onSubmit: (data: VanHireData) => void
@@ -19,6 +20,7 @@ export interface VanHireData {
 }
 
 export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
+  const { t } = useTranslation('onboarding')
   const [vanType, setVanType] = useState<'Fleet' | 'Flexi'>('Fleet')
   const [registration, setRegistration] = useState('')
   const [onHireDate, setOnHireDate] = useState('')
@@ -62,10 +64,10 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
           <Truck className="w-8 h-8 text-blue-400" />
         </div>
         <h2 className="text-2xl font-bold text-foreground">
-          Add Your Van Hire
+          {t('vanHireForm.title')}
         </h2>
         <p className="text-muted-foreground max-w-sm mx-auto">
-          Enter your van details to start tracking costs and deposits
+          {t('vanHireForm.subtitle')}
         </p>
       </div>
 
@@ -74,7 +76,7 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
         {/* Van Type */}
         <div className="space-y-2">
           <Label htmlFor="vanType" className="text-foreground">
-            Van Type
+            {t('vanHireForm.vanType')}
           </Label>
           <Select value={vanType} onValueChange={handleVanTypeChange}>
             <SelectTrigger
@@ -85,24 +87,24 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
             </SelectTrigger>
             <SelectContent className="bg-slate-800 border-slate-700">
               <SelectItem value="Fleet" className="text-white hover:bg-slate-700 cursor-pointer">
-                Fleet (£250/week)
+                {t('vanHireForm.vanTypeFleet')}
               </SelectItem>
               <SelectItem value="Flexi" className="text-white hover:bg-slate-700 cursor-pointer">
-                Flexi (£100-250/week)
+                {t('vanHireForm.vanTypeFlexi')}
               </SelectItem>
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
             {vanType === 'Fleet'
-              ? 'Fixed rate rental van at £250 per week'
-              : 'Company van with variable weekly cost (£100-250)'}
+              ? t('vanHireForm.vanTypeFleetHelp')
+              : t('vanHireForm.vanTypeFlexiHelp')}
           </p>
         </div>
 
         {/* Registration */}
         <div className="space-y-2">
           <Label htmlFor="registration" className="text-foreground">
-            Registration Number
+            {t('vanHireForm.registration')}
           </Label>
           <div className="relative">
             <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -111,7 +113,7 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
               type="text"
               value={registration}
               onChange={(e) => setRegistration(e.target.value)}
-              placeholder="e.g., AB12 CDE"
+              placeholder={t('vanHireForm.registrationPlaceholder')}
               required
               className="pl-9 bg-card/50 border-border text-foreground placeholder:text-muted-foreground"
             />
@@ -121,7 +123,7 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
         {/* On-Hire Date */}
         <div className="space-y-2">
           <Label htmlFor="onHireDate" className="text-foreground">
-            On-Hire Date
+            {t('vanHireForm.onHireDate')}
           </Label>
           <div className="relative">
             <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -135,14 +137,14 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            When did you start hiring this van?
+            {t('vanHireForm.onHireDateHelp')}
           </p>
         </div>
 
         {/* Weekly Rate */}
         <div className="space-y-2">
           <Label htmlFor="weeklyRate" className="text-foreground">
-            Weekly Rate
+            {t('vanHireForm.weeklyRate')}
           </Label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground z-10">
@@ -161,15 +163,15 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
           </div>
           <p className="text-xs text-muted-foreground">
             {vanType === 'Fleet'
-              ? 'Fleet vans are £250/week (fixed)'
-              : 'Flexi vans range from £100-250/week'}
+              ? t('vanHireForm.weeklyRateFleetHelp')
+              : t('vanHireForm.weeklyRateFlexiHelp')}
           </p>
         </div>
 
         {/* Deposit Info */}
         <div className="p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
           <p className="text-sm text-blue-300">
-            <strong>Deposit tracking:</strong> We'll automatically track your deposit payments (£25 for your first 2 pay cheques, then £50 per pay cheque until you reach £500 total).
+            <strong>{t('vanHireForm.depositInfoTitle')}</strong> {t('vanHireForm.depositInfo')}
           </p>
         </div>
       </div>
@@ -177,7 +179,7 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
       {/* Progress + Actions */}
       <div className="space-y-4 pt-2">
         <div className="text-center">
-          <span className="text-sm text-muted-foreground">Step 3 of 4</span>
+          <span className="text-sm text-muted-foreground">{t('vanHireForm.step')}</span>
         </div>
 
         <div className="flex gap-3">
@@ -187,13 +189,13 @@ export function VanHireFormStep({ onSubmit, onBack }: VanHireFormStepProps) {
             variant="outline"
             className="flex-1"
           >
-            Back
+            {t('common:actions.back')}
           </Button>
           <Button
             type="submit"
             className="flex-1 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white"
           >
-            Add Van
+            {t('vanHireForm.addVan')}
           </Button>
         </div>
       </div>

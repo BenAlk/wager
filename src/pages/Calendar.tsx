@@ -4,6 +4,7 @@ import PaymentThisWeek from '@/components/calendar/PaymentThisWeek'
 import WeekSummary from '@/components/calendar/WeekSummary'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { fetchWeekWithWorkDays } from '@/lib/api/weeks'
 import { formatWeekRange, getPreviousWeek, getWeekDates } from '@/lib/dates'
 import { useCalendarStore } from '@/store/calendarStore'
@@ -19,6 +20,7 @@ import { useSearchParams } from 'react-router-dom'
 // import { toast } from 'sonner' // Commented out for beta testing
 
 export default function Calendar() {
+	const { t } = useTranslation('calendar')
 	const [searchParams] = useSearchParams()
 	const { user } = useAuth()
 	const { currentWeek, goToPreviousWeek, goToNextWeek, goToToday, setCurrentWeek } =
@@ -234,7 +236,7 @@ export default function Calendar() {
 		<div>
 			{/* Main Content */}
 			<main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
-				<h1 className='sr-only'>Calendar - Week {currentWeek.week}</h1>
+				<h1 className='sr-only'>{t('pageTitle', { week: currentWeek.week })}</h1>
 				{/* Week Navigation */}
 				<div className='mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4' data-tour='week-nav'>
 					<div className='flex items-center gap-2' data-tour='calendar-navigation'>
@@ -280,7 +282,7 @@ export default function Calendar() {
 							onClick={goToToday}
 							className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--button-primary-text)] cursor-pointer'
 						>
-							Today
+							{t('common:time.today')}
 						</Button>
 					</div>
 				</div>

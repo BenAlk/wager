@@ -1,0 +1,63 @@
+{
+  "card": {
+    "active": "Active [Română]",
+    "ongoing": "Ongoing [Română]",
+    "weeklyRate": "Weekly Rate [Română]",
+    "duration": "Duration [Română]",
+    "status": "Status [Română]",
+    "refunded": "Refunded [Română]",
+    "holdUntil": "Hold until {{date}}",
+    "statusActive": "Active [Română]",
+    "completed": "Completed [Română]"
+  },
+  "modal": {
+    "titleEdit": "Edit Van Hire [Română]",
+    "titleNew": "New Van Hire [Română]",
+    "registrationLabel": "Registration Number * [Română]",
+    "registrationPlaceholder": "e.g., AB12 CDE [Română]",
+    "vanTypeLabel": "Van Type [Română]",
+    "vanTypePlaceholder": "Select type [Română]",
+    "vanTypeFleet": "Fleet (£250/week) [Română]",
+    "vanTypeFlexi": "Flexi (£100-£250/week) [Română]",
+    "weeklyRateLabel": "Weekly Rate (£) * [Română]",
+    "onHireDateLabel": "On-Hire Date * [Română]",
+    "offHireDateLabel": "Off-Hire Date [Română]",
+    "offHireDateHelp": "Leave empty if currently on-hire [Română]",
+    "depositStatusTitle": "Deposit Status [Română]",
+    "depositCurrent": "Current Deposit: [Română]",
+    "depositAutoNote": "Deposits are automatically calculated by the system based on weeks with any van [Română]",
+    "notesLabel": "Notes [Română]",
+    "notesPlaceholder": "Additional notes about this van hire... [Română]",
+    "offHireButton": "Off-Hire Van [Română]",
+    "deleteButton": "Delete [Română]",
+    "refundDepositButton": "Refund Deposit [Română]",
+    "cancelButton": "Cancel [Română]",
+    "updateButton": "Update [Română]",
+    "createButton": "Create [Română]"
+  },
+  "offHireDialog": {
+    "title": "Off-Hire Van [Română]",
+    "description": "Enter the date when the van was returned. The deposit will be held for 6 weeks. [Română]",
+    "infoTitle": "Important: Same-Day Van Swaps [Română]",
+    "infoDescription": "The off-hire date is the last day you had the van. If you're picking up a new van the same morning you're returning this one, off-hire this van on the previous day to avoid counting the same day twice. [Română]",
+    "dateLabel": "Off-Hire Date * [Română]",
+    "cancelButton": "Cancel [Română]",
+    "confirmButton": "Confirm Off-Hire [Română]"
+  },
+  "refundDialog": {
+    "title": "Refund Deposit [Română]",
+    "description": "Enter the refund amount (after deducting any damage costs). [Română]",
+    "amountLabel": "Refund Amount (£) * [Română]",
+    "maxLabel": "Max: £{{amount}}",
+    "cancelButton": "Cancel [Română]",
+    "confirmButton": "Confirm Refund [Română]"
+  },
+  "deleteDialog": {
+    "title": "Delete Van Hire? [Română]",
+    "description": "Are you sure you want to delete this van hire? [Română]",
+    "registration": "{{registration}}",
+    "warning": "This action cannot be undone. [Română]",
+    "confirmButton": "Delete [Română]",
+    "cancelButton": "Cancel [Română]"
+  }
+}

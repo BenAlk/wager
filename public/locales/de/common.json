@@ -1,0 +1,56 @@
+{
+  "actions": {
+    "add": "Add [Deutsch]",
+    "edit": "Edit [Deutsch]",
+    "save": "Save [Deutsch]",
+    "cancel": "Cancel [Deutsch]",
+    "delete": "Delete [Deutsch]",
+    "confirm": "Confirm [Deutsch]",
+    "back": "Back [Deutsch]",
+    "next": "Next [Deutsch]",
+    "skip": "Skip [Deutsch]",
+    "close": "Close [Deutsch]",
+    "continue": "Continue [Deutsch]",
+    "finish": "Finish [Deutsch]",
+    "reset": "Reset [Deutsch]",
+    "clear": "Clear [Deutsch]",
+    "submit": "Submit [Deutsch]",
+    "update": "Update [Deutsch]"
+  },
+  "labels": {
+    "email": "Email [Deutsch]",
+    "password": "Password [Deutsch]",
+    "route": "Route [Deutsch]",
+    "notes": "Notes [Deutsch]",
+    "optional": "(optional) [Deutsch]",
+    "required": "Required [Deutsch]",
+    "yes": "Yes [Deutsch]",
+    "no": "No [Deutsch]"
+  },
+  "time": {
+    "day": "day [Deutsch]",
+    "days": "days [Deutsch]",
+    "week": "Week [Deutsch]",
+    "weeks": "weeks [Deutsch]",
+    "today": "Today [Deutsch]",
+    "yesterday": "Yesterday [Deutsch]",
+    "tomorrow": "Tomorrow [Deutsch]"
+  },
+  "currency": {
+    "symbol": "£",
+    "format": "{{amount}}",
+    "perDay": "/ day [Deutsch]",
+    "perWeek": "/ week [Deutsch]",
+    "perMile": "/ mile [Deutsch]"
+  },
+  "loading": "Loading... [Deutsch]",
+  "pleaseWait": "Please wait... [Deutsch]",
+  "error": "Error [Deutsch]",
+  "success": "Success [Deutsch]",
+  "pwaUpdate": {
+    "title": "Update Available [Deutsch]",
+    "description": "A new version of Wager is ready to install. [Deutsch]",
+    "updateNow": "Update Now [Deutsch]",
+    "later": "Later [Deutsch]"
+  }
+}

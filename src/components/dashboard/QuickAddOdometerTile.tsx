@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { fetchWeekWithWorkDays, updateWorkDay } from '@/lib/api/weeks'
 import { dateToWeekNumber } from '@/lib/dates'
 import { useWeeksStore, getWeekKey } from '@/store/weeksStore'
@@ -29,6 +30,7 @@ interface QuickAddOdometerTileProps {
 export function QuickAddOdometerTile({
 	hasWorkToday,
 }: QuickAddOdometerTileProps) {
+	const { t } = useTranslation('dashboard')
 	const { user } = useAuth()
 	const updateWorkDayInStore = useWeeksStore((state) => state.updateWorkDay)
 	const [isSubmitting, setIsSubmitting] = useState(false)
@@ -79,14 +81,14 @@ export function QuickAddOdometerTile({
 			// Fetch current week to get work day
 			const result = await fetchWeekWithWorkDays(user.id, weekNum, year)
 			if (!result || !result.workDays) {
-				toast.error('No week data found')
+				toast.error(t('toast:workDay.createWeekFailed'))
 				return
 			}
 
 			// Find today's work day
 			const todayWorkDay = result.workDays.find((wd) => wd.date === todayString)
 			if (!todayWorkDay) {
-				toast.error('No work found for today')
+				toast.error(t('toast:workDay.addFailed'))
 				return
 			}
 
@@ -96,18 +98,18 @@ export function QuickAddOdometerTile({
 			})
 
 			if (updated) {
-				toast.success('Odometer updated!', { duration: 3000 })
+				toast.success(t('toast:workDay.updated'), { duration: 3000 })
 				setTodayWork(updated)
 				setIsEditing(false)
 				// Update the weeks store cache so calendar reflects the change
 				const weekKey = getWeekKey(weekNum, year)
 				updateWorkDayInStore(weekKey, updated.id, updated)
 			} else {
-				toast.error('Failed to update odometer')
+				toast.error(t('toast:workDay.updateFailed'))
 			}
 		} catch (error) {
 			console.error('Error updating odometer:', error)
-			toast.error('An error occurred')
+			toast.error(t('toast:general.error'))
 		} finally {
 			setIsSubmitting(false)
 		}
@@ -117,7 +119,7 @@ export function QuickAddOdometerTile({
 	if (todayWork && todayWork.van_logged_miles !== null && todayWork.van_logged_miles > 0 && !isEditing) {
 		return (
 			<DashboardTile
-				title='Quick Add Odometer'
+				title={t('quickAddOdometerTile.title')}
 				icon={Gauge}
 			>
 				<div className='flex flex-col h-full'>
@@ -125,7 +127,7 @@ export function QuickAddOdometerTile({
 						<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
 							<div className='flex justify-between items-start mb-2'>
 								<div>
-									<p className='text-[var(--text-secondary)] text-xs'>Van Logged Miles</p>
+									<p className='text-[var(--text-secondary)] text-xs'>{t('quickAddOdometerTile.vanLoggedMiles')}</p>
 									<p className='text-[var(--text-primary)] font-semibold text-2xl'>
 										{todayWork.van_logged_miles}
 									</p>
@@ -135,14 +137,14 @@ export function QuickAddOdometerTile({
 									size='icon'
 									onClick={() => setIsEditing(true)}
 									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8 mt-3'
-									aria-label="Edit today's van miles"
+									aria-label={t('quickAddOdometerTile.editOdometerAriaLabel')}
 								>
 									<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' aria-hidden='true' />
 								</Button>
 							</div>
 						</div>
 						<p className='text-[var(--text-secondary)] text-xs text-center'>
-							Odometer logged for today
+							{t('quickAddOdometerTile.odometerLoggedToday')}
 						</p>
 					</div>
 				</div>
@@ -152,14 +154,14 @@ export function QuickAddOdometerTile({
 
 	return (
 		<DashboardTile
-			title='Quick Add Odometer'
+			title={t('quickAddOdometerTile.title')}
 			icon={Gauge}
 			disabled={!hasWorkToday}
 		>
 			{!hasWorkToday ? (
 				<div className='text-center py-8'>
 					<p className='text-[var(--text-secondary)] text-sm'>
-						Add work for today first to log miles
+						{t('quickAddOdometerTile.addWorkFirst')}
 					</p>
 				</div>
 			) : (
@@ -173,7 +175,7 @@ export function QuickAddOdometerTile({
 								htmlFor='van_logged_miles'
 								className='text-[var(--input-label)] text-sm pt-5'
 							>
-								Van Logged Miles
+								{t('quickAddOdometerTile.vanLoggedMiles')}
 							</Label>
 							<Controller
 								name='van_logged_miles'
@@ -185,7 +187,7 @@ export function QuickAddOdometerTile({
 										onChange={field.onChange}
 										min={0}
 										chevronSize='sm'
-										placeholder='Enter total miles'
+										placeholder={t('quickAddOdometerTile.enterTotalMiles')}
 										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'
 									/>
 								)}
@@ -206,10 +208,10 @@ export function QuickAddOdometerTile({
 						{isSubmitting ? (
 							<>
 								<Loader2 className='w-4 h-4 mr-2 animate-spin' />
-								Updating...
+								{t('quickAddOdometerTile.updating')}
 							</>
 						) : (
-							'Update Odometer'
+							t('quickAddOdometerTile.updateButton')
 						)}
 					</Button>
 				</form>

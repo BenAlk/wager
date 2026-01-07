@@ -1,5 +1,6 @@
 import { CheckCircle2, Calendar, TrendingUp, Truck, Settings2, Eye } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface SuccessStepProps {
   onStartTracking: () => void
@@ -7,6 +8,8 @@ interface SuccessStepProps {
 }
 
 export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepProps) {
+  const { t } = useTranslation('onboarding')
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -15,10 +18,10 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
           <CheckCircle2 className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-3xl font-bold text-foreground">
-          You're All Set! 🎉
+          {t('success.title')}
         </h2>
         <p className="text-lg text-muted-foreground max-w-md mx-auto">
-          Your pay tracking is ready to go. Here's what you can do:
+          {t('success.subtitle')}
         </p>
       </div>
 
@@ -30,9 +33,9 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
             <Calendar className="w-5 h-5 text-blue-400" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground text-sm">Calendar</h3>
+            <h3 className="font-semibold text-foreground text-sm">{t('success.features.calendar.title')}</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Track daily work, sweeps, and mileage with a visual weekly view
+              {t('success.features.calendar.description')}
             </p>
           </div>
         </div>
@@ -43,9 +46,9 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
             <TrendingUp className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground text-sm">Dashboard</h3>
+            <h3 className="font-semibold text-foreground text-sm">{t('success.features.dashboard.title')}</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Quick adds for work, sweeps, and odometer readings. See payment breakdowns.
+              {t('success.features.dashboard.description')}
             </p>
           </div>
         </div>
@@ -56,9 +59,9 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
             <Truck className="w-5 h-5 text-sky-400" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground text-sm">Van Management</h3>
+            <h3 className="font-semibold text-foreground text-sm">{t('success.features.vanManagement.title')}</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Track van hire costs, deposits, and off-hire dates
+              {t('success.features.vanManagement.description')}
             </p>
           </div>
         </div>
@@ -69,9 +72,9 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
             <Settings2 className="w-5 h-5 text-amber-400" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground text-sm">Settings</h3>
+            <h3 className="font-semibold text-foreground text-sm">{t('success.features.settings.title')}</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Customize rates, mileage, and invoicing service anytime
+              {t('success.features.settings.description')}
             </p>
           </div>
         </div>
@@ -82,9 +85,9 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
         <div className="flex items-start gap-3">
           <Eye className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
-            <h3 className="font-semibold text-foreground text-sm">Want to see how it works first?</h3>
+            <h3 className="font-semibold text-foreground text-sm">{t('success.tour.title')}</h3>
             <p className="text-xs text-muted-foreground mt-1">
-              Take a quick guided tour of the dashboard to explore all features
+              {t('success.tour.description')}
             </p>
           </div>
         </div>
@@ -94,21 +97,21 @@ export function SuccessStep({ onStartTracking, onViewSampleData }: SuccessStepPr
           className="w-full border-blue-500/30 hover:border-blue-500 hover:bg-blue-500/10"
         >
           <Eye className="w-4 h-4 mr-2" />
-          Take Interactive Tour
+          {t('success.tour.button')}
         </Button>
       </div>
 
       {/* Progress + Actions */}
       <div className="space-y-4 pt-2">
         <div className="text-center">
-          <span className="text-sm text-muted-foreground">Step 4 of 4</span>
+          <span className="text-sm text-muted-foreground">{t('success.step')}</span>
         </div>
 
         <Button
           onClick={onStartTracking}
           className="w-full bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white font-semibold h-12"
         >
-          Start Tracking
+          {t('success.startTracking')}
         </Button>
       </div>
     </div>

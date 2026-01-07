@@ -1,0 +1,56 @@
+{
+  "actions": {
+    "add": "Add [Polski]",
+    "edit": "Edit [Polski]",
+    "save": "Save [Polski]",
+    "cancel": "Cancel [Polski]",
+    "delete": "Delete [Polski]",
+    "confirm": "Confirm [Polski]",
+    "back": "Back [Polski]",
+    "next": "Next [Polski]",
+    "skip": "Skip [Polski]",
+    "close": "Close [Polski]",
+    "continue": "Continue [Polski]",
+    "finish": "Finish [Polski]",
+    "reset": "Reset [Polski]",
+    "clear": "Clear [Polski]",
+    "submit": "Submit [Polski]",
+    "update": "Update [Polski]"
+  },
+  "labels": {
+    "email": "Email [Polski]",
+    "password": "Password [Polski]",
+    "route": "Route [Polski]",
+    "notes": "Notes [Polski]",
+    "optional": "(optional) [Polski]",
+    "required": "Required [Polski]",
+    "yes": "Yes [Polski]",
+    "no": "No [Polski]"
+  },
+  "time": {
+    "day": "day [Polski]",
+    "days": "days [Polski]",
+    "week": "Week [Polski]",
+    "weeks": "weeks [Polski]",
+    "today": "Today [Polski]",
+    "yesterday": "Yesterday [Polski]",
+    "tomorrow": "Tomorrow [Polski]"
+  },
+  "currency": {
+    "symbol": "£",
+    "format": "{{amount}}",
+    "perDay": "/ day [Polski]",
+    "perWeek": "/ week [Polski]",
+    "perMile": "/ mile [Polski]"
+  },
+  "loading": "Loading... [Polski]",
+  "pleaseWait": "Please wait... [Polski]",
+  "error": "Error [Polski]",
+  "success": "Success [Polski]",
+  "pwaUpdate": {
+    "title": "Update Available [Polski]",
+    "description": "A new version of Wager is ready to install. [Polski]",
+    "updateNow": "Update Now [Polski]",
+    "later": "Later [Polski]"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "title": "Settings [العربية]",
+  "tabs": {
+    "finance": "Finance Settings [العربية]",
+    "user": "User Details [العربية]",
+    "language": "Language [العربية]"
+  },
+  "language": {
+    "title": "Language Preference [العربية]",
+    "selectLanguage": "Select Language [العربية]",
+    "description": "Choose your preferred language for the app interface [العربية]"
+  },
+  "finance": {
+    "title": "Pay Rates [العربية]",
+    "description": "Set your daily pay rates. These will be used to calculate your weekly earnings. [العربية]",
+    "warning": "These should only be changed on the week that pay rates change. [العربية]",
+    "normalRate": "Normal Route Rate [العربية]",
+    "drsRate": "DRS/Missort Route Rate [العربية]",
+    "normalRateDefault": "Default: £160 per day [العربية]",
+    "drsRateDefault": "Default: £100 per day [العربية]",
+    "sixDayBonusTitle": "6-Day Week Bonus: [العربية]",
+    "sixDayBonusDescription": "You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination). [العربية]",
+    "invoicingTitle": "Invoicing & Accounting [العربية]",
+    "invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay. [العربية]",
+    "serviceProvider": "Service Provider [العربية]",
+    "serviceProviderPlaceholder": "Select invoicing service [العربية]",
+    "selfInvoicingCost": "£0/week [العربية]",
+    "versoBasicCost": "£10/week [العربية]",
+    "versoFullCost": "£30/week [العربية]",
+    "selfInvoicingDescription": "Handle your own invoicing and tax returns [العربية]",
+    "versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company) [العربية]",
+    "versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company) [العربية]",
+    "loadingSettings": "Loading settings... [العربية]",
+    "savingButton": "Saving... [العربية]",
+    "saveButton": "Save Settings [العربية]"
+  },
+  "user": {
+    "title": "Profile Information [العربية]",
+    "description": "Update your personal information. Display name is required, while first and last names are optional. [العربية]",
+    "displayName": "Display Name [العربية]",
+    "displayNameRequired": "Display Name * [العربية]",
+    "displayNamePlaceholder": "Enter your display name [العربية]",
+    "displayNameHelp": "This is how you'll be identified in the app [العربية]",
+    "firstName": "First Name [العربية]",
+    "firstNamePlaceholder": "Enter your first name (optional) [العربية]",
+    "lastName": "Last Name [العربية]",
+    "lastNamePlaceholder": "Enter your last name (optional) [العربية]",
+    "loadingUser": "Loading user details... [العربية]",
+    "savingButton": "Saving... [العربية]",
+    "saveButton": "Save Changes [العربية]",
+    "dangerZoneTitle": "Danger Zone [العربية]",
+    "deleteAccountTitle": "Delete Account [العربية]",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone. [العربية]",
+    "deleteAccountButton": "Delete My Account [العربية]"
+  },
+  "onboarding": {
+    "title": "Onboarding [العربية]",
+    "description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour. [العربية]",
+    "restartButton": "Restart Onboarding [العربية]",
+    "tourButton": "Take Dashboard Tour [العربية]"
+  },
+  "restartDialog": {
+    "title": "Restart Onboarding [العربية]",
+    "description": "Choose how you'd like to restart the onboarding process [العربية]",
+    "fullOnboardingTitle": "Full Onboarding [العربية]",
+    "fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch. [العربية]",
+    "tourOnlyTitle": "Tour Only [العربية]",
+    "tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected. [العربية]",
+    "warningLabel": "Full Onboarding Warning: [العربية]",
+    "warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted. [العربية]",
+    "cancelButton": "Cancel [العربية]"
+  },
+  "deleteAccount": {
+    "warningTitle": "Delete Account - Final Warning [العربية]",
+    "warningDescription": "Warning about permanent account deletion [العربية]",
+    "permanentHeading": "This action is PERMANENT and IRREVERSIBLE [العربية]",
+    "permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation. [العربية]",
+    "dataDeletedHeading": "The following data will be permanently deleted: [العربية]",
+    "dataList": {
+      "profile": "Your user profile and account settings [العربية]",
+      "workDays": "All work days and weekly pay data (every week you've tracked) [العربية]",
+      "vanHires": "All van hire records and deposit information [العربية]",
+      "rankings": "Performance rankings history [العربية]",
+      "mileage": "Mileage tracking and pay rate history [العربية]",
+      "auth": "Your authentication credentials (you will be logged out) [العربية]"
+    },
+    "alternativesHeading": "Consider these alternatives: [العربية]",
+    "alternatives": {
+      "stopUsing": "You can simply stop using the app without deleting your account [العربية]",
+      "clearWeeks": "You can clear individual weeks if you want to start fresh [العربية]",
+      "resetRates": "You can reset your pay rates in Settings if they've changed [العربية]"
+    },
+    "cancelButton": "Cancel (Keep My Account) [العربية]",
+    "proceedButton": "I Understand - Proceed to Delete [العربية]",
+    "confirmTitle": "Confirm Account Deletion [العربية]",
+    "confirmDescription": "Final confirmation step for account deletion [العربية]",
+    "lastChance": "Last chance: Enter your credentials to permanently delete your account [العربية]",
+    "emailLabel": "Your Email Address [العربية]",
+    "emailMatch": "Must match: {{email}}",
+    "passwordLabel": "Your Password [العربية]",
+    "passwordPlaceholder": "Enter your password to confirm [العربية]",
+    "passwordHelp": "We need to verify your identity before deletion [العربية]",
+    "confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm [العربية]",
+    "confirmTextPlaceholder": "DELETE MY ACCOUNT [العربية]",
+    "confirmTextHelp": "Type exactly as shown (case sensitive) [العربية]",
+    "finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action. [العربية]",
+    "goBackButton": "Go Back [العربية]",
+    "deletingButton": "Deleting Account... [العربية]",
+    "deleteButton": "Delete My Account Forever [العربية]"
+  }
+}

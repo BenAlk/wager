@@ -5,6 +5,7 @@ import { useSettingsStore } from '@/store/settingsStore'
 import { useAuthStore } from '@/store/authStore'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
+import { useTranslation } from '@/i18n/useTranslation'
 
 import { WelcomeStep } from './WelcomeStep'
 import { PayRatesStep } from './PayRatesStep'
@@ -16,6 +17,7 @@ import { SuccessStep } from './SuccessStep'
 type InvoicingService = 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
 
 export function OnboardingModal() {
+  const { t } = useTranslation('onboarding')
   const {
     currentStep,
     isOnboardingOpen,
@@ -93,11 +95,11 @@ export function OnboardingModal() {
 
       if (error) throw error
 
-      toast.success('Van hire added successfully!')
+      toast.success(t('toast.vanAdded'))
       nextStep()
     } catch (error) {
       console.error('Error saving van hire:', error)
-      toast.error('Failed to add van hire. You can add it later from Van Management.')
+      toast.error(t('toast.vanAddFailed'))
       nextStep() // Continue anyway
     }
   }
@@ -107,7 +109,7 @@ export function OnboardingModal() {
     await markOnboardingComplete()
     setWantsSampleDataTour(false)
     completeOnboarding()
-    toast.success('Welcome to Wager! Start tracking your pay.')
+    toast.success(t('toast.welcomeMessage'))
   }
 
   const handleViewSampleData = async () => {
@@ -192,7 +194,7 @@ export function OnboardingModal() {
       })
     } catch (error) {
       console.error('Error saving settings:', error)
-      toast.error('Failed to save settings. Please try again.')
+      toast.error(t('toast.savingSettingsFailed'))
     } finally {
       setIsSaving(false)
     }
@@ -279,9 +281,9 @@ export function OnboardingModal() {
   return (
     <Dialog open={isOnboardingOpen} onOpenChange={() => {}}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-[var(--modal-bg)] text-[var(--text-primary)]">
-        <DialogTitle className="sr-only">Onboarding Wizard</DialogTitle>
+        <DialogTitle className="sr-only">{t('modal.title')}</DialogTitle>
         <DialogDescription className="sr-only">
-          Complete the setup process to get started with Wager
+          {t('modal.description')}
         </DialogDescription>
         {renderStep()}
       </DialogContent>

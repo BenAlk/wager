@@ -1,0 +1,41 @@
+{
+  "loading": "Loading van hires... [العربية]",
+  "pageTitle": "Van Management [العربية]",
+  "actions": {
+    "newVanHire": "New Van Hire [العربية]",
+    "setDeposit": "Set Deposit [العربية]",
+    "clearDeposits": "Clear Deposits [العربية]",
+    "addVanHire": "Add Van Hire [العربية]"
+  },
+  "depositSummary": {
+    "title": "Deposit Summary [العربية]",
+    "subtitle": "Cumulative deposit across all van hires [العربية]",
+    "totalPaid": "Total Paid [العربية]",
+    "remaining": "Remaining [العربية]",
+    "target": "Target [العربية]",
+    "complete": "Complete [العربية]",
+    "inProgress": "In Progress [العربية]"
+  },
+  "activeVanAlert": {
+    "title": "You have an active van hire [العربية]",
+    "subtitle": "Off-hire your current van ({{registration}}) before adding a new one"
+  },
+  "history": {
+    "title": "Van Hire History [العربية]",
+    "empty": {
+      "title": "No van hires yet [العربية]",
+      "subtitle": "Add your first van hire to start tracking costs and deposits [العربية]"
+    }
+  },
+  "depositModal": {
+    "title": "Set Manual Deposit [العربية]",
+    "infoTitle": "💡 Deposits Already Paid [العربية]",
+    "infoText": "Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted. [العربية]",
+    "depositLimit": "Deposit limit: £500 [العربية]",
+    "label": "Total Deposit Paid (£) * [العربية]",
+    "placeholder": "e.g., 250.00 [العربية]",
+    "maximum": "Maximum: £500.00 [العربية]",
+    "buttonSetting": "Setting... [العربية]",
+    "buttonSet": "Set Deposit [العربية]"
+  }
+}

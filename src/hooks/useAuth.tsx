@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase'
 import { fetchUserSettings } from '@/lib/api/settings'
 import { useSettingsStore } from '@/store/settingsStore'
 import { useAuthStore } from '@/store/authStore'
+import i18n from '@/i18n'
 
 interface AuthContextType {
 	user: User | null
@@ -45,6 +46,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				} else {
 					// Update auth store with both supabase user and profile
 					setAuthUser(supabaseUser, userProfile)
+
+					// Sync language preference from database
+					if (userProfile?.language_preference) {
+						i18n.changeLanguage(userProfile.language_preference)
+					}
 				}
 
 				// Fetch user settings

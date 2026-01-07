@@ -1,0 +1,56 @@
+{
+  "actions": {
+    "add": "Add [Română]",
+    "edit": "Edit [Română]",
+    "save": "Save [Română]",
+    "cancel": "Cancel [Română]",
+    "delete": "Delete [Română]",
+    "confirm": "Confirm [Română]",
+    "back": "Back [Română]",
+    "next": "Next [Română]",
+    "skip": "Skip [Română]",
+    "close": "Close [Română]",
+    "continue": "Continue [Română]",
+    "finish": "Finish [Română]",
+    "reset": "Reset [Română]",
+    "clear": "Clear [Română]",
+    "submit": "Submit [Română]",
+    "update": "Update [Română]"
+  },
+  "labels": {
+    "email": "Email [Română]",
+    "password": "Password [Română]",
+    "route": "Route [Română]",
+    "notes": "Notes [Română]",
+    "optional": "(optional) [Română]",
+    "required": "Required [Română]",
+    "yes": "Yes [Română]",
+    "no": "No [Română]"
+  },
+  "time": {
+    "day": "day [Română]",
+    "days": "days [Română]",
+    "week": "Week [Română]",
+    "weeks": "weeks [Română]",
+    "today": "Today [Română]",
+    "yesterday": "Yesterday [Română]",
+    "tomorrow": "Tomorrow [Română]"
+  },
+  "currency": {
+    "symbol": "£",
+    "format": "{{amount}}",
+    "perDay": "/ day [Română]",
+    "perWeek": "/ week [Română]",
+    "perMile": "/ mile [Română]"
+  },
+  "loading": "Loading... [Română]",
+  "pleaseWait": "Please wait... [Română]",
+  "error": "Error [Română]",
+  "success": "Success [Română]",
+  "pwaUpdate": {
+    "title": "Update Available [Română]",
+    "description": "A new version of Wager is ready to install. [Română]",
+    "updateNow": "Update Now [Română]",
+    "later": "Later [Română]"
+  }
+}

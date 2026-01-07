@@ -6,6 +6,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface RestartOnboardingDialogProps {
   isOpen: boolean
@@ -20,14 +21,15 @@ export function RestartOnboardingDialog({
   onFullOnboarding,
   onTourOnly,
 }: RestartOnboardingDialogProps) {
+  const { t } = useTranslation('settings')
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md bg-[var(--modal-bg)] text-[var(--text-primary)]">
         <DialogTitle className="text-xl font-semibold text-foreground">
-          Restart Onboarding
+          {t('restartDialog.title')}
         </DialogTitle>
         <DialogDescription className="text-muted-foreground">
-          Choose how you'd like to restart the onboarding process
+          {t('restartDialog.description')}
         </DialogDescription>
 
         <div className="space-y-3 mt-4">
@@ -42,10 +44,10 @@ export function RestartOnboardingDialog({
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground mb-1">
-                  Full Onboarding
+                  {t('restartDialog.fullOnboardingTitle')}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch.
+                  {t('restartDialog.fullOnboardingDescription')}
                 </p>
               </div>
             </div>
@@ -62,10 +64,10 @@ export function RestartOnboardingDialog({
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-foreground mb-1">
-                  Tour Only
+                  {t('restartDialog.tourOnlyTitle')}
                 </h3>
                 <p className="text-sm text-muted-foreground">
-                  Keep your data and just view the interactive dashboard tour. Your real data won't be affected.
+                  {t('restartDialog.tourOnlyDescription')}
                 </p>
               </div>
             </div>
@@ -76,14 +78,14 @@ export function RestartOnboardingDialog({
         <div className="flex items-start gap-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg mt-4">
           <AlertTriangle className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" />
           <p className="text-xs text-muted-foreground">
-            <strong className="text-yellow-500">Full Onboarding Warning:</strong> This action cannot be undone. All work days, van hires, and settings will be permanently deleted.
+            <strong className="text-yellow-500">{t('restartDialog.warningLabel')}</strong> {t('restartDialog.warningText')}
           </p>
         </div>
 
         {/* Cancel Button */}
         <div className="flex justify-end mt-4">
           <Button onClick={onClose} variant="outline">
-            Cancel
+            {t('restartDialog.cancelButton')}
           </Button>
         </div>
       </DialogContent>

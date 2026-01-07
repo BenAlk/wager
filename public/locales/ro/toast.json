@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back! [Română]",
+    "accountCreated": "Account created successfully! [Română]",
+    "passwordResetSent": "Password reset email sent! Check your inbox and spam folder. [Română]",
+    "passwordReset": "Password reset successfully! [Română]",
+    "loginFailed": "Failed to login [Română]",
+    "signupFailed": "Failed to create account [Română]",
+    "logoutFailed": "Failed to logout [Română]",
+    "authFailed": "Authentication failed [Română]",
+    "emailExists": "An account with this email already exists. Please login instead. [Română]",
+    "resetEmailFailed": "Failed to send reset email [Română]"
+  },
+  "settings": {
+    "saved": "Settings saved successfully! [Română]",
+    "saveFailed": "Failed to save settings [Română]",
+    "languageUpdated": "Language updated successfully! [Română]",
+    "languageUpdateFailed": "Failed to update language [Română]"
+  },
+  "user": {
+    "saved": "User details saved successfully! [Română]",
+    "saveFailed": "Failed to save user details [Română]",
+    "loadFailed": "Failed to load user details [Română]"
+  },
+  "workDay": {
+    "added": "Work added for today! [Română]",
+    "updated": "Work updated! [Română]",
+    "deleted": "Work day deleted [Română]",
+    "addFailed": "Failed to add work [Română]",
+    "updateFailed": "Failed to update work [Română]",
+    "deleteFailed": "Failed to delete work day [Română]",
+    "createWeekFailed": "Failed to create week [Română]",
+    "alreadyExists": "Work already exists for today [Română]"
+  },
+  "rankings": {
+    "saved": "Rankings saved successfully! [Română]",
+    "saveFailed": "Failed to save rankings [Română]",
+    "unableToSave": "Unable to save rankings [Română]"
+  },
+  "week": {
+    "mileageRateUpdated": "Mileage rate updated! [Română]",
+    "mileageRateUpdateFailed": "Failed to update mileage rate [Română]",
+    "cleared": "Week cleared successfully [Română]",
+    "clearFailed": "Failed to clear week [Română]"
+  },
+  "van": {
+    "added": "Van hire added successfully [Română]",
+    "updated": "Van hire updated successfully [Română]",
+    "offHired": "Van off-hired successfully [Română]",
+    "deleted": "Van hire deleted successfully [Română]",
+    "depositRefunded": "Deposit refunded successfully [Română]",
+    "manualDepositSet": "Manual deposit set successfully [Română]",
+    "manualDepositCleared": "Manual deposit cleared successfully [Română]",
+    "addFailed": "Failed to add van hire [Română]",
+    "updateFailed": "Failed to update van hire [Română]",
+    "deleteFailed": "Failed to delete van hire [Română]",
+    "offHireFailed": "Failed to off-hire van [Română]",
+    "refundFailed": "Failed to refund deposit [Română]",
+    "loadFailed": "Failed to load van hires [Română]",
+    "depositAdjustFailed": "Failed to set deposit adjustment [Română]",
+    "depositClearFailed": "Failed to clear deposit adjustment [Română]",
+    "enterDeposit": "Please enter a deposit amount [Română]",
+    "depositRange": "Deposit must be between £0 and £500 [Română]",
+    "enterOffHireDate": "Please enter an off-hire date [Română]",
+    "refundExceedsDeposit": "Refund amount cannot exceed deposit paid [Română]"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Wager! Start tracking your pay. [Română]",
+    "resetFailed": "Failed to reset onboarding [Română]",
+    "restartFailed": "Failed to restart onboarding [Română]"
+  },
+  "deleteAccount": {
+    "enterCredentials": "Please enter your email and password [Română]",
+    "emailMismatch": "Email does not match your account email [Română]",
+    "confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm [Română]",
+    "incorrectPassword": "Incorrect password. Please try again. [Română]",
+    "deleteFailed": "Failed to delete account. Please contact support. [Română]",
+    "deleted": "Your account has been permanently deleted [Română]",
+    "unexpectedError": "An unexpected error occurred. Please try again. [Română]"
+  },
+  "general": {
+    "error": "An error occurred [Română]",
+    "deleteAllFailed": "Failed to delete data [Română]",
+    "creatingWeek": "Creating week record... [Română]"
+  }
+}

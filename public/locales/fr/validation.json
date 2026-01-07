@@ -1,0 +1,68 @@
+{
+  "required": "This field is required [Français]",
+  "email": {
+    "invalid": "Invalid email address [Français]",
+    "required": "Email is required [Français]"
+  },
+  "password": {
+    "minLength": "Password must be at least {{min}} characters",
+    "required": "Password is required [Français]",
+    "mismatch": "Passwords do not match [Français]"
+  },
+  "displayName": {
+    "required": "Display name is required [Français]",
+    "maxLength": "Display name must be less than {{max}} characters"
+  },
+  "firstName": {
+    "maxLength": "First name must be less than {{max}} characters"
+  },
+  "lastName": {
+    "maxLength": "Last name must be less than {{max}} characters"
+  },
+  "rate": {
+    "required": "Rate is required [Français]",
+    "positive": "Rate must be positive [Français]",
+    "tooHigh": "Rate too high [Français]",
+    "wholeNumber": "Rate must be a whole number [Français]"
+  },
+  "sweeps": {
+    "max": "Maximum {{max}} sweeps per day",
+    "negative": "Sweeps cannot be negative [Français]"
+  },
+  "mileage": {
+    "negative": "Mileage cannot be negative [Français]",
+    "required": "Mileage rate is required [Français]",
+    "max": "Mileage rate cannot exceed £{{max}} per mile"
+  },
+  "finance": {
+    "normalRateRequired": "Normal rate is required [Français]",
+    "drsRateRequired": "DRS rate is required [Français]",
+    "rateWhole": "Rate must be a whole number [Français]",
+    "ratePositive": "Rate must be positive [Français]",
+    "rateTooHigh": "Rate too high [Français]"
+  },
+  "workDay": {
+    "maxDays": "Cannot work more than 6 days per week (legal limit) [Français]",
+    "routeRequired": "Route number required [Français]",
+    "dailyRateRequired": "Daily rate is required for manual route entries [Français]"
+  },
+  "van": {
+    "registrationRequired": "Registration is required [Français]",
+    "registrationTooLong": "Registration too long [Français]",
+    "weeklyRateRequired": "Weekly rate is required [Français]",
+    "rateWholeNumber": "Rate must be a whole number [Français]",
+    "ratePositive": "Rate must be positive [Français]",
+    "rateTooHigh": "Rate too high [Français]",
+    "onHireDateRequired": "On-hire date is required [Français]",
+    "offHireDateInvalid": "Off-hire date must be on or after on-hire date [Français]",
+    "notesTooLong": "Notes too long [Français]"
+  },
+  "string": {
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be less than {{max}} characters"
+  },
+  "number": {
+    "min": "Must be at least {{min}}",
+    "max": "Must be less than {{max}}"
+  }
+}

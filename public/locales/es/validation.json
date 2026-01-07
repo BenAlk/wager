@@ -1,0 +1,68 @@
+{
+  "required": "This field is required [Español]",
+  "email": {
+    "invalid": "Invalid email address [Español]",
+    "required": "Email is required [Español]"
+  },
+  "password": {
+    "minLength": "Password must be at least {{min}} characters",
+    "required": "Password is required [Español]",
+    "mismatch": "Passwords do not match [Español]"
+  },
+  "displayName": {
+    "required": "Display name is required [Español]",
+    "maxLength": "Display name must be less than {{max}} characters"
+  },
+  "firstName": {
+    "maxLength": "First name must be less than {{max}} characters"
+  },
+  "lastName": {
+    "maxLength": "Last name must be less than {{max}} characters"
+  },
+  "rate": {
+    "required": "Rate is required [Español]",
+    "positive": "Rate must be positive [Español]",
+    "tooHigh": "Rate too high [Español]",
+    "wholeNumber": "Rate must be a whole number [Español]"
+  },
+  "sweeps": {
+    "max": "Maximum {{max}} sweeps per day",
+    "negative": "Sweeps cannot be negative [Español]"
+  },
+  "mileage": {
+    "negative": "Mileage cannot be negative [Español]",
+    "required": "Mileage rate is required [Español]",
+    "max": "Mileage rate cannot exceed £{{max}} per mile"
+  },
+  "finance": {
+    "normalRateRequired": "Normal rate is required [Español]",
+    "drsRateRequired": "DRS rate is required [Español]",
+    "rateWhole": "Rate must be a whole number [Español]",
+    "ratePositive": "Rate must be positive [Español]",
+    "rateTooHigh": "Rate too high [Español]"
+  },
+  "workDay": {
+    "maxDays": "Cannot work more than 6 days per week (legal limit) [Español]",
+    "routeRequired": "Route number required [Español]",
+    "dailyRateRequired": "Daily rate is required for manual route entries [Español]"
+  },
+  "van": {
+    "registrationRequired": "Registration is required [Español]",
+    "registrationTooLong": "Registration too long [Español]",
+    "weeklyRateRequired": "Weekly rate is required [Español]",
+    "rateWholeNumber": "Rate must be a whole number [Español]",
+    "ratePositive": "Rate must be positive [Español]",
+    "rateTooHigh": "Rate too high [Español]",
+    "onHireDateRequired": "On-hire date is required [Español]",
+    "offHireDateInvalid": "Off-hire date must be on or after on-hire date [Español]",
+    "notesTooLong": "Notes too long [Español]"
+  },
+  "string": {
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be less than {{max}} characters"
+  },
+  "number": {
+    "min": "Must be at least {{min}}",
+    "max": "Must be less than {{max}}"
+  }
+}

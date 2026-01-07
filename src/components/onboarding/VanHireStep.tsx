@@ -1,5 +1,6 @@
 import { Truck, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface VanHireStepProps {
   onYes: () => void
@@ -8,6 +9,8 @@ interface VanHireStepProps {
 }
 
 export function VanHireStep({ onYes, onSkip, onBack }: VanHireStepProps) {
+  const { t } = useTranslation('onboarding')
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -16,10 +19,10 @@ export function VanHireStep({ onYes, onSkip, onBack }: VanHireStepProps) {
           <Truck className="w-8 h-8 text-sky-400" />
         </div>
         <h2 className="text-2xl font-bold text-foreground">
-          Do you have a van on hire?
+          {t('vanHire.title')}
         </h2>
         <p className="text-muted-foreground max-w-sm mx-auto">
-          We can help you track van costs, deposits, and mileage
+          {t('vanHire.subtitle')}
         </p>
       </div>
 
@@ -34,9 +37,9 @@ export function VanHireStep({ onYes, onSkip, onBack }: VanHireStepProps) {
             <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/20 group-hover:bg-blue-500/30 transition-colors">
               <Truck className="w-6 h-6 text-blue-400" />
             </div>
-            <h3 className="font-semibold text-foreground">Yes, Add My Van</h3>
+            <h3 className="font-semibold text-foreground">{t('vanHire.yesAddVan')}</h3>
             <p className="text-sm text-muted-foreground">
-              Set up van hire details and start tracking costs
+              {t('vanHire.yesDescription')}
             </p>
           </div>
         </button>
@@ -47,9 +50,9 @@ export function VanHireStep({ onYes, onSkip, onBack }: VanHireStepProps) {
           className="w-full p-6 rounded-lg border-2 border-border bg-card/50 hover:border-border-hover transition-all text-center group"
         >
           <div className="space-y-2">
-            <h3 className="font-semibold text-foreground">No, Skip This Step</h3>
+            <h3 className="font-semibold text-foreground">{t('vanHire.noSkip')}</h3>
             <p className="text-sm text-muted-foreground">
-              I don't have a van or I'll add it later
+              {t('vanHire.noDescription')}
             </p>
           </div>
         </button>
@@ -59,14 +62,14 @@ export function VanHireStep({ onYes, onSkip, onBack }: VanHireStepProps) {
       <div className="flex items-start gap-3 p-3 bg-card/50 border border-border rounded-lg">
         <Info className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
         <p className="text-xs text-muted-foreground">
-          You can add or manage van hires anytime from the Van Management page
+          {t('vanHire.info')}
         </p>
       </div>
 
       {/* Progress + Actions */}
       <div className="space-y-4 pt-2">
         <div className="text-center">
-          <span className="text-sm text-muted-foreground">Step 3 of 4</span>
+          <span className="text-sm text-muted-foreground">{t('vanHire.step')}</span>
         </div>
 
         <Button
@@ -74,7 +77,7 @@ export function VanHireStep({ onYes, onSkip, onBack }: VanHireStepProps) {
           variant="outline"
           className="w-full"
         >
-          Back
+          {t('common:actions.back')}
         </Button>
       </div>
     </div>

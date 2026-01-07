@@ -2,6 +2,7 @@ import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { useTranslation } from '@/i18n/useTranslation'
 import { useAuth } from '@/hooks/useAuth'
 import { useSettingsStore } from '@/store/settingsStore'
 import { useOnboardingStore } from '@/store/onboardingStore'
@@ -16,8 +17,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { FinanceSettings } from '@/components/settings/FinanceSettings'
 import { UserDetailsSettings } from '@/components/settings/UserDetailsSettings'
 import { RestartOnboardingDialog } from '@/components/settings/RestartOnboardingDialog'
+import { LanguageSettings } from '@/components/settings/LanguageSettings'
 
 export default function Settings() {
+	const { t } = useTranslation('settings')
 	const navigate = useNavigate()
 	const { user } = useAuth()
 	const { isLoading } = useSettingsStore()
@@ -45,7 +48,7 @@ export default function Settings() {
 
 			if (weeksError || vansError) {
 				console.error('Error deleting data:', weeksError || vansError)
-				toast.error('Failed to delete data. Please try again.')
+				toast.error(t('toast:general.deleteAllFailed'))
 				return
 			}
 
@@ -60,7 +63,7 @@ export default function Settings() {
 
 			if (onboardingError) {
 				console.error('Error resetting onboarding:', onboardingError)
-				toast.error('Failed to reset onboarding. Please try again.')
+				toast.error(t('toast:onboarding.resetFailed'))
 				return
 			}
 
@@ -84,7 +87,7 @@ export default function Settings() {
 			// The onboarding will auto-start because onboarding_completed is now false in DB
 		} catch (error) {
 			console.error('Error in handleFullOnboarding:', error)
-			toast.error('Failed to restart onboarding. Please try again.')
+			toast.error(t('toast:onboarding.restartFailed'))
 		}
 	}
 
@@ -115,7 +118,7 @@ export default function Settings() {
 			>
 				<div className='flex items-center gap-2' style={{ color: 'var(--text-primary)' }}>
 					<Loader2 className='w-6 h-6 animate-spin' />
-					<p className='text-lg'>Loading settings...</p>
+					<p className='text-lg'>{t('common:loading')}</p>
 				</div>
 			</div>
 		)
@@ -127,7 +130,7 @@ export default function Settings() {
 				<Tabs defaultValue='finance' className='space-y-6'>
 					{/* Tab Navigation */}
 					<TabsList
-						className='grid w-full grid-cols-2 h-12 p-1 rounded-lg border'
+						className='grid w-full grid-cols-3 h-12 p-1 rounded-lg border'
 						style={{
 							backgroundColor: 'var(--bg-surface-secondary)',
 							borderColor: 'var(--border-primary)',
@@ -142,7 +145,7 @@ export default function Settings() {
 								} as React.CSSProperties
 							}
 						>
-							<span className='tab-trigger-text'>Finance Settings</span>
+							<span className='tab-trigger-text'>{t('tabs.finance')}</span>
 						</TabsTrigger>
 						<TabsTrigger
 							value='user'
@@ -153,7 +156,18 @@ export default function Settings() {
 								} as React.CSSProperties
 							}
 						>
-							<span className='tab-trigger-text'>User Details</span>
+							<span className='tab-trigger-text'>{t('tabs.user')}</span>
+						</TabsTrigger>
+						<TabsTrigger
+							value='language'
+							className='cursor-pointer h-full rounded-md font-medium transition-all data-[state=active]:shadow-sm'
+							style={
+								{
+									'--tw-ring-offset-color': 'var(--bg-surface-secondary)',
+								} as React.CSSProperties
+							}
+						>
+							<span className='tab-trigger-text'>{t('tabs.language')}</span>
 						</TabsTrigger>
 					</TabsList>
 
@@ -173,11 +187,10 @@ export default function Settings() {
 								className='text-xl font-semibold mb-4'
 								style={{ color: 'var(--text-primary)' }}
 							>
-								Onboarding
+								{t('onboarding.title')}
 							</h2>
 							<p className='text-sm mb-4' style={{ color: 'var(--text-secondary)' }}>
-								Restart the onboarding wizard to see the setup process again or take the
-								interactive dashboard tour.
+								{t('onboarding.description')}
 							</p>
 							<Button
 								type='button'
@@ -190,7 +203,7 @@ export default function Settings() {
 								}}
 								className='hover:opacity-90'
 							>
-								Restart Onboarding
+								{t('onboarding.restartButton')}
 							</Button>
 						</Card>
 
@@ -207,7 +220,7 @@ export default function Settings() {
 								}}
 								className='hover:opacity-90'
 							>
-								Back to Dashboard
+								{t('common:actions.back')}
 							</Button>
 						</div>
 					</TabsContent>
@@ -229,7 +242,29 @@ export default function Settings() {
 								}}
 								className='hover:opacity-90'
 							>
-								Back to Dashboard
+								{t('common:actions.back')}
+							</Button>
+						</div>
+					</TabsContent>
+
+					{/* Language Tab */}
+					<TabsContent value='language' className='space-y-6'>
+						<LanguageSettings />
+
+						{/* Back to Dashboard Button */}
+						<div className='flex items-center justify-end'>
+							<Button
+								type='button'
+								variant='outline'
+								onClick={() => navigate('/dashboard')}
+								style={{
+									backgroundColor: 'var(--button-secondary-bg)',
+									borderColor: 'var(--button-secondary-border)',
+									color: 'var(--button-secondary-text)',
+								}}
+								className='hover:opacity-90'
+							>
+								{t('common:actions.back')}
 							</Button>
 						</div>
 					</TabsContent>

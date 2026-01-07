@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label'
 import { NumberInput } from '@/components/ui/number-input'
 import { Textarea } from '@/components/ui/textarea'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
+import { useTranslation } from '@/i18n/useTranslation'
 import { useAuth } from '@/hooks/useAuth'
 import {
 	deleteWorkDay as apiDeleteWorkDay,
@@ -24,30 +25,40 @@ import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-const workDaySchema = z.object({
-	route_type: z.enum(['Normal', 'DRS', 'Manual']),
-	route_number: z.string().optional(),
-	daily_rate: z.number().min(1).optional(), // Required when Manual route type
-	stops_given: z.number().min(0).max(200),
-	stops_taken: z.number().min(0).max(200),
-	amazon_paid_miles: z.number().min(0).optional(),
-	van_logged_miles: z.number().min(0).optional(),
-	notes: z.string().optional(),
-}).refine(
-	(data) => {
-		// If Manual route, daily_rate is required
-		if (data.route_type === 'Manual') {
-			return data.daily_rate && data.daily_rate > 0
+const createWorkDaySchema = (t: (key: string) => string) =>
+	z.object({
+		route_type: z.enum(['Normal', 'DRS', 'Manual', 'LWB']),
+		route_number: z.string().optional(),
+		daily_rate: z.number().min(1).optional(), // Required when Manual route type
+		stops_given: z.number().min(0).max(200),
+		stops_taken: z.number().min(0).max(200),
+		amazon_paid_miles: z.number().min(0).optional(),
+		van_logged_miles: z.number().min(0).optional(),
+		notes: z.string().optional(),
+	}).refine(
+		(data) => {
+			// If Manual route, daily_rate is required
+			if (data.route_type === 'Manual') {
+				return data.daily_rate && data.daily_rate > 0
+			}
+			return true
+		},
+		{
+			message: t('validation:workDay.dailyRateRequired'),
+			path: ['daily_rate'],
 		}
-		return true
-	},
-	{
-		message: 'Daily rate is required for manual route entries',
-		path: ['daily_rate'],
-	}
-)
+	)
 
-type WorkDayFormData = z.infer<typeof workDaySchema>
+type WorkDayFormData = {
+	route_type: 'Normal' | 'DRS' | 'Manual' | 'LWB'
+	route_number?: string
+	daily_rate?: number
+	stops_given: number
+	stops_taken: number
+	amazon_paid_miles?: number
+	van_logged_miles?: number
+	notes?: string
+}
 
 interface DayEditModalProps {
 	date: Date
@@ -60,6 +71,7 @@ export default function DayEditModal({
 	weekData,
 	onClose,
 }: DayEditModalProps) {
+	const { t } = useTranslation('calendar')
 	const { user } = useAuth()
 	const { settings } = useSettingsStore()
 	const {
@@ -74,8 +86,9 @@ export default function DayEditModal({
 	// Use default settings if not loaded yet
 	const currentSettings = settings || {
 		user_id: user?.id || '',
-		normal_rate: 16000, // £160
+		normal_rate: 15700, // £157
 		drs_rate: 10000, // £100
+		lwb_rate: 17100, // £171
 		mileage_rate: 1988, // 19.88p per mile
 		invoicing_service: 'Self-Invoicing' as const,
 		created_at: '',
@@ -95,7 +108,7 @@ export default function DayEditModal({
 		control,
 		formState: { errors, isSubmitting },
 	} = useForm<WorkDayFormData>({
-		resolver: zodResolver(workDaySchema),
+		resolver: zodResolver(createWorkDaySchema(t)),
 		defaultValues: existingWorkDay
 			? {
 					route_type: existingWorkDay.route_type,
@@ -128,12 +141,14 @@ export default function DayEditModal({
 			? (manualRate || 0)
 			: routeType === 'Normal'
 				? currentSettings.normal_rate
-				: currentSettings.drs_rate
+				: routeType === 'LWB'
+					? currentSettings.lwb_rate
+					: currentSettings.drs_rate
 
 	const onSubmit = async (data: WorkDayFormData) => {
 		try {
 			if (!user) {
-				toast.error('User not authenticated')
+				toast.error(t('toast:auth.authFailed'))
 				return
 			}
 
@@ -141,7 +156,7 @@ export default function DayEditModal({
 			if (!existingWorkDay) {
 				const currentDaysWorked = weekData?.work_days?.length || 0
 				if (currentDaysWorked >= 6) {
-					toast.error('Cannot work more than 6 days per week (legal limit)')
+					toast.error(t('dayEditModal.maxDaysError'))
 					return
 				}
 			}
@@ -152,7 +167,7 @@ export default function DayEditModal({
 			// Get or create week if it doesn't exist
 			let week = weekData
 			if (!week) {
-				toast.info('Creating week record...')
+				toast.info(t('toast:general.creatingWeek'))
 				week = await getOrCreateWeek(
 					user.id,
 					weekInfo.week,
@@ -186,7 +201,7 @@ export default function DayEditModal({
 				const weekKey = getWeekKey(weekInfo.week, weekInfo.year)
 				updateWorkDayInCache(weekKey, existingWorkDay.id, savedWorkDay)
 
-				toast.success('Work day updated successfully')
+				toast.success(t('toast:workDay.updated'))
 			} else {
 				// Create new work day
 				savedWorkDay = await createWorkDay(workDayData)
@@ -201,13 +216,13 @@ export default function DayEditModal({
 					addWorkDayToCache(weekKey, savedWorkDay)
 				}
 
-				toast.success('Work day added successfully')
+				toast.success(t('toast:workDay.added'))
 			}
 
 			onClose()
 		} catch (error) {
 			console.error('Error saving work day:', error)
-			toast.error('Failed to save work day')
+			toast.error(t('toast:workDay.addFailed'))
 		}
 	}
 
@@ -229,11 +244,11 @@ export default function DayEditModal({
 			const weekKey = getWeekKey(weekInfo.week, weekInfo.year)
 			removeWorkDay(weekKey, existingWorkDay.id)
 
-			toast.success('Work day deleted successfully')
+			toast.success(t('toast:workDay.deleted'))
 			onClose()
 		} catch (error) {
 			console.error('Error deleting work day:', error)
-			toast.error('Failed to delete work day')
+			toast.error(t('toast:workDay.deleteFailed'))
 		} finally {
 			setIsDeleting(false)
 		}
@@ -261,7 +276,7 @@ export default function DayEditModal({
 							{format(date, 'EEEE, MMMM d')}
 						</h2>
 						<p className='text-sm text-[var(--modal-description)]'>
-							{existingWorkDay ? 'Edit work day' : 'Add work day'}
+							{existingWorkDay ? t('dayEditModal.editTitle') : t('dayEditModal.title')}
 						</p>
 					</div>
 					<Button
@@ -282,8 +297,8 @@ export default function DayEditModal({
 				>
 					{/* Route Type */}
 					<div>
-						<Label className='text-[var(--input-label)]'>Route Type</Label>
-						<div className='grid grid-cols-3 gap-3 mt-2'>
+						<Label className='text-[var(--input-label)]'>{t('dayEditModal.routeType')}</Label>
+						<div className='grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2'>
 							<button
 								type='button'
 								onClick={() => {
@@ -296,9 +311,26 @@ export default function DayEditModal({
 										: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
 								}`}
 							>
-								<div className='font-semibold'>Normal</div>
+								<div className='font-semibold'>{t('domain:routeTypes.Normal')}</div>
 								<div className='text-sm'>
 									£{(currentSettings.normal_rate / 100).toFixed(2)}
+								</div>
+							</button>
+							<button
+								type='button'
+								onClick={() => {
+									setValue('route_type', 'LWB')
+									setValue('daily_rate', undefined)
+								}}
+								className={`py-3 px-4 rounded-lg border transition-all ${
+									routeType === 'LWB'
+										? 'bg-[var(--bg-route-normal)] border-[var(--border-route-normal)] text-[var(--text-route-normal)]'
+										: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
+								}`}
+							>
+								<div className='font-semibold'>{t('domain:routeTypes.LWB')}</div>
+								<div className='text-sm'>
+									£{(currentSettings.lwb_rate / 100).toFixed(2)}
 								</div>
 							</button>
 							<button
@@ -313,7 +345,7 @@ export default function DayEditModal({
 										: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
 								}`}
 							>
-								<div className='font-semibold'>DRS</div>
+								<div className='font-semibold'>{t('domain:routeTypes.DRS')}</div>
 								<div className='text-sm'>
 									£{(currentSettings.drs_rate / 100).toFixed(2)}
 								</div>
@@ -327,8 +359,8 @@ export default function DayEditModal({
 										: 'bg-[var(--bg-surface-tertiary)] border-[var(--border-secondary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] cursor-pointer'
 								}`}
 							>
-								<div className='font-semibold'>Manual</div>
-								<div className='text-xs'>Custom Rate</div>
+								<div className='font-semibold'>{t('domain:routeTypes.Manual')}</div>
+								<div className='text-xs'>{t('dayEditModal.routeTypes.manual')}</div>
 							</button>
 						</div>
 					</div>
@@ -340,7 +372,7 @@ export default function DayEditModal({
 								htmlFor='daily_rate'
 								className='text-[var(--input-label)]'
 							>
-								Daily Rate (£) <span className='text-[var(--text-error)]'>*</span>
+								{t('dayEditModal.dailyRate')} <span className='text-[var(--text-error)]'>*</span>
 							</Label>
 							<Controller
 								name='daily_rate'
@@ -360,7 +392,7 @@ export default function DayEditModal({
 								)}
 							/>
 							<p className='text-xs text-[var(--text-secondary)] mt-1'>
-								For special routes: LWB (£180-200), 9.5hr (£195), etc.
+								{t('dayEditModal.dailyRateHelp')}
 							</p>
 							{errors.daily_rate && (
 								<p className='text-[var(--input-error-text)] text-sm mt-1'>
@@ -376,7 +408,7 @@ export default function DayEditModal({
 							htmlFor='route_number'
 							className='text-[var(--input-label)]'
 						>
-							Route Number (Optional)
+							{t('dayEditModal.routeNumber')} ({t('common:labels.optional')})
 						</Label>
 						<Input
 							id='route_number'
@@ -389,7 +421,7 @@ export default function DayEditModal({
 					{/* Sweeps Section */}
 					<div>
 						<Label className='text-[var(--input-label)] mb-3 block'>
-							Sweeps (Optional)
+							{t('dayEditModal.sweepsGiven')} / {t('dayEditModal.sweepsTaken')} ({t('common:labels.optional')})
 						</Label>
 						<div className='grid grid-cols-2 gap-4'>
 							<div>
@@ -397,7 +429,7 @@ export default function DayEditModal({
 									htmlFor='stops_taken'
 									className='text-[var(--text-sweeps-given)] font-medium flex items-center gap-1'
 								>
-									<span>✓</span> Stops You Swept
+									<span>✓</span> {t('dayEditModal.sweepsGiven')}
 								</Label>
 								<Controller
 									name='stops_taken'
@@ -414,7 +446,7 @@ export default function DayEditModal({
 									)}
 								/>
 								<p className='text-xs text-[var(--text-sweeps-given)]/60 mt-1'>
-									You helped behind drivers (+£1 each)
+									{t('dayEditModal.sweepsHelp')}
 								</p>
 								{errors.stops_taken && (
 									<p className='text-[var(--input-error-text)] text-sm mt-1'>
@@ -427,7 +459,7 @@ export default function DayEditModal({
 									htmlFor='stops_given'
 									className='text-[var(--text-sweeps-taken)] font-medium flex items-center gap-1'
 								>
-									<span>✗</span> Stops Others Swept For You
+									<span>✗</span> {t('dayEditModal.sweepsTaken')}
 								</Label>
 								<Controller
 									name='stops_given'
@@ -444,7 +476,7 @@ export default function DayEditModal({
 									)}
 								/>
 								<p className='text-xs text-[var(--text-sweeps-taken)]/60 mt-1'>
-									Others helped you (-£1 each)
+									{t('dayEditModal.sweepsHelp')}
 								</p>
 								{errors.stops_given && (
 									<p className='text-[var(--input-error-text)] text-sm mt-1'>
@@ -458,7 +490,7 @@ export default function DayEditModal({
 					{/* Mileage Section */}
 					<div>
 						<Label className='text-[var(--input-label)] mb-3 block'>
-							Mileage (Optional)
+							{t('dayEditModal.amazonPaidMiles')} / {t('dayEditModal.vanLoggedMiles')} ({t('common:labels.optional')})
 						</Label>
 						<div className='grid grid-cols-2 gap-4'>
 							<div>
@@ -466,7 +498,7 @@ export default function DayEditModal({
 									htmlFor='van_logged_miles'
 									className='text-[var(--input-label)] font-medium'
 								>
-									Van Odometer Miles
+									{t('dayEditModal.vanLoggedMiles')}
 								</Label>
 								<Controller
 									name='van_logged_miles'
@@ -483,7 +515,7 @@ export default function DayEditModal({
 									)}
 								/>
 								<p className='text-xs text-[var(--text-secondary)] mt-1'>
-									Actual miles driven (from van)
+									{t('dayEditModal.mileageHelp')}
 								</p>
 							</div>
 							<div>
@@ -491,7 +523,7 @@ export default function DayEditModal({
 									htmlFor='amazon_paid_miles'
 									className='text-[var(--input-label)] font-medium'
 								>
-									Amazon Paid Miles
+									{t('dayEditModal.amazonPaidMiles')}
 								</Label>
 								<Controller
 									name='amazon_paid_miles'
@@ -508,7 +540,7 @@ export default function DayEditModal({
 									)}
 								/>
 								<p className='text-xs text-[var(--text-secondary)] mt-1'>
-									From Amazon payslip (add later)
+									{t('dayEditModal.mileageHelp')}
 								</p>
 							</div>
 						</div>
@@ -520,7 +552,7 @@ export default function DayEditModal({
 							htmlFor='notes'
 							className='text-[var(--input-label)]'
 						>
-							Notes (Optional)
+							{t('dayEditModal.notes')} ({t('common:labels.optional')})
 						</Label>
 						<Textarea
 							id='notes'
@@ -542,7 +574,7 @@ export default function DayEditModal({
 								className='text-[var(--button-destructive-text)] hover:text-[var(--button-destructive-hover)] hover:bg-[var(--button-destructive-bg)] cursor-pointer'
 							>
 								<Trash2 className='w-4 h-4 mr-2' />
-								Delete
+								{t('dayEditModal.delete')}
 							</Button>
 						) : (
 							<div />
@@ -554,14 +586,14 @@ export default function DayEditModal({
 								variant='ghost'
 								className='text-[var(--button-ghost-text)] hover:text-[var(--button-ghost-hover)] hover:bg-[var(--bg-hover)] cursor-pointer'
 							>
-								Cancel
+								{t('common:actions.cancel')}
 							</Button>
 							<Button
 								type='submit'
 								disabled={isSubmitting}
 								className='bg-[var(--button-primary-bg)] hover:bg-[var(--button-primary-hover)] text-[var(--button-primary-text)] cursor-pointer'
 							>
-								{isSubmitting ? 'Saving...' : 'Save'}
+								{isSubmitting ? t('dayEditModal.saving') : t('dayEditModal.save')}
 							</Button>
 						</div>
 					</div>
@@ -573,15 +605,12 @@ export default function DayEditModal({
 				open={showDeleteConfirm}
 				onOpenChange={setShowDeleteConfirm}
 				onConfirm={handleDeleteConfirm}
-				title="Delete Work Day?"
+				title={t('dayEditModal.deleteConfirmTitle')}
 				description={
 					<>
-						Are you sure you want to delete this work day for{' '}
-						<strong>{format(date, 'EEEE, MMMM d')}</strong>?
-						<br />
-						<br />
-						This will remove all data including route information, sweeps, and
-						mileage. This action cannot be undone.
+						{t('dayEditModal.deleteConfirmMessage')}
+						{' '}
+						<strong>{format(date, 'EEEE, MMMM d')}</strong>
 					</>
 				}
 				confirmText="Delete Work Day"

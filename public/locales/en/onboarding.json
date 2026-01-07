@@ -1,0 +1,196 @@
+{
+  "welcome": {
+    "title": "Welcome to Wager!",
+    "subtitle": "Let's get your pay tracking set up in under 2 minutes.",
+    "description": "We need a few quick details to calculate your earnings accurately:",
+    "letsGo": "Let's Go",
+    "setupLater": "I'll Set Up Later",
+    "features": {
+      "trackPay": {
+        "title": "Track Pay",
+        "description": "Calculate standard pay, 6-day bonuses, and performance bonuses automatically"
+      },
+      "weeklyCalendar": {
+        "title": "Weekly Calendar",
+        "description": "Log work days, sweeps, and mileage with an intuitive calendar view"
+      },
+      "vanTracking": {
+        "title": "Van Tracking",
+        "description": "Track van hire costs, deposits, and mileage discrepancies"
+      },
+      "customizable": {
+        "title": "Customizable",
+        "description": "Adjust rates, mileage, and settings to match your DSP's pay structure"
+      }
+    }
+  },
+  "payRates": {
+    "title": "Your Daily Pay Rates",
+    "subtitle": "These rates are used to calculate your weekly earnings",
+    "normalRouteRate": "Normal Route Rate",
+    "drsRouteRate": "DRS Route Rate",
+    "perDay": "/ day",
+    "disclaimer": {
+      "title": "Not sure about your rates?",
+      "description": "Check with your manager to confirm your exact daily rates. You can always update these later in Settings."
+    },
+    "step": "Step 1 of 4"
+  },
+  "invoicing": {
+    "title": "Invoicing Service",
+    "subtitle": "Choose how you handle invoicing and accounting",
+    "options": {
+      "selfInvoicing": {
+        "label": "Self-Invoicing",
+        "cost": "£0",
+        "description": "Handle your own invoicing and tax returns",
+        "features": {
+          "noDeduction": "No weekly deduction",
+          "fullControl": "Full control",
+          "bestFor": "Best for self-employed"
+        }
+      },
+      "versoBasic": {
+        "label": "Verso Basic",
+        "cost": "£10",
+        "description": "Professional invoicing service",
+        "features": {
+          "invoicing": "Invoicing service",
+          "insurance": "Public liability insurance",
+          "ltdCompany": "Requires Ltd company"
+        }
+      },
+      "versoFull": {
+        "label": "Verso Full",
+        "cost": "£30",
+        "description": "Complete accounting service",
+        "features": {
+          "fullInvoicing": "Full invoicing",
+          "accounting": "Accounting & tax returns",
+          "insurance": "Public liability insurance",
+          "ltdCompany": "Requires Ltd company"
+        }
+      }
+    },
+    "perWeek": "/week",
+    "info": "This affects your weekly deductions. You can change this anytime in Settings.",
+    "step": "Step 2 of 4"
+  },
+  "vanHire": {
+    "title": "Do you have a van on hire?",
+    "subtitle": "We can help you track van costs, deposits, and mileage",
+    "yesAddVan": "Yes, Add My Van",
+    "yesDescription": "Set up van hire details and start tracking costs",
+    "noSkip": "No, Skip This Step",
+    "noDescription": "I don't have a van or I'll add it later",
+    "info": "You can add or manage van hires anytime from the Van Management page",
+    "step": "Step 3 of 4"
+  },
+  "vanHireForm": {
+    "title": "Add Your Van Hire",
+    "subtitle": "Enter your van details to start tracking costs and deposits",
+    "vanType": "Van Type",
+    "vanTypeFleet": "Fleet (£250/week)",
+    "vanTypeFlexi": "Flexi (£100-250/week)",
+    "vanTypeFleetHelp": "Fixed rate rental van at £250 per week",
+    "vanTypeFlexiHelp": "Company van with variable weekly cost (£100-250)",
+    "registration": "Registration Number",
+    "registrationPlaceholder": "e.g., AB12 CDE",
+    "onHireDate": "On-Hire Date",
+    "onHireDateHelp": "When did you start hiring this van?",
+    "weeklyRate": "Weekly Rate",
+    "weeklyRateFleetHelp": "Fleet vans are £250/week (fixed)",
+    "weeklyRateFlexiHelp": "Flexi vans range from £100-250/week",
+    "depositInfo": "We'll automatically track your deposit payments (£25 for your first 2 pay cheques, then £50 per pay cheque until you reach £500 total).",
+    "depositInfoTitle": "Deposit tracking:",
+    "step": "Step 3 of 4",
+    "addVan": "Add Van"
+  },
+  "success": {
+    "title": "You're All Set! 🎉",
+    "subtitle": "Your pay tracking is ready to go. Here's what you can do:",
+    "startTracking": "Start Tracking",
+    "step": "Step 4 of 4",
+    "features": {
+      "calendar": {
+        "title": "Calendar",
+        "description": "Track daily work, sweeps, and mileage with a visual weekly view"
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "description": "Quick adds for work, sweeps, and odometer readings. See payment breakdowns."
+      },
+      "vanManagement": {
+        "title": "Van Management",
+        "description": "Track van hire costs, deposits, and off-hire dates"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Customize rates, mileage, and invoicing service anytime"
+      }
+    },
+    "tour": {
+      "title": "Want to see how it works first?",
+      "description": "Take a quick guided tour of the dashboard to explore all features",
+      "button": "Take Interactive Tour"
+    }
+  },
+  "tour": {
+    "steps": {
+      "dashboardQuickAddWork": {
+        "title": "Quick Add Work",
+        "description": "Add today's work quickly from the dashboard. Select your route type and the app auto-calculates your daily rate."
+      },
+      "dashboardPayment": {
+        "title": "Payment This Week",
+        "description": "See your expected bank deposit with full breakdown. This shows Week N-2 standard pay plus Week N-6 performance bonus."
+      },
+      "dashboardVanStatus": {
+        "title": "Van Status",
+        "description": "Track your van deposit progress and weekly costs. See how much you've paid and how much remains to reach £500."
+      },
+      "calendarNavigation": {
+        "title": "Week Navigation",
+        "description": "Navigate between weeks to view past and future work. Use Previous, Today, and Next buttons or jump to a specific week."
+      },
+      "calendarDayCell": {
+        "title": "Day Cells",
+        "description": "Click any day to view details or add work. Each cell shows route type, pay, sweeps, and mileage at a glance."
+      },
+      "calendarWeekSummary": {
+        "title": "Week Summary",
+        "description": "Full pay breakdown including base pay, 6-day bonus, sweeps, mileage, and van costs. Enter performance rankings here too."
+      },
+      "calendarPaymentThisWeek": {
+        "title": "Payment This Week",
+        "description": "See what's hitting your bank account this week. Standard pay from 2 weeks ago plus performance bonus from 6 weeks ago."
+      },
+      "vanManagementTop": {
+        "title": "Van Management - Add & Track",
+        "description": "Use this top section to add new van hires and track your deposit progress. The deposit tracker shows how much you've paid and what remains."
+      },
+      "vanManagementBottom": {
+        "title": "Van Management - Van History",
+        "description": "View all your van hires here. See active vans, off-hired vans, and manage your complete van history."
+      },
+      "tourComplete": {
+        "title": "Ready to Track Your Pay!",
+        "description": "You've completed the tour! Click the Quick Add Work tile above to log your first day, or explore at your own pace."
+      }
+    },
+    "nextButton": "Next",
+    "backButton": "Back",
+    "exitTour": "Exit Tour",
+    "stepProgress": "{{current}} of {{total}}"
+  },
+  "modal": {
+    "title": "Onboarding Wizard",
+    "description": "Complete the setup process to get started with Wager"
+  },
+  "toast": {
+    "vanAdded": "Van hire added successfully!",
+    "vanAddFailed": "Failed to add van hire. You can add it later from Van Management.",
+    "welcomeMessage": "Welcome to Wager! Start tracking your pay.",
+    "savingSettingsFailed": "Failed to save settings. Please try again."
+  }
+}

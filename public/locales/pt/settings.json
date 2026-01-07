@@ -1,0 +1,111 @@
+{
+  "title": "Settings [Português]",
+  "tabs": {
+    "finance": "Finance Settings [Português]",
+    "user": "User Details [Português]",
+    "language": "Language [Português]"
+  },
+  "language": {
+    "title": "Language Preference [Português]",
+    "selectLanguage": "Select Language [Português]",
+    "description": "Choose your preferred language for the app interface [Português]"
+  },
+  "finance": {
+    "title": "Pay Rates [Português]",
+    "description": "Set your daily pay rates. These will be used to calculate your weekly earnings. [Português]",
+    "warning": "These should only be changed on the week that pay rates change. [Português]",
+    "normalRate": "Normal Route Rate [Português]",
+    "drsRate": "DRS/Missort Route Rate [Português]",
+    "normalRateDefault": "Default: £160 per day [Português]",
+    "drsRateDefault": "Default: £100 per day [Português]",
+    "sixDayBonusTitle": "6-Day Week Bonus: [Português]",
+    "sixDayBonusDescription": "You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination). [Português]",
+    "invoicingTitle": "Invoicing & Accounting [Português]",
+    "invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay. [Português]",
+    "serviceProvider": "Service Provider [Português]",
+    "serviceProviderPlaceholder": "Select invoicing service [Português]",
+    "selfInvoicingCost": "£0/week [Português]",
+    "versoBasicCost": "£10/week [Português]",
+    "versoFullCost": "£30/week [Português]",
+    "selfInvoicingDescription": "Handle your own invoicing and tax returns [Português]",
+    "versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company) [Português]",
+    "versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company) [Português]",
+    "loadingSettings": "Loading settings... [Português]",
+    "savingButton": "Saving... [Português]",
+    "saveButton": "Save Settings [Português]"
+  },
+  "user": {
+    "title": "Profile Information [Português]",
+    "description": "Update your personal information. Display name is required, while first and last names are optional. [Português]",
+    "displayName": "Display Name [Português]",
+    "displayNameRequired": "Display Name * [Português]",
+    "displayNamePlaceholder": "Enter your display name [Português]",
+    "displayNameHelp": "This is how you'll be identified in the app [Português]",
+    "firstName": "First Name [Português]",
+    "firstNamePlaceholder": "Enter your first name (optional) [Português]",
+    "lastName": "Last Name [Português]",
+    "lastNamePlaceholder": "Enter your last name (optional) [Português]",
+    "loadingUser": "Loading user details... [Português]",
+    "savingButton": "Saving... [Português]",
+    "saveButton": "Save Changes [Português]",
+    "dangerZoneTitle": "Danger Zone [Português]",
+    "deleteAccountTitle": "Delete Account [Português]",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone. [Português]",
+    "deleteAccountButton": "Delete My Account [Português]"
+  },
+  "onboarding": {
+    "title": "Onboarding [Português]",
+    "description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour. [Português]",
+    "restartButton": "Restart Onboarding [Português]",
+    "tourButton": "Take Dashboard Tour [Português]"
+  },
+  "restartDialog": {
+    "title": "Restart Onboarding [Português]",
+    "description": "Choose how you'd like to restart the onboarding process [Português]",
+    "fullOnboardingTitle": "Full Onboarding [Português]",
+    "fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch. [Português]",
+    "tourOnlyTitle": "Tour Only [Português]",
+    "tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected. [Português]",
+    "warningLabel": "Full Onboarding Warning: [Português]",
+    "warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted. [Português]",
+    "cancelButton": "Cancel [Português]"
+  },
+  "deleteAccount": {
+    "warningTitle": "Delete Account - Final Warning [Português]",
+    "warningDescription": "Warning about permanent account deletion [Português]",
+    "permanentHeading": "This action is PERMANENT and IRREVERSIBLE [Português]",
+    "permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation. [Português]",
+    "dataDeletedHeading": "The following data will be permanently deleted: [Português]",
+    "dataList": {
+      "profile": "Your user profile and account settings [Português]",
+      "workDays": "All work days and weekly pay data (every week you've tracked) [Português]",
+      "vanHires": "All van hire records and deposit information [Português]",
+      "rankings": "Performance rankings history [Português]",
+      "mileage": "Mileage tracking and pay rate history [Português]",
+      "auth": "Your authentication credentials (you will be logged out) [Português]"
+    },
+    "alternativesHeading": "Consider these alternatives: [Português]",
+    "alternatives": {
+      "stopUsing": "You can simply stop using the app without deleting your account [Português]",
+      "clearWeeks": "You can clear individual weeks if you want to start fresh [Português]",
+      "resetRates": "You can reset your pay rates in Settings if they've changed [Português]"
+    },
+    "cancelButton": "Cancel (Keep My Account) [Português]",
+    "proceedButton": "I Understand - Proceed to Delete [Português]",
+    "confirmTitle": "Confirm Account Deletion [Português]",
+    "confirmDescription": "Final confirmation step for account deletion [Português]",
+    "lastChance": "Last chance: Enter your credentials to permanently delete your account [Português]",
+    "emailLabel": "Your Email Address [Português]",
+    "emailMatch": "Must match: {{email}}",
+    "passwordLabel": "Your Password [Português]",
+    "passwordPlaceholder": "Enter your password to confirm [Português]",
+    "passwordHelp": "We need to verify your identity before deletion [Português]",
+    "confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm [Português]",
+    "confirmTextPlaceholder": "DELETE MY ACCOUNT [Português]",
+    "confirmTextHelp": "Type exactly as shown (case sensitive) [Português]",
+    "finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action. [Português]",
+    "goBackButton": "Go Back [Português]",
+    "deletingButton": "Deleting Account... [Português]",
+    "deleteButton": "Delete My Account Forever [Português]"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "title": "Week {{week}} Summary",
+  "noWorkDays": "No work days logged for this week [Deutsch]",
+  "totalEarnings": "Total Earnings [Deutsch]",
+  "payBreakdown": {
+    "basePay": "Base Pay ({{count}} {{days}})",
+    "day": "day [Deutsch]",
+    "days": "days [Deutsch]",
+    "devicePayment": "Device Payment ({{count}} {{days}})",
+    "sixDayBonus": "6-Day Bonus [Deutsch]",
+    "sweeps": "Sweeps [Deutsch]",
+    "sweepsDetail": "({{given}} you helped, {{taken}} helped you)",
+    "mileage": "Mileage ({{miles}} mi × £{{rate}})",
+    "mileageRateLabel": "Rate: [Deutsch]",
+    "mileagePerMile": "/mi [Deutsch]",
+    "mileageEstBadge": "Est [Deutsch]",
+    "mileageEstDisclaimer": "Mileage Estimate: [Deutsch]",
+    "mileageEstDescription": "Payment calculated using odometer miles ({{count}} {{days}}). Actual payment may differ based on Amazon's mileage calculations and rates. Update with Amazon mileage data for accuracy.",
+    "missingMileageTitle": "Missing Mileage Data: [Deutsch]",
+    "missingMileageDescription": "No mileage entered for {{count}} {{dayLabel}}. Payment total will be inaccurate until mileage is added.",
+    "vanHire": "Van Hire [Deutsch]",
+    "vanDetail": "{{registration}} ({{count}} {{days}})",
+    "depositPayment": "Deposit Payment [Deutsch]",
+    "invoicing": "Invoicing ({{service}})"
+  },
+  "standardPay": {
+    "title": "Standard Pay [Deutsch]",
+    "paidWeek": "Paid Week {{week}} ({{month}})"
+  },
+  "rankings": {
+    "title": "Performance Rankings [Deutsch]",
+    "notAvailableYet": "Rankings will be available from [Deutsch]",
+    "weekOnwards": "Week {{week}}",
+    "onwards": "onwards. [Deutsch]",
+    "releaseNote": "Amazon typically releases performance rankings on Thursday of Week N+2 (two weeks after your work week). [Deutsch]",
+    "updatePrompt": "Update your performance rankings [Deutsch]",
+    "enterPrompt": "Enter rankings when they're released (usually Thursday after the work week) [Deutsch]",
+    "yourPerformance": "Your Performance [Deutsch]",
+    "companyPerformance": "Company Performance [Deutsch]",
+    "saveButton": "Save Rankings [Deutsch]",
+    "savingButton": "Saving... [Deutsch]",
+    "cancelButton": "Cancel [Deutsch]",
+    "performanceBonus": "Performance Bonus ({{count}} {{days}})",
+    "individualLabel": "Individual: [Deutsch]",
+    "companyLabel": "Company: [Deutsch]",
+    "paidWeek": "Paid Week {{week}} ({{month}})"
+  },
+  "mileageDiscrepancy": {
+    "title": "Mileage Discrepancy [Deutsch]",
+    "detail": "Van logged {{vanMiles}} miles vs Amazon paid {{amazonMiles}} miles",
+    "fuelLoss": "Estimated fuel loss: £{{amount}}"
+  },
+  "clearWeek": {
+    "button": "Clear Week [Deutsch]",
+    "confirmTitle": "Clear Week {{week}}?",
+    "confirmDescription": "This will permanently delete all work days, rankings, and snapshot data for Week {{week}}. This action cannot be undone.",
+    "confirmButton": "Clear Week [Deutsch]",
+    "cancelButton": "Cancel [Deutsch]"
+  }
+}

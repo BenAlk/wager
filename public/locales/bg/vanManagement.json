@@ -1,0 +1,41 @@
+{
+  "loading": "Loading van hires... [Български]",
+  "pageTitle": "Van Management [Български]",
+  "actions": {
+    "newVanHire": "New Van Hire [Български]",
+    "setDeposit": "Set Deposit [Български]",
+    "clearDeposits": "Clear Deposits [Български]",
+    "addVanHire": "Add Van Hire [Български]"
+  },
+  "depositSummary": {
+    "title": "Deposit Summary [Български]",
+    "subtitle": "Cumulative deposit across all van hires [Български]",
+    "totalPaid": "Total Paid [Български]",
+    "remaining": "Remaining [Български]",
+    "target": "Target [Български]",
+    "complete": "Complete [Български]",
+    "inProgress": "In Progress [Български]"
+  },
+  "activeVanAlert": {
+    "title": "You have an active van hire [Български]",
+    "subtitle": "Off-hire your current van ({{registration}}) before adding a new one"
+  },
+  "history": {
+    "title": "Van Hire History [Български]",
+    "empty": {
+      "title": "No van hires yet [Български]",
+      "subtitle": "Add your first van hire to start tracking costs and deposits [Български]"
+    }
+  },
+  "depositModal": {
+    "title": "Set Manual Deposit [Български]",
+    "infoTitle": "💡 Deposits Already Paid [Български]",
+    "infoText": "Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted. [Български]",
+    "depositLimit": "Deposit limit: £500 [Български]",
+    "label": "Total Deposit Paid (£) * [Български]",
+    "placeholder": "e.g., 250.00 [Български]",
+    "maximum": "Maximum: £500.00 [Български]",
+    "buttonSetting": "Setting... [Български]",
+    "buttonSet": "Set Deposit [Български]"
+  }
+}

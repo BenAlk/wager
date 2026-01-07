@@ -1,0 +1,24 @@
+{
+	"routeTypes": {
+		"Normal": "Normal",
+		"DRS": "DRS",
+		"Manual": "Manual",
+		"LWB": "LWB"
+	},
+	"performanceLevels": {
+		"Poor": "Poor",
+		"Fair": "Fair",
+		"Great": "Great",
+		"Fantastic": "Fantastic",
+		"FantasticPlus": "Fantastic+"
+	},
+	"vanTypes": {
+		"Fleet": "Fleet",
+		"Flexi": "Flexi"
+	},
+	"invoicingServices": {
+		"SelfInvoicing": "Self-Invoicing",
+		"VersoBasic": "Verso-Basic",
+		"VersoFull": "Verso-Full"
+	}
+}

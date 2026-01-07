@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back! [العربية]",
+    "accountCreated": "Account created successfully! [العربية]",
+    "passwordResetSent": "Password reset email sent! Check your inbox and spam folder. [العربية]",
+    "passwordReset": "Password reset successfully! [العربية]",
+    "loginFailed": "Failed to login [العربية]",
+    "signupFailed": "Failed to create account [العربية]",
+    "logoutFailed": "Failed to logout [العربية]",
+    "authFailed": "Authentication failed [العربية]",
+    "emailExists": "An account with this email already exists. Please login instead. [العربية]",
+    "resetEmailFailed": "Failed to send reset email [العربية]"
+  },
+  "settings": {
+    "saved": "Settings saved successfully! [العربية]",
+    "saveFailed": "Failed to save settings [العربية]",
+    "languageUpdated": "Language updated successfully! [العربية]",
+    "languageUpdateFailed": "Failed to update language [العربية]"
+  },
+  "user": {
+    "saved": "User details saved successfully! [العربية]",
+    "saveFailed": "Failed to save user details [العربية]",
+    "loadFailed": "Failed to load user details [العربية]"
+  },
+  "workDay": {
+    "added": "Work added for today! [العربية]",
+    "updated": "Work updated! [العربية]",
+    "deleted": "Work day deleted [العربية]",
+    "addFailed": "Failed to add work [العربية]",
+    "updateFailed": "Failed to update work [العربية]",
+    "deleteFailed": "Failed to delete work day [العربية]",
+    "createWeekFailed": "Failed to create week [العربية]",
+    "alreadyExists": "Work already exists for today [العربية]"
+  },
+  "rankings": {
+    "saved": "Rankings saved successfully! [العربية]",
+    "saveFailed": "Failed to save rankings [العربية]",
+    "unableToSave": "Unable to save rankings [العربية]"
+  },
+  "week": {
+    "mileageRateUpdated": "Mileage rate updated! [العربية]",
+    "mileageRateUpdateFailed": "Failed to update mileage rate [العربية]",
+    "cleared": "Week cleared successfully [العربية]",
+    "clearFailed": "Failed to clear week [العربية]"
+  },
+  "van": {
+    "added": "Van hire added successfully [العربية]",
+    "updated": "Van hire updated successfully [العربية]",
+    "offHired": "Van off-hired successfully [العربية]",
+    "deleted": "Van hire deleted successfully [العربية]",
+    "depositRefunded": "Deposit refunded successfully [العربية]",
+    "manualDepositSet": "Manual deposit set successfully [العربية]",
+    "manualDepositCleared": "Manual deposit cleared successfully [العربية]",
+    "addFailed": "Failed to add van hire [العربية]",
+    "updateFailed": "Failed to update van hire [العربية]",
+    "deleteFailed": "Failed to delete van hire [العربية]",
+    "offHireFailed": "Failed to off-hire van [العربية]",
+    "refundFailed": "Failed to refund deposit [العربية]",
+    "loadFailed": "Failed to load van hires [العربية]",
+    "depositAdjustFailed": "Failed to set deposit adjustment [العربية]",
+    "depositClearFailed": "Failed to clear deposit adjustment [العربية]",
+    "enterDeposit": "Please enter a deposit amount [العربية]",
+    "depositRange": "Deposit must be between £0 and £500 [العربية]",
+    "enterOffHireDate": "Please enter an off-hire date [العربية]",
+    "refundExceedsDeposit": "Refund amount cannot exceed deposit paid [العربية]"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Wager! Start tracking your pay. [العربية]",
+    "resetFailed": "Failed to reset onboarding [العربية]",
+    "restartFailed": "Failed to restart onboarding [العربية]"
+  },
+  "deleteAccount": {
+    "enterCredentials": "Please enter your email and password [العربية]",
+    "emailMismatch": "Email does not match your account email [العربية]",
+    "confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm [العربية]",
+    "incorrectPassword": "Incorrect password. Please try again. [العربية]",
+    "deleteFailed": "Failed to delete account. Please contact support. [العربية]",
+    "deleted": "Your account has been permanently deleted [العربية]",
+    "unexpectedError": "An unexpected error occurred. Please try again. [العربية]"
+  },
+  "general": {
+    "error": "An error occurred [العربية]",
+    "deleteAllFailed": "Failed to delete data [العربية]",
+    "creatingWeek": "Creating week record... [العربية]"
+  }
+}

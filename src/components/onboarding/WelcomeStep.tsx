@@ -1,5 +1,6 @@
 import { TrendingUp, Calendar, Truck, Settings2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface WelcomeStepProps {
   onNext: () => void
@@ -7,6 +8,8 @@ interface WelcomeStepProps {
 }
 
 export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
+  const { t } = useTranslation('onboarding')
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -15,17 +18,17 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
           <Truck className="w-8 h-8 text-white" />
         </div>
         <h2 className="text-3xl font-bold text-foreground">
-          Welcome to Wager!
+          {t('welcome.title')}
         </h2>
         <p className="text-lg text-muted-foreground max-w-md mx-auto">
-          Let's get your pay tracking set up in under 2 minutes.
+          {t('welcome.subtitle')}
         </p>
       </div>
 
       {/* Benefits */}
       <div className="space-y-4">
         <p className="text-sm text-muted-foreground text-center">
-          We need a few quick details to calculate your earnings accurately:
+          {t('welcome.description')}
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -35,9 +38,9 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
               <TrendingUp className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground text-sm">Track Pay</h3>
+              <h3 className="font-semibold text-foreground text-sm">{t('welcome.features.trackPay.title')}</h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Calculate standard pay, 6-day bonuses, and performance bonuses automatically
+                {t('welcome.features.trackPay.description')}
               </p>
             </div>
           </div>
@@ -48,9 +51,9 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
               <Calendar className="w-5 h-5 text-emerald-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground text-sm">Weekly Calendar</h3>
+              <h3 className="font-semibold text-foreground text-sm">{t('welcome.features.weeklyCalendar.title')}</h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Log work days, sweeps, and mileage with an intuitive calendar view
+                {t('welcome.features.weeklyCalendar.description')}
               </p>
             </div>
           </div>
@@ -61,9 +64,9 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
               <Truck className="w-5 h-5 text-sky-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground text-sm">Van Tracking</h3>
+              <h3 className="font-semibold text-foreground text-sm">{t('welcome.features.vanTracking.title')}</h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Track van hire costs, deposits, and mileage discrepancies
+                {t('welcome.features.vanTracking.description')}
               </p>
             </div>
           </div>
@@ -74,9 +77,9 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
               <Settings2 className="w-5 h-5 text-amber-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-foreground text-sm">Customizable</h3>
+              <h3 className="font-semibold text-foreground text-sm">{t('welcome.features.customizable.title')}</h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Adjust rates, mileage, and settings to match your DSP's pay structure
+                {t('welcome.features.customizable.description')}
               </p>
             </div>
           </div>
@@ -89,14 +92,14 @@ export function WelcomeStep({ onNext, onSkip }: WelcomeStepProps) {
           onClick={onNext}
           className="flex-1 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white font-semibold h-12"
         >
-          Let's Go
+          {t('welcome.letsGo')}
         </Button>
         <Button
           onClick={onSkip}
           variant="ghost"
           className="sm:w-auto text-muted-foreground hover:text-foreground"
         >
-          I'll Set Up Later
+          {t('welcome.setupLater')}
         </Button>
       </div>
     </div>

@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back! [Español]",
+    "accountCreated": "Account created successfully! [Español]",
+    "passwordResetSent": "Password reset email sent! Check your inbox and spam folder. [Español]",
+    "passwordReset": "Password reset successfully! [Español]",
+    "loginFailed": "Failed to login [Español]",
+    "signupFailed": "Failed to create account [Español]",
+    "logoutFailed": "Failed to logout [Español]",
+    "authFailed": "Authentication failed [Español]",
+    "emailExists": "An account with this email already exists. Please login instead. [Español]",
+    "resetEmailFailed": "Failed to send reset email [Español]"
+  },
+  "settings": {
+    "saved": "Settings saved successfully! [Español]",
+    "saveFailed": "Failed to save settings [Español]",
+    "languageUpdated": "Language updated successfully! [Español]",
+    "languageUpdateFailed": "Failed to update language [Español]"
+  },
+  "user": {
+    "saved": "User details saved successfully! [Español]",
+    "saveFailed": "Failed to save user details [Español]",
+    "loadFailed": "Failed to load user details [Español]"
+  },
+  "workDay": {
+    "added": "Work added for today! [Español]",
+    "updated": "Work updated! [Español]",
+    "deleted": "Work day deleted [Español]",
+    "addFailed": "Failed to add work [Español]",
+    "updateFailed": "Failed to update work [Español]",
+    "deleteFailed": "Failed to delete work day [Español]",
+    "createWeekFailed": "Failed to create week [Español]",
+    "alreadyExists": "Work already exists for today [Español]"
+  },
+  "rankings": {
+    "saved": "Rankings saved successfully! [Español]",
+    "saveFailed": "Failed to save rankings [Español]",
+    "unableToSave": "Unable to save rankings [Español]"
+  },
+  "week": {
+    "mileageRateUpdated": "Mileage rate updated! [Español]",
+    "mileageRateUpdateFailed": "Failed to update mileage rate [Español]",
+    "cleared": "Week cleared successfully [Español]",
+    "clearFailed": "Failed to clear week [Español]"
+  },
+  "van": {
+    "added": "Van hire added successfully [Español]",
+    "updated": "Van hire updated successfully [Español]",
+    "offHired": "Van off-hired successfully [Español]",
+    "deleted": "Van hire deleted successfully [Español]",
+    "depositRefunded": "Deposit refunded successfully [Español]",
+    "manualDepositSet": "Manual deposit set successfully [Español]",
+    "manualDepositCleared": "Manual deposit cleared successfully [Español]",
+    "addFailed": "Failed to add van hire [Español]",
+    "updateFailed": "Failed to update van hire [Español]",
+    "deleteFailed": "Failed to delete van hire [Español]",
+    "offHireFailed": "Failed to off-hire van [Español]",
+    "refundFailed": "Failed to refund deposit [Español]",
+    "loadFailed": "Failed to load van hires [Español]",
+    "depositAdjustFailed": "Failed to set deposit adjustment [Español]",
+    "depositClearFailed": "Failed to clear deposit adjustment [Español]",
+    "enterDeposit": "Please enter a deposit amount [Español]",
+    "depositRange": "Deposit must be between £0 and £500 [Español]",
+    "enterOffHireDate": "Please enter an off-hire date [Español]",
+    "refundExceedsDeposit": "Refund amount cannot exceed deposit paid [Español]"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Wager! Start tracking your pay. [Español]",
+    "resetFailed": "Failed to reset onboarding [Español]",
+    "restartFailed": "Failed to restart onboarding [Español]"
+  },
+  "deleteAccount": {
+    "enterCredentials": "Please enter your email and password [Español]",
+    "emailMismatch": "Email does not match your account email [Español]",
+    "confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm [Español]",
+    "incorrectPassword": "Incorrect password. Please try again. [Español]",
+    "deleteFailed": "Failed to delete account. Please contact support. [Español]",
+    "deleted": "Your account has been permanently deleted [Español]",
+    "unexpectedError": "An unexpected error occurred. Please try again. [Español]"
+  },
+  "general": {
+    "error": "An error occurred [Español]",
+    "deleteAllFailed": "Failed to delete data [Español]",
+    "creatingWeek": "Creating week record... [Español]"
+  }
+}

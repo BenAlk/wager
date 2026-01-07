@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useTranslation } from '@/i18n/useTranslation'
 
 export function LoadingScreen() {
+	const { t } = useTranslation('common')
 	return (
 		<div className='min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4'>
 			<motion.div
@@ -38,7 +40,7 @@ export function LoadingScreen() {
 
 					{/* Loading text */}
 					<p className='text-center text-slate-400 text-sm mt-4'>
-						Loading...
+						{t('loading')}
 					</p>
 				</div>
 			</motion.div>

@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { toast } from 'sonner'
 import { RefreshCw } from 'lucide-react'
+import { useTranslation } from '@/i18n/useTranslation'
 
 export function PWAUpdatePrompt() {
+	const { t } = useTranslation('common')
 	const [showUpdateToast, setShowUpdateToast] = useState(false)
 
 	const {
@@ -28,9 +30,9 @@ export function PWAUpdatePrompt() {
 				<div className='flex items-start gap-3'>
 					<RefreshCw className='w-5 h-5 text-blue-400 mt-0.5' />
 					<div className='flex-1'>
-						<p className='font-semibold text-white mb-1'>Update Available</p>
+						<p className='font-semibold text-white mb-1'>{t('pwaUpdate.title')}</p>
 						<p className='text-sm text-slate-300 mb-3'>
-							A new version of Wager is ready to install.
+							{t('pwaUpdate.description')}
 						</p>
 						<div className='flex gap-2'>
 							<button
@@ -41,7 +43,7 @@ export function PWAUpdatePrompt() {
 								}}
 								className='px-3 py-1.5 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white text-sm font-semibold rounded-lg transition-all'
 							>
-								Update Now
+								{t('pwaUpdate.updateNow')}
 							</button>
 							<button
 								onClick={() => {
@@ -50,7 +52,7 @@ export function PWAUpdatePrompt() {
 								}}
 								className='px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white text-sm font-medium rounded-lg transition-all'
 							>
-								Later
+								{t('pwaUpdate.later')}
 							</button>
 						</div>
 					</div>
@@ -66,7 +68,7 @@ export function PWAUpdatePrompt() {
 				}
 			)
 		}
-	}, [showUpdateToast, needRefresh, updateServiceWorker, setNeedRefresh])
+	}, [showUpdateToast, needRefresh, updateServiceWorker, setNeedRefresh, t])
 
 	return null // This component doesn't render anything visible itself
 }

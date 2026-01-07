@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { fetchAllVanHires, recalculateAllDeposits, setManualDepositAdjustment, clearManualDepositAdjustment } from '@/lib/api/vans'
 import { useVanStore } from '@/store/vanStore'
 import { formatCurrency } from '@/lib/calculations'
@@ -18,6 +19,7 @@ import { VanHireModal } from '@/components/van/VanHireModal'
 import { VanHireCard } from '@/components/van/VanHireCard'
 
 export default function VanManagement() {
+	const { t } = useTranslation('vanManagement')
 	const { user } = useAuth()
 	const {
 		allVans,
@@ -52,7 +54,7 @@ export default function VanManagement() {
 			if (vans) {
 				setAllVans(vans)
 			} else {
-				toast.error('Failed to load van hires', { duration: 3000 })
+				toast.error(t('toast:van.loadFailed'), { duration: 3000 })
 			}
 		}
 
@@ -88,13 +90,13 @@ export default function VanManagement() {
 
 	const handleSetDeposit = async () => {
 		if (!user?.id || !depositAdjustment) {
-			toast.error('Please enter a deposit amount', { duration: 3000 })
+			toast.error(t('toast:van.enterDeposit'), { duration: 3000 })
 			return
 		}
 
 		const amount = Math.round(parseFloat(depositAdjustment) * 100)
 		if (amount < 0 || amount > 50000) {
-			toast.error('Deposit must be between £0 and £500', { duration: 3000 })
+			toast.error(t('toast:van.depositRange'), { duration: 3000 })
 			return
 		}
 
@@ -109,15 +111,15 @@ export default function VanManagement() {
 				if (vans) {
 					setAllVans(vans)
 				}
-				toast.success('Manual deposit set successfully', { duration: 3000 })
+				toast.success(t('toast:van.manualDepositSet'), { duration: 3000 })
 				setShowDepositModal(false)
 				setDepositAdjustment('')
 			} else {
-				toast.error('Failed to set deposit adjustment', { duration: 3000 })
+				toast.error(t('toast:van.depositAdjustFailed'), { duration: 3000 })
 			}
 		} catch (error) {
 			console.error('Error setting deposit:', error)
-			toast.error('An error occurred', { duration: 3000 })
+			toast.error(t('toast:general.error'), { duration: 3000 })
 		} finally {
 			setIsAdjusting(false)
 		}
@@ -137,15 +139,15 @@ export default function VanManagement() {
 				if (vans) {
 					setAllVans(vans)
 				}
-				toast.success('Manual deposit cleared successfully', { duration: 3000 })
+				toast.success(t('toast:van.manualDepositCleared'), { duration: 3000 })
 				setShowDepositModal(false)
 				setDepositAdjustment('')
 			} else {
-				toast.error('Failed to clear deposit adjustment', { duration: 3000 })
+				toast.error(t('toast:van.depositClearFailed'), { duration: 3000 })
 			}
 		} catch (error) {
 			console.error('Error clearing deposit:', error)
-			toast.error('An error occurred', { duration: 3000 })
+			toast.error(t('toast:general.error'), { duration: 3000 })
 		} finally {
 			setIsAdjusting(false)
 		}
@@ -183,7 +185,7 @@ export default function VanManagement() {
 	if (isLoading) {
 		return (
 			<div className='min-h-screen bg-gradient-to-br from-[var(--bg-page-from)] via-[var(--bg-page-via)] to-[var(--bg-page-to)] flex items-center justify-center'>
-				<p className='text-[var(--text-primary)] text-lg'>Loading van hires...</p>
+				<p className='text-[var(--text-primary)] text-lg'>{t('loading')}</p>
 			</div>
 		)
 	}
@@ -191,7 +193,7 @@ export default function VanManagement() {
 	return (
 		<div>
 			<div className='container mx-auto px-4 py-8 max-w-6xl'>
-				<h1 className='sr-only'>Van Management</h1>
+				<h1 className='sr-only'>{t('pageTitle')}</h1>
 				{/* Top Section: Add Van & Deposit Tracking */}
 				<div data-tour='van-management-top'>
 				{/* Actions Bar */}
@@ -213,7 +215,7 @@ export default function VanManagement() {
 							disabled={activeVan !== null}
 						>
 							<Plus className='w-4 h-4 mr-2' />
-							New Van Hire
+							{t('actions.newVanHire')}
 						</Button>
 					</div>
 				</div>
@@ -223,20 +225,20 @@ export default function VanManagement() {
 					<div className='flex items-start justify-between mb-4'>
 						<div>
 							<h2 className='text-xl font-semibold text-[var(--text-primary)] mb-2'>
-								Deposit Summary
+								{t('depositSummary.title')}
 							</h2>
 							<p className='text-[var(--text-secondary)] text-sm'>
-								Cumulative deposit across all van hires
+								{t('depositSummary.subtitle')}
 							</p>
 						</div>
 						<div className='flex items-center gap-2'>
 							{isDepositComplete ? (
 								<Badge className='bg-[var(--bg-success)] text-[var(--text-success)] border-[var(--border-success)]'>
-									Complete
+									{t('depositSummary.complete')}
 								</Badge>
 							) : totalDepositPaid > 0 ? (
 								<Badge className='bg-[var(--bg-info)] text-[var(--text-info)] border-[var(--border-info)]'>
-									In Progress
+									{t('depositSummary.inProgress')}
 								</Badge>
 							) : null}
 							<Button
@@ -245,26 +247,26 @@ export default function VanManagement() {
 								onClick={() => setShowDepositModal(true)}
 								className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)] text-xs'
 							>
-								Set Deposit
+								{t('actions.setDeposit')}
 							</Button>
 						</div>
 					</div>
 
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 						<div>
-							<p className='text-[var(--text-secondary)] text-sm mb-1'>Total Paid</p>
+							<p className='text-[var(--text-secondary)] text-sm mb-1'>{t('depositSummary.totalPaid')}</p>
 							<p className='text-2xl font-mono font-bold text-[var(--text-primary)]'>
 								{formatCurrency(totalDepositPaid)}
 							</p>
 						</div>
 						<div>
-							<p className='text-[var(--text-secondary)] text-sm mb-1'>Remaining</p>
+							<p className='text-[var(--text-secondary)] text-sm mb-1'>{t('depositSummary.remaining')}</p>
 							<p className='text-2xl font-mono font-bold text-[var(--text-primary)]'>
 								{formatCurrency(depositRemaining)}
 							</p>
 						</div>
 						<div>
-							<p className='text-[var(--text-secondary)] text-sm mb-1'>Target</p>
+							<p className='text-[var(--text-secondary)] text-sm mb-1'>{t('depositSummary.target')}</p>
 							<p className='text-2xl font-mono font-bold text-[var(--text-secondary)]'>
 								£500.00
 							</p>
@@ -295,11 +297,10 @@ export default function VanManagement() {
 							<AlertCircle className='w-5 h-5 text-[var(--text-info)]' />
 							<div>
 								<p className='text-[var(--text-info)] font-semibold'>
-									You have an active van hire
+									{t('activeVanAlert.title')}
 								</p>
 								<p className='text-[var(--text-info)]/80 text-sm'>
-									Off-hire your current van ({activeVan.registration}) before
-									adding a new one
+									{t('activeVanAlert.subtitle', { registration: activeVan.registration })}
 								</p>
 							</div>
 						</div>
@@ -308,22 +309,22 @@ export default function VanManagement() {
 
 				{/* Van Hires List */}
 				<div className='space-y-4'>
-					<h2 className='text-xl font-semibold text-[var(--text-primary)]'>Van Hire History</h2>
+					<h2 className='text-xl font-semibold text-[var(--text-primary)]'>{t('history.title')}</h2>
 
 					{allVans.filter(v => v.registration !== 'MANUAL_DEPOSIT_ADJUSTMENT').length === 0 ? (
 						<Card className='bg-[var(--bg-surface-secondary)] backdrop-blur-xl border-[var(--border-secondary)] p-12'>
 							<div className='text-center'>
 								<Truck className='w-16 h-16 text-[var(--text-tertiary)] mx-auto mb-4' />
-								<p className='text-[var(--text-secondary)] text-lg mb-2'>No van hires yet</p>
+								<p className='text-[var(--text-secondary)] text-lg mb-2'>{t('history.empty.title')}</p>
 								<p className='text-[var(--text-tertiary)] text-sm mb-6'>
-									Add your first van hire to start tracking costs and deposits
+									{t('history.empty.subtitle')}
 								</p>
 								<Button
 									onClick={handleNewVan}
 									className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 								>
 									<Plus className='w-4 h-4 mr-2' />
-									Add Van Hire
+									{t('actions.addVanHire')}
 								</Button>
 							</div>
 						</Card>
@@ -358,22 +359,22 @@ export default function VanManagement() {
 			{showDepositModal && (
 				<div className='fixed inset-0 bg-[var(--modal-overlay)] flex items-center justify-center z-50 p-4'>
 					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
-						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>Set Manual Deposit</h3>
+						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>{t('depositModal.title')}</h3>
 
 						<div className='bg-[var(--bg-info)] border border-[var(--border-info)] rounded-lg p-4 mb-4'>
 							<p className='text-[var(--text-info)] text-sm font-semibold mb-2'>
-								💡 Deposits Already Paid
+								{t('depositModal.infoTitle')}
 							</p>
 							<p className='text-[var(--text-info)]/80 text-sm leading-relaxed'>
-								Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted.
+								{t('depositModal.infoText')}
 							</p>
 							<p className='text-[var(--text-info)]/90 text-xs mt-2'>
-								Deposit limit: £500
+								{t('depositModal.depositLimit')}
 							</p>
 						</div>
 
 						<Label htmlFor='deposit_amount' className='text-[var(--input-label)]'>
-							Total Deposit Paid (£) *
+							{t('depositModal.label')}
 						</Label>
 						<NumberInput
 							id='deposit_amount'
@@ -382,11 +383,11 @@ export default function VanManagement() {
 							min={0}
 							max={500}
 							chevronSize='sm'
-							placeholder='e.g., 250.00'
+							placeholder={t('depositModal.placeholder')}
 							className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2 mb-2'
 						/>
 						<p className='text-[var(--text-secondary)] text-xs mb-4'>
-							Maximum: £500.00
+							{t('depositModal.maximum')}
 						</p>
 
 						<div className='flex flex-col sm:flex-row gap-2'>
@@ -396,7 +397,7 @@ export default function VanManagement() {
 								disabled={isAdjusting || totalDepositPaid === 0}
 								className='border-[var(--border-error)] text-[var(--text-error)] hover:bg-[var(--bg-error)]'
 							>
-								Clear Deposits
+								{t('actions.clearDeposits')}
 							</Button>
 							<div className='flex gap-2 flex-1 justify-end'>
 								<Button
@@ -408,14 +409,14 @@ export default function VanManagement() {
 									disabled={isAdjusting}
 									className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 								>
-									Cancel
+									{t('common:actions.cancel')}
 								</Button>
 								<Button
 									onClick={handleSetDeposit}
 									disabled={isAdjusting}
 									className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 								>
-									{isAdjusting ? 'Setting...' : 'Set Deposit'}
+									{isAdjusting ? t('depositModal.buttonSetting') : t('depositModal.buttonSet')}
 								</Button>
 							</div>
 						</div>

@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back! [Български]",
+    "accountCreated": "Account created successfully! [Български]",
+    "passwordResetSent": "Password reset email sent! Check your inbox and spam folder. [Български]",
+    "passwordReset": "Password reset successfully! [Български]",
+    "loginFailed": "Failed to login [Български]",
+    "signupFailed": "Failed to create account [Български]",
+    "logoutFailed": "Failed to logout [Български]",
+    "authFailed": "Authentication failed [Български]",
+    "emailExists": "An account with this email already exists. Please login instead. [Български]",
+    "resetEmailFailed": "Failed to send reset email [Български]"
+  },
+  "settings": {
+    "saved": "Settings saved successfully! [Български]",
+    "saveFailed": "Failed to save settings [Български]",
+    "languageUpdated": "Language updated successfully! [Български]",
+    "languageUpdateFailed": "Failed to update language [Български]"
+  },
+  "user": {
+    "saved": "User details saved successfully! [Български]",
+    "saveFailed": "Failed to save user details [Български]",
+    "loadFailed": "Failed to load user details [Български]"
+  },
+  "workDay": {
+    "added": "Work added for today! [Български]",
+    "updated": "Work updated! [Български]",
+    "deleted": "Work day deleted [Български]",
+    "addFailed": "Failed to add work [Български]",
+    "updateFailed": "Failed to update work [Български]",
+    "deleteFailed": "Failed to delete work day [Български]",
+    "createWeekFailed": "Failed to create week [Български]",
+    "alreadyExists": "Work already exists for today [Български]"
+  },
+  "rankings": {
+    "saved": "Rankings saved successfully! [Български]",
+    "saveFailed": "Failed to save rankings [Български]",
+    "unableToSave": "Unable to save rankings [Български]"
+  },
+  "week": {
+    "mileageRateUpdated": "Mileage rate updated! [Български]",
+    "mileageRateUpdateFailed": "Failed to update mileage rate [Български]",
+    "cleared": "Week cleared successfully [Български]",
+    "clearFailed": "Failed to clear week [Български]"
+  },
+  "van": {
+    "added": "Van hire added successfully [Български]",
+    "updated": "Van hire updated successfully [Български]",
+    "offHired": "Van off-hired successfully [Български]",
+    "deleted": "Van hire deleted successfully [Български]",
+    "depositRefunded": "Deposit refunded successfully [Български]",
+    "manualDepositSet": "Manual deposit set successfully [Български]",
+    "manualDepositCleared": "Manual deposit cleared successfully [Български]",
+    "addFailed": "Failed to add van hire [Български]",
+    "updateFailed": "Failed to update van hire [Български]",
+    "deleteFailed": "Failed to delete van hire [Български]",
+    "offHireFailed": "Failed to off-hire van [Български]",
+    "refundFailed": "Failed to refund deposit [Български]",
+    "loadFailed": "Failed to load van hires [Български]",
+    "depositAdjustFailed": "Failed to set deposit adjustment [Български]",
+    "depositClearFailed": "Failed to clear deposit adjustment [Български]",
+    "enterDeposit": "Please enter a deposit amount [Български]",
+    "depositRange": "Deposit must be between £0 and £500 [Български]",
+    "enterOffHireDate": "Please enter an off-hire date [Български]",
+    "refundExceedsDeposit": "Refund amount cannot exceed deposit paid [Български]"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Wager! Start tracking your pay. [Български]",
+    "resetFailed": "Failed to reset onboarding [Български]",
+    "restartFailed": "Failed to restart onboarding [Български]"
+  },
+  "deleteAccount": {
+    "enterCredentials": "Please enter your email and password [Български]",
+    "emailMismatch": "Email does not match your account email [Български]",
+    "confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm [Български]",
+    "incorrectPassword": "Incorrect password. Please try again. [Български]",
+    "deleteFailed": "Failed to delete account. Please contact support. [Български]",
+    "deleted": "Your account has been permanently deleted [Български]",
+    "unexpectedError": "An unexpected error occurred. Please try again. [Български]"
+  },
+  "general": {
+    "error": "An error occurred [Български]",
+    "deleteAllFailed": "Failed to delete data [Български]",
+    "creatingWeek": "Creating week record... [Български]"
+  }
+}

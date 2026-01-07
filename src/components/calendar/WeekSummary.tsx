@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog'
 import { Label } from '@/components/ui/label'
 import { NumberInput } from '@/components/ui/number-input'
+import { useTranslation } from '@/i18n/useTranslation'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import {
@@ -45,14 +46,17 @@ type RankingsFormData = z.infer<typeof rankingsSchema>
  * Note: Stored as hundredths of penny (1988 = £0.1988/mile)
  * Validation happens on the STORED value (after Math.round conversion in onChange)
  */
-const mileageRateSchema = z.object({
-	mileage_rate: z
-		.number({ message: 'Mileage rate is required' })
-		.min(0, 'Mileage rate cannot be negative')
-		.max(10000, 'Mileage rate cannot exceed £1.00 per mile'),
-})
+const createMileageRateSchema = (t: (key: string, params?: any) => string) =>
+	z.object({
+		mileage_rate: z
+			.number({ message: t('validation:mileage.required') })
+			.min(0, t('validation:mileage.negative'))
+			.max(10000, t('validation:mileage.max', { max: '1.00' })),
+	})
 
-type MileageRateFormData = z.infer<typeof mileageRateSchema>
+type MileageRateFormData = {
+	mileage_rate: number
+}
 
 interface WeekSummaryProps {
 	weekData: Week | undefined
@@ -65,6 +69,7 @@ export default function WeekSummary({
 	weekNumber,
 	year,
 }: WeekSummaryProps) {
+	const { t } = useTranslation('week-summary')
 	const { user } = useAuth()
 	const { updateWeek, deleteWeek, setWeek } = useWeeksStore()
 	const { allVans } = useVanStore()
@@ -97,7 +102,7 @@ export default function WeekSummary({
 		reset: resetMileageRate,
 		formState: { errors: mileageErrors, isSubmitting: isSavingMileageRate },
 	} = useForm<MileageRateFormData>({
-		resolver: zodResolver(mileageRateSchema),
+		resolver: zodResolver(createMileageRateSchema(t)),
 		defaultValues: {
 			mileage_rate: 1988, // Default to 19.88p
 		},
@@ -127,11 +132,11 @@ export default function WeekSummary({
 						<FileText className='w-6 h-6 text-[var(--text-primary)]' />
 					</div>
 					<h3 className='text-xl font-bold text-[var(--text-primary)]'>
-						Week {weekNumber} Summary
+						{t('title', { week: weekNumber })}
 					</h3>
 				</div>
 				<p className='text-[var(--text-secondary)] text-center py-8'>
-					No work days logged for this week
+					{t('noWorkDays')}
 				</p>
 			</div>
 		)
@@ -199,7 +204,7 @@ export default function WeekSummary({
 
 	const onRankingsSubmit = async (data: RankingsFormData) => {
 		if (!user || !weekData) {
-			toast.error('Unable to save rankings')
+			toast.error(t('toast:rankings.unableToSave'))
 			return
 		}
 
@@ -223,11 +228,11 @@ export default function WeekSummary({
 				bonus_amount: bonusAmount,
 			})
 
-			toast.success('Rankings saved successfully!')
+			toast.success(t('toast:rankings.saved'))
 			setIsEditingRankings(false)
 		} catch (error) {
 			console.error('Error saving rankings:', error)
-			toast.error('Failed to save rankings')
+			toast.error(t('toast:rankings.saveFailed'))
 		}
 	}
 
@@ -265,11 +270,11 @@ export default function WeekSummary({
 				setWeek(result.week, result.workDays)
 			}
 
-			toast.success('Mileage rate updated!')
+			toast.success(t('toast:week.mileageRateUpdated'))
 			setIsEditingMileageRate(false)
 		} catch (error) {
 			console.error('Error updating mileage rate:', error)
-			toast.error('Failed to update mileage rate')
+			toast.error(t('toast:week.mileageRateUpdateFailed'))
 		}
 	}
 
@@ -291,11 +296,11 @@ export default function WeekSummary({
 			// Remove from cache
 			deleteWeek(weekKey)
 
-			toast.success('Week cleared successfully')
+			toast.success(t('toast:week.cleared'))
 			setShowClearConfirm(false)
 		} catch (error) {
 			console.error('Error clearing week:', error)
-			toast.error('Failed to clear week')
+			toast.error(t('toast:week.clearFailed'))
 		} finally {
 			setIsClearing(false)
 		}
@@ -313,7 +318,7 @@ export default function WeekSummary({
 						<FileText className='w-6 h-6 text-[var(--text-primary)]' />
 					</div>
 					<h3 className='text-2xl font-bold text-[var(--text-primary)]'>
-						Week {weekNumber} Summary
+						{t('title', { week: weekNumber })}
 					</h3>
 				</div>
 				<Button
@@ -328,7 +333,7 @@ export default function WeekSummary({
 			{/* Total Earnings - Always Visible */}
 			<div className='flex items-center justify-between mb-6'>
 				<span className='text-lg font-semibold text-[var(--text-secondary)]'>
-					Total Earnings
+					{t('totalEarnings')}
 				</span>
 				<span
 					className={
@@ -355,7 +360,10 @@ export default function WeekSummary({
 				{/* Base Pay */}
 				<div className='flex items-center justify-between'>
 					<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-						Base Pay ({daysWorked} {daysWorked === 1 ? 'day' : 'days'})
+						{t('payBreakdown.basePay', {
+							count: daysWorked,
+							days: daysWorked === 1 ? t('payBreakdown.day') : t('payBreakdown.days')
+						})}
 					</span>
 					<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-base)]'>
 						£{(breakdown.basePay / 100).toFixed(2)}
@@ -366,7 +374,10 @@ export default function WeekSummary({
 				{breakdown.devicePayment > 0 && (
 					<div className='flex items-center justify-between'>
 						<span className='text-sm sm:text-lg text-[var(--finance-positive)]'>
-							Device Payment ({daysWorked} {daysWorked === 1 ? 'day' : 'days'})
+							{t('payBreakdown.devicePayment', {
+								count: daysWorked,
+								days: daysWorked === 1 ? t('payBreakdown.day') : t('payBreakdown.days')
+							})}
 						</span>
 						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-positive)]'>
 							+ £{(breakdown.devicePayment / 100).toFixed(2)}
@@ -378,7 +389,7 @@ export default function WeekSummary({
 				{breakdown.sixDayBonus > 0 && (
 					<div className='flex items-center justify-between'>
 						<span className='text-sm sm:text-lg text-[var(--finance-bonus)]'>
-							6-Day Bonus
+							{t('payBreakdown.sixDayBonus')}
 						</span>
 						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-bonus)]'>
 							+ £{(breakdown.sixDayBonus / 100).toFixed(2)}
@@ -390,8 +401,10 @@ export default function WeekSummary({
 				{breakdown.sweepAdjustment !== 0 && (
 					<div className='flex items-center justify-between'>
 						<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-							Sweeps {<br></br>} ({breakdown.stopsGiven} you helped,{' '}
-							{breakdown.stopsTaken} helped you)
+							{t('payBreakdown.sweeps')} {<br></br>} {t('payBreakdown.sweepsDetail', {
+								given: breakdown.stopsGiven,
+								taken: breakdown.stopsTaken
+							})}
 						</span>
 						<span
 							className={`text-sm sm:text-lg font-mono font-semibold ${
@@ -415,7 +428,7 @@ export default function WeekSummary({
 									onSubmit={handleMileageSubmit(onMileageRateSubmit)}
 									className='flex items-center gap-2 flex-1'
 								>
-									<span className='text-[var(--text-secondary)]'>Rate:</span>
+									<span className='text-[var(--text-secondary)]'>{t('payBreakdown.mileageRateLabel')}</span>
 									<span className='text-[var(--text-secondary)] font-mono'>£</span>
 									<Controller
 										name='mileage_rate'
@@ -432,7 +445,7 @@ export default function WeekSummary({
 											/>
 										)}
 									/>
-									<span className='text-[var(--text-secondary)] text-sm'>/mi</span>
+									<span className='text-[var(--text-secondary)] text-sm'>{t('payBreakdown.mileagePerMile')}</span>
 									<Button
 										type='submit'
 										variant='ghost'
@@ -461,8 +474,10 @@ export default function WeekSummary({
 								<>
 									<div className='flex items-center gap-2'>
 										<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-											Mileage ({breakdown.totalAmazonMiles.toFixed(1)} mi × £
-											{((weekData?.mileage_rate || 1988) / 10000).toFixed(4)})
+											{t('payBreakdown.mileage', {
+												miles: breakdown.totalAmazonMiles.toFixed(1),
+												rate: ((weekData?.mileage_rate || 1988) / 10000).toFixed(4)
+											})}
 										</span>
 										{weekData && (
 											<Button
@@ -479,7 +494,7 @@ export default function WeekSummary({
 										+ £{(breakdown.mileagePayment / 100).toFixed(2)}
 										{breakdown.mileageIsEstimated && (
 											<span className='text-xs ml-1.5 px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400'>
-												Est
+												{t('payBreakdown.mileageEstBadge')}
 											</span>
 										)}
 									</span>
@@ -492,10 +507,10 @@ export default function WeekSummary({
 							<div className='flex items-start gap-2 p-2.5 sm:p-3 bg-amber-500/10 dark:bg-amber-500/10 border border-amber-500/20 dark:border-amber-500/20 rounded-lg'>
 								<AlertCircle className='w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0' />
 								<div className='text-xs text-amber-400'>
-									<strong>Mileage Estimate:</strong> Payment calculated using odometer miles
-									({breakdown.estimatedDaysCount} {breakdown.estimatedDaysCount === 1 ? 'day' : 'days'}).
-									Actual payment may differ based on Amazon's mileage calculations and rates.
-									Update with Amazon mileage data for accuracy.
+									<strong>{t('payBreakdown.mileageEstDisclaimer')}</strong> {t('payBreakdown.mileageEstDescription', {
+										count: breakdown.estimatedDaysCount,
+										days: breakdown.estimatedDaysCount === 1 ? t('payBreakdown.day') : t('payBreakdown.days')
+									})}
 								</div>
 							</div>
 						)}
@@ -505,9 +520,10 @@ export default function WeekSummary({
 							<div className='flex items-start gap-2 p-2.5 sm:p-3 bg-red-500/10 dark:bg-red-500/10 border border-red-500/20 dark:border-red-500/20 rounded-lg'>
 								<AlertCircle className='w-4 h-4 text-red-400 mt-0.5 flex-shrink-0' />
 								<div className='text-xs text-red-400'>
-									<strong>Missing Mileage Data:</strong> No mileage entered for {breakdown.missingMileageDaysCount}
-									{breakdown.missingMileageDaysCount === 1 ? ' day' : ' days'}.
-									Payment total will be inaccurate until mileage is added.
+									<strong>{t('payBreakdown.missingMileageTitle')}</strong> {t('payBreakdown.missingMileageDescription', {
+										count: breakdown.missingMileageDaysCount,
+										dayLabel: breakdown.missingMileageDaysCount === 1 ? t('payBreakdown.day') : t('payBreakdown.days')
+									})}
 								</div>
 							</div>
 						)}
@@ -519,7 +535,7 @@ export default function WeekSummary({
 					<div>
 						<div className='flex items-center justify-between'>
 							<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-								Van Hire
+								{t('payBreakdown.vanHire')}
 							</span>
 							<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-negative)]'>
 								- £{(breakdown.vanDeduction / 100).toFixed(2)}
@@ -535,8 +551,11 @@ export default function WeekSummary({
 											className='flex items-center justify-between text-xs sm:text-sm text-[var(--text-tertiary)]'
 										>
 											<span>
-												{van.registration} ({van.days} day
-												{van.days !== 1 ? 's' : ''})
+												{t('payBreakdown.vanDetail', {
+													registration: van.registration,
+													count: van.days,
+													days: van.days === 1 ? t('payBreakdown.day') : t('payBreakdown.days')
+												})}
 											</span>
 											<span>- £{(van.vanCost / 100).toFixed(2)}</span>
 										</div>
@@ -550,7 +569,7 @@ export default function WeekSummary({
 				{breakdown.depositPayment > 0 && (
 					<div className='flex items-center justify-between'>
 						<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-							Deposit Payment
+							{t('payBreakdown.depositPayment')}
 						</span>
 						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-negative)]'>
 							- £{(breakdown.depositPayment / 100).toFixed(2)}
@@ -562,7 +581,7 @@ export default function WeekSummary({
 				{breakdown.invoicingCost > 0 && (
 					<div className='flex items-center justify-between'>
 						<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-							Invoicing ({weekInvoicingService})
+							{t('payBreakdown.invoicing', { service: weekInvoicingService })}
 						</span>
 						<span className='text-sm sm:text-lg font-mono font-semibold text-[var(--finance-negative)]'>
 							- £{(breakdown.invoicingCost / 100).toFixed(2)}
@@ -575,14 +594,14 @@ export default function WeekSummary({
 			<div className='border-t border-[var(--border-primary)] pt-4 mb-6'>
 				<div className='flex items-center justify-between mb-2'>
 					<span className='text-lg font-semibold text-[var(--text-secondary)]'>
-						Standard Pay
+						{t('standardPay.title')}
 					</span>
 					<span className='text-sm sm:text-lg font-mono font-bold text-[var(--finance-total)]'>
 						£{(breakdown.standardPay / 100).toFixed(2)}
 					</span>
 				</div>
 				<p className='text-sm sm:text-lg  text-[var(--finance-heading)]'>
-					Paid Week {standardPayWeek.weekNumber} ({standardPayWeek.month})
+					{t('standardPay.paidWeek', { week: standardPayWeek.weekNumber, month: standardPayWeek.month })}
 				</p>
 			</div>
 
@@ -594,19 +613,18 @@ export default function WeekSummary({
 						<div className='flex items-center gap-2 mb-3'>
 							<AlertCircle className='w-5 h-5 text-[var(--text-secondary)]' />
 							<h4 className='text-lg font-semibold text-[var(--text-primary)]'>
-								Performance Rankings
+								{t('rankings.title')}
 							</h4>
 						</div>
 						<p className='text-[var(--text-secondary)] text-sm'>
-							Rankings will be available from{' '}
+							{t('rankings.notAvailableYet')}{' '}
 							<span className='font-semibold text-[var(--text-primary)]'>
-								Week {adjustedRankingsWeek}
+								{t('rankings.weekOnwards', { week: adjustedRankingsWeek })}
 							</span>{' '}
-							onwards.
+							{t('rankings.onwards')}
 						</p>
 						<p className='text-[var(--text-tertiary)] text-xs mt-2'>
-							Amazon typically releases performance rankings on Thursday of Week
-							N+2 (two weeks after your work week).
+							{t('rankings.releaseNote')}
 						</p>
 					</div>
 				) : !hasBonusRankings || isEditingRankings ? (
@@ -618,7 +636,7 @@ export default function WeekSummary({
 							<div className='flex items-center gap-2'>
 								<AlertCircle className='w-5 h-5 text-[var(--text-warning)]' />
 								<h4 className='text-lg font-semibold text-[var(--text-primary)]'>
-									Performance Rankings
+									{t('rankings.title')}
 								</h4>
 							</div>
 							{isEditingRankings && (
@@ -630,14 +648,14 @@ export default function WeekSummary({
 									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
 								>
 									<X className='w-4 h-4 mr-1' />
-									Cancel
+									{t('rankings.cancelButton')}
 								</Button>
 							)}
 						</div>
 						<p className='text-sm text-[var(--text-secondary)] mb-4'>
 							{isEditingRankings
-								? 'Update your performance rankings'
-								: "Enter rankings when they're released (usually Thursday after the work week)"}
+								? t('rankings.updatePrompt')
+								: t('rankings.enterPrompt')}
 						</p>
 
 						<div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4'>
@@ -648,7 +666,7 @@ export default function WeekSummary({
 								render={({ field }) => (
 									<div>
 										<Label className='text-[var(--input-label)] mb-2 block'>
-											Your Performance
+											{t('rankings.yourPerformance')}
 										</Label>
 										<div className='space-y-1'>
 											{performanceLevels.map((level) => (
@@ -682,7 +700,7 @@ export default function WeekSummary({
 								render={({ field }) => (
 									<div>
 										<Label className='text-[var(--input-label)] mb-2 block'>
-											Company Performance
+											{t('rankings.companyPerformance')}
 										</Label>
 										<div className='space-y-1'>
 											{performanceLevels.map((level) => (
@@ -715,15 +733,17 @@ export default function WeekSummary({
 							disabled={isSavingRankings}
 							className='w-full bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)] cursor-pointer'
 						>
-							{isSavingRankings ? 'Saving...' : 'Save Rankings'}
+							{isSavingRankings ? t('rankings.savingButton') : t('rankings.saveButton')}
 						</Button>
 					</form>
 				) : (
 					<>
 						<div className='flex items-center justify-between mb-2'>
 							<span className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-								Performance Bonus ({daysWorked}{' '}
-								{daysWorked === 1 ? 'day' : 'days'})
+								{t('rankings.performanceBonus', {
+									count: daysWorked,
+									days: daysWorked === 1 ? t('payBreakdown.day') : t('payBreakdown.days')
+								})}
 								<Button
 									variant='ghost'
 									size='sm'
@@ -741,12 +761,12 @@ export default function WeekSummary({
 							</div>
 						</div>
 						<div className='text-sm sm:text-lg text-[var(--finance-heading)] mb-2'>
-							Individual: {weekData.individual_level} | Company:{' '}
+							{t('rankings.individualLabel')} {weekData.individual_level} | {t('rankings.companyLabel')}{' '}
 							{weekData.company_level}
 						</div>
 						{bonusPayWeek && (
 							<p className='text-sm sm:text-lg text-[var(--finance-heading)]'>
-								Paid Week {bonusPayWeek.weekNumber} ({bonusPayWeek.month})
+								{t('rankings.paidWeek', { week: bonusPayWeek.weekNumber, month: bonusPayWeek.month })}
 							</p>
 						)}
 					</>
@@ -756,14 +776,17 @@ export default function WeekSummary({
 			{/* Mileage Discrepancy Warning */}
 			{breakdown.mileageDiscrepancy > 0 && (
 				<div className='mt-6 bg-[var(--bg-warning)] border border-[var(--border-warning)] rounded-lg p-4'>
-					<p className='text-[var(--text-warning)] font-medium mb-1'>Mileage Discrepancy</p>
+					<p className='text-[var(--text-warning)] font-medium mb-1'>{t('mileageDiscrepancy.title')}</p>
 					<p className='text-sm text-[var(--text-warning)]/80'>
-						Van logged {breakdown.totalVanMiles.toFixed(1)} miles vs Amazon paid{' '}
-						{breakdown.totalAmazonMiles.toFixed(1)} miles
+						{t('mileageDiscrepancy.detail', {
+							vanMiles: breakdown.totalVanMiles.toFixed(1),
+							amazonMiles: breakdown.totalAmazonMiles.toFixed(1)
+						})}
 					</p>
 					<p className='text-sm text-[var(--text-warning)]/80 mt-1'>
-						Estimated fuel loss: £
-						{(breakdown.mileageDiscrepancyValue / 100).toFixed(2)}
+						{t('mileageDiscrepancy.fuelLoss', {
+							amount: (breakdown.mileageDiscrepancyValue / 100).toFixed(2)
+						})}
 					</p>
 				</div>
 			)}
@@ -780,7 +803,7 @@ export default function WeekSummary({
 						className='text-[var(--button-destructive-text)] hover:text-[var(--text-error)] hover:bg-[var(--button-destructive-hover)]'
 					>
 						<Trash2 className='w-4 h-4 mr-2' />
-						Clear Week
+						{t('clearWeek.button')}
 					</Button>
 				</div>
 				</div>
@@ -791,18 +814,10 @@ export default function WeekSummary({
 				open={showClearConfirm}
 				onOpenChange={setShowClearConfirm}
 				onConfirm={handleClearWeek}
-				title={`Clear Week ${weekNumber}?`}
-				description={
-					<>
-						This will permanently delete all work days, rankings, and snapshot
-						data for <strong>Week {weekNumber}</strong>.
-						<br />
-						<br />
-						This action cannot be undone.
-					</>
-				}
-				confirmText="Clear Week"
-				cancelText="Cancel"
+				title={t('clearWeek.confirmTitle', { week: weekNumber })}
+				description={t('clearWeek.confirmDescription', { week: weekNumber })}
+				confirmText={t('clearWeek.confirmButton')}
+				cancelText={t('clearWeek.cancelButton')}
 				variant="destructive"
 				icon={<Trash2 className="w-6 h-6" />}
 				isLoading={isClearing}

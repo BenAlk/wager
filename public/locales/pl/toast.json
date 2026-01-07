@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back! [Polski]",
+    "accountCreated": "Account created successfully! [Polski]",
+    "passwordResetSent": "Password reset email sent! Check your inbox and spam folder. [Polski]",
+    "passwordReset": "Password reset successfully! [Polski]",
+    "loginFailed": "Failed to login [Polski]",
+    "signupFailed": "Failed to create account [Polski]",
+    "logoutFailed": "Failed to logout [Polski]",
+    "authFailed": "Authentication failed [Polski]",
+    "emailExists": "An account with this email already exists. Please login instead. [Polski]",
+    "resetEmailFailed": "Failed to send reset email [Polski]"
+  },
+  "settings": {
+    "saved": "Settings saved successfully! [Polski]",
+    "saveFailed": "Failed to save settings [Polski]",
+    "languageUpdated": "Language updated successfully! [Polski]",
+    "languageUpdateFailed": "Failed to update language [Polski]"
+  },
+  "user": {
+    "saved": "User details saved successfully! [Polski]",
+    "saveFailed": "Failed to save user details [Polski]",
+    "loadFailed": "Failed to load user details [Polski]"
+  },
+  "workDay": {
+    "added": "Work added for today! [Polski]",
+    "updated": "Work updated! [Polski]",
+    "deleted": "Work day deleted [Polski]",
+    "addFailed": "Failed to add work [Polski]",
+    "updateFailed": "Failed to update work [Polski]",
+    "deleteFailed": "Failed to delete work day [Polski]",
+    "createWeekFailed": "Failed to create week [Polski]",
+    "alreadyExists": "Work already exists for today [Polski]"
+  },
+  "rankings": {
+    "saved": "Rankings saved successfully! [Polski]",
+    "saveFailed": "Failed to save rankings [Polski]",
+    "unableToSave": "Unable to save rankings [Polski]"
+  },
+  "week": {
+    "mileageRateUpdated": "Mileage rate updated! [Polski]",
+    "mileageRateUpdateFailed": "Failed to update mileage rate [Polski]",
+    "cleared": "Week cleared successfully [Polski]",
+    "clearFailed": "Failed to clear week [Polski]"
+  },
+  "van": {
+    "added": "Van hire added successfully [Polski]",
+    "updated": "Van hire updated successfully [Polski]",
+    "offHired": "Van off-hired successfully [Polski]",
+    "deleted": "Van hire deleted successfully [Polski]",
+    "depositRefunded": "Deposit refunded successfully [Polski]",
+    "manualDepositSet": "Manual deposit set successfully [Polski]",
+    "manualDepositCleared": "Manual deposit cleared successfully [Polski]",
+    "addFailed": "Failed to add van hire [Polski]",
+    "updateFailed": "Failed to update van hire [Polski]",
+    "deleteFailed": "Failed to delete van hire [Polski]",
+    "offHireFailed": "Failed to off-hire van [Polski]",
+    "refundFailed": "Failed to refund deposit [Polski]",
+    "loadFailed": "Failed to load van hires [Polski]",
+    "depositAdjustFailed": "Failed to set deposit adjustment [Polski]",
+    "depositClearFailed": "Failed to clear deposit adjustment [Polski]",
+    "enterDeposit": "Please enter a deposit amount [Polski]",
+    "depositRange": "Deposit must be between £0 and £500 [Polski]",
+    "enterOffHireDate": "Please enter an off-hire date [Polski]",
+    "refundExceedsDeposit": "Refund amount cannot exceed deposit paid [Polski]"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Wager! Start tracking your pay. [Polski]",
+    "resetFailed": "Failed to reset onboarding [Polski]",
+    "restartFailed": "Failed to restart onboarding [Polski]"
+  },
+  "deleteAccount": {
+    "enterCredentials": "Please enter your email and password [Polski]",
+    "emailMismatch": "Email does not match your account email [Polski]",
+    "confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm [Polski]",
+    "incorrectPassword": "Incorrect password. Please try again. [Polski]",
+    "deleteFailed": "Failed to delete account. Please contact support. [Polski]",
+    "deleted": "Your account has been permanently deleted [Polski]",
+    "unexpectedError": "An unexpected error occurred. Please try again. [Polski]"
+  },
+  "general": {
+    "error": "An error occurred [Polski]",
+    "deleteAllFailed": "Failed to delete data [Polski]",
+    "creatingWeek": "Creating week record... [Polski]"
+  }
+}

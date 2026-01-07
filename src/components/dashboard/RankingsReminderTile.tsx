@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { fetchWeekWithWorkDays, updateWeekRankings } from '@/lib/api/weeks'
 import { getDailyBonusRate } from '@/lib/calculations'
 import { dateToWeekNumber, getPreviousWeek } from '@/lib/dates'
@@ -42,6 +43,7 @@ interface WeekWithWorkDays {
 }
 
 export function RankingsReminderTile() {
+	const { t } = useTranslation('dashboard')
 	const { user } = useAuth()
 	const [showModal, setShowModal] = useState(false)
 	const [isSubmitting, setIsSubmitting] = useState(false)
@@ -116,7 +118,7 @@ export function RankingsReminderTile() {
 			)
 
 			if (updated) {
-				toast.success('Rankings saved!', { duration: 3000 })
+				toast.success(t('toast:rankings.saved'), { duration: 3000 })
 				setShowModal(false)
 				setMissingRankings(false)
 				// Update the weekNMinus2Data with the new rankings
@@ -125,11 +127,11 @@ export function RankingsReminderTile() {
 					week: updated,
 				})
 			} else {
-				toast.error('Failed to save rankings')
+				toast.error(t('toast:rankings.saveFailed'))
 			}
 		} catch (error) {
 			console.error('Error saving rankings:', error)
-			toast.error('An error occurred')
+			toast.error(t('toast:general.error'))
 		} finally {
 			setIsSubmitting(false)
 		}
@@ -143,22 +145,22 @@ export function RankingsReminderTile() {
 	) {
 		return (
 			<DashboardTile
-				title='Performance Rankings'
+				title={t('rankingsReminderTile.performanceRankingsTitle')}
 				icon={Award}
 			>
 				<div className='text-center py-4'>
 					<p className='text-[var(--text-primary)] text-sm mb-2'>
-						Week {weekNMinus2Info.week} rankings entered
+						{t('rankingsReminderTile.weekRankingsEntered', { week: weekNMinus2Info.week })}
 					</p>
 					<div className='flex justify-center gap-4 text-xs'>
 						<div>
-							<span className='text-[var(--text-secondary)]'>Individual: </span>
+							<span className='text-[var(--text-secondary)]'>{t('rankingsReminderTile.individual')}: </span>
 							<span className='text-[var(--text-success)]'>
 								{weekNMinus2Data.week.individual_level}
 							</span>
 						</div>
 						<div>
-							<span className='text-[var(--text-secondary)]'>Company: </span>
+							<span className='text-[var(--text-secondary)]'>{t('rankingsReminderTile.company')}: </span>
 							<span className='text-[var(--text-success)]'>
 								{weekNMinus2Data.week.company_level}
 							</span>
@@ -173,15 +175,15 @@ export function RankingsReminderTile() {
 	if (!missingRankings && weekNMinus2Data) {
 		return (
 			<DashboardTile
-				title='Performance Rankings'
+				title={t('rankingsReminderTile.performanceRankingsTitle')}
 				icon={Award}
 			>
 				<div className='text-center py-4'>
 					<p className='text-[var(--text-secondary)] text-sm mb-2'>
-						Week {weekNMinus2Info.week}
+						{t('rankingsReminderTile.weekNumber', { week: weekNMinus2Info.week })}
 					</p>
 					<p className='text-[var(--text-tertiary)] text-xs'>
-						No bonus eligible - no days worked
+						{t('rankingsReminderTile.noBonusNoDaysWorked')}
 					</p>
 				</div>
 			</DashboardTile>
@@ -196,18 +198,18 @@ export function RankingsReminderTile() {
 	return (
 		<>
 			<DashboardTile
-				title='Rankings Reminder'
+				title={t('rankingsReminderTile.title')}
 				icon={Award}
 			>
 				<div className='flex flex-col min-h-full justify-evenly items-center py-4'>
 					<p className='text-[var(--text-warning)] text-sm'>
-						Week {weekNMinus2Info.week} rankings are missing!
+						{t('rankingsReminderTile.rankingsMissing', { week: weekNMinus2Info.week })}
 					</p>
 					<Button
 						onClick={() => setShowModal(true)}
 						className='w-1/2 h-10 bg-gradient-to-r from-[var(--button-warning-from)] to-[var(--button-warning-to)] hover:from-[var(--button-warning-hover-from)] hover:to-[var(--button-warning-hover-to)] text-[var(--text-primary)]'
 					>
-						Enter Rankings Now
+						{t('rankingsReminderTile.enterRankingsButton')}
 					</Button>
 				</div>
 			</DashboardTile>
@@ -218,14 +220,14 @@ export function RankingsReminderTile() {
 					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
 						<div className='flex items-center justify-between mb-4'>
 							<h3 className='text-xl font-bold text-[var(--text-primary)]'>
-								Enter Rankings - Week {weekNMinus2Info.week}
+								{t('rankingsReminderTile.modalTitle', { week: weekNMinus2Info.week })}
 							</h3>
 							<Button
 								variant='ghost'
 								size='icon'
 								onClick={() => setShowModal(false)}
 								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
-								aria-label='Close rankings entry'
+								aria-label={t('rankingsReminderTile.closeAriaLabel')}
 							>
 								<X
 									className='w-5 h-5'
@@ -243,7 +245,7 @@ export function RankingsReminderTile() {
 									htmlFor='individual_level'
 									className='text-[var(--input-label)]'
 								>
-									Individual Level
+									{t('rankingsReminderTile.individualLevel')}
 								</Label>
 								<Controller
 									name='individual_level'
@@ -283,7 +285,7 @@ export function RankingsReminderTile() {
 									htmlFor='company_level'
 									className='text-[var(--input-label)]'
 								>
-									Company Level
+									{t('rankingsReminderTile.companyLevel')}
 								</Label>
 								<Controller
 									name='company_level'
@@ -321,10 +323,15 @@ export function RankingsReminderTile() {
 							{projectedBonus > 0 && (
 								<div className='bg-[var(--bg-success)] border border-[var(--border-success)] rounded-lg p-3'>
 									<p className='text-[var(--text-success)] text-sm'>
-										Projected Bonus: £{(projectedBonus / 100).toFixed(2)}
+										{t('rankingsReminderTile.projectedBonus', {
+											amount: (projectedBonus / 100).toFixed(2)
+										})}
 									</p>
 									<p className='text-[var(--text-success)]/70 text-xs mt-1'>
-										{daysWorked} days × £{(dailyBonusRate / 100).toFixed(2)}/day
+										{t('rankingsReminderTile.bonusCalculation', {
+											days: daysWorked,
+											rate: (dailyBonusRate / 100).toFixed(2)
+										})}
 									</p>
 								</div>
 							)}
@@ -337,7 +344,7 @@ export function RankingsReminderTile() {
 									disabled={isSubmitting}
 									className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 								>
-									Cancel
+									{t('common:actions.cancel')}
 								</Button>
 								<Button
 									type='submit'
@@ -347,10 +354,10 @@ export function RankingsReminderTile() {
 									{isSubmitting ? (
 										<>
 											<Loader2 className='w-4 h-4 mr-2 animate-spin' />
-											Saving...
+											{t('rankingsReminderTile.saving')}
 										</>
 									) : (
-										'Save Rankings'
+										t('rankingsReminderTile.saveButton')
 									)}
 								</Button>
 							</div>

@@ -1,0 +1,690 @@
+Namespace,Full Key Path,English Text
+auth,auth:appName,Wager
+auth,auth:tagline,"Track your pay, predict your earnings"
+auth,auth:footer,Built for Amazon DSP couriers
+auth,auth:login.title,Welcome Back
+auth,auth:login.subtitle,Sign in to your account
+auth,auth:login.button,Login
+auth,auth:login.tabLabel,Login
+auth,auth:login.noAccount,Don't have an account?
+auth,auth:login.signUpLink,Sign up
+auth,auth:login.rememberMe,Remember me for 30 days
+auth,auth:login.forgotPassword,Forgot your password?
+auth,auth:signup.title,Create Account
+auth,auth:signup.subtitle,Start tracking your pay today
+auth,auth:signup.button,Sign Up
+auth,auth:signup.createAccountButton,Create Account
+auth,auth:signup.tabLabel,Sign Up
+auth,auth:signup.haveAccount,Already have an account?
+auth,auth:signup.loginLink,Login
+auth,auth:signup.displayName,Display Name
+auth,auth:signup.firstName,First Name
+auth,auth:signup.lastName,Last Name
+auth,auth:signup.passwordHint,At least 6 characters
+auth,auth:forgotPassword.title,Reset Password
+auth,auth:forgotPassword.subtitle,Enter your email to receive a password reset link
+auth,auth:forgotPassword.button,Send Reset Link
+auth,auth:forgotPassword.sending,Sending...
+auth,auth:forgotPassword.backToLogin,Back to login
+auth,auth:forgotPassword.successMessage,"If an account exists with this email, a password reset link has been sent. Please check your inbox and spam folder."
+auth,auth:forgotPassword.backToLoginButton,Back to Login
+auth,auth:resetPassword.title,Reset Your Password
+auth,auth:resetPassword.newPassword,New Password
+auth,auth:resetPassword.confirmPassword,Confirm Password
+auth,auth:resetPassword.button,Reset Password
+auth,auth:placeholders.email,you@example.com
+auth,auth:placeholders.password,••••••••
+auth,auth:placeholders.displayName,Speedy McDelivery
+auth,auth:placeholders.firstName,John
+auth,auth:placeholders.lastName,Doe
+auth,auth:submitting,Please wait...
+calendar,calendar:pageTitle,Calendar - Week {{week}}
+calendar,calendar:dayCell.off,OFF
+calendar,calendar:dayCell.add,Add
+calendar,calendar:dayCell.edit,Edit
+calendar,calendar:dayCell.maxDays,Max 6 days
+calendar,calendar:dayCell.route,Route
+calendar,calendar:dayCell.routeTypes.std,Std.
+calendar,calendar:dayCell.routeTypes.drs,DRS
+calendar,calendar:dayCell.routeTypes.manual,Manual
+calendar,calendar:dayCell.mileageEstimated,* Estimated (odometer data)
+calendar,calendar:dayEditModal.title,Add Work
+calendar,calendar:dayEditModal.editTitle,Edit Work
+calendar,calendar:dayEditModal.date,Date
+calendar,calendar:dayEditModal.routeType,Route Type
+calendar,calendar:dayEditModal.routeTypes.normal,Normal Route
+calendar,calendar:dayEditModal.routeTypes.drs,DRS Route
+calendar,calendar:dayEditModal.routeTypes.manual,Manual Entry
+calendar,calendar:dayEditModal.routeNumber,Route Number
+calendar,calendar:dayEditModal.dailyRate,Daily Rate (£)
+calendar,calendar:dayEditModal.dailyRateHelp,This will be your pay for this day
+calendar,calendar:dayEditModal.sweepsGiven,Stops Given
+calendar,calendar:dayEditModal.sweepsTaken,Stops Taken
+calendar,calendar:dayEditModal.sweepsHelp,"+£1 per stop you help others, -£1 per stop others help you"
+calendar,calendar:dayEditModal.amazonPaidMiles,Amazon Paid Miles
+calendar,calendar:dayEditModal.vanLoggedMiles,Van Logged Miles (Odometer)
+calendar,calendar:dayEditModal.mileageHelp,Track actual van odometer reading for discrepancy checking
+calendar,calendar:dayEditModal.notes,Notes
+calendar,calendar:dayEditModal.save,Save
+calendar,calendar:dayEditModal.saving,Saving...
+calendar,calendar:dayEditModal.delete,Delete Work Day
+calendar,calendar:dayEditModal.deleteConfirmTitle,Delete Work Day?
+calendar,calendar:dayEditModal.deleteConfirmMessage,Are you sure you want to delete this work day? This will remove it from your week's pay calculation.
+calendar,calendar:dayEditModal.maxDaysError,Cannot work more than 6 days per week (legal limit)
+calendar,calendar:dayEditModal.estimatedRate,Estimated: £{{rate}}
+calendar,calendar:dayEditModal.warnings.maxDaysReached,Max 6 work days - cannot add more
+calendar,calendar:paymentThisWeek.title,Payment This Week
+calendar,calendar:paymentThisWeek.totalPayment,Total Payment
+calendar,calendar:paymentThisWeek.noPayment,No payment expected this week
+calendar,calendar:paymentThisWeek.basePay,Base Pay
+calendar,calendar:paymentThisWeek.devicePayment,Device Payment
+calendar,calendar:paymentThisWeek.sixDayBonus,6-Day Bonus
+calendar,calendar:paymentThisWeek.sweeps,Sweeps
+calendar,calendar:paymentThisWeek.mileage,Mileage
+calendar,calendar:paymentThisWeek.vanHire,Van Hire
+calendar,calendar:paymentThisWeek.depositPayment,Deposit Payment
+calendar,calendar:paymentThisWeek.invoicing,Invoicing
+calendar,calendar:paymentThisWeek.standardPay,Standard Pay (Week {{week}})
+calendar,calendar:paymentThisWeek.performanceBonus,Performance Bonus (Week {{week}})
+calendar,calendar:paymentThisWeek.expectedInBank,Expected in your bank account this week
+calendar,calendar:paymentThisWeek.mileageEstimated,Payment includes estimated mileage ({{count}} {{days}}). Actual may vary.
+calendar,calendar:paymentThisWeek.mileageEstimatedDay,day
+calendar,calendar:paymentThisWeek.mileageEstimatedDays,days
+calendar,calendar:paymentThisWeek.missingMileageData,Missing mileage data ({{count}} {{days}}). Total may be inaccurate.
+calendar,calendar:paymentThisWeek.missingMileageDay,day
+calendar,calendar:paymentThisWeek.missingMileageDays,days
+calendar,calendar:paymentThisWeek.missingRankingsTitle,Missing Performance Rankings
+calendar,calendar:paymentThisWeek.missingRankingsMessage,Week {{week}} rankings haven't been entered yet. Click here to add them and estimate your bonus payment.
+calendar,calendar:paymentThisWeek.estimatedBadge,Est
+common,common:actions.add,Add
+common,common:actions.edit,Edit
+common,common:actions.save,Save
+common,common:actions.cancel,Cancel
+common,common:actions.delete,Delete
+common,common:actions.confirm,Confirm
+common,common:actions.back,Back
+common,common:actions.next,Next
+common,common:actions.skip,Skip
+common,common:actions.close,Close
+common,common:actions.continue,Continue
+common,common:actions.finish,Finish
+common,common:actions.reset,Reset
+common,common:actions.clear,Clear
+common,common:actions.submit,Submit
+common,common:actions.update,Update
+common,common:labels.email,Email
+common,common:labels.password,Password
+common,common:labels.route,Route
+common,common:labels.notes,Notes
+common,common:labels.optional,(optional)
+common,common:labels.required,Required
+common,common:labels.yes,Yes
+common,common:labels.no,No
+common,common:time.day,day
+common,common:time.days,days
+common,common:time.week,Week
+common,common:time.weeks,weeks
+common,common:time.today,Today
+common,common:time.yesterday,Yesterday
+common,common:time.tomorrow,Tomorrow
+common,common:currency.symbol,£
+common,common:currency.format,{{amount}}
+common,common:currency.perDay,/ day
+common,common:currency.perWeek,/ week
+common,common:currency.perMile,/ mile
+common,common:loading,Loading...
+common,common:pleaseWait,Please wait...
+common,common:error,Error
+common,common:success,Success
+common,common:pwaUpdate.title,Update Available
+common,common:pwaUpdate.description,A new version of Wager is ready to install.
+common,common:pwaUpdate.updateNow,Update Now
+common,common:pwaUpdate.later,Later
+dashboard,dashboard:pageTitle,Dashboard
+dashboard,dashboard:paymentTile.title,Payment This Week
+dashboard,dashboard:paymentTile.loading,Loading...
+dashboard,dashboard:paymentTile.expectedInAccount,Expected in your account
+dashboard,dashboard:paymentTile.weekInfo,"Week {{week}}, {{year}}"
+dashboard,dashboard:paymentTile.tapForBreakdown,Tap for breakdown
+dashboard,dashboard:paymentTile.modalTitle,Payment Breakdown
+dashboard,dashboard:paymentTile.standardPay,Standard Pay (Week {{week}})
+dashboard,dashboard:paymentTile.performanceBonus,Performance Bonus (Week {{week}})
+dashboard,dashboard:paymentTile.totalPayment,Total Payment
+dashboard,dashboard:paymentTile.expectedInWeek,"Expected in Week {{week}}, {{year}}"
+dashboard,dashboard:paymentTile.basePay,Base Pay
+dashboard,dashboard:paymentTile.sixDayBonus,6-Day Bonus
+dashboard,dashboard:paymentTile.sweeps,Sweeps
+dashboard,dashboard:paymentTile.mileage,Mileage
+dashboard,dashboard:paymentTile.mileageEstimated,Est
+dashboard,dashboard:paymentTile.vanHire,Van Hire
+dashboard,dashboard:paymentTile.depositPayment,Deposit Payment
+dashboard,dashboard:paymentTile.devicePayment,Device Payment
+dashboard,dashboard:paymentTile.invoicing,Invoicing
+dashboard,dashboard:paymentTile.subtotal,Subtotal
+dashboard,dashboard:paymentTile.bonus,Bonus
+dashboard,dashboard:paymentTile.mileageEstimatedWarning,Includes estimated mileage
+dashboard,dashboard:paymentTile.mileageMissingWarning,Missing mileage data
+dashboard,dashboard:quickAddWorkTile.title,Quick Add Work
+dashboard,dashboard:quickAddWorkTile.routeType,Route Type
+dashboard,dashboard:quickAddWorkTile.routeNumber,Route Number
+dashboard,dashboard:quickAddWorkTile.dailyRate,Daily Rate (£) *
+dashboard,dashboard:quickAddWorkTile.routeTypeNormal,Normal (£{{rate}})
+dashboard,dashboard:quickAddWorkTile.routeTypeDRS,DRS (£{{rate}})
+dashboard,dashboard:quickAddWorkTile.routeTypeManual,Manual (Custom)
+dashboard,dashboard:quickAddWorkTile.dailyRatePlaceholder,e.g. 180.00
+dashboard,dashboard:quickAddWorkTile.routeNumberPlaceholder,"e.g., DA01"
+dashboard,dashboard:quickAddWorkTile.addWorkButton,Add Work for Today
+dashboard,dashboard:quickAddWorkTile.confirmEditsButton,Confirm Edits
+dashboard,dashboard:quickAddWorkTile.adding,Adding...
+dashboard,dashboard:quickAddWorkTile.updating,Updating...
+dashboard,dashboard:quickAddWorkTile.workLoggedToday,Work logged for today
+dashboard,dashboard:quickAddWorkTile.rowReminder,Remember to fill in your receipt of work using the green button above
+dashboard,dashboard:quickAddWorkTile.editWorkAriaLabel,Edit today's work
+dashboard,dashboard:quickAddWorkTile.submitRowAriaLabel,Submit Receipt of Work
+dashboard,dashboard:quickAddWorkTile.rowButtonLabel,RoW
+dashboard,dashboard:quickAddSweepsTile.title,Quick Add Sweeps
+dashboard,dashboard:quickAddSweepsTile.stopsYouSwept,Stops You Swept (You helped)
+dashboard,dashboard:quickAddSweepsTile.stopsOthersSwept,Stops Others Swept For You
+dashboard,dashboard:quickAddSweepsTile.stopsYouSweptShort,Stops You Swept
+dashboard,dashboard:quickAddSweepsTile.stopsOthersSweptShort,Stops Others Swept For You
+dashboard,dashboard:quickAddSweepsTile.youHelpedDrivers,You helped behind drivers
+dashboard,dashboard:quickAddSweepsTile.othersHelpedYou,Others helped you
+dashboard,dashboard:quickAddSweepsTile.sweepsLoggedToday,Sweeps logged for today
+dashboard,dashboard:quickAddSweepsTile.addWorkFirst,Add work for today first to enable sweeps
+dashboard,dashboard:quickAddSweepsTile.updateButton,Update Sweeps
+dashboard,dashboard:quickAddSweepsTile.updating,Updating...
+dashboard,dashboard:quickAddSweepsTile.editSweepsAriaLabel,Edit today's sweeps
+dashboard,dashboard:quickAddSweepsTile.totalExceedsMax,Total sweeps cannot exceed 200
+dashboard,dashboard:quickAddOdometerTile.title,Quick Add Odometer
+dashboard,dashboard:quickAddOdometerTile.vanLoggedMiles,Van Logged Miles
+dashboard,dashboard:quickAddOdometerTile.odometerLoggedToday,Odometer logged for today
+dashboard,dashboard:quickAddOdometerTile.addWorkFirst,Add work for today first to log miles
+dashboard,dashboard:quickAddOdometerTile.enterTotalMiles,Enter total miles
+dashboard,dashboard:quickAddOdometerTile.updateButton,Update Odometer
+dashboard,dashboard:quickAddOdometerTile.updating,Updating...
+dashboard,dashboard:quickAddOdometerTile.editOdometerAriaLabel,Edit today's van miles
+dashboard,dashboard:rankingsReminderTile.title,Rankings Reminder
+dashboard,dashboard:rankingsReminderTile.performanceRankingsTitle,Performance Rankings
+dashboard,dashboard:rankingsReminderTile.weekRankingsEntered,Week {{week}} rankings entered
+dashboard,dashboard:rankingsReminderTile.individual,Individual
+dashboard,dashboard:rankingsReminderTile.company,Company
+dashboard,dashboard:rankingsReminderTile.weekNumber,Week {{week}}
+dashboard,dashboard:rankingsReminderTile.noBonusNoDaysWorked,No bonus eligible - no days worked
+dashboard,dashboard:rankingsReminderTile.rankingsMissing,Week {{week}} rankings are missing!
+dashboard,dashboard:rankingsReminderTile.enterRankingsButton,Enter Rankings Now
+dashboard,dashboard:rankingsReminderTile.modalTitle,Enter Rankings - Week {{week}}
+dashboard,dashboard:rankingsReminderTile.individualLevel,Individual Level
+dashboard,dashboard:rankingsReminderTile.companyLevel,Company Level
+dashboard,dashboard:rankingsReminderTile.projectedBonus,Projected Bonus: £{{amount}}
+dashboard,dashboard:rankingsReminderTile.bonusCalculation,{{days}} days × £{{rate}}/day
+dashboard,dashboard:rankingsReminderTile.saveButton,Save Rankings
+dashboard,dashboard:rankingsReminderTile.saving,Saving...
+dashboard,dashboard:rankingsReminderTile.closeAriaLabel,Close rankings entry
+dashboard,dashboard:vanStatusTile.title,Van Status
+dashboard,dashboard:vanStatusTile.noVanOnHire,No Van On Hire
+dashboard,dashboard:vanStatusTile.visitVanManagement,Visit Van Management to add a van hire
+dashboard,dashboard:vanStatusTile.lastVan,Last Van
+dashboard,dashboard:vanStatusTile.currentVan,Current Van
+dashboard,dashboard:vanStatusTile.offHired,Off-Hired
+dashboard,dashboard:vanStatusTile.offHiredDate,Off-hired: {{date}}
+dashboard,dashboard:vanStatusTile.weeklyRate,£{{rate}}/week
+dashboard,dashboard:vanStatusTile.depositProgress,Deposit Progress
+dashboard,dashboard:vanStatusTile.depositAmount,£{{paid}} / £500
+dashboard,dashboard:vanStatusTile.offHireButton,Off-Hire Van
+dashboard,dashboard:vanStatusTile.modalTitle,Off-Hire Van
+dashboard,dashboard:vanStatusTile.modalDescription,Enter the date when the van was returned. The deposit will be held for 6 weeks.
+dashboard,dashboard:vanStatusTile.importantTitle,Important: Same-Day Van Swaps
+dashboard,dashboard:vanStatusTile.importantDescription,"The off-hire date is the last day you had the van. If you're picking up a new van the same morning you're returning this one, off-hire this van on the previous day to avoid counting the same day twice."
+dashboard,dashboard:vanStatusTile.offHireDateLabel,Off-Hire Date *
+dashboard,dashboard:vanStatusTile.confirmButton,Confirm Off-Hire
+dashboard,dashboard:vanStatusTile.closeAriaLabel,Close van details
+domain,domain:routeTypes.Normal,Normal
+domain,domain:routeTypes.DRS,DRS
+domain,domain:routeTypes.Manual,Manual
+domain,domain:performanceLevels.Poor,Poor
+domain,domain:performanceLevels.Fair,Fair
+domain,domain:performanceLevels.Great,Great
+domain,domain:performanceLevels.Fantastic,Fantastic
+domain,domain:performanceLevels.FantasticPlus,Fantastic+
+domain,domain:vanTypes.Fleet,Fleet
+domain,domain:vanTypes.Flexi,Flexi
+domain,domain:invoicingServices.SelfInvoicing,Self-Invoicing
+domain,domain:invoicingServices.VersoBasic,Verso-Basic
+domain,domain:invoicingServices.VersoFull,Verso-Full
+onboarding,onboarding:welcome.title,Welcome to Wager!
+onboarding,onboarding:welcome.subtitle,Let's get your pay tracking set up in under 2 minutes.
+onboarding,onboarding:welcome.description,We need a few quick details to calculate your earnings accurately:
+onboarding,onboarding:welcome.letsGo,Let's Go
+onboarding,onboarding:welcome.setupLater,I'll Set Up Later
+onboarding,onboarding:welcome.features.trackPay.title,Track Pay
+onboarding,onboarding:welcome.features.trackPay.description,"Calculate standard pay, 6-day bonuses, and performance bonuses automatically"
+onboarding,onboarding:welcome.features.weeklyCalendar.title,Weekly Calendar
+onboarding,onboarding:welcome.features.weeklyCalendar.description,"Log work days, sweeps, and mileage with an intuitive calendar view"
+onboarding,onboarding:welcome.features.vanTracking.title,Van Tracking
+onboarding,onboarding:welcome.features.vanTracking.description,"Track van hire costs, deposits, and mileage discrepancies"
+onboarding,onboarding:welcome.features.customizable.title,Customizable
+onboarding,onboarding:welcome.features.customizable.description,"Adjust rates, mileage, and settings to match your DSP's pay structure"
+onboarding,onboarding:payRates.title,Your Daily Pay Rates
+onboarding,onboarding:payRates.subtitle,These rates are used to calculate your weekly earnings
+onboarding,onboarding:payRates.normalRouteRate,Normal Route Rate
+onboarding,onboarding:payRates.drsRouteRate,DRS Route Rate
+onboarding,onboarding:payRates.perDay,/ day
+onboarding,onboarding:payRates.disclaimer.title,Not sure about your rates?
+onboarding,onboarding:payRates.disclaimer.description,Check with your manager to confirm your exact daily rates. You can always update these later in Settings.
+onboarding,onboarding:payRates.step,Step 1 of 4
+onboarding,onboarding:invoicing.title,Invoicing Service
+onboarding,onboarding:invoicing.subtitle,Choose how you handle invoicing and accounting
+onboarding,onboarding:invoicing.options.selfInvoicing.label,Self-Invoicing
+onboarding,onboarding:invoicing.options.selfInvoicing.cost,£0
+onboarding,onboarding:invoicing.options.selfInvoicing.description,Handle your own invoicing and tax returns
+onboarding,onboarding:invoicing.options.selfInvoicing.features.noDeduction,No weekly deduction
+onboarding,onboarding:invoicing.options.selfInvoicing.features.fullControl,Full control
+onboarding,onboarding:invoicing.options.selfInvoicing.features.bestFor,Best for self-employed
+onboarding,onboarding:invoicing.options.versoBasic.label,Verso Basic
+onboarding,onboarding:invoicing.options.versoBasic.cost,£10
+onboarding,onboarding:invoicing.options.versoBasic.description,Professional invoicing service
+onboarding,onboarding:invoicing.options.versoBasic.features.invoicing,Invoicing service
+onboarding,onboarding:invoicing.options.versoBasic.features.insurance,Public liability insurance
+onboarding,onboarding:invoicing.options.versoBasic.features.ltdCompany,Requires Ltd company
+onboarding,onboarding:invoicing.options.versoFull.label,Verso Full
+onboarding,onboarding:invoicing.options.versoFull.cost,£30
+onboarding,onboarding:invoicing.options.versoFull.description,Complete accounting service
+onboarding,onboarding:invoicing.options.versoFull.features.fullInvoicing,Full invoicing
+onboarding,onboarding:invoicing.options.versoFull.features.accounting,Accounting & tax returns
+onboarding,onboarding:invoicing.options.versoFull.features.insurance,Public liability insurance
+onboarding,onboarding:invoicing.options.versoFull.features.ltdCompany,Requires Ltd company
+onboarding,onboarding:invoicing.perWeek,/week
+onboarding,onboarding:invoicing.info,This affects your weekly deductions. You can change this anytime in Settings.
+onboarding,onboarding:invoicing.step,Step 2 of 4
+onboarding,onboarding:vanHire.title,Do you have a van on hire?
+onboarding,onboarding:vanHire.subtitle,"We can help you track van costs, deposits, and mileage"
+onboarding,onboarding:vanHire.yesAddVan,"Yes, Add My Van"
+onboarding,onboarding:vanHire.yesDescription,Set up van hire details and start tracking costs
+onboarding,onboarding:vanHire.noSkip,"No, Skip This Step"
+onboarding,onboarding:vanHire.noDescription,I don't have a van or I'll add it later
+onboarding,onboarding:vanHire.info,You can add or manage van hires anytime from the Van Management page
+onboarding,onboarding:vanHire.step,Step 3 of 4
+onboarding,onboarding:vanHireForm.title,Add Your Van Hire
+onboarding,onboarding:vanHireForm.subtitle,Enter your van details to start tracking costs and deposits
+onboarding,onboarding:vanHireForm.vanType,Van Type
+onboarding,onboarding:vanHireForm.vanTypeFleet,Fleet (£250/week)
+onboarding,onboarding:vanHireForm.vanTypeFlexi,Flexi (£100-250/week)
+onboarding,onboarding:vanHireForm.vanTypeFleetHelp,Fixed rate rental van at £250 per week
+onboarding,onboarding:vanHireForm.vanTypeFlexiHelp,Company van with variable weekly cost (£100-250)
+onboarding,onboarding:vanHireForm.registration,Registration Number
+onboarding,onboarding:vanHireForm.registrationPlaceholder,"e.g., AB12 CDE"
+onboarding,onboarding:vanHireForm.onHireDate,On-Hire Date
+onboarding,onboarding:vanHireForm.onHireDateHelp,When did you start hiring this van?
+onboarding,onboarding:vanHireForm.weeklyRate,Weekly Rate
+onboarding,onboarding:vanHireForm.weeklyRateFleetHelp,Fleet vans are £250/week (fixed)
+onboarding,onboarding:vanHireForm.weeklyRateFlexiHelp,Flexi vans range from £100-250/week
+onboarding,onboarding:vanHireForm.depositInfo,"We'll automatically track your deposit payments (£25 for your first 2 pay cheques, then £50 per pay cheque until you reach £500 total)."
+onboarding,onboarding:vanHireForm.depositInfoTitle,Deposit tracking:
+onboarding,onboarding:vanHireForm.step,Step 3 of 4
+onboarding,onboarding:vanHireForm.addVan,Add Van
+onboarding,onboarding:success.title,You're All Set! 🎉
+onboarding,onboarding:success.subtitle,Your pay tracking is ready to go. Here's what you can do:
+onboarding,onboarding:success.startTracking,Start Tracking
+onboarding,onboarding:success.step,Step 4 of 4
+onboarding,onboarding:success.features.calendar.title,Calendar
+onboarding,onboarding:success.features.calendar.description,"Track daily work, sweeps, and mileage with a visual weekly view"
+onboarding,onboarding:success.features.dashboard.title,Dashboard
+onboarding,onboarding:success.features.dashboard.description,"Quick adds for work, sweeps, and odometer readings. See payment breakdowns."
+onboarding,onboarding:success.features.vanManagement.title,Van Management
+onboarding,onboarding:success.features.vanManagement.description,"Track van hire costs, deposits, and off-hire dates"
+onboarding,onboarding:success.features.settings.title,Settings
+onboarding,onboarding:success.features.settings.description,"Customize rates, mileage, and invoicing service anytime"
+onboarding,onboarding:success.tour.title,Want to see how it works first?
+onboarding,onboarding:success.tour.description,Take a quick guided tour of the dashboard to explore all features
+onboarding,onboarding:success.tour.button,Take Interactive Tour
+onboarding,onboarding:tour.steps.dashboardQuickAddWork.title,Quick Add Work
+onboarding,onboarding:tour.steps.dashboardQuickAddWork.description,Add today's work quickly from the dashboard. Select your route type and the app auto-calculates your daily rate.
+onboarding,onboarding:tour.steps.dashboardPayment.title,Payment This Week
+onboarding,onboarding:tour.steps.dashboardPayment.description,See your expected bank deposit with full breakdown. This shows Week N-2 standard pay plus Week N-6 performance bonus.
+onboarding,onboarding:tour.steps.dashboardVanStatus.title,Van Status
+onboarding,onboarding:tour.steps.dashboardVanStatus.description,Track your van deposit progress and weekly costs. See how much you've paid and how much remains to reach £500.
+onboarding,onboarding:tour.steps.calendarNavigation.title,Week Navigation
+onboarding,onboarding:tour.steps.calendarNavigation.description,"Navigate between weeks to view past and future work. Use Previous, Today, and Next buttons or jump to a specific week."
+onboarding,onboarding:tour.steps.calendarDayCell.title,Day Cells
+onboarding,onboarding:tour.steps.calendarDayCell.description,"Click any day to view details or add work. Each cell shows route type, pay, sweeps, and mileage at a glance."
+onboarding,onboarding:tour.steps.calendarWeekSummary.title,Week Summary
+onboarding,onboarding:tour.steps.calendarWeekSummary.description,"Full pay breakdown including base pay, 6-day bonus, sweeps, mileage, and van costs. Enter performance rankings here too."
+onboarding,onboarding:tour.steps.calendarPaymentThisWeek.title,Payment This Week
+onboarding,onboarding:tour.steps.calendarPaymentThisWeek.description,See what's hitting your bank account this week. Standard pay from 2 weeks ago plus performance bonus from 6 weeks ago.
+onboarding,onboarding:tour.steps.vanManagementTop.title,Van Management - Add & Track
+onboarding,onboarding:tour.steps.vanManagementTop.description,Use this top section to add new van hires and track your deposit progress. The deposit tracker shows how much you've paid and what remains.
+onboarding,onboarding:tour.steps.vanManagementBottom.title,Van Management - Van History
+onboarding,onboarding:tour.steps.vanManagementBottom.description,"View all your van hires here. See active vans, off-hired vans, and manage your complete van history."
+onboarding,onboarding:tour.steps.tourComplete.title,Ready to Track Your Pay!
+onboarding,onboarding:tour.steps.tourComplete.description,"You've completed the tour! Click the Quick Add Work tile above to log your first day, or explore at your own pace."
+onboarding,onboarding:tour.nextButton,Next
+onboarding,onboarding:tour.backButton,Back
+onboarding,onboarding:tour.exitTour,Exit Tour
+onboarding,onboarding:tour.stepProgress,{{current}} of {{total}}
+onboarding,onboarding:modal.title,Onboarding Wizard
+onboarding,onboarding:modal.description,Complete the setup process to get started with Wager
+onboarding,onboarding:toast.vanAdded,Van hire added successfully!
+onboarding,onboarding:toast.vanAddFailed,Failed to add van hire. You can add it later from Van Management.
+onboarding,onboarding:toast.welcomeMessage,Welcome to Wager! Start tracking your pay.
+onboarding,onboarding:toast.savingSettingsFailed,Failed to save settings. Please try again.
+settings,settings:title,Settings
+settings,settings:tabs.finance,Finance Settings
+settings,settings:tabs.user,User Details
+settings,settings:tabs.language,Language
+settings,settings:language.title,Language Preference
+settings,settings:language.selectLanguage,Select Language
+settings,settings:language.description,Choose your preferred language for the app interface
+settings,settings:finance.title,Pay Rates
+settings,settings:finance.description,Set your daily pay rates. These will be used to calculate your weekly earnings.
+settings,settings:finance.warning,These should only be changed on the week that pay rates change.
+settings,settings:finance.normalRate,Normal Route Rate
+settings,settings:finance.drsRate,DRS/Missort Route Rate
+settings,settings:finance.normalRateDefault,Default: £160 per day
+settings,settings:finance.drsRateDefault,Default: £100 per day
+settings,settings:finance.sixDayBonusTitle,6-Day Week Bonus:
+settings,settings:finance.sixDayBonusDescription,You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination).
+settings,settings:finance.invoicingTitle,Invoicing & Accounting
+settings,settings:finance.invoicingDescription,Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay.
+settings,settings:finance.serviceProvider,Service Provider
+settings,settings:finance.serviceProviderPlaceholder,Select invoicing service
+settings,settings:finance.selfInvoicingCost,£0/week
+settings,settings:finance.versoBasicCost,£10/week
+settings,settings:finance.versoFullCost,£30/week
+settings,settings:finance.selfInvoicingDescription,Handle your own invoicing and tax returns
+settings,settings:finance.versoBasicDescription,Professional invoicing + public liability insurance (requires Ltd company)
+settings,settings:finance.versoFullDescription,Full invoicing + accounting + tax returns + insurance (requires Ltd company)
+settings,settings:finance.loadingSettings,Loading settings...
+settings,settings:finance.savingButton,Saving...
+settings,settings:finance.saveButton,Save Settings
+settings,settings:user.title,Profile Information
+settings,settings:user.description,"Update your personal information. Display name is required, while first and last names are optional."
+settings,settings:user.displayName,Display Name
+settings,settings:user.displayNameRequired,Display Name *
+settings,settings:user.displayNamePlaceholder,Enter your display name
+settings,settings:user.displayNameHelp,This is how you'll be identified in the app
+settings,settings:user.firstName,First Name
+settings,settings:user.firstNamePlaceholder,Enter your first name (optional)
+settings,settings:user.lastName,Last Name
+settings,settings:user.lastNamePlaceholder,Enter your last name (optional)
+settings,settings:user.loadingUser,Loading user details...
+settings,settings:user.savingButton,Saving...
+settings,settings:user.saveButton,Save Changes
+settings,settings:user.dangerZoneTitle,Danger Zone
+settings,settings:user.deleteAccountTitle,Delete Account
+settings,settings:user.deleteAccountDescription,Permanently delete your account and all associated data. This action cannot be undone.
+settings,settings:user.deleteAccountButton,Delete My Account
+settings,settings:onboarding.title,Onboarding
+settings,settings:onboarding.description,Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour.
+settings,settings:onboarding.restartButton,Restart Onboarding
+settings,settings:onboarding.tourButton,Take Dashboard Tour
+settings,settings:restartDialog.title,Restart Onboarding
+settings,settings:restartDialog.description,Choose how you'd like to restart the onboarding process
+settings,settings:restartDialog.fullOnboardingTitle,Full Onboarding
+settings,settings:restartDialog.fullOnboardingDescription,"Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch."
+settings,settings:restartDialog.tourOnlyTitle,Tour Only
+settings,settings:restartDialog.tourOnlyDescription,Keep your data and just view the interactive dashboard tour. Your real data won't be affected.
+settings,settings:restartDialog.warningLabel,Full Onboarding Warning:
+settings,settings:restartDialog.warningText,"This action cannot be undone. All work days, van hires, and settings will be permanently deleted."
+settings,settings:restartDialog.cancelButton,Cancel
+settings,settings:deleteAccount.warningTitle,Delete Account - Final Warning
+settings,settings:deleteAccount.warningDescription,Warning about permanent account deletion
+settings,settings:deleteAccount.permanentHeading,This action is PERMANENT and IRREVERSIBLE
+settings,settings:deleteAccount.permanentText,"Once you delete your account, there is no way to recover your data. This is not a temporary deactivation."
+settings,settings:deleteAccount.dataDeletedHeading,The following data will be permanently deleted:
+settings,settings:deleteAccount.dataList.profile,Your user profile and account settings
+settings,settings:deleteAccount.dataList.workDays,All work days and weekly pay data (every week you've tracked)
+settings,settings:deleteAccount.dataList.vanHires,All van hire records and deposit information
+settings,settings:deleteAccount.dataList.rankings,Performance rankings history
+settings,settings:deleteAccount.dataList.mileage,Mileage tracking and pay rate history
+settings,settings:deleteAccount.dataList.auth,Your authentication credentials (you will be logged out)
+settings,settings:deleteAccount.alternativesHeading,Consider these alternatives:
+settings,settings:deleteAccount.alternatives.stopUsing,You can simply stop using the app without deleting your account
+settings,settings:deleteAccount.alternatives.clearWeeks,You can clear individual weeks if you want to start fresh
+settings,settings:deleteAccount.alternatives.resetRates,You can reset your pay rates in Settings if they've changed
+settings,settings:deleteAccount.cancelButton,Cancel (Keep My Account)
+settings,settings:deleteAccount.proceedButton,I Understand - Proceed to Delete
+settings,settings:deleteAccount.confirmTitle,Confirm Account Deletion
+settings,settings:deleteAccount.confirmDescription,Final confirmation step for account deletion
+settings,settings:deleteAccount.lastChance,Last chance: Enter your credentials to permanently delete your account
+settings,settings:deleteAccount.emailLabel,Your Email Address
+settings,settings:deleteAccount.emailMatch,Must match: {{email}}
+settings,settings:deleteAccount.passwordLabel,Your Password
+settings,settings:deleteAccount.passwordPlaceholder,Enter your password to confirm
+settings,settings:deleteAccount.passwordHelp,We need to verify your identity before deletion
+settings,settings:deleteAccount.confirmTextLabel,"Type ""DELETE MY ACCOUNT"" to confirm"
+settings,settings:deleteAccount.confirmTextPlaceholder,DELETE MY ACCOUNT
+settings,settings:deleteAccount.confirmTextHelp,Type exactly as shown (case sensitive)
+settings,settings:deleteAccount.finalWarning,"After clicking ""Delete My Account Forever"", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action."
+settings,settings:deleteAccount.goBackButton,Go Back
+settings,settings:deleteAccount.deletingButton,Deleting Account...
+settings,settings:deleteAccount.deleteButton,Delete My Account Forever
+toast,toast:auth.welcomeBack,Welcome back!
+toast,toast:auth.accountCreated,Account created successfully!
+toast,toast:auth.passwordResetSent,Password reset email sent! Check your inbox and spam folder.
+toast,toast:auth.passwordReset,Password reset successfully!
+toast,toast:auth.loginFailed,Failed to login
+toast,toast:auth.signupFailed,Failed to create account
+toast,toast:auth.logoutFailed,Failed to logout
+toast,toast:auth.authFailed,Authentication failed
+toast,toast:auth.emailExists,An account with this email already exists. Please login instead.
+toast,toast:auth.resetEmailFailed,Failed to send reset email
+toast,toast:settings.saved,Settings saved successfully!
+toast,toast:settings.saveFailed,Failed to save settings
+toast,toast:settings.languageUpdated,Language updated successfully!
+toast,toast:settings.languageUpdateFailed,Failed to update language
+toast,toast:user.saved,User details saved successfully!
+toast,toast:user.saveFailed,Failed to save user details
+toast,toast:user.loadFailed,Failed to load user details
+toast,toast:workDay.added,Work added for today!
+toast,toast:workDay.updated,Work updated!
+toast,toast:workDay.deleted,Work day deleted
+toast,toast:workDay.addFailed,Failed to add work
+toast,toast:workDay.updateFailed,Failed to update work
+toast,toast:workDay.deleteFailed,Failed to delete work day
+toast,toast:workDay.createWeekFailed,Failed to create week
+toast,toast:workDay.alreadyExists,Work already exists for today
+toast,toast:rankings.saved,Rankings saved successfully!
+toast,toast:rankings.saveFailed,Failed to save rankings
+toast,toast:rankings.unableToSave,Unable to save rankings
+toast,toast:week.mileageRateUpdated,Mileage rate updated!
+toast,toast:week.mileageRateUpdateFailed,Failed to update mileage rate
+toast,toast:week.cleared,Week cleared successfully
+toast,toast:week.clearFailed,Failed to clear week
+toast,toast:van.added,Van hire added successfully
+toast,toast:van.updated,Van hire updated successfully
+toast,toast:van.offHired,Van off-hired successfully
+toast,toast:van.deleted,Van hire deleted successfully
+toast,toast:van.depositRefunded,Deposit refunded successfully
+toast,toast:van.manualDepositSet,Manual deposit set successfully
+toast,toast:van.manualDepositCleared,Manual deposit cleared successfully
+toast,toast:van.addFailed,Failed to add van hire
+toast,toast:van.updateFailed,Failed to update van hire
+toast,toast:van.deleteFailed,Failed to delete van hire
+toast,toast:van.offHireFailed,Failed to off-hire van
+toast,toast:van.refundFailed,Failed to refund deposit
+toast,toast:van.loadFailed,Failed to load van hires
+toast,toast:van.depositAdjustFailed,Failed to set deposit adjustment
+toast,toast:van.depositClearFailed,Failed to clear deposit adjustment
+toast,toast:van.enterDeposit,Please enter a deposit amount
+toast,toast:van.depositRange,Deposit must be between £0 and £500
+toast,toast:van.enterOffHireDate,Please enter an off-hire date
+toast,toast:van.refundExceedsDeposit,Refund amount cannot exceed deposit paid
+toast,toast:onboarding.welcome,Welcome to Wager! Start tracking your pay.
+toast,toast:onboarding.resetFailed,Failed to reset onboarding
+toast,toast:onboarding.restartFailed,Failed to restart onboarding
+toast,toast:deleteAccount.enterCredentials,Please enter your email and password
+toast,toast:deleteAccount.emailMismatch,Email does not match your account email
+toast,toast:deleteAccount.confirmTextMismatch,"Please type ""DELETE MY ACCOUNT"" exactly to confirm"
+toast,toast:deleteAccount.incorrectPassword,Incorrect password. Please try again.
+toast,toast:deleteAccount.deleteFailed,Failed to delete account. Please contact support.
+toast,toast:deleteAccount.deleted,Your account has been permanently deleted
+toast,toast:deleteAccount.unexpectedError,An unexpected error occurred. Please try again.
+toast,toast:general.error,An error occurred
+toast,toast:general.deleteAllFailed,Failed to delete data
+toast,toast:general.creatingWeek,Creating week record...
+validation,validation:required,This field is required
+validation,validation:email.invalid,Invalid email address
+validation,validation:email.required,Email is required
+validation,validation:password.minLength,Password must be at least {{min}} characters
+validation,validation:password.required,Password is required
+validation,validation:password.mismatch,Passwords do not match
+validation,validation:displayName.required,Display name is required
+validation,validation:displayName.maxLength,Display name must be less than {{max}} characters
+validation,validation:firstName.maxLength,First name must be less than {{max}} characters
+validation,validation:lastName.maxLength,Last name must be less than {{max}} characters
+validation,validation:rate.required,Rate is required
+validation,validation:rate.positive,Rate must be positive
+validation,validation:rate.tooHigh,Rate too high
+validation,validation:rate.wholeNumber,Rate must be a whole number
+validation,validation:sweeps.max,Maximum {{max}} sweeps per day
+validation,validation:sweeps.negative,Sweeps cannot be negative
+validation,validation:mileage.negative,Mileage cannot be negative
+validation,validation:mileage.required,Mileage rate is required
+validation,validation:mileage.max,Mileage rate cannot exceed £{{max}} per mile
+validation,validation:finance.normalRateRequired,Normal rate is required
+validation,validation:finance.drsRateRequired,DRS rate is required
+validation,validation:finance.rateWhole,Rate must be a whole number
+validation,validation:finance.ratePositive,Rate must be positive
+validation,validation:finance.rateTooHigh,Rate too high
+validation,validation:workDay.maxDays,Cannot work more than 6 days per week (legal limit)
+validation,validation:workDay.routeRequired,Route number required
+validation,validation:workDay.dailyRateRequired,Daily rate is required for manual route entries
+validation,validation:van.registrationRequired,Registration is required
+validation,validation:van.registrationTooLong,Registration too long
+validation,validation:van.weeklyRateRequired,Weekly rate is required
+validation,validation:van.rateWholeNumber,Rate must be a whole number
+validation,validation:van.ratePositive,Rate must be positive
+validation,validation:van.rateTooHigh,Rate too high
+validation,validation:van.onHireDateRequired,On-hire date is required
+validation,validation:van.offHireDateInvalid,Off-hire date must be on or after on-hire date
+validation,validation:van.notesTooLong,Notes too long
+validation,validation:string.minLength,Must be at least {{min}} characters
+validation,validation:string.maxLength,Must be less than {{max}} characters
+validation,validation:number.min,Must be at least {{min}}
+validation,validation:number.max,Must be less than {{max}}
+van,van:card.active,Active
+van,van:card.ongoing,Ongoing
+van,van:card.weeklyRate,Weekly Rate
+van,van:card.duration,Duration
+van,van:card.status,Status
+van,van:card.refunded,Refunded
+van,van:card.holdUntil,Hold until {{date}}
+van,van:card.statusActive,Active
+van,van:card.completed,Completed
+van,van:modal.titleEdit,Edit Van Hire
+van,van:modal.titleNew,New Van Hire
+van,van:modal.registrationLabel,Registration Number *
+van,van:modal.registrationPlaceholder,"e.g., AB12 CDE"
+van,van:modal.vanTypeLabel,Van Type
+van,van:modal.vanTypePlaceholder,Select type
+van,van:modal.vanTypeFleet,Fleet (£250/week)
+van,van:modal.vanTypeFlexi,Flexi (£100-£250/week)
+van,van:modal.weeklyRateLabel,Weekly Rate (£) *
+van,van:modal.onHireDateLabel,On-Hire Date *
+van,van:modal.offHireDateLabel,Off-Hire Date
+van,van:modal.offHireDateHelp,Leave empty if currently on-hire
+van,van:modal.depositStatusTitle,Deposit Status
+van,van:modal.depositCurrent,Current Deposit:
+van,van:modal.depositAutoNote,Deposits are automatically calculated by the system based on weeks with any van
+van,van:modal.notesLabel,Notes
+van,van:modal.notesPlaceholder,Additional notes about this van hire...
+van,van:modal.offHireButton,Off-Hire Van
+van,van:modal.deleteButton,Delete
+van,van:modal.refundDepositButton,Refund Deposit
+van,van:modal.cancelButton,Cancel
+van,van:modal.updateButton,Update
+van,van:modal.createButton,Create
+van,van:offHireDialog.title,Off-Hire Van
+van,van:offHireDialog.description,Enter the date when the van was returned. The deposit will be held for 6 weeks.
+van,van:offHireDialog.infoTitle,Important: Same-Day Van Swaps
+van,van:offHireDialog.infoDescription,"The off-hire date is the last day you had the van. If you're picking up a new van the same morning you're returning this one, off-hire this van on the previous day to avoid counting the same day twice."
+van,van:offHireDialog.dateLabel,Off-Hire Date *
+van,van:offHireDialog.cancelButton,Cancel
+van,van:offHireDialog.confirmButton,Confirm Off-Hire
+van,van:refundDialog.title,Refund Deposit
+van,van:refundDialog.description,Enter the refund amount (after deducting any damage costs).
+van,van:refundDialog.amountLabel,Refund Amount (£) *
+van,van:refundDialog.maxLabel,Max: £{{amount}}
+van,van:refundDialog.cancelButton,Cancel
+van,van:refundDialog.confirmButton,Confirm Refund
+van,van:deleteDialog.title,Delete Van Hire?
+van,van:deleteDialog.description,Are you sure you want to delete this van hire?
+van,van:deleteDialog.registration,{{registration}}
+van,van:deleteDialog.warning,This action cannot be undone.
+van,van:deleteDialog.confirmButton,Delete
+van,van:deleteDialog.cancelButton,Cancel
+vanManagement,vanManagement:loading,Loading van hires...
+vanManagement,vanManagement:pageTitle,Van Management
+vanManagement,vanManagement:actions.newVanHire,New Van Hire
+vanManagement,vanManagement:actions.setDeposit,Set Deposit
+vanManagement,vanManagement:actions.clearDeposits,Clear Deposits
+vanManagement,vanManagement:actions.addVanHire,Add Van Hire
+vanManagement,vanManagement:depositSummary.title,Deposit Summary
+vanManagement,vanManagement:depositSummary.subtitle,Cumulative deposit across all van hires
+vanManagement,vanManagement:depositSummary.totalPaid,Total Paid
+vanManagement,vanManagement:depositSummary.remaining,Remaining
+vanManagement,vanManagement:depositSummary.target,Target
+vanManagement,vanManagement:depositSummary.complete,Complete
+vanManagement,vanManagement:depositSummary.inProgress,In Progress
+vanManagement,vanManagement:activeVanAlert.title,You have an active van hire
+vanManagement,vanManagement:activeVanAlert.subtitle,Off-hire your current van ({{registration}}) before adding a new one
+vanManagement,vanManagement:history.title,Van Hire History
+vanManagement,vanManagement:history.empty.title,No van hires yet
+vanManagement,vanManagement:history.empty.subtitle,Add your first van hire to start tracking costs and deposits
+vanManagement,vanManagement:depositModal.title,Set Manual Deposit
+vanManagement,vanManagement:depositModal.infoTitle,💡 Deposits Already Paid
+vanManagement,vanManagement:depositModal.infoText,Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted.
+vanManagement,vanManagement:depositModal.depositLimit,Deposit limit: £500
+vanManagement,vanManagement:depositModal.label,Total Deposit Paid (£) *
+vanManagement,vanManagement:depositModal.placeholder,"e.g., 250.00"
+vanManagement,vanManagement:depositModal.maximum,Maximum: £500.00
+vanManagement,vanManagement:depositModal.buttonSetting,Setting...
+vanManagement,vanManagement:depositModal.buttonSet,Set Deposit
+week-summary,week-summary:title,Week {{week}} Summary
+week-summary,week-summary:noWorkDays,No work days logged for this week
+week-summary,week-summary:totalEarnings,Total Earnings
+week-summary,week-summary:payBreakdown.basePay,Base Pay ({{count}} {{days}})
+week-summary,week-summary:payBreakdown.day,day
+week-summary,week-summary:payBreakdown.days,days
+week-summary,week-summary:payBreakdown.devicePayment,Device Payment ({{count}} {{days}})
+week-summary,week-summary:payBreakdown.sixDayBonus,6-Day Bonus
+week-summary,week-summary:payBreakdown.sweeps,Sweeps
+week-summary,week-summary:payBreakdown.sweepsDetail,"({{given}} you helped, {{taken}} helped you)"
+week-summary,week-summary:payBreakdown.mileage,Mileage ({{miles}} mi × £{{rate}})
+week-summary,week-summary:payBreakdown.mileageRateLabel,Rate:
+week-summary,week-summary:payBreakdown.mileagePerMile,/mi
+week-summary,week-summary:payBreakdown.mileageEstBadge,Est
+week-summary,week-summary:payBreakdown.mileageEstDisclaimer,Mileage Estimate:
+week-summary,week-summary:payBreakdown.mileageEstDescription,Payment calculated using odometer miles ({{count}} {{days}}). Actual payment may differ based on Amazon's mileage calculations and rates. Update with Amazon mileage data for accuracy.
+week-summary,week-summary:payBreakdown.missingMileageTitle,Missing Mileage Data:
+week-summary,week-summary:payBreakdown.missingMileageDescription,No mileage entered for {{count}} {{dayLabel}}. Payment total will be inaccurate until mileage is added.
+week-summary,week-summary:payBreakdown.vanHire,Van Hire
+week-summary,week-summary:payBreakdown.vanDetail,{{registration}} ({{count}} {{days}})
+week-summary,week-summary:payBreakdown.depositPayment,Deposit Payment
+week-summary,week-summary:payBreakdown.invoicing,Invoicing ({{service}})
+week-summary,week-summary:standardPay.title,Standard Pay
+week-summary,week-summary:standardPay.paidWeek,Paid Week {{week}} ({{month}})
+week-summary,week-summary:rankings.title,Performance Rankings
+week-summary,week-summary:rankings.notAvailableYet,Rankings will be available from
+week-summary,week-summary:rankings.weekOnwards,Week {{week}}
+week-summary,week-summary:rankings.onwards,onwards.
+week-summary,week-summary:rankings.releaseNote,Amazon typically releases performance rankings on Thursday of Week N+2 (two weeks after your work week).
+week-summary,week-summary:rankings.updatePrompt,Update your performance rankings
+week-summary,week-summary:rankings.enterPrompt,Enter rankings when they're released (usually Thursday after the work week)
+week-summary,week-summary:rankings.yourPerformance,Your Performance
+week-summary,week-summary:rankings.companyPerformance,Company Performance
+week-summary,week-summary:rankings.saveButton,Save Rankings
+week-summary,week-summary:rankings.savingButton,Saving...
+week-summary,week-summary:rankings.cancelButton,Cancel
+week-summary,week-summary:rankings.performanceBonus,Performance Bonus ({{count}} {{days}})
+week-summary,week-summary:rankings.individualLabel,Individual:
+week-summary,week-summary:rankings.companyLabel,Company:
+week-summary,week-summary:rankings.paidWeek,Paid Week {{week}} ({{month}})
+week-summary,week-summary:mileageDiscrepancy.title,Mileage Discrepancy
+week-summary,week-summary:mileageDiscrepancy.detail,Van logged {{vanMiles}} miles vs Amazon paid {{amazonMiles}} miles
+week-summary,week-summary:mileageDiscrepancy.fuelLoss,Estimated fuel loss: £{{amount}}
+week-summary,week-summary:clearWeek.button,Clear Week
+week-summary,week-summary:clearWeek.confirmTitle,Clear Week {{week}}?
+week-summary,week-summary:clearWeek.confirmDescription,"This will permanently delete all work days, rankings, and snapshot data for Week {{week}}. This action cannot be undone."
+week-summary,week-summary:clearWeek.confirmButton,Clear Week
+week-summary,week-summary:clearWeek.cancelButton,Cancel

@@ -4,6 +4,7 @@ import type { VanHire } from '@/types/database'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface VanHireCardProps {
 	van: VanHire
@@ -12,6 +13,8 @@ interface VanHireCardProps {
 }
 
 export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
+	const { t } = useTranslation('van')
+
 	const formatDate = (dateStr: string) => {
 		return new Date(dateStr).toLocaleDateString('en-GB', {
 			day: 'numeric',
@@ -53,7 +56,7 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 							</h3>
 							{isActive && (
 								<Badge className='bg-[var(--bg-success)] text-[var(--text-success)] border-[var(--border-success)]'>
-									Active
+									{t('card.active')}
 								</Badge>
 							)}
 							{van.van_type && (
@@ -76,7 +79,7 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 									</div>
 								</>
 							)}
-							{!van.off_hire_date && <span className='text-[var(--text-success)]'>Ongoing</span>}
+							{!van.off_hire_date && <span className='text-[var(--text-success)]'>{t('card.ongoing')}</span>}
 						</div>
 					</div>
 				</div>
@@ -92,32 +95,32 @@ export function VanHireCard({ van, onEdit, isActive }: VanHireCardProps) {
 
 			<div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
 				<div>
-					<p className='text-[var(--text-secondary)] text-sm mb-1'>Weekly Rate</p>
+					<p className='text-[var(--text-secondary)] text-sm mb-1'>{t('card.weeklyRate')}</p>
 					<p className='text-lg font-mono font-bold text-[var(--text-primary)]'>
 						{formatCurrency(van.weekly_rate)}
 					</p>
 				</div>
 				<div>
-					<p className='text-[var(--text-secondary)] text-sm mb-1'>Duration</p>
+					<p className='text-[var(--text-secondary)] text-sm mb-1'>{t('card.duration')}</p>
 					<p className='text-lg font-bold text-[var(--text-primary)]'>
 						{durationWeeks}w {durationDays % 7}d
 					</p>
 				</div>
 				<div>
-					<p className='text-[var(--text-secondary)] text-sm mb-1'>Status</p>
+					<p className='text-[var(--text-secondary)] text-sm mb-1'>{t('card.status')}</p>
 					{van.deposit_refunded ? (
 						<p className='text-[var(--text-success)] font-semibold flex items-center gap-1'>
 							<CheckCircle2 className='w-4 h-4' />
-							Refunded
+							{t('card.refunded')}
 						</p>
 					) : van.off_hire_date && van.deposit_hold_until ? (
 						<p className='text-[var(--text-warning)] font-semibold'>
-							Hold until {formatDate(van.deposit_hold_until)}
+							{t('card.holdUntil', { date: formatDate(van.deposit_hold_until) })}
 						</p>
 					) : isActive ? (
-						<p className='text-[var(--text-info)] font-semibold'>Active</p>
+						<p className='text-[var(--text-info)] font-semibold'>{t('card.statusActive')}</p>
 					) : (
-						<p className='text-[var(--text-secondary)] font-semibold'>Completed</p>
+						<p className='text-[var(--text-secondary)] font-semibold'>{t('card.completed')}</p>
 					)}
 				</div>
 			</div>

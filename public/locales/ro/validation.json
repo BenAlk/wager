@@ -1,0 +1,68 @@
+{
+  "required": "This field is required [Română]",
+  "email": {
+    "invalid": "Invalid email address [Română]",
+    "required": "Email is required [Română]"
+  },
+  "password": {
+    "minLength": "Password must be at least {{min}} characters",
+    "required": "Password is required [Română]",
+    "mismatch": "Passwords do not match [Română]"
+  },
+  "displayName": {
+    "required": "Display name is required [Română]",
+    "maxLength": "Display name must be less than {{max}} characters"
+  },
+  "firstName": {
+    "maxLength": "First name must be less than {{max}} characters"
+  },
+  "lastName": {
+    "maxLength": "Last name must be less than {{max}} characters"
+  },
+  "rate": {
+    "required": "Rate is required [Română]",
+    "positive": "Rate must be positive [Română]",
+    "tooHigh": "Rate too high [Română]",
+    "wholeNumber": "Rate must be a whole number [Română]"
+  },
+  "sweeps": {
+    "max": "Maximum {{max}} sweeps per day",
+    "negative": "Sweeps cannot be negative [Română]"
+  },
+  "mileage": {
+    "negative": "Mileage cannot be negative [Română]",
+    "required": "Mileage rate is required [Română]",
+    "max": "Mileage rate cannot exceed £{{max}} per mile"
+  },
+  "finance": {
+    "normalRateRequired": "Normal rate is required [Română]",
+    "drsRateRequired": "DRS rate is required [Română]",
+    "rateWhole": "Rate must be a whole number [Română]",
+    "ratePositive": "Rate must be positive [Română]",
+    "rateTooHigh": "Rate too high [Română]"
+  },
+  "workDay": {
+    "maxDays": "Cannot work more than 6 days per week (legal limit) [Română]",
+    "routeRequired": "Route number required [Română]",
+    "dailyRateRequired": "Daily rate is required for manual route entries [Română]"
+  },
+  "van": {
+    "registrationRequired": "Registration is required [Română]",
+    "registrationTooLong": "Registration too long [Română]",
+    "weeklyRateRequired": "Weekly rate is required [Română]",
+    "rateWholeNumber": "Rate must be a whole number [Română]",
+    "ratePositive": "Rate must be positive [Română]",
+    "rateTooHigh": "Rate too high [Română]",
+    "onHireDateRequired": "On-hire date is required [Română]",
+    "offHireDateInvalid": "Off-hire date must be on or after on-hire date [Română]",
+    "notesTooLong": "Notes too long [Română]"
+  },
+  "string": {
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be less than {{max}} characters"
+  },
+  "number": {
+    "min": "Must be at least {{min}}",
+    "max": "Must be less than {{max}}"
+  }
+}

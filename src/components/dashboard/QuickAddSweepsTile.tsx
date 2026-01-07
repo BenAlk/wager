@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { fetchWeekWithWorkDays, updateWorkDay } from '@/lib/api/weeks'
 import { dateToWeekNumber } from '@/lib/dates'
 import { useWeeksStore, getWeekKey } from '@/store/weeksStore'
@@ -28,6 +29,7 @@ interface QuickAddSweepsTileProps {
 }
 
 export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
+	const { t } = useTranslation('dashboard')
 	const { user } = useAuth()
 	const updateWorkDayInStore = useWeeksStore((state) => state.updateWorkDay)
 	const [isSubmitting, setIsSubmitting] = useState(false)
@@ -79,7 +81,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 
 		// Validate total sweeps
 		if (data.stops_given + data.stops_taken > 200) {
-			toast.error('Total sweeps cannot exceed 200', { duration: 3000 })
+			toast.error(t('quickAddSweepsTile.totalExceedsMax'), { duration: 3000 })
 			return
 		}
 
@@ -90,14 +92,14 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 			// Fetch current week to get work day
 			const result = await fetchWeekWithWorkDays(user.id, weekNum, year)
 			if (!result || !result.workDays) {
-				toast.error('No week data found')
+				toast.error(t('toast:workDay.createWeekFailed'))
 				return
 			}
 
 			// Find today's work day
 			const todayWorkDay = result.workDays.find((wd) => wd.date === todayString)
 			if (!todayWorkDay) {
-				toast.error('No work found for today')
+				toast.error(t('toast:workDay.addFailed'))
 				return
 			}
 
@@ -108,18 +110,18 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 			})
 
 			if (updated) {
-				toast.success('Sweeps updated!', { duration: 3000 })
+				toast.success(t('toast:workDay.updated'), { duration: 3000 })
 				setTodayWork(updated)
 				setIsEditing(false)
 				// Update the weeks store cache so calendar reflects the change
 				const weekKey = getWeekKey(weekNum, year)
 				updateWorkDayInStore(weekKey, updated.id, updated)
 			} else {
-				toast.error('Failed to update sweeps')
+				toast.error(t('toast:workDay.updateFailed'))
 			}
 		} catch (error) {
 			console.error('Error updating sweeps:', error)
-			toast.error('An error occurred')
+			toast.error(t('toast:general.error'))
 		} finally {
 			setIsSubmitting(false)
 		}
@@ -133,7 +135,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 	) {
 		return (
 			<DashboardTile
-				title='Quick Add Sweeps'
+				title={t('quickAddSweepsTile.title')}
 				icon={Repeat2}
 			>
 				<div className='flex flex-col h-full'>
@@ -141,32 +143,32 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 						<div className='bg-[var(--bg-surface-secondary)] rounded-lg p-4'>
 							<div className='flex justify-between items-start mb-3'>
 								<div className='flex-1'>
-									<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops You Swept</p>
+									<p className='text-[var(--text-secondary)] text-xs mb-1'>{t('quickAddSweepsTile.stopsYouSweptShort')}</p>
 									<p className='text-[var(--text-sweeps-given)] font-semibold text-lg'>
 										{todayWork.stops_taken}
 									</p>
-									<p className='text-[var(--text-tertiary)] text-xs'>You helped behind drivers</p>
+									<p className='text-[var(--text-tertiary)] text-xs'>{t('quickAddSweepsTile.youHelpedDrivers')}</p>
 								</div>
 								<Button
 									variant='ghost'
 									size='icon'
 									onClick={() => setIsEditing(true)}
 									className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8'
-									aria-label="Edit today's sweeps"
+									aria-label={t('quickAddSweepsTile.editSweepsAriaLabel')}
 								>
 									<Pencil className='w-4 h-4 text-[var(--text-mileage-van)]' aria-hidden='true' />
 								</Button>
 							</div>
 							<div>
-								<p className='text-[var(--text-secondary)] text-xs mb-1'>Stops Others Swept For You</p>
+								<p className='text-[var(--text-secondary)] text-xs mb-1'>{t('quickAddSweepsTile.stopsOthersSweptShort')}</p>
 								<p className='text-[var(--text-sweeps-taken)] font-semibold text-lg'>
 									{todayWork.stops_given}
 								</p>
-								<p className='text-[var(--text-tertiary)] text-xs'>Others helped you</p>
+								<p className='text-[var(--text-tertiary)] text-xs'>{t('quickAddSweepsTile.othersHelpedYou')}</p>
 							</div>
 						</div>
 						<p className='text-[var(--text-secondary)] text-xs text-center'>
-							Sweeps logged for today
+							{t('quickAddSweepsTile.sweepsLoggedToday')}
 						</p>
 					</div>
 				</div>
@@ -176,14 +178,14 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 
 	return (
 		<DashboardTile
-			title='Quick Add Sweeps'
+			title={t('quickAddSweepsTile.title')}
 			icon={Repeat2}
 			disabled={!hasWorkToday}
 		>
 			{!hasWorkToday ? (
 				<div className='text-center py-8'>
 					<p className='text-[var(--text-secondary)] text-sm'>
-						Add work for today first to enable sweeps
+						{t('quickAddSweepsTile.addWorkFirst')}
 					</p>
 				</div>
 			) : (
@@ -197,7 +199,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 								htmlFor='stops_taken'
 								className='text-[var(--input-label)] text-sm'
 							>
-								Stops You Swept (You helped)
+								{t('quickAddSweepsTile.stopsYouSwept')}
 							</Label>
 							<Controller
 								name='stops_taken'
@@ -226,7 +228,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 								htmlFor='stops_given'
 								className='text-[var(--input-label)] text-sm'
 							>
-								Stops Others Swept For You
+								{t('quickAddSweepsTile.stopsOthersSwept')}
 							</Label>
 							<Controller
 								name='stops_given'
@@ -252,7 +254,7 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 
 						{stopsGiven + stopsTaken > 200 && (
 							<p className='text-[var(--input-error-text)] text-xs'>
-								Total sweeps cannot exceed 200
+								{t('quickAddSweepsTile.totalExceedsMax')}
 							</p>
 						)}
 					</div>
@@ -265,10 +267,10 @@ export function QuickAddSweepsTile({ hasWorkToday }: QuickAddSweepsTileProps) {
 						{isSubmitting ? (
 							<>
 								<Loader2 className='w-4 h-4 mr-2 animate-spin' />
-								Updating...
+								{t('quickAddSweepsTile.updating')}
 							</>
 						) : (
-							'Update Sweeps'
+							t('quickAddSweepsTile.updateButton')
 						)}
 					</Button>
 				</form>

@@ -1,0 +1,113 @@
+{
+	"title": "Settings",
+	"tabs": {
+		"finance": "Finance Settings",
+		"user": "User Details",
+		"language": "Language"
+	},
+	"language": {
+		"title": "Language Preference",
+		"selectLanguage": "Select Language",
+		"description": "Choose your preferred language for the app interface"
+	},
+	"finance": {
+		"title": "Pay Rates",
+		"description": "Set your daily pay rates. These will be used to calculate your weekly earnings.",
+		"warning": "These should only be changed on the week that pay rates change.",
+		"normalRate": "Normal Route Rate",
+		"lwbRate": "LWB Route Rate",
+		"drsRate": "DRS/Missort Route Rate",
+		"normalRateDefault": "Default: £157 per day",
+		"lwbRateDefault": "Default: £171 per day",
+		"drsRateDefault": "Default: £100 per day",
+		"sixDayBonusTitle": "6-Day Week Bonus:",
+		"sixDayBonusDescription": "Flat £30 bonus for working 6 days per working week (Peak season only).",
+		"invoicingTitle": "Invoicing & Accounting",
+		"invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay.",
+		"serviceProvider": "Service Provider",
+		"serviceProviderPlaceholder": "Select invoicing service",
+		"selfInvoicingCost": "£0/week",
+		"versoBasicCost": "£10/week",
+		"versoFullCost": "£30/week",
+		"selfInvoicingDescription": "Handle your own invoicing and tax returns",
+		"versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company)",
+		"versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company)",
+		"loadingSettings": "Loading settings...",
+		"savingButton": "Saving...",
+		"saveButton": "Save Settings"
+	},
+	"user": {
+		"title": "Profile Information",
+		"description": "Update your personal information. Display name is required, while first and last names are optional.",
+		"displayName": "Display Name",
+		"displayNameRequired": "Display Name *",
+		"displayNamePlaceholder": "Enter your display name",
+		"displayNameHelp": "This is how you'll be identified in the app",
+		"firstName": "First Name",
+		"firstNamePlaceholder": "Enter your first name (optional)",
+		"lastName": "Last Name",
+		"lastNamePlaceholder": "Enter your last name (optional)",
+		"loadingUser": "Loading user details...",
+		"savingButton": "Saving...",
+		"saveButton": "Save Changes",
+		"dangerZoneTitle": "Danger Zone",
+		"deleteAccountTitle": "Delete Account",
+		"deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone.",
+		"deleteAccountButton": "Delete My Account"
+	},
+	"onboarding": {
+		"title": "Onboarding",
+		"description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour.",
+		"restartButton": "Restart Onboarding",
+		"tourButton": "Take Dashboard Tour"
+	},
+	"restartDialog": {
+		"title": "Restart Onboarding",
+		"description": "Choose how you'd like to restart the onboarding process",
+		"fullOnboardingTitle": "Full Onboarding",
+		"fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch.",
+		"tourOnlyTitle": "Tour Only",
+		"tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected.",
+		"warningLabel": "Full Onboarding Warning:",
+		"warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted.",
+		"cancelButton": "Cancel"
+	},
+	"deleteAccount": {
+		"warningTitle": "Delete Account - Final Warning",
+		"warningDescription": "Warning about permanent account deletion",
+		"permanentHeading": "This action is PERMANENT and IRREVERSIBLE",
+		"permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation.",
+		"dataDeletedHeading": "The following data will be permanently deleted:",
+		"dataList": {
+			"profile": "Your user profile and account settings",
+			"workDays": "All work days and weekly pay data (every week you've tracked)",
+			"vanHires": "All van hire records and deposit information",
+			"rankings": "Performance rankings history",
+			"mileage": "Mileage tracking and pay rate history",
+			"auth": "Your authentication credentials (you will be logged out)"
+		},
+		"alternativesHeading": "Consider these alternatives:",
+		"alternatives": {
+			"stopUsing": "You can simply stop using the app without deleting your account",
+			"clearWeeks": "You can clear individual weeks if you want to start fresh",
+			"resetRates": "You can reset your pay rates in Settings if they've changed"
+		},
+		"cancelButton": "Cancel (Keep My Account)",
+		"proceedButton": "I Understand - Proceed to Delete",
+		"confirmTitle": "Confirm Account Deletion",
+		"confirmDescription": "Final confirmation step for account deletion",
+		"lastChance": "Last chance: Enter your credentials to permanently delete your account",
+		"emailLabel": "Your Email Address",
+		"emailMatch": "Must match: {{email}}",
+		"passwordLabel": "Your Password",
+		"passwordPlaceholder": "Enter your password to confirm",
+		"passwordHelp": "We need to verify your identity before deletion",
+		"confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm",
+		"confirmTextPlaceholder": "DELETE MY ACCOUNT",
+		"confirmTextHelp": "Type exactly as shown (case sensitive)",
+		"finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action.",
+		"goBackButton": "Go Back",
+		"deletingButton": "Deleting Account...",
+		"deleteButton": "Delete My Account Forever"
+	}
+}

@@ -27,16 +27,21 @@ import type {
 
 /**
  * Default rates in pence (can be customized in user_settings)
+ * Updated Dec 24, 2024: Normal rate changed from £160 to £157
  */
-export const DEFAULT_NORMAL_RATE = 16000 // �160.00
-export const DEFAULT_DRS_RATE = 10000 // �100.00
-export const DEFAULT_VAN_RATE = 25000 // �250.00
+export const DEFAULT_NORMAL_RATE = 15700 // £157.00
+export const DEFAULT_DRS_RATE = 10000 // £100.00
+export const DEFAULT_LWB_RATE = 17100 // £171.00 (Long Wheel Base route)
+export const DEFAULT_VAN_RATE = 25000 // £250.00
 export const DEFAULT_MILEAGE_RATE = 1988 // 19.88p per mile (stored as pence per 100 miles)
 
 /**
  * Fixed bonus amounts
+ * NOTE: 6-day bonus only applies to work weeks BEFORE Dec 24, 2024
  */
-export const SIX_DAY_BONUS = 3000 // �30.00 (6 days � �5)
+export const SIX_DAY_BONUS_OLD = 3000 // £30.00 (6 days × £5) - Before Dec 24, 2024
+export const SIX_DAY_BONUS_NEW = 0 // £0.00 - After Dec 24, 2024 (removed)
+export const SIX_DAY_BONUS_CUTOFF_DATE = '2024-12-24' // Date when bonus was removed
 export const DEVICE_PAYMENT = 180 // £1.80 per day (Amazon Flex app usage)
 export const MAX_DEPOSIT = 50000 // �500.00
 export const DEPOSIT_RATE_FIRST_TWO_WEEKS = 2500 // �25.00/week
@@ -226,11 +231,22 @@ export function calculateWeeklyBasePay(workDays: WorkDay[]): number {
 
 /**
  * Calculate 6-day bonus
- * Flat �30 bonus when working exactly 6 days (any route type combination)
+ * Before Dec 24, 2024: Flat £30 bonus when working exactly 6 days
+ * After Dec 24, 2024: No bonus (£0)
  * Paid with standard pay (Week N+2)
  */
 export function calculateSixDayBonus(workDays: WorkDay[]): number {
-	return workDays.length === 6 ? SIX_DAY_BONUS : 0
+	if (workDays.length !== 6) return 0
+
+	// Check if any work day is on or after Dec 24, 2024
+	const hasWorkAfterCutoff = workDays.some(day => {
+		const workDate = new Date(day.date)
+		const cutoffDate = new Date(SIX_DAY_BONUS_CUTOFF_DATE)
+		return workDate >= cutoffDate
+	})
+
+	// If any day is after cutoff, no bonus applies
+	return hasWorkAfterCutoff ? SIX_DAY_BONUS_NEW : SIX_DAY_BONUS_OLD
 }
 
 /**

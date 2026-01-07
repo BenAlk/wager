@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Banknote, X } from 'lucide-react'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { fetchWeekWithWorkDays } from '@/lib/api/weeks'
 import { fetchVanHiresForWeek } from '@/lib/api/vans'
 import { calculateWeeklyPayBreakdown, type WeeklyPayBreakdownSimple } from '@/lib/calculations'
@@ -13,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
 export function PaymentTile() {
+	const { t } = useTranslation('dashboard')
 	const { user } = useAuth()
 	const { allVans } = useVanStore()
 	const [totalPayment, setTotalPayment] = useState<number>(0)
@@ -125,10 +127,10 @@ export function PaymentTile() {
 
 	return (
 		<>
-			<DashboardTile title='Payment This Week' icon={Banknote} data-tour='payment-tile'>
+			<DashboardTile title={t('paymentTile.title')} icon={Banknote} data-tour='payment-tile'>
 				{loading ? (
 					<div className='text-center py-8'>
-						<div className='text-[var(--text-secondary)]'>Loading...</div>
+						<div className='text-[var(--text-secondary)]'>{t('paymentTile.loading')}</div>
 					</div>
 				) : (
 					<button
@@ -139,7 +141,7 @@ export function PaymentTile() {
 						aria-label={hasPaymentData ? 'View payment breakdown' : undefined}
 					>
 						<div className='text-sm text-[var(--text-secondary)] mb-2'>
-							Expected in your account
+							{t('paymentTile.expectedInAccount')}
 						</div>
 						<div
 							className={
@@ -150,11 +152,11 @@ export function PaymentTile() {
 							£{(totalPayment / 100).toFixed(2)}
 						</div>
 						<div className='text-xs text-[var(--text-tertiary)] mt-2'>
-							Week {currentWeek}, {currentYear}
+							{t('paymentTile.weekInfo', { week: currentWeek, year: currentYear })}
 						</div>
 						{hasPaymentData && (
 							<div className='text-xs text-[var(--text-secondary)] mt-2'>
-								Tap for breakdown
+								{t('paymentTile.tapForBreakdown')}
 							</div>
 						)}
 					</button>
@@ -171,7 +173,7 @@ export function PaymentTile() {
 									<Banknote className='w-6 h-6 text-[var(--text-primary)]' />
 								</div>
 								<h3 className='text-xl font-bold text-[var(--text-primary)]'>
-									Payment Breakdown
+									{t('paymentTile.modalTitle')}
 								</h3>
 							</div>
 							<Button
@@ -190,18 +192,18 @@ export function PaymentTile() {
 							{standardPayBreakdown && (
 								<div className='bg-[var(--bg-surface-secondary)] border border-[var(--border-secondary)] rounded-lg p-4'>
 									<div className='text-sm text-[var(--text-secondary)] mb-3'>
-										Standard Pay (Week {weekNMinus2Info.week})
+										{t('paymentTile.standardPay', { week: weekNMinus2Info.week })}
 									</div>
 									<div className='space-y-2'>
 										<div className='flex justify-between'>
-											<span className='text-[var(--text-primary)]'>Base Pay</span>
+											<span className='text-[var(--text-primary)]'>{t('paymentTile.basePay')}</span>
 											<span className='font-mono text-[var(--finance-positive)]'>
 												+£{(standardPayBreakdown.basePay / 100).toFixed(2)}
 											</span>
 										</div>
 										{standardPayBreakdown.sixDayBonus > 0 && (
 											<div className='flex justify-between'>
-												<span className='text-[var(--text-primary)]'>6-Day Bonus</span>
+												<span className='text-[var(--text-primary)]'>{t('paymentTile.sixDayBonus')}</span>
 												<span className='font-mono text-[var(--finance-positive)]'>
 													+£{(standardPayBreakdown.sixDayBonus / 100).toFixed(2)}
 												</span>
@@ -209,7 +211,7 @@ export function PaymentTile() {
 										)}
 										{standardPayBreakdown.sweepAdjustment !== 0 && (
 											<div className='flex justify-between'>
-												<span className='text-[var(--text-primary)]'>Sweeps</span>
+												<span className='text-[var(--text-primary)]'>{t('paymentTile.sweeps')}</span>
 												<span
 													className={
 														'font-mono ' +
@@ -225,12 +227,12 @@ export function PaymentTile() {
 										)}
 										{standardPayBreakdown.mileagePayment > 0 && (
 											<div className='flex justify-between'>
-												<span className='text-[var(--text-primary)]'>Mileage</span>
+												<span className='text-[var(--text-primary)]'>{t('paymentTile.mileage')}</span>
 												<span className='font-mono text-[var(--finance-positive)] flex items-center gap-1.5'>
 													+£{(standardPayBreakdown.mileagePayment / 100).toFixed(2)}
 													{standardPayBreakdown.mileageIsEstimated && (
 														<span className='text-[0.65rem] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400'>
-															Est
+															{t('paymentTile.mileageEstimated')}
 														</span>
 													)}
 												</span>
@@ -238,7 +240,7 @@ export function PaymentTile() {
 										)}
 										{standardPayBreakdown.vanDeduction > 0 && (
 											<div className='flex justify-between'>
-												<span className='text-[var(--text-primary)]'>Van Hire</span>
+												<span className='text-[var(--text-primary)]'>{t('paymentTile.vanHire')}</span>
 												<span className='font-mono text-[var(--finance-negative)]'>
 													-£{(standardPayBreakdown.vanDeduction / 100).toFixed(2)}
 												</span>
@@ -246,7 +248,7 @@ export function PaymentTile() {
 										)}
 										{standardPayBreakdown.depositPayment > 0 && (
 											<div className='flex justify-between'>
-												<span className='text-[var(--text-primary)]'>Deposit Payment</span>
+												<span className='text-[var(--text-primary)]'>{t('paymentTile.depositPayment')}</span>
 												<span className='font-mono text-[var(--finance-negative)]'>
 													-£{(standardPayBreakdown.depositPayment / 100).toFixed(2)}
 												</span>
@@ -254,14 +256,14 @@ export function PaymentTile() {
 										)}
 										{standardPayBreakdown.invoicingCost > 0 && (
 											<div className='flex justify-between'>
-												<span className='text-[var(--text-primary)]'>Invoicing</span>
+												<span className='text-[var(--text-primary)]'>{t('paymentTile.invoicing')}</span>
 												<span className='font-mono text-[var(--finance-negative)]'>
 													-£{(standardPayBreakdown.invoicingCost / 100).toFixed(2)}
 												</span>
 											</div>
 										)}
 										<div className='flex justify-between pt-2 border-t border-[var(--border-secondary)]'>
-											<span className='font-semibold text-[var(--text-primary)]'>Subtotal</span>
+											<span className='font-semibold text-[var(--text-primary)]'>{t('paymentTile.subtotal')}</span>
 											<span className='font-mono font-bold text-[var(--text-primary)]'>
 												£{(standardPayBreakdown.standardPay / 100).toFixed(2)}
 											</span>
@@ -276,7 +278,7 @@ export function PaymentTile() {
 														<span className='text-[0.65rem] px-1 py-0.5 rounded bg-amber-500/20'>
 															⚠
 														</span>
-														<span>Includes estimated mileage</span>
+														<span>{t('paymentTile.mileageEstimatedWarning')}</span>
 													</div>
 												)}
 												{standardPayBreakdown.hasMissingMileageData && (
@@ -284,7 +286,7 @@ export function PaymentTile() {
 														<span className='text-[0.65rem] px-1 py-0.5 rounded bg-red-500/20'>
 															!
 														</span>
-														<span>Missing mileage data</span>
+														<span>{t('paymentTile.mileageMissingWarning')}</span>
 													</div>
 												)}
 											</div>
@@ -297,10 +299,10 @@ export function PaymentTile() {
 							{bonusPayment > 0 && (
 								<div className='bg-[var(--bg-success)] border border-[var(--border-success)] rounded-lg p-4'>
 									<div className='text-sm text-[var(--text-secondary)] mb-2'>
-										Performance Bonus (Week {weekNMinus6Info.week})
+										{t('paymentTile.performanceBonus', { week: weekNMinus6Info.week })}
 									</div>
 									<div className='flex justify-between'>
-										<span className='font-semibold text-[var(--text-primary)]'>Bonus</span>
+										<span className='font-semibold text-[var(--text-primary)]'>{t('paymentTile.bonus')}</span>
 										<span className='font-mono font-bold text-[var(--finance-positive)]'>
 											+£{(bonusPayment / 100).toFixed(2)}
 										</span>
@@ -312,7 +314,7 @@ export function PaymentTile() {
 							<div className='border-t border-[var(--border-primary)] pt-4'>
 								<div className='flex justify-between items-center'>
 									<span className='text-lg font-bold text-[var(--text-primary)]'>
-										Total Payment
+										{t('paymentTile.totalPayment')}
 									</span>
 									<span
 										className={
@@ -326,7 +328,7 @@ export function PaymentTile() {
 									</span>
 								</div>
 								<p className='text-xs text-[var(--text-tertiary)] mt-2 text-right'>
-									Expected in Week {currentWeek}, {currentYear}
+									{t('paymentTile.expectedInWeek', { week: currentWeek, year: currentYear })}
 								</p>
 							</div>
 						</div>

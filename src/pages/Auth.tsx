@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { login, sendPasswordResetEmail, signUp } from '@/lib/auth'
+import { useTranslation } from '@/i18n/useTranslation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ArrowLeft, TrendingUp } from 'lucide-react'
 import { useState } from 'react'
@@ -11,45 +12,64 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-const loginSchema = z.object({
-	email: z.string().email('Invalid email address'),
-	password: z.string().min(6, 'Password must be at least 6 characters'),
-	rememberMe: z.boolean().optional(),
-})
+// Schemas will be created inside the component to access translation function
+const createLoginSchema = (t: (key: string, params?: any) => string) =>
+	z.object({
+		email: z.string().email(t('validation:email.invalid')),
+		password: z.string().min(6, t('validation:password.minLength', { min: 6 })),
+		rememberMe: z.boolean().optional(),
+	})
 
-const signUpSchema = loginSchema.extend({
-	displayName: z
-		.string()
-		.min(1, 'Display name is required')
-		.max(50, 'Display name must be less than 50 characters'),
-	firstName: z
-		.string()
-		.max(50, 'First name must be less than 50 characters')
-		.optional()
-		.or(z.literal('')),
-	lastName: z
-		.string()
-		.max(50, 'Last name must be less than 50 characters')
-		.optional()
-		.or(z.literal('')),
-})
+const createSignUpSchema = (t: (key: string, params?: any) => string) => {
+	const loginSchema = createLoginSchema(t)
+	return loginSchema.extend({
+		displayName: z
+			.string()
+			.min(1, t('validation:displayName.required'))
+			.max(50, t('validation:displayName.maxLength', { max: 50 })),
+		firstName: z
+			.string()
+			.max(50, t('validation:firstName.maxLength', { max: 50 }))
+			.optional()
+			.or(z.literal('')),
+		lastName: z
+			.string()
+			.max(50, t('validation:lastName.maxLength', { max: 50 }))
+			.optional()
+			.or(z.literal('')),
+	})
+}
 
-const forgotPasswordSchema = z.object({
-	email: z.string().email('Invalid email address'),
-})
+const createForgotPasswordSchema = (t: (key: string, params?: any) => string) =>
+	z.object({
+		email: z.string().email(t('validation:email.invalid')),
+	})
 
-type LoginFormData = z.infer<typeof loginSchema>
-type SignUpFormData = z.infer<typeof signUpSchema>
-type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>
+type LoginFormData = {
+	email: string
+	password: string
+	rememberMe?: boolean
+}
+
+type SignUpFormData = LoginFormData & {
+	displayName: string
+	firstName?: string
+	lastName?: string
+}
+
+type ForgotPasswordFormData = {
+	email: string
+}
 
 export default function Auth() {
 	const navigate = useNavigate()
+	const { t } = useTranslation('auth')
 	const [isLogin, setIsLogin] = useState(true)
 	const [isForgotPassword, setIsForgotPassword] = useState(false)
 	const [resetEmailSent, setResetEmailSent] = useState(false)
 
 	const loginForm = useForm<LoginFormData>({
-		resolver: zodResolver(loginSchema),
+		resolver: zodResolver(createLoginSchema(t)),
 		defaultValues: {
 			email: '',
 			password: '',
@@ -58,7 +78,7 @@ export default function Auth() {
 	})
 
 	const signUpForm = useForm<SignUpFormData>({
-		resolver: zodResolver(signUpSchema),
+		resolver: zodResolver(createSignUpSchema(t)),
 		defaultValues: {
 			email: '',
 			password: '',
@@ -69,7 +89,7 @@ export default function Auth() {
 	})
 
 	const forgotPasswordForm = useForm<ForgotPasswordFormData>({
-		resolver: zodResolver(forgotPasswordSchema),
+		resolver: zodResolver(createForgotPasswordSchema(t)),
 		defaultValues: {
 			email: '',
 		},
@@ -112,19 +132,19 @@ export default function Auth() {
 			if (isLogin) {
 				const { email, password, rememberMe } = data as LoginFormData
 				await login({ email, password, rememberMe: rememberMe ?? true })
-				toast.success('Welcome back!', { duration: 3000 })
+				toast.success(t('toast:auth.welcomeBack'), { duration: 3000 })
 				navigate('/dashboard')
 			} else {
 				const { email, password, displayName, firstName, lastName } = data as SignUpFormData
 
 				try {
 					await signUp({ email, password, displayName, firstName, lastName })
-					toast.success('Account created successfully!', { duration: 3000 })
+					toast.success(t('toast:auth.accountCreated'), { duration: 3000 })
 					navigate('/dashboard')
 				} catch (signupErr) {
 					// Check if error is due to existing user
 					const errorMessage =
-						signupErr instanceof Error ? signupErr.message : 'Signup failed'
+						signupErr instanceof Error ? signupErr.message : t('toast:auth.signupFailed')
 
 					if (
 						errorMessage.includes('User already registered') ||
@@ -135,12 +155,9 @@ export default function Auth() {
 						// Set error on the email field
 						signUpForm.setError('email', {
 							type: 'manual',
-							message: 'An account with this email already exists',
+							message: t('toast:auth.emailExists'),
 						})
-						toast.error(
-							'An account with this email already exists. Please login instead.',
-							{ duration: 4000 }
-						)
+						toast.error(t('toast:auth.emailExists'), { duration: 4000 })
 					} else {
 						// Other signup errors
 						throw signupErr
@@ -150,7 +167,7 @@ export default function Auth() {
 			}
 		} catch (err) {
 			const errorMessage =
-				err instanceof Error ? err.message : 'Authentication failed'
+				err instanceof Error ? err.message : t('toast:auth.authFailed')
 			toast.error(errorMessage, { duration: 4000 })
 		}
 	}
@@ -168,7 +185,7 @@ export default function Auth() {
 			}
 		} catch (err) {
 			const errorMessage =
-				err instanceof Error ? err.message : 'Failed to send reset email'
+				err instanceof Error ? err.message : t('toast:auth.resetEmailFailed')
 			toast.error(errorMessage, { duration: 4000 })
 		}
 	}
@@ -194,19 +211,17 @@ export default function Auth() {
 							className='self-start flex items-center gap-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors mb-4'
 						>
 							<ArrowLeft className='w-4 h-4' />
-							<span className='text-sm'>Back to login</span>
+							<span className='text-sm'>{t('forgotPassword.backToLogin')}</span>
 						</button>
 					)}
 					<div className='w-16 h-16 bg-gradient-to-r from-[var(--gradient-primary-from)] to-[var(--gradient-primary-to)] rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-[var(--gradient-primary-from)]/25'>
 						<TrendingUp className='w-8 h-8 text-[var(--text-primary)]' />
 					</div>
 					<h1 className='text-3xl font-bold text-[var(--text-primary)] mb-2'>
-						{isForgotPassword ? 'Reset Password' : 'Wager'}
+						{isForgotPassword ? t('forgotPassword.title') : t('appName')}
 					</h1>
 					<p className='text-[var(--text-secondary)] text-center'>
-						{isForgotPassword
-							? 'Enter your email to receive a password reset link'
-							: 'Track your pay, predict your earnings'}
+						{isForgotPassword ? t('forgotPassword.subtitle') : t('tagline')}
 					</p>
 				</div>
 
@@ -221,7 +236,7 @@ export default function Auth() {
 									: 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer'
 							}`}
 						>
-							Login
+							{t('login.tabLabel')}
 						</button>
 						<button
 							onClick={() => setIsLogin(false)}
@@ -231,7 +246,7 @@ export default function Auth() {
 									: 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer'
 							}`}
 						>
-							Sign Up
+							{t('signup.tabLabel')}
 						</button>
 					</div>
 				)}
@@ -242,8 +257,7 @@ export default function Auth() {
 						<div className='space-y-4'>
 							<div className='bg-[var(--bg-success)]/10 border border-[var(--border-success)] rounded-lg p-4'>
 								<p className='text-[var(--text-primary)] text-center'>
-									If an account exists with this email, a password reset link has
-									been sent. Please check your inbox and spam folder.
+									{t('forgotPassword.successMessage')}
 								</p>
 							</div>
 							<Button
@@ -257,7 +271,7 @@ export default function Auth() {
 									shadow-lg shadow-[var(--gradient-primary-from)]/25
 									transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer'
 							>
-								Back to Login
+								{t('forgotPassword.backToLoginButton')}
 							</Button>
 						</div>
 					) : (
@@ -270,12 +284,12 @@ export default function Auth() {
 									htmlFor='reset-email'
 									className='text-[var(--input-label)]'
 								>
-									Email
+									{t('common:labels.email')}
 								</Label>
 								<Input
 									id='reset-email'
 									type='email'
-									placeholder='you@example.com'
+									placeholder={t('placeholders.email')}
 									autoComplete='email'
 									{...registerForgotPassword('email')}
 									className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
@@ -298,7 +312,7 @@ export default function Auth() {
 									transition-all transform hover:scale-[1.02] active:scale-[0.98]
 									disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
 							>
-								{isSubmitting ? 'Sending...' : 'Send Reset Link'}
+								{isSubmitting ? t('forgotPassword.sending') : t('forgotPassword.button')}
 							</Button>
 						</form>
 					)
@@ -320,12 +334,12 @@ export default function Auth() {
 									htmlFor='displayName'
 									className='text-[var(--input-label)]'
 								>
-									Display Name <span className='text-[var(--text-error)]'>*</span>
+									{t('signup.displayName')} <span className='text-[var(--text-error)]'>*</span>
 								</Label>
 								<Input
 									id='displayName'
 									type='text'
-									placeholder='Speedy McDelivery'
+									placeholder={t('placeholders.displayName')}
 									autoComplete='name'
 									{...registerSignUp('displayName')}
 									className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
@@ -344,12 +358,12 @@ export default function Auth() {
 									htmlFor='firstName'
 									className='text-[var(--input-label)]'
 								>
-									First Name <span className='text-xs text-[var(--text-tertiary)]'>(optional)</span>
+									{t('signup.firstName')} <span className='text-xs text-[var(--text-tertiary)]'>{t('common:labels.optional')}</span>
 								</Label>
 								<Input
 									id='firstName'
 									type='text'
-									placeholder='John'
+									placeholder={t('placeholders.firstName')}
 									autoComplete='given-name'
 									{...registerSignUp('firstName')}
 									className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
@@ -368,12 +382,12 @@ export default function Auth() {
 									htmlFor='lastName'
 									className='text-[var(--input-label)]'
 								>
-									Last Name <span className='text-xs text-[var(--text-tertiary)]'>(optional)</span>
+									{t('signup.lastName')} <span className='text-xs text-[var(--text-tertiary)]'>{t('common:labels.optional')}</span>
 								</Label>
 								<Input
 									id='lastName'
 									type='text'
-									placeholder='Doe'
+									placeholder={t('placeholders.lastName')}
 									autoComplete='family-name'
 									{...registerSignUp('lastName')}
 									className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
@@ -393,12 +407,12 @@ export default function Auth() {
 							htmlFor='email'
 							className='text-[var(--input-label)]'
 						>
-							Email
+							{t('common:labels.email')}
 						</Label>
 						<Input
 							id='email'
 							type='email'
-							placeholder='you@example.com'
+							placeholder={t('placeholders.email')}
 							autoComplete='email'
 							{...(isLogin ? registerLogin('email') : registerSignUp('email'))}
 							className='mt-1.5 bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] placeholder-[var(--input-placeholder)]
@@ -416,12 +430,12 @@ export default function Auth() {
 							htmlFor='password'
 							className='text-[var(--input-label)]'
 						>
-							Password
+							{t('common:labels.password')}
 						</Label>
 						<Input
 							id='password'
 							type='password'
-							placeholder='••••••••'
+							placeholder={t('placeholders.password')}
 							autoComplete={isLogin ? 'current-password' : 'new-password'}
 							{...(isLogin
 								? registerLogin('password')
@@ -438,7 +452,7 @@ export default function Auth() {
 						) : (
 							!isLogin && (
 								<p className='text-xs text-[var(--text-secondary)] mt-1.5'>
-									At least 6 characters
+									{t('signup.passwordHint')}
 								</p>
 							)
 						)}
@@ -459,7 +473,7 @@ export default function Auth() {
 								htmlFor='rememberMe'
 								className='text-sm text-[var(--text-secondary)] cursor-pointer'
 							>
-								Remember me for 30 days
+								{t('login.rememberMe')}
 							</Label>
 						</div>
 					)}
@@ -475,10 +489,10 @@ export default function Auth() {
 							disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'
 					>
 						{isSubmitting
-							? 'Please wait...'
+							? t('submitting')
 							: isLogin
-								? 'Login'
-								: 'Create Account'}
+								? t('login.button')
+								: t('signup.createAccountButton')}
 					</Button>
 
 					{/* Forgot Password Link - Only show on login */}
@@ -489,7 +503,7 @@ export default function Auth() {
 								onClick={() => setIsForgotPassword(true)}
 								className='text-sm text-[var(--text-link)] hover:text-[var(--text-link-hover)] transition-colors cursor-pointer'
 							>
-								Forgot your password?
+								{t('login.forgotPassword')}
 							</button>
 						</div>
 					)}
@@ -498,7 +512,7 @@ export default function Auth() {
 
 				{/* Footer */}
 				<p className='text-center text-[var(--text-secondary)] text-sm mt-6'>
-					Built for Amazon DSP couriers
+					{t('footer')}
 				</p>
 			</Card>
 		</div>

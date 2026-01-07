@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back! [Français]",
+    "accountCreated": "Account created successfully! [Français]",
+    "passwordResetSent": "Password reset email sent! Check your inbox and spam folder. [Français]",
+    "passwordReset": "Password reset successfully! [Français]",
+    "loginFailed": "Failed to login [Français]",
+    "signupFailed": "Failed to create account [Français]",
+    "logoutFailed": "Failed to logout [Français]",
+    "authFailed": "Authentication failed [Français]",
+    "emailExists": "An account with this email already exists. Please login instead. [Français]",
+    "resetEmailFailed": "Failed to send reset email [Français]"
+  },
+  "settings": {
+    "saved": "Settings saved successfully! [Français]",
+    "saveFailed": "Failed to save settings [Français]",
+    "languageUpdated": "Language updated successfully! [Français]",
+    "languageUpdateFailed": "Failed to update language [Français]"
+  },
+  "user": {
+    "saved": "User details saved successfully! [Français]",
+    "saveFailed": "Failed to save user details [Français]",
+    "loadFailed": "Failed to load user details [Français]"
+  },
+  "workDay": {
+    "added": "Work added for today! [Français]",
+    "updated": "Work updated! [Français]",
+    "deleted": "Work day deleted [Français]",
+    "addFailed": "Failed to add work [Français]",
+    "updateFailed": "Failed to update work [Français]",
+    "deleteFailed": "Failed to delete work day [Français]",
+    "createWeekFailed": "Failed to create week [Français]",
+    "alreadyExists": "Work already exists for today [Français]"
+  },
+  "rankings": {
+    "saved": "Rankings saved successfully! [Français]",
+    "saveFailed": "Failed to save rankings [Français]",
+    "unableToSave": "Unable to save rankings [Français]"
+  },
+  "week": {
+    "mileageRateUpdated": "Mileage rate updated! [Français]",
+    "mileageRateUpdateFailed": "Failed to update mileage rate [Français]",
+    "cleared": "Week cleared successfully [Français]",
+    "clearFailed": "Failed to clear week [Français]"
+  },
+  "van": {
+    "added": "Van hire added successfully [Français]",
+    "updated": "Van hire updated successfully [Français]",
+    "offHired": "Van off-hired successfully [Français]",
+    "deleted": "Van hire deleted successfully [Français]",
+    "depositRefunded": "Deposit refunded successfully [Français]",
+    "manualDepositSet": "Manual deposit set successfully [Français]",
+    "manualDepositCleared": "Manual deposit cleared successfully [Français]",
+    "addFailed": "Failed to add van hire [Français]",
+    "updateFailed": "Failed to update van hire [Français]",
+    "deleteFailed": "Failed to delete van hire [Français]",
+    "offHireFailed": "Failed to off-hire van [Français]",
+    "refundFailed": "Failed to refund deposit [Français]",
+    "loadFailed": "Failed to load van hires [Français]",
+    "depositAdjustFailed": "Failed to set deposit adjustment [Français]",
+    "depositClearFailed": "Failed to clear deposit adjustment [Français]",
+    "enterDeposit": "Please enter a deposit amount [Français]",
+    "depositRange": "Deposit must be between £0 and £500 [Français]",
+    "enterOffHireDate": "Please enter an off-hire date [Français]",
+    "refundExceedsDeposit": "Refund amount cannot exceed deposit paid [Français]"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Wager! Start tracking your pay. [Français]",
+    "resetFailed": "Failed to reset onboarding [Français]",
+    "restartFailed": "Failed to restart onboarding [Français]"
+  },
+  "deleteAccount": {
+    "enterCredentials": "Please enter your email and password [Français]",
+    "emailMismatch": "Email does not match your account email [Français]",
+    "confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm [Français]",
+    "incorrectPassword": "Incorrect password. Please try again. [Français]",
+    "deleteFailed": "Failed to delete account. Please contact support. [Français]",
+    "deleted": "Your account has been permanently deleted [Français]",
+    "unexpectedError": "An unexpected error occurred. Please try again. [Français]"
+  },
+  "general": {
+    "error": "An error occurred [Français]",
+    "deleteAllFailed": "Failed to delete data [Français]",
+    "creatingWeek": "Creating week record... [Français]"
+  }
+}

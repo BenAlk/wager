@@ -1,0 +1,111 @@
+{
+  "title": "Settings [Polski]",
+  "tabs": {
+    "finance": "Finance Settings [Polski]",
+    "user": "User Details [Polski]",
+    "language": "Language [Polski]"
+  },
+  "language": {
+    "title": "Language Preference [Polski]",
+    "selectLanguage": "Select Language [Polski]",
+    "description": "Choose your preferred language for the app interface [Polski]"
+  },
+  "finance": {
+    "title": "Pay Rates [Polski]",
+    "description": "Set your daily pay rates. These will be used to calculate your weekly earnings. [Polski]",
+    "warning": "These should only be changed on the week that pay rates change. [Polski]",
+    "normalRate": "Normal Route Rate [Polski]",
+    "drsRate": "DRS/Missort Route Rate [Polski]",
+    "normalRateDefault": "Default: £160 per day [Polski]",
+    "drsRateDefault": "Default: £100 per day [Polski]",
+    "sixDayBonusTitle": "6-Day Week Bonus: [Polski]",
+    "sixDayBonusDescription": "You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination). [Polski]",
+    "invoicingTitle": "Invoicing & Accounting [Polski]",
+    "invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay. [Polski]",
+    "serviceProvider": "Service Provider [Polski]",
+    "serviceProviderPlaceholder": "Select invoicing service [Polski]",
+    "selfInvoicingCost": "£0/week [Polski]",
+    "versoBasicCost": "£10/week [Polski]",
+    "versoFullCost": "£30/week [Polski]",
+    "selfInvoicingDescription": "Handle your own invoicing and tax returns [Polski]",
+    "versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company) [Polski]",
+    "versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company) [Polski]",
+    "loadingSettings": "Loading settings... [Polski]",
+    "savingButton": "Saving... [Polski]",
+    "saveButton": "Save Settings [Polski]"
+  },
+  "user": {
+    "title": "Profile Information [Polski]",
+    "description": "Update your personal information. Display name is required, while first and last names are optional. [Polski]",
+    "displayName": "Display Name [Polski]",
+    "displayNameRequired": "Display Name * [Polski]",
+    "displayNamePlaceholder": "Enter your display name [Polski]",
+    "displayNameHelp": "This is how you'll be identified in the app [Polski]",
+    "firstName": "First Name [Polski]",
+    "firstNamePlaceholder": "Enter your first name (optional) [Polski]",
+    "lastName": "Last Name [Polski]",
+    "lastNamePlaceholder": "Enter your last name (optional) [Polski]",
+    "loadingUser": "Loading user details... [Polski]",
+    "savingButton": "Saving... [Polski]",
+    "saveButton": "Save Changes [Polski]",
+    "dangerZoneTitle": "Danger Zone [Polski]",
+    "deleteAccountTitle": "Delete Account [Polski]",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone. [Polski]",
+    "deleteAccountButton": "Delete My Account [Polski]"
+  },
+  "onboarding": {
+    "title": "Onboarding [Polski]",
+    "description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour. [Polski]",
+    "restartButton": "Restart Onboarding [Polski]",
+    "tourButton": "Take Dashboard Tour [Polski]"
+  },
+  "restartDialog": {
+    "title": "Restart Onboarding [Polski]",
+    "description": "Choose how you'd like to restart the onboarding process [Polski]",
+    "fullOnboardingTitle": "Full Onboarding [Polski]",
+    "fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch. [Polski]",
+    "tourOnlyTitle": "Tour Only [Polski]",
+    "tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected. [Polski]",
+    "warningLabel": "Full Onboarding Warning: [Polski]",
+    "warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted. [Polski]",
+    "cancelButton": "Cancel [Polski]"
+  },
+  "deleteAccount": {
+    "warningTitle": "Delete Account - Final Warning [Polski]",
+    "warningDescription": "Warning about permanent account deletion [Polski]",
+    "permanentHeading": "This action is PERMANENT and IRREVERSIBLE [Polski]",
+    "permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation. [Polski]",
+    "dataDeletedHeading": "The following data will be permanently deleted: [Polski]",
+    "dataList": {
+      "profile": "Your user profile and account settings [Polski]",
+      "workDays": "All work days and weekly pay data (every week you've tracked) [Polski]",
+      "vanHires": "All van hire records and deposit information [Polski]",
+      "rankings": "Performance rankings history [Polski]",
+      "mileage": "Mileage tracking and pay rate history [Polski]",
+      "auth": "Your authentication credentials (you will be logged out) [Polski]"
+    },
+    "alternativesHeading": "Consider these alternatives: [Polski]",
+    "alternatives": {
+      "stopUsing": "You can simply stop using the app without deleting your account [Polski]",
+      "clearWeeks": "You can clear individual weeks if you want to start fresh [Polski]",
+      "resetRates": "You can reset your pay rates in Settings if they've changed [Polski]"
+    },
+    "cancelButton": "Cancel (Keep My Account) [Polski]",
+    "proceedButton": "I Understand - Proceed to Delete [Polski]",
+    "confirmTitle": "Confirm Account Deletion [Polski]",
+    "confirmDescription": "Final confirmation step for account deletion [Polski]",
+    "lastChance": "Last chance: Enter your credentials to permanently delete your account [Polski]",
+    "emailLabel": "Your Email Address [Polski]",
+    "emailMatch": "Must match: {{email}}",
+    "passwordLabel": "Your Password [Polski]",
+    "passwordPlaceholder": "Enter your password to confirm [Polski]",
+    "passwordHelp": "We need to verify your identity before deletion [Polski]",
+    "confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm [Polski]",
+    "confirmTextPlaceholder": "DELETE MY ACCOUNT [Polski]",
+    "confirmTextHelp": "Type exactly as shown (case sensitive) [Polski]",
+    "finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action. [Polski]",
+    "goBackButton": "Go Back [Polski]",
+    "deletingButton": "Deleting Account... [Polski]",
+    "deleteButton": "Delete My Account Forever [Polski]"
+  }
+}

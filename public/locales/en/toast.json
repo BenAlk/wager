@@ -1,0 +1,86 @@
+{
+	"auth": {
+		"welcomeBack": "Welcome back!",
+		"accountCreated": "Account created successfully!",
+		"passwordResetSent": "Password reset email sent! Check your inbox and spam folder.",
+		"passwordReset": "Password reset successfully!",
+		"loginFailed": "Failed to login",
+		"signupFailed": "Failed to create account",
+		"logoutFailed": "Failed to logout",
+		"authFailed": "Authentication failed",
+		"emailExists": "An account with this email already exists. Please login instead.",
+		"resetEmailFailed": "Failed to send reset email"
+	},
+	"settings": {
+		"saved": "Settings saved successfully!",
+		"saveFailed": "Failed to save settings",
+		"languageUpdated": "Language updated successfully!",
+		"languageUpdateFailed": "Failed to update language"
+	},
+	"user": {
+		"saved": "User details saved successfully!",
+		"saveFailed": "Failed to save user details",
+		"loadFailed": "Failed to load user details"
+	},
+	"workDay": {
+		"added": "Work added for today!",
+		"updated": "Work updated!",
+		"deleted": "Work day deleted",
+		"addFailed": "Failed to add work",
+		"updateFailed": "Failed to update work",
+		"deleteFailed": "Failed to delete work day",
+		"createWeekFailed": "Failed to create week",
+		"alreadyExists": "Work already exists for today"
+	},
+	"rankings": {
+		"saved": "Rankings saved successfully!",
+		"saveFailed": "Failed to save rankings",
+		"unableToSave": "Unable to save rankings"
+	},
+	"week": {
+		"mileageRateUpdated": "Mileage rate updated!",
+		"mileageRateUpdateFailed": "Failed to update mileage rate",
+		"cleared": "Week cleared successfully",
+		"clearFailed": "Failed to clear week"
+	},
+	"van": {
+		"added": "Van hire added successfully",
+		"updated": "Van hire updated successfully",
+		"offHired": "Van off-hired successfully",
+		"deleted": "Van hire deleted successfully",
+		"depositRefunded": "Deposit refunded successfully",
+		"manualDepositSet": "Manual deposit set successfully",
+		"manualDepositCleared": "Manual deposit cleared successfully",
+		"addFailed": "Failed to add van hire",
+		"updateFailed": "Failed to update van hire",
+		"deleteFailed": "Failed to delete van hire",
+		"offHireFailed": "Failed to off-hire van",
+		"refundFailed": "Failed to refund deposit",
+		"loadFailed": "Failed to load van hires",
+		"depositAdjustFailed": "Failed to set deposit adjustment",
+		"depositClearFailed": "Failed to clear deposit adjustment",
+		"enterDeposit": "Please enter a deposit amount",
+		"depositRange": "Deposit must be between £0 and £500",
+		"enterOffHireDate": "Please enter an off-hire date",
+		"refundExceedsDeposit": "Refund amount cannot exceed deposit paid"
+	},
+	"onboarding": {
+		"welcome": "Welcome to Wager! Start tracking your pay.",
+		"resetFailed": "Failed to reset onboarding",
+		"restartFailed": "Failed to restart onboarding"
+	},
+	"deleteAccount": {
+		"enterCredentials": "Please enter your email and password",
+		"emailMismatch": "Email does not match your account email",
+		"confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm",
+		"incorrectPassword": "Incorrect password. Please try again.",
+		"deleteFailed": "Failed to delete account. Please contact support.",
+		"deleted": "Your account has been permanently deleted",
+		"unexpectedError": "An unexpected error occurred. Please try again."
+	},
+	"general": {
+		"error": "An error occurred",
+		"deleteAllFailed": "Failed to delete data",
+		"creatingWeek": "Creating week record..."
+	}
+}

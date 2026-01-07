@@ -1,0 +1,60 @@
+{
+  "title": "Week {{week}} Summary",
+  "noWorkDays": "No work days logged for this week [Română]",
+  "totalEarnings": "Total Earnings [Română]",
+  "payBreakdown": {
+    "basePay": "Base Pay ({{count}} {{days}})",
+    "day": "day [Română]",
+    "days": "days [Română]",
+    "devicePayment": "Device Payment ({{count}} {{days}})",
+    "sixDayBonus": "6-Day Bonus [Română]",
+    "sweeps": "Sweeps [Română]",
+    "sweepsDetail": "({{given}} you helped, {{taken}} helped you)",
+    "mileage": "Mileage ({{miles}} mi × £{{rate}})",
+    "mileageRateLabel": "Rate: [Română]",
+    "mileagePerMile": "/mi [Română]",
+    "mileageEstBadge": "Est [Română]",
+    "mileageEstDisclaimer": "Mileage Estimate: [Română]",
+    "mileageEstDescription": "Payment calculated using odometer miles ({{count}} {{days}}). Actual payment may differ based on Amazon's mileage calculations and rates. Update with Amazon mileage data for accuracy.",
+    "missingMileageTitle": "Missing Mileage Data: [Română]",
+    "missingMileageDescription": "No mileage entered for {{count}} {{dayLabel}}. Payment total will be inaccurate until mileage is added.",
+    "vanHire": "Van Hire [Română]",
+    "vanDetail": "{{registration}} ({{count}} {{days}})",
+    "depositPayment": "Deposit Payment [Română]",
+    "invoicing": "Invoicing ({{service}})"
+  },
+  "standardPay": {
+    "title": "Standard Pay [Română]",
+    "paidWeek": "Paid Week {{week}} ({{month}})"
+  },
+  "rankings": {
+    "title": "Performance Rankings [Română]",
+    "notAvailableYet": "Rankings will be available from [Română]",
+    "weekOnwards": "Week {{week}}",
+    "onwards": "onwards. [Română]",
+    "releaseNote": "Amazon typically releases performance rankings on Thursday of Week N+2 (two weeks after your work week). [Română]",
+    "updatePrompt": "Update your performance rankings [Română]",
+    "enterPrompt": "Enter rankings when they're released (usually Thursday after the work week) [Română]",
+    "yourPerformance": "Your Performance [Română]",
+    "companyPerformance": "Company Performance [Română]",
+    "saveButton": "Save Rankings [Română]",
+    "savingButton": "Saving... [Română]",
+    "cancelButton": "Cancel [Română]",
+    "performanceBonus": "Performance Bonus ({{count}} {{days}})",
+    "individualLabel": "Individual: [Română]",
+    "companyLabel": "Company: [Română]",
+    "paidWeek": "Paid Week {{week}} ({{month}})"
+  },
+  "mileageDiscrepancy": {
+    "title": "Mileage Discrepancy [Română]",
+    "detail": "Van logged {{vanMiles}} miles vs Amazon paid {{amazonMiles}} miles",
+    "fuelLoss": "Estimated fuel loss: £{{amount}}"
+  },
+  "clearWeek": {
+    "button": "Clear Week [Română]",
+    "confirmTitle": "Clear Week {{week}}?",
+    "confirmDescription": "This will permanently delete all work days, rankings, and snapshot data for Week {{week}}. This action cannot be undone.",
+    "confirmButton": "Clear Week [Română]",
+    "cancelButton": "Cancel [Română]"
+  }
+}

@@ -1,0 +1,56 @@
+{
+	"actions": {
+		"add": "Add",
+		"edit": "Edit",
+		"save": "Save",
+		"cancel": "Cancel",
+		"delete": "Delete",
+		"confirm": "Confirm",
+		"back": "Back",
+		"next": "Next",
+		"skip": "Skip",
+		"close": "Close",
+		"continue": "Continue",
+		"finish": "Finish",
+		"reset": "Reset",
+		"clear": "Clear",
+		"submit": "Submit",
+		"update": "Update"
+	},
+	"labels": {
+		"email": "Email",
+		"password": "Password",
+		"route": "Route",
+		"notes": "Notes",
+		"optional": "(optional)",
+		"required": "Required",
+		"yes": "Yes",
+		"no": "No"
+	},
+	"time": {
+		"day": "day",
+		"days": "days",
+		"week": "Week",
+		"weeks": "weeks",
+		"today": "Today",
+		"yesterday": "Yesterday",
+		"tomorrow": "Tomorrow"
+	},
+	"currency": {
+		"symbol": "£",
+		"format": "{{amount}}",
+		"perDay": "/ day",
+		"perWeek": "/ week",
+		"perMile": "/ mile"
+	},
+	"loading": "Loading...",
+	"pleaseWait": "Please wait...",
+	"error": "Error",
+	"success": "Success",
+	"pwaUpdate": {
+		"title": "Update Available",
+		"description": "A new version of Wager is ready to install.",
+		"updateNow": "Update Now",
+		"later": "Later"
+	}
+}

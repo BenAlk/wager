@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/i18n/useTranslation'
 import type { Week, WorkDay } from '@/types/database'
 import { format, isAfter, isSameDay } from 'date-fns'
 import { Gauge, Package, Plus, Truck } from 'lucide-react'
@@ -16,6 +17,7 @@ export default function DayCell({
 	onEdit,
 	loading,
 }: DayCellProps) {
+	const { t } = useTranslation('calendar')
 	const today = new Date()
 	const isToday = isSameDay(date, today)
 	const isFuture = isAfter(date, today)
@@ -61,7 +63,7 @@ export default function DayCell({
 					<div className='flex-1 flex items-center justify-center'>
 						<div className='text-center'>
 							<div className='text-sm text-[var(--text-secondary)] mb-12 '>
-								OFF
+								{t('dayCell.off')}
 							</div>
 							{!isFuture &&
 								(canAddWorkDay ? (
@@ -72,11 +74,11 @@ export default function DayCell({
 										className='text-[var(--button-ghost-text)] hover:text-[var(--button-ghost-hover)] hover:bg-[var(--bg-hover)] cursor-pointer'
 									>
 										<Plus className='w-4 h-4 mr-1' />
-										Add
+										{t('dayCell.add')}
 									</Button>
 								) : (
 									<div className='text-xs text-[var(--text-warning)]/60'>
-										Max 6 days
+										{t('dayCell.maxDays')}
 									</div>
 								))}
 						</div>
@@ -125,7 +127,7 @@ export default function DayCell({
 							<Truck className='w-4 h-4' />
 						)}
 						<span className='text-xs font-medium'>
-							{isNormal ? 'Std.' : isDRS ? 'DRS' : 'Manual'}
+							{isNormal ? t('dayCell.routeTypes.std') : isDRS ? t('dayCell.routeTypes.drs') : t('dayCell.routeTypes.manual')}
 						</span>
 					</div>
 				</div>
@@ -234,7 +236,7 @@ export default function DayCell({
 				{workDay.route_number && (
 					<div className='mb-2'>
 						<div className='text-xs text-[var(--text-secondary)] mb-0.5'>
-							Route
+							{t('dayCell.route')}
 						</div>
 						<div className='text-sm font-medium text-[var(--text-primary)]'>
 							{workDay.route_number}
@@ -250,7 +252,7 @@ export default function DayCell({
 						variant='ghost'
 						className='w-full text-[var(--button-ghost-text)] hover:text-[var(--button-ghost-hover)] hover:bg-[var(--bg-hover)] cursor-pointer'
 					>
-						Edit
+						{t('dayCell.edit')}
 					</Button>
 				</div>
 			</div>

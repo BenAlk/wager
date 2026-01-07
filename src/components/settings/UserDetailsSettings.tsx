@@ -5,6 +5,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
+import { useTranslation } from '@/i18n/useTranslation'
 import { useAuth } from '@/hooks/useAuth'
 import { supabase } from '@/lib/supabase'
 
@@ -17,26 +18,32 @@ import { DeleteAccountModal } from '@/components/settings/DeleteAccountModal'
 /**
  * User details form validation schema
  */
-const userDetailsSchema = z.object({
-	displayName: z
-		.string()
-		.min(1, 'Display name is required')
-		.max(50, 'Display name must be 50 characters or less'),
-	firstName: z
-		.string()
-		.max(50, 'First name must be 50 characters or less')
-		.optional()
-		.or(z.literal('')),
-	lastName: z
-		.string()
-		.max(50, 'Last name must be 50 characters or less')
-		.optional()
-		.or(z.literal('')),
-})
+const createUserDetailsSchema = (t: (key: string, params?: any) => string) =>
+	z.object({
+		displayName: z
+			.string()
+			.min(1, t('validation:displayName.required'))
+			.max(50, t('validation:displayName.maxLength', { max: 50 })),
+		firstName: z
+			.string()
+			.max(50, t('validation:firstName.maxLength', { max: 50 }))
+			.optional()
+			.or(z.literal('')),
+		lastName: z
+			.string()
+			.max(50, t('validation:lastName.maxLength', { max: 50 }))
+			.optional()
+			.or(z.literal('')),
+	})
 
-type UserDetailsFormData = z.infer<typeof userDetailsSchema>
+type UserDetailsFormData = {
+	displayName: string
+	firstName?: string
+	lastName?: string
+}
 
 export function UserDetailsSettings() {
+	const { t } = useTranslation('settings')
 	const { user, refreshUser } = useAuth()
 	const [isSaving, setIsSaving] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
@@ -48,7 +55,7 @@ export function UserDetailsSettings() {
 		reset,
 		formState: { errors, isDirty },
 	} = useForm<UserDetailsFormData>({
-		resolver: zodResolver(userDetailsSchema),
+		resolver: zodResolver(createUserDetailsSchema(t)),
 		defaultValues: {
 			displayName: '',
 			firstName: '',
@@ -72,7 +79,7 @@ export function UserDetailsSettings() {
 
 				if (error) {
 					console.error('Error loading user details:', error)
-					toast.error('Failed to load user details')
+					toast.error(t('toast:user.loadFailed'))
 					return
 				}
 
@@ -83,7 +90,7 @@ export function UserDetailsSettings() {
 				})
 			} catch (err) {
 				console.error('Error in loadUserDetails:', err)
-				toast.error('Failed to load user details')
+				toast.error(t('toast:user.loadFailed'))
 			} finally {
 				setIsLoading(false)
 			}
@@ -112,7 +119,7 @@ export function UserDetailsSettings() {
 
 			if (error) {
 				console.error('Error saving user details:', error)
-				toast.error('Failed to save user details')
+				toast.error(t('toast:user.saveFailed'))
 				return
 			}
 
@@ -122,10 +129,10 @@ export function UserDetailsSettings() {
 			// Reset form to mark as clean
 			reset(data)
 
-			toast.success('User details saved successfully!')
+			toast.success(t('toast:user.saved'))
 		} catch (err) {
 			console.error('Error in onSubmit:', err)
-			toast.error('Failed to save user details')
+			toast.error(t('toast:user.saveFailed'))
 		} finally {
 			setIsSaving(false)
 		}
@@ -136,7 +143,7 @@ export function UserDetailsSettings() {
 			<div className='flex items-center justify-center py-8'>
 				<div className='flex items-center gap-2' style={{ color: 'var(--text-primary)' }}>
 					<Loader2 className='w-6 h-6 animate-spin' />
-					<p className='text-lg'>Loading user details...</p>
+					<p className='text-lg'>{t('user.loadingUser')}</p>
 				</div>
 			</div>
 		)
@@ -155,18 +162,17 @@ export function UserDetailsSettings() {
 					}}
 				>
 					<h2 className='text-xl font-semibold mb-4' style={{ color: 'var(--text-primary)' }}>
-						Profile Information
+						{t('user.title')}
 					</h2>
 					<p className='text-sm mb-6' style={{ color: 'var(--text-secondary)' }}>
-						Update your personal information. Display name is required, while first and
-						last names are optional.
+						{t('user.description')}
 					</p>
 
 					<div className='space-y-4'>
 						{/* Display Name (Username) */}
 						<div>
 							<Label htmlFor='displayName' style={{ color: 'var(--input-label)' }}>
-								Display Name <span className='text-red-400'>*</span>
+								{t('user.displayNameRequired')}
 							</Label>
 							<Controller
 								name='displayName'
@@ -175,7 +181,7 @@ export function UserDetailsSettings() {
 									<Input
 										id='displayName'
 										{...field}
-										placeholder='Enter your display name'
+										placeholder={t('user.displayNamePlaceholder')}
 										className='mt-2 h-12 focus:ring-2 focus:ring-blue-500'
 										style={{
 											backgroundColor: 'var(--input-bg)',
@@ -191,14 +197,14 @@ export function UserDetailsSettings() {
 								</p>
 							)}
 							<p className='text-xs mt-1' style={{ color: 'var(--text-tertiary)' }}>
-								This is how you'll be identified in the app
+								{t('user.displayNameHelp')}
 							</p>
 						</div>
 
 						{/* First Name */}
 						<div>
 							<Label htmlFor='firstName' style={{ color: 'var(--input-label)' }}>
-								First Name
+								{t('user.firstName')}
 							</Label>
 							<Controller
 								name='firstName'
@@ -207,7 +213,7 @@ export function UserDetailsSettings() {
 									<Input
 										id='firstName'
 										{...field}
-										placeholder='Enter your first name (optional)'
+										placeholder={t('user.firstNamePlaceholder')}
 										className='mt-2 h-12 focus:ring-2 focus:ring-blue-500'
 										style={{
 											backgroundColor: 'var(--input-bg)',
@@ -227,7 +233,7 @@ export function UserDetailsSettings() {
 						{/* Last Name */}
 						<div>
 							<Label htmlFor='lastName' style={{ color: 'var(--input-label)' }}>
-								Last Name
+								{t('user.lastName')}
 							</Label>
 							<Controller
 								name='lastName'
@@ -236,7 +242,7 @@ export function UserDetailsSettings() {
 									<Input
 										id='lastName'
 										{...field}
-										placeholder='Enter your last name (optional)'
+										placeholder={t('user.lastNamePlaceholder')}
 										className='mt-2 h-12 focus:ring-2 focus:ring-blue-500'
 										style={{
 											backgroundColor: 'var(--input-bg)',
@@ -265,12 +271,12 @@ export function UserDetailsSettings() {
 						{isSaving ? (
 							<>
 								<Loader2 className='w-4 h-4 mr-2 animate-spin' />
-								Saving...
+								{t('user.savingButton')}
 							</>
 						) : (
 							<>
 								<Save className='w-4 h-4 mr-2' />
-								Save Changes
+								{t('user.saveButton')}
 							</>
 						)}
 					</Button>
@@ -279,13 +285,12 @@ export function UserDetailsSettings() {
 
 			{/* Danger Zone - Delete Account */}
 			<Card className='bg-red-500/5 backdrop-blur-xl border-red-500/30 p-6'>
-				<h2 className='text-xl font-semibold text-red-400 mb-4'>Danger Zone</h2>
+				<h2 className='text-xl font-semibold text-red-400 mb-4'>{t('user.dangerZoneTitle')}</h2>
 				<div className='space-y-4'>
 					<div>
-						<h3 className='text-lg font-medium text-red-300 mb-2'>Delete Account</h3>
+						<h3 className='text-lg font-medium text-red-300 mb-2'>{t('user.deleteAccountTitle')}</h3>
 						<p className='text-sm mb-4' style={{ color: 'var(--text-secondary)' }}>
-							Permanently delete your account and all associated data. This action cannot
-							be undone.
+							{t('user.deleteAccountDescription')}
 						</p>
 					</div>
 					<Button
@@ -295,7 +300,7 @@ export function UserDetailsSettings() {
 						className='bg-red-600/10 border-red-500/50 text-red-400 hover:bg-red-600/20 hover:text-red-300 hover:border-red-500'
 					>
 						<Trash2 className='w-4 h-4 mr-2' />
-						Delete My Account
+						{t('user.deleteAccountButton')}
 					</Button>
 				</div>
 			</Card>

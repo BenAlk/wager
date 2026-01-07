@@ -1,0 +1,68 @@
+{
+  "required": "This field is required [Deutsch]",
+  "email": {
+    "invalid": "Invalid email address [Deutsch]",
+    "required": "Email is required [Deutsch]"
+  },
+  "password": {
+    "minLength": "Password must be at least {{min}} characters",
+    "required": "Password is required [Deutsch]",
+    "mismatch": "Passwords do not match [Deutsch]"
+  },
+  "displayName": {
+    "required": "Display name is required [Deutsch]",
+    "maxLength": "Display name must be less than {{max}} characters"
+  },
+  "firstName": {
+    "maxLength": "First name must be less than {{max}} characters"
+  },
+  "lastName": {
+    "maxLength": "Last name must be less than {{max}} characters"
+  },
+  "rate": {
+    "required": "Rate is required [Deutsch]",
+    "positive": "Rate must be positive [Deutsch]",
+    "tooHigh": "Rate too high [Deutsch]",
+    "wholeNumber": "Rate must be a whole number [Deutsch]"
+  },
+  "sweeps": {
+    "max": "Maximum {{max}} sweeps per day",
+    "negative": "Sweeps cannot be negative [Deutsch]"
+  },
+  "mileage": {
+    "negative": "Mileage cannot be negative [Deutsch]",
+    "required": "Mileage rate is required [Deutsch]",
+    "max": "Mileage rate cannot exceed £{{max}} per mile"
+  },
+  "finance": {
+    "normalRateRequired": "Normal rate is required [Deutsch]",
+    "drsRateRequired": "DRS rate is required [Deutsch]",
+    "rateWhole": "Rate must be a whole number [Deutsch]",
+    "ratePositive": "Rate must be positive [Deutsch]",
+    "rateTooHigh": "Rate too high [Deutsch]"
+  },
+  "workDay": {
+    "maxDays": "Cannot work more than 6 days per week (legal limit) [Deutsch]",
+    "routeRequired": "Route number required [Deutsch]",
+    "dailyRateRequired": "Daily rate is required for manual route entries [Deutsch]"
+  },
+  "van": {
+    "registrationRequired": "Registration is required [Deutsch]",
+    "registrationTooLong": "Registration too long [Deutsch]",
+    "weeklyRateRequired": "Weekly rate is required [Deutsch]",
+    "rateWholeNumber": "Rate must be a whole number [Deutsch]",
+    "ratePositive": "Rate must be positive [Deutsch]",
+    "rateTooHigh": "Rate too high [Deutsch]",
+    "onHireDateRequired": "On-hire date is required [Deutsch]",
+    "offHireDateInvalid": "Off-hire date must be on or after on-hire date [Deutsch]",
+    "notesTooLong": "Notes too long [Deutsch]"
+  },
+  "string": {
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be less than {{max}} characters"
+  },
+  "number": {
+    "min": "Must be at least {{min}}",
+    "max": "Must be less than {{max}}"
+  }
+}

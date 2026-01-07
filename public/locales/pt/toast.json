@@ -1,0 +1,86 @@
+{
+  "auth": {
+    "welcomeBack": "Welcome back! [Português]",
+    "accountCreated": "Account created successfully! [Português]",
+    "passwordResetSent": "Password reset email sent! Check your inbox and spam folder. [Português]",
+    "passwordReset": "Password reset successfully! [Português]",
+    "loginFailed": "Failed to login [Português]",
+    "signupFailed": "Failed to create account [Português]",
+    "logoutFailed": "Failed to logout [Português]",
+    "authFailed": "Authentication failed [Português]",
+    "emailExists": "An account with this email already exists. Please login instead. [Português]",
+    "resetEmailFailed": "Failed to send reset email [Português]"
+  },
+  "settings": {
+    "saved": "Settings saved successfully! [Português]",
+    "saveFailed": "Failed to save settings [Português]",
+    "languageUpdated": "Language updated successfully! [Português]",
+    "languageUpdateFailed": "Failed to update language [Português]"
+  },
+  "user": {
+    "saved": "User details saved successfully! [Português]",
+    "saveFailed": "Failed to save user details [Português]",
+    "loadFailed": "Failed to load user details [Português]"
+  },
+  "workDay": {
+    "added": "Work added for today! [Português]",
+    "updated": "Work updated! [Português]",
+    "deleted": "Work day deleted [Português]",
+    "addFailed": "Failed to add work [Português]",
+    "updateFailed": "Failed to update work [Português]",
+    "deleteFailed": "Failed to delete work day [Português]",
+    "createWeekFailed": "Failed to create week [Português]",
+    "alreadyExists": "Work already exists for today [Português]"
+  },
+  "rankings": {
+    "saved": "Rankings saved successfully! [Português]",
+    "saveFailed": "Failed to save rankings [Português]",
+    "unableToSave": "Unable to save rankings [Português]"
+  },
+  "week": {
+    "mileageRateUpdated": "Mileage rate updated! [Português]",
+    "mileageRateUpdateFailed": "Failed to update mileage rate [Português]",
+    "cleared": "Week cleared successfully [Português]",
+    "clearFailed": "Failed to clear week [Português]"
+  },
+  "van": {
+    "added": "Van hire added successfully [Português]",
+    "updated": "Van hire updated successfully [Português]",
+    "offHired": "Van off-hired successfully [Português]",
+    "deleted": "Van hire deleted successfully [Português]",
+    "depositRefunded": "Deposit refunded successfully [Português]",
+    "manualDepositSet": "Manual deposit set successfully [Português]",
+    "manualDepositCleared": "Manual deposit cleared successfully [Português]",
+    "addFailed": "Failed to add van hire [Português]",
+    "updateFailed": "Failed to update van hire [Português]",
+    "deleteFailed": "Failed to delete van hire [Português]",
+    "offHireFailed": "Failed to off-hire van [Português]",
+    "refundFailed": "Failed to refund deposit [Português]",
+    "loadFailed": "Failed to load van hires [Português]",
+    "depositAdjustFailed": "Failed to set deposit adjustment [Português]",
+    "depositClearFailed": "Failed to clear deposit adjustment [Português]",
+    "enterDeposit": "Please enter a deposit amount [Português]",
+    "depositRange": "Deposit must be between £0 and £500 [Português]",
+    "enterOffHireDate": "Please enter an off-hire date [Português]",
+    "refundExceedsDeposit": "Refund amount cannot exceed deposit paid [Português]"
+  },
+  "onboarding": {
+    "welcome": "Welcome to Wager! Start tracking your pay. [Português]",
+    "resetFailed": "Failed to reset onboarding [Português]",
+    "restartFailed": "Failed to restart onboarding [Português]"
+  },
+  "deleteAccount": {
+    "enterCredentials": "Please enter your email and password [Português]",
+    "emailMismatch": "Email does not match your account email [Português]",
+    "confirmTextMismatch": "Please type \"DELETE MY ACCOUNT\" exactly to confirm [Português]",
+    "incorrectPassword": "Incorrect password. Please try again. [Português]",
+    "deleteFailed": "Failed to delete account. Please contact support. [Português]",
+    "deleted": "Your account has been permanently deleted [Português]",
+    "unexpectedError": "An unexpected error occurred. Please try again. [Português]"
+  },
+  "general": {
+    "error": "An error occurred [Português]",
+    "deleteAllFailed": "Failed to delete data [Português]",
+    "creatingWeek": "Creating week record... [Português]"
+  }
+}

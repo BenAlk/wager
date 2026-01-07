@@ -1,0 +1,60 @@
+{
+  "title": "Week {{week}} Summary",
+  "noWorkDays": "No work days logged for this week [Português]",
+  "totalEarnings": "Total Earnings [Português]",
+  "payBreakdown": {
+    "basePay": "Base Pay ({{count}} {{days}})",
+    "day": "day [Português]",
+    "days": "days [Português]",
+    "devicePayment": "Device Payment ({{count}} {{days}})",
+    "sixDayBonus": "6-Day Bonus [Português]",
+    "sweeps": "Sweeps [Português]",
+    "sweepsDetail": "({{given}} you helped, {{taken}} helped you)",
+    "mileage": "Mileage ({{miles}} mi × £{{rate}})",
+    "mileageRateLabel": "Rate: [Português]",
+    "mileagePerMile": "/mi [Português]",
+    "mileageEstBadge": "Est [Português]",
+    "mileageEstDisclaimer": "Mileage Estimate: [Português]",
+    "mileageEstDescription": "Payment calculated using odometer miles ({{count}} {{days}}). Actual payment may differ based on Amazon's mileage calculations and rates. Update with Amazon mileage data for accuracy.",
+    "missingMileageTitle": "Missing Mileage Data: [Português]",
+    "missingMileageDescription": "No mileage entered for {{count}} {{dayLabel}}. Payment total will be inaccurate until mileage is added.",
+    "vanHire": "Van Hire [Português]",
+    "vanDetail": "{{registration}} ({{count}} {{days}})",
+    "depositPayment": "Deposit Payment [Português]",
+    "invoicing": "Invoicing ({{service}})"
+  },
+  "standardPay": {
+    "title": "Standard Pay [Português]",
+    "paidWeek": "Paid Week {{week}} ({{month}})"
+  },
+  "rankings": {
+    "title": "Performance Rankings [Português]",
+    "notAvailableYet": "Rankings will be available from [Português]",
+    "weekOnwards": "Week {{week}}",
+    "onwards": "onwards. [Português]",
+    "releaseNote": "Amazon typically releases performance rankings on Thursday of Week N+2 (two weeks after your work week). [Português]",
+    "updatePrompt": "Update your performance rankings [Português]",
+    "enterPrompt": "Enter rankings when they're released (usually Thursday after the work week) [Português]",
+    "yourPerformance": "Your Performance [Português]",
+    "companyPerformance": "Company Performance [Português]",
+    "saveButton": "Save Rankings [Português]",
+    "savingButton": "Saving... [Português]",
+    "cancelButton": "Cancel [Português]",
+    "performanceBonus": "Performance Bonus ({{count}} {{days}})",
+    "individualLabel": "Individual: [Português]",
+    "companyLabel": "Company: [Português]",
+    "paidWeek": "Paid Week {{week}} ({{month}})"
+  },
+  "mileageDiscrepancy": {
+    "title": "Mileage Discrepancy [Português]",
+    "detail": "Van logged {{vanMiles}} miles vs Amazon paid {{amazonMiles}} miles",
+    "fuelLoss": "Estimated fuel loss: £{{amount}}"
+  },
+  "clearWeek": {
+    "button": "Clear Week [Português]",
+    "confirmTitle": "Clear Week {{week}}?",
+    "confirmDescription": "This will permanently delete all work days, rankings, and snapshot data for Week {{week}}. This action cannot be undone.",
+    "confirmButton": "Clear Week [Português]",
+    "cancelButton": "Cancel [Português]"
+  }
+}

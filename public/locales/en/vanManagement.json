@@ -1,0 +1,41 @@
+{
+	"loading": "Loading van hires...",
+	"pageTitle": "Van Management",
+	"actions": {
+		"newVanHire": "New Van Hire",
+		"setDeposit": "Set Deposit",
+		"clearDeposits": "Clear Deposits",
+		"addVanHire": "Add Van Hire"
+	},
+	"depositSummary": {
+		"title": "Deposit Summary",
+		"subtitle": "Cumulative deposit across all van hires",
+		"totalPaid": "Total Paid",
+		"remaining": "Remaining",
+		"target": "Target",
+		"complete": "Complete",
+		"inProgress": "In Progress"
+	},
+	"activeVanAlert": {
+		"title": "You have an active van hire",
+		"subtitle": "Off-hire your current van ({{registration}}) before adding a new one"
+	},
+	"history": {
+		"title": "Van Hire History",
+		"empty": {
+			"title": "No van hires yet",
+			"subtitle": "Add your first van hire to start tracking costs and deposits"
+		}
+	},
+	"depositModal": {
+		"title": "Set Manual Deposit",
+		"infoTitle": "💡 Deposits Already Paid",
+		"infoText": "Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted.",
+		"depositLimit": "Deposit limit: £500",
+		"label": "Total Deposit Paid (£) *",
+		"placeholder": "e.g., 250.00",
+		"maximum": "Maximum: £500.00",
+		"buttonSetting": "Setting...",
+		"buttonSet": "Set Deposit"
+	}
+}

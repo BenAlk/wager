@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTranslation } from '@/i18n/useTranslation'
 
 interface TourHighlightProps {
   title: string
@@ -26,13 +27,17 @@ export function TourHighlight({
   onExit,
   showBack = true,
   showNext = true,
-  nextLabel = 'Next',
+  nextLabel,
   currentStep,
   totalSteps,
 }: TourHighlightProps) {
+  const { t } = useTranslation('onboarding')
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null)
   const [messageAtTop, setMessageAtTop] = useState(false)
   const messageRef = useRef<HTMLDivElement>(null)
+
+  // Use nextLabel prop if provided, otherwise use default translation
+  const buttonLabel = nextLabel || t('tour.nextButton')
 
   useEffect(() => {
     let retryTimeoutId: ReturnType<typeof setTimeout> | undefined
@@ -223,7 +228,7 @@ export function TourHighlight({
 								className='text-xs ml-auto whitespace-nowrap'
 								style={{ color: 'var(--text-secondary)' }}
 							>
-								{currentStep + 1} of {totalSteps}
+								{t('tour.stepProgress', { current: currentStep + 1, total: totalSteps })}
 							</span>
 						</div>
 
@@ -254,7 +259,7 @@ export function TourHighlight({
 									style={{ color: 'var(--modal-title)' }}
 								>
 									<ChevronLeft className='w-3 h-3 md:w-4 md:h-4 mr-1' />
-									Back
+									{t('tour.backButton')}
 								</Button>
 							)}
 							{showNext && onNext && (
@@ -263,7 +268,7 @@ export function TourHighlight({
 									className='flex-1 h-8 md:h-9 text-xs md:text-sm bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white'
 									size='sm'
 								>
-									{nextLabel}
+									{buttonLabel}
 									<ChevronRight className='w-3 h-3 md:w-4 md:h-4 ml-1' />
 								</Button>
 							)}

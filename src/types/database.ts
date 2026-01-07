@@ -28,6 +28,7 @@ export interface Database {
           start_year: number
           onboarding_completed: boolean
           onboarding_completed_at: string | null
+          language_preference: 'en' | 'pl' | 'ro' | 'es' | 'pt' | 'de' | 'fr' | 'ar' | 'bg'
           created_at: string
           updated_at: string
         }
@@ -40,6 +41,7 @@ export interface Database {
           start_year: number
           onboarding_completed?: boolean
           onboarding_completed_at?: string | null
+          language_preference?: 'en' | 'pl' | 'ro' | 'es' | 'pt' | 'de' | 'fr' | 'ar' | 'bg'
           created_at?: string
           updated_at?: string
         }
@@ -52,6 +54,7 @@ export interface Database {
           start_year?: number
           onboarding_completed?: boolean
           onboarding_completed_at?: string | null
+          language_preference?: 'en' | 'pl' | 'ro' | 'es' | 'pt' | 'de' | 'fr' | 'ar' | 'bg'
           created_at?: string
           updated_at?: string
         }
@@ -62,6 +65,7 @@ export interface Database {
           user_id: string
           normal_rate: number
           drs_rate: number
+          lwb_rate: number
           mileage_rate: number
           invoicing_service: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at: string
@@ -71,6 +75,7 @@ export interface Database {
           user_id: string
           normal_rate?: number
           drs_rate?: number
+          lwb_rate?: number
           mileage_rate?: number
           invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at?: string
@@ -80,6 +85,7 @@ export interface Database {
           user_id?: string
           normal_rate?: number
           drs_rate?: number
+          lwb_rate?: number
           mileage_rate?: number
           invoicing_service?: 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
           created_at?: string
@@ -154,7 +160,7 @@ export interface Database {
           id: string
           week_id: string
           date: string
-          route_type: 'Normal' | 'DRS' | 'Manual'
+          route_type: 'Normal' | 'DRS' | 'Manual' | 'LWB'
           route_number: string | null
           daily_rate: number
           stops_given: number
@@ -170,7 +176,7 @@ export interface Database {
           id?: string
           week_id: string
           date: string
-          route_type: 'Normal' | 'DRS' | 'Manual'
+          route_type: 'Normal' | 'DRS' | 'Manual' | 'LWB'
           route_number?: string | null
           daily_rate: number
           stops_given?: number
@@ -186,7 +192,7 @@ export interface Database {
           id?: string
           week_id?: string
           date?: string
-          route_type?: 'Normal' | 'DRS' | 'Manual'
+          route_type?: 'Normal' | 'DRS' | 'Manual' | 'LWB'
           route_number?: string | null
           daily_rate?: number
           stops_given?: number
@@ -301,6 +307,6 @@ export type VanHire = Tables<'van_hires'>
 
 // Enum types
 export type PerformanceLevel = 'Poor' | 'Fair' | 'Great' | 'Fantastic' | 'Fantastic+'
-export type RouteType = 'Normal' | 'DRS' | 'Manual'
+export type RouteType = 'Normal' | 'DRS' | 'Manual' | 'LWB'
 export type VanType = 'Fleet' | 'Flexi'
 export type InvoicingService = 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'

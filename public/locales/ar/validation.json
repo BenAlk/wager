@@ -1,0 +1,68 @@
+{
+  "required": "This field is required [العربية]",
+  "email": {
+    "invalid": "Invalid email address [العربية]",
+    "required": "Email is required [العربية]"
+  },
+  "password": {
+    "minLength": "Password must be at least {{min}} characters",
+    "required": "Password is required [العربية]",
+    "mismatch": "Passwords do not match [العربية]"
+  },
+  "displayName": {
+    "required": "Display name is required [العربية]",
+    "maxLength": "Display name must be less than {{max}} characters"
+  },
+  "firstName": {
+    "maxLength": "First name must be less than {{max}} characters"
+  },
+  "lastName": {
+    "maxLength": "Last name must be less than {{max}} characters"
+  },
+  "rate": {
+    "required": "Rate is required [العربية]",
+    "positive": "Rate must be positive [العربية]",
+    "tooHigh": "Rate too high [العربية]",
+    "wholeNumber": "Rate must be a whole number [العربية]"
+  },
+  "sweeps": {
+    "max": "Maximum {{max}} sweeps per day",
+    "negative": "Sweeps cannot be negative [العربية]"
+  },
+  "mileage": {
+    "negative": "Mileage cannot be negative [العربية]",
+    "required": "Mileage rate is required [العربية]",
+    "max": "Mileage rate cannot exceed £{{max}} per mile"
+  },
+  "finance": {
+    "normalRateRequired": "Normal rate is required [العربية]",
+    "drsRateRequired": "DRS rate is required [العربية]",
+    "rateWhole": "Rate must be a whole number [العربية]",
+    "ratePositive": "Rate must be positive [العربية]",
+    "rateTooHigh": "Rate too high [العربية]"
+  },
+  "workDay": {
+    "maxDays": "Cannot work more than 6 days per week (legal limit) [العربية]",
+    "routeRequired": "Route number required [العربية]",
+    "dailyRateRequired": "Daily rate is required for manual route entries [العربية]"
+  },
+  "van": {
+    "registrationRequired": "Registration is required [العربية]",
+    "registrationTooLong": "Registration too long [العربية]",
+    "weeklyRateRequired": "Weekly rate is required [العربية]",
+    "rateWholeNumber": "Rate must be a whole number [العربية]",
+    "ratePositive": "Rate must be positive [العربية]",
+    "rateTooHigh": "Rate too high [العربية]",
+    "onHireDateRequired": "On-hire date is required [العربية]",
+    "offHireDateInvalid": "Off-hire date must be on or after on-hire date [العربية]",
+    "notesTooLong": "Notes too long [العربية]"
+  },
+  "string": {
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be less than {{max}} characters"
+  },
+  "number": {
+    "min": "Must be at least {{min}}",
+    "max": "Must be less than {{max}}"
+  }
+}

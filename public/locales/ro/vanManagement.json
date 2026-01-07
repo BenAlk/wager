@@ -1,0 +1,41 @@
+{
+  "loading": "Loading van hires... [Română]",
+  "pageTitle": "Van Management [Română]",
+  "actions": {
+    "newVanHire": "New Van Hire [Română]",
+    "setDeposit": "Set Deposit [Română]",
+    "clearDeposits": "Clear Deposits [Română]",
+    "addVanHire": "Add Van Hire [Română]"
+  },
+  "depositSummary": {
+    "title": "Deposit Summary [Română]",
+    "subtitle": "Cumulative deposit across all van hires [Română]",
+    "totalPaid": "Total Paid [Română]",
+    "remaining": "Remaining [Română]",
+    "target": "Target [Română]",
+    "complete": "Complete [Română]",
+    "inProgress": "In Progress [Română]"
+  },
+  "activeVanAlert": {
+    "title": "You have an active van hire [Română]",
+    "subtitle": "Off-hire your current van ({{registration}}) before adding a new one"
+  },
+  "history": {
+    "title": "Van Hire History [Română]",
+    "empty": {
+      "title": "No van hires yet [Română]",
+      "subtitle": "Add your first van hire to start tracking costs and deposits [Română]"
+    }
+  },
+  "depositModal": {
+    "title": "Set Manual Deposit [Română]",
+    "infoTitle": "💡 Deposits Already Paid [Română]",
+    "infoText": "Enter the total you've paid so far. We'll track new deposits from TODAY onwards—past weeks won't be counted. [Română]",
+    "depositLimit": "Deposit limit: £500 [Română]",
+    "label": "Total Deposit Paid (£) * [Română]",
+    "placeholder": "e.g., 250.00 [Română]",
+    "maximum": "Maximum: £500.00 [Română]",
+    "buttonSetting": "Setting... [Română]",
+    "buttonSet": "Set Deposit [Română]"
+  }
+}

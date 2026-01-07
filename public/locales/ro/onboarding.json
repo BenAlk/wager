@@ -1,0 +1,196 @@
+{
+  "welcome": {
+    "title": "Welcome to Wager! [Română]",
+    "subtitle": "Let's get your pay tracking set up in under 2 minutes. [Română]",
+    "description": "We need a few quick details to calculate your earnings accurately: [Română]",
+    "letsGo": "Let's Go [Română]",
+    "setupLater": "I'll Set Up Later [Română]",
+    "features": {
+      "trackPay": {
+        "title": "Track Pay [Română]",
+        "description": "Calculate standard pay, 6-day bonuses, and performance bonuses automatically [Română]"
+      },
+      "weeklyCalendar": {
+        "title": "Weekly Calendar [Română]",
+        "description": "Log work days, sweeps, and mileage with an intuitive calendar view [Română]"
+      },
+      "vanTracking": {
+        "title": "Van Tracking [Română]",
+        "description": "Track van hire costs, deposits, and mileage discrepancies [Română]"
+      },
+      "customizable": {
+        "title": "Customizable [Română]",
+        "description": "Adjust rates, mileage, and settings to match your DSP's pay structure [Română]"
+      }
+    }
+  },
+  "payRates": {
+    "title": "Your Daily Pay Rates [Română]",
+    "subtitle": "These rates are used to calculate your weekly earnings [Română]",
+    "normalRouteRate": "Normal Route Rate [Română]",
+    "drsRouteRate": "DRS Route Rate [Română]",
+    "perDay": "/ day [Română]",
+    "disclaimer": {
+      "title": "Not sure about your rates? [Română]",
+      "description": "Check with your manager to confirm your exact daily rates. You can always update these later in Settings. [Română]"
+    },
+    "step": "Step 1 of 4 [Română]"
+  },
+  "invoicing": {
+    "title": "Invoicing Service [Română]",
+    "subtitle": "Choose how you handle invoicing and accounting [Română]",
+    "options": {
+      "selfInvoicing": {
+        "label": "Self-Invoicing",
+        "cost": "£0 [Română]",
+        "description": "Handle your own invoicing and tax returns [Română]",
+        "features": {
+          "noDeduction": "No weekly deduction [Română]",
+          "fullControl": "Full control [Română]",
+          "bestFor": "Best for self-employed [Română]"
+        }
+      },
+      "versoBasic": {
+        "label": "Verso Basic [Română]",
+        "cost": "£10 [Română]",
+        "description": "Professional invoicing service [Română]",
+        "features": {
+          "invoicing": "Invoicing service [Română]",
+          "insurance": "Public liability insurance [Română]",
+          "ltdCompany": "Requires Ltd company [Română]"
+        }
+      },
+      "versoFull": {
+        "label": "Verso Full [Română]",
+        "cost": "£30 [Română]",
+        "description": "Complete accounting service [Română]",
+        "features": {
+          "fullInvoicing": "Full invoicing [Română]",
+          "accounting": "Accounting & tax returns [Română]",
+          "insurance": "Public liability insurance [Română]",
+          "ltdCompany": "Requires Ltd company [Română]"
+        }
+      }
+    },
+    "perWeek": "/week [Română]",
+    "info": "This affects your weekly deductions. You can change this anytime in Settings. [Română]",
+    "step": "Step 2 of 4 [Română]"
+  },
+  "vanHire": {
+    "title": "Do you have a van on hire? [Română]",
+    "subtitle": "We can help you track van costs, deposits, and mileage [Română]",
+    "yesAddVan": "Yes, Add My Van [Română]",
+    "yesDescription": "Set up van hire details and start tracking costs [Română]",
+    "noSkip": "No, Skip This Step [Română]",
+    "noDescription": "I don't have a van or I'll add it later [Română]",
+    "info": "You can add or manage van hires anytime from the Van Management page [Română]",
+    "step": "Step 3 of 4 [Română]"
+  },
+  "vanHireForm": {
+    "title": "Add Your Van Hire [Română]",
+    "subtitle": "Enter your van details to start tracking costs and deposits [Română]",
+    "vanType": "Van Type [Română]",
+    "vanTypeFleet": "Fleet (£250/week) [Română]",
+    "vanTypeFlexi": "Flexi (£100-250/week) [Română]",
+    "vanTypeFleetHelp": "Fixed rate rental van at £250 per week [Română]",
+    "vanTypeFlexiHelp": "Company van with variable weekly cost (£100-250) [Română]",
+    "registration": "Registration Number [Română]",
+    "registrationPlaceholder": "e.g., AB12 CDE [Română]",
+    "onHireDate": "On-Hire Date [Română]",
+    "onHireDateHelp": "When did you start hiring this van? [Română]",
+    "weeklyRate": "Weekly Rate [Română]",
+    "weeklyRateFleetHelp": "Fleet vans are £250/week (fixed) [Română]",
+    "weeklyRateFlexiHelp": "Flexi vans range from £100-250/week [Română]",
+    "depositInfo": "We'll automatically track your deposit payments (£25 for your first 2 pay cheques, then £50 per pay cheque until you reach £500 total). [Română]",
+    "depositInfoTitle": "Deposit tracking: [Română]",
+    "step": "Step 3 of 4 [Română]",
+    "addVan": "Add Van [Română]"
+  },
+  "success": {
+    "title": "You're All Set! 🎉 [Română]",
+    "subtitle": "Your pay tracking is ready to go. Here's what you can do: [Română]",
+    "startTracking": "Start Tracking [Română]",
+    "step": "Step 4 of 4 [Română]",
+    "features": {
+      "calendar": {
+        "title": "Calendar [Română]",
+        "description": "Track daily work, sweeps, and mileage with a visual weekly view [Română]"
+      },
+      "dashboard": {
+        "title": "Dashboard [Română]",
+        "description": "Quick adds for work, sweeps, and odometer readings. See payment breakdowns. [Română]"
+      },
+      "vanManagement": {
+        "title": "Van Management [Română]",
+        "description": "Track van hire costs, deposits, and off-hire dates [Română]"
+      },
+      "settings": {
+        "title": "Settings [Română]",
+        "description": "Customize rates, mileage, and invoicing service anytime [Română]"
+      }
+    },
+    "tour": {
+      "title": "Want to see how it works first? [Română]",
+      "description": "Take a quick guided tour of the dashboard to explore all features [Română]",
+      "button": "Take Interactive Tour [Română]"
+    }
+  },
+  "tour": {
+    "steps": {
+      "dashboardQuickAddWork": {
+        "title": "Quick Add Work [Română]",
+        "description": "Add today's work quickly from the dashboard. Select your route type and the app auto-calculates your daily rate. [Română]"
+      },
+      "dashboardPayment": {
+        "title": "Payment This Week [Română]",
+        "description": "See your expected bank deposit with full breakdown. This shows Week N-2 standard pay plus Week N-6 performance bonus. [Română]"
+      },
+      "dashboardVanStatus": {
+        "title": "Van Status [Română]",
+        "description": "Track your van deposit progress and weekly costs. See how much you've paid and how much remains to reach £500. [Română]"
+      },
+      "calendarNavigation": {
+        "title": "Week Navigation [Română]",
+        "description": "Navigate between weeks to view past and future work. Use Previous, Today, and Next buttons or jump to a specific week. [Română]"
+      },
+      "calendarDayCell": {
+        "title": "Day Cells [Română]",
+        "description": "Click any day to view details or add work. Each cell shows route type, pay, sweeps, and mileage at a glance. [Română]"
+      },
+      "calendarWeekSummary": {
+        "title": "Week Summary [Română]",
+        "description": "Full pay breakdown including base pay, 6-day bonus, sweeps, mileage, and van costs. Enter performance rankings here too. [Română]"
+      },
+      "calendarPaymentThisWeek": {
+        "title": "Payment This Week [Română]",
+        "description": "See what's hitting your bank account this week. Standard pay from 2 weeks ago plus performance bonus from 6 weeks ago. [Română]"
+      },
+      "vanManagementTop": {
+        "title": "Van Management - Add & Track [Română]",
+        "description": "Use this top section to add new van hires and track your deposit progress. The deposit tracker shows how much you've paid and what remains. [Română]"
+      },
+      "vanManagementBottom": {
+        "title": "Van Management - Van History [Română]",
+        "description": "View all your van hires here. See active vans, off-hired vans, and manage your complete van history. [Română]"
+      },
+      "tourComplete": {
+        "title": "Ready to Track Your Pay! [Română]",
+        "description": "You've completed the tour! Click the Quick Add Work tile above to log your first day, or explore at your own pace. [Română]"
+      }
+    },
+    "nextButton": "Next [Română]",
+    "backButton": "Back [Română]",
+    "exitTour": "Exit Tour [Română]",
+    "stepProgress": "{{current}} of {{total}}"
+  },
+  "modal": {
+    "title": "Onboarding Wizard [Română]",
+    "description": "Complete the setup process to get started with Wager [Română]"
+  },
+  "toast": {
+    "vanAdded": "Van hire added successfully! [Română]",
+    "vanAddFailed": "Failed to add van hire. You can add it later from Van Management. [Română]",
+    "welcomeMessage": "Welcome to Wager! Start tracking your pay. [Română]",
+    "savingSettingsFailed": "Failed to save settings. Please try again. [Română]"
+  }
+}

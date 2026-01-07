@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useTranslation } from '@/i18n/useTranslation'
 import {
 	createWorkDay,
 	fetchWeekWithWorkDays,
@@ -32,7 +33,7 @@ import {
 import { DashboardTile } from './DashboardTile'
 
 const workSchema = z.object({
-	route_type: z.enum(['Normal', 'DRS', 'Manual']),
+	route_type: z.enum(['Normal', 'DRS', 'Manual', 'LWB']),
 	route_number: z.string().min(1, 'Route number required'),
 	daily_rate: z.number().min(1).optional(),
 }).refine(
@@ -56,6 +57,7 @@ interface QuickAddWorkTileProps {
 }
 
 export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
+	const { t } = useTranslation('dashboard')
 	const { user } = useAuth()
 	const { userProfile } = useAuthStore()
 	const { settings } = useSettingsStore()
@@ -105,7 +107,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 	useEffect(() => {
 		if (isEditing && todayWork) {
 			reset({
-				route_type: todayWork.route_type as 'Normal' | 'DRS' | 'Manual',
+				route_type: todayWork.route_type as 'Normal' | 'DRS' | 'Manual' | 'LWB',
 				route_number: todayWork.route_number || '',
 				daily_rate: todayWork.route_type === 'Manual' ? todayWork.daily_rate : undefined,
 			})
@@ -126,8 +128,10 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					data.route_type === 'Manual'
 						? data.daily_rate || 0
 						: data.route_type === 'Normal'
-							? settings?.normal_rate || 16000
-							: settings?.drs_rate || 10000
+							? settings?.normal_rate || 15700
+							: data.route_type === 'LWB'
+								? settings?.lwb_rate || 17100
+								: settings?.drs_rate || 10000
 
 				const updated = await updateWorkDay(todayWork.id, {
 					route_type: data.route_type,
@@ -136,21 +140,21 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 				})
 
 				if (updated) {
-					toast.success('Work updated!', { duration: 3000 })
+					toast.success(t('toast:workDay.updated'), { duration: 3000 })
 					setTodayWork(updated)
 					setIsEditing(false)
 					// Update the weeks store cache so calendar reflects the change
 					const weekKey = getWeekKey(weekNum, year)
 					updateWorkDayInStore(weekKey, updated.id, updated)
 				} else {
-					toast.error('Failed to update work')
+					toast.error(t('toast:workDay.updateFailed'))
 				}
 			} else {
 				// Creating new work day
 				// Get or create week
 				const week = await getOrCreateWeek(user.id, weekNum, year)
 				if (!week) {
-					toast.error('Failed to create week')
+					toast.error(t('toast:workDay.createWeekFailed'))
 					return
 				}
 
@@ -159,8 +163,10 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					data.route_type === 'Manual'
 						? data.daily_rate || 0
 						: data.route_type === 'Normal'
-							? settings?.normal_rate || 16000
-							: settings?.drs_rate || 10000
+							? settings?.normal_rate || 15700
+							: data.route_type === 'LWB'
+								? settings?.lwb_rate || 17100
+								: settings?.drs_rate || 10000
 
 				// Create work day
 				const workDay = await createWorkDay({
@@ -177,7 +183,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 				})
 
 				if (workDay) {
-					toast.success('Work added for today!', { duration: 3000 })
+					toast.success(t('toast:workDay.added'), { duration: 3000 })
 					setTodayWork(workDay)
 					reset()
 					// Add to weeks store cache so calendar reflects the change
@@ -185,15 +191,15 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					addWorkDayToStore(weekKey, workDay)
 					onWorkAdded?.()
 				} else {
-					toast.error('Failed to add work')
+					toast.error(t('toast:workDay.addFailed'))
 				}
 			}
 		} catch (error) {
 			console.error('Error adding/updating work:', error)
 			if (error instanceof Error && error.message?.includes('duplicate')) {
-				toast.error('Work already exists for today')
+				toast.error(t('toast:workDay.alreadyExists'))
 			} else {
-				toast.error('An error occurred')
+				toast.error(t('toast:general.error'))
 			}
 		} finally {
 			setIsSubmitting(false)
@@ -204,7 +210,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 	if (todayWork && !isEditing) {
 		return (
 			<DashboardTile
-				title='Quick Add Work'
+				title={t('quickAddWorkTile.title')}
 				icon={Briefcase}
 				data-tour='quick-add-work'
 			>
@@ -213,7 +219,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 						<div className='flex justify-between items-start'>
 							<div>
 								<p className='text-[var(--text-secondary)] text-xs'>
-									Route Type
+									{t('quickAddWorkTile.routeType')}
 								</p>
 								<p className='text-[var(--text-primary)] font-semibold'>
 									{todayWork.route_type}
@@ -229,7 +235,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								size='icon'
 								onClick={() => setIsEditing(true)}
 								className='text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] h-8 w-8 px-5'
-								aria-label="Edit today's work"
+								aria-label={t('quickAddWorkTile.editWorkAriaLabel')}
 							>
 								<Pencil
 									className='w-4 h-4 text-[var(--text-mileage-van)]'
@@ -240,7 +246,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 						<div className='flex justify-between items-start'>
 							<div>
 								<p className='text-[var(--text-secondary)] text-xs'>
-									Route Number
+									{t('quickAddWorkTile.routeNumber')}
 								</p>
 								<p className='text-[var(--text-primary)] font-semibold'>
 									{todayWork.route_number}
@@ -274,14 +280,14 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 									className={`flex flex-col items-center gap-0.5 h-auto py-1 px-2 ${
 										isAfter3pm ? 'animate-pulse-emerald' : 'text-emerald-500'
 									} hover:text-emerald-400 hover:bg-[var(--bg-hover)]`}
-									aria-label='Submit Receipt of Work'
+									aria-label={t('quickAddWorkTile.submitRowAriaLabel')}
 								>
 									<FileText
 										className='w-4 h-4'
 										aria-hidden='true'
 									/>
 									<span className='text-[0.5rem] font-medium leading-none'>
-										RoW
+										{t('quickAddWorkTile.rowButtonLabel')}
 									</span>
 								</Button>
 							)}
@@ -289,12 +295,11 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					</div>
 					<div className='space-y-1'>
 						<p className='text-[var(--text-secondary)] text-xs text-center'>
-							Work logged for today
+							{t('quickAddWorkTile.workLoggedToday')}
 						</p>
 						{isAfter3pm && (
 							<p className='text-red-500 text-xs text-center font-medium'>
-								Remember to fill in your receipt of work using the green button
-								above
+								{t('quickAddWorkTile.rowReminder')}
 							</p>
 						)}
 					</div>
@@ -305,7 +310,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 
 	return (
 		<DashboardTile
-			title='Quick Add Work'
+			title={t('quickAddWorkTile.title')}
 			icon={Briefcase}
 			data-tour='quick-add-work'
 		>
@@ -319,7 +324,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 							htmlFor='route_type'
 							className='text-[var(--input-label)] text-sm'
 						>
-							Route Type
+							{t('quickAddWorkTile.routeType')}
 						</Label>
 						<Controller
 							name='route_type'
@@ -337,20 +342,31 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 											value='Normal'
 											className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 										>
-											Normal (£
-											{((settings?.normal_rate || 16000) / 100).toFixed(0)})
+											{t('quickAddWorkTile.routeTypeNormal', {
+												rate: ((settings?.normal_rate || 15700) / 100).toFixed(0)
+											})}
+										</SelectItem>
+										<SelectItem
+											value='LWB'
+											className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
+										>
+											{t('quickAddWorkTile.routeTypeLWB', {
+												rate: ((settings?.lwb_rate || 17100) / 100).toFixed(0)
+											})}
 										</SelectItem>
 										<SelectItem
 											value='DRS'
 											className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 										>
-											DRS (£{((settings?.drs_rate || 10000) / 100).toFixed(0)})
+											{t('quickAddWorkTile.routeTypeDRS', {
+												rate: ((settings?.drs_rate || 10000) / 100).toFixed(0)
+											})}
 										</SelectItem>
 										<SelectItem
 											value='Manual'
 											className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 										>
-											Manual (Custom)
+											{t('quickAddWorkTile.routeTypeManual')}
 										</SelectItem>
 									</SelectContent>
 								</Select>
@@ -364,7 +380,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								htmlFor='daily_rate'
 								className='text-[var(--input-label)] text-sm'
 							>
-								Daily Rate (£) *
+								{t('quickAddWorkTile.dailyRate')}
 							</Label>
 							<Controller
 								name='daily_rate'
@@ -377,7 +393,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 										onChange={(val) => field.onChange(val ? Math.round(val * 100) : undefined)}
 										min={0.01}
 										step={0.01}
-										placeholder='e.g. 180.00'
+										placeholder={t('quickAddWorkTile.dailyRatePlaceholder')}
 										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1 font-mono'
 										chevronSize='sm'
 									/>
@@ -396,7 +412,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 							htmlFor='route_number'
 							className='text-[var(--input-label)] text-sm'
 						>
-							Route Number
+							{t('quickAddWorkTile.routeNumber')}
 						</Label>
 						<Controller
 							name='route_number'
@@ -405,7 +421,7 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 								<Input
 									{...field}
 									id='route_number'
-									placeholder='e.g., DA01'
+									placeholder={t('quickAddWorkTile.routeNumberPlaceholder')}
 									className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-1'
 								/>
 							)}
@@ -426,12 +442,12 @@ export function QuickAddWorkTile({ onWorkAdded }: QuickAddWorkTileProps) {
 					{isSubmitting ? (
 						<>
 							<Loader2 className='w-4 h-4 mr-2 animate-spin' />
-							{isEditing ? 'Updating...' : 'Adding...'}
+							{isEditing ? t('quickAddWorkTile.updating') : t('quickAddWorkTile.adding')}
 						</>
 					) : isEditing ? (
-						'Confirm Edits'
+						t('quickAddWorkTile.confirmEditsButton')
 					) : (
-						'Add Work for Today'
+						t('quickAddWorkTile.addWorkButton')
 					)}
 				</Button>
 			</form>

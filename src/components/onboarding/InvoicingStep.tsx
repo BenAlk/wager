@@ -1,5 +1,6 @@
 import { Check, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/i18n/useTranslation'
 
 type InvoicingService = 'Self-Invoicing' | 'Verso-Basic' | 'Verso-Full'
 
@@ -10,45 +11,60 @@ interface InvoicingStepProps {
   onBack: () => void
 }
 
-const INVOICING_OPTIONS = [
-  {
-    value: 'Self-Invoicing' as const,
-    label: 'Self-Invoicing',
-    cost: '£0',
-    description: 'Handle your own invoicing and tax returns',
-    features: ['No weekly deduction', 'Full control', 'Best for self-employed'],
-  },
-  {
-    value: 'Verso-Basic' as const,
-    label: 'Verso Basic',
-    cost: '£10',
-    description: 'Professional invoicing service',
-    features: ['Invoicing service', 'Public liability insurance', 'Requires Ltd company'],
-  },
-  {
-    value: 'Verso-Full' as const,
-    label: 'Verso Full',
-    cost: '£30',
-    description: 'Complete accounting service',
-    features: ['Full invoicing', 'Accounting & tax returns', 'Public liability insurance', 'Requires Ltd company'],
-  },
-]
-
 export function InvoicingStep({
   selectedService,
   onServiceChange,
   onNext,
   onBack,
 }: InvoicingStepProps) {
+  const { t } = useTranslation('onboarding')
+
+  const INVOICING_OPTIONS = [
+    {
+      value: 'Self-Invoicing' as const,
+      label: t('invoicing.options.selfInvoicing.label'),
+      cost: t('invoicing.options.selfInvoicing.cost'),
+      description: t('invoicing.options.selfInvoicing.description'),
+      features: [
+        t('invoicing.options.selfInvoicing.features.noDeduction'),
+        t('invoicing.options.selfInvoicing.features.fullControl'),
+        t('invoicing.options.selfInvoicing.features.bestFor'),
+      ],
+    },
+    {
+      value: 'Verso-Basic' as const,
+      label: t('invoicing.options.versoBasic.label'),
+      cost: t('invoicing.options.versoBasic.cost'),
+      description: t('invoicing.options.versoBasic.description'),
+      features: [
+        t('invoicing.options.versoBasic.features.invoicing'),
+        t('invoicing.options.versoBasic.features.insurance'),
+        t('invoicing.options.versoBasic.features.ltdCompany'),
+      ],
+    },
+    {
+      value: 'Verso-Full' as const,
+      label: t('invoicing.options.versoFull.label'),
+      cost: t('invoicing.options.versoFull.cost'),
+      description: t('invoicing.options.versoFull.description'),
+      features: [
+        t('invoicing.options.versoFull.features.fullInvoicing'),
+        t('invoicing.options.versoFull.features.accounting'),
+        t('invoicing.options.versoFull.features.insurance'),
+        t('invoicing.options.versoFull.features.ltdCompany'),
+      ],
+    },
+  ]
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold text-foreground">
-          Invoicing Service
+          {t('invoicing.title')}
         </h2>
         <p className="text-muted-foreground">
-          Choose how you handle invoicing and accounting
+          {t('invoicing.subtitle')}
         </p>
       </div>
 
@@ -73,7 +89,7 @@ export function InvoicingStep({
                   <h3 className="font-semibold text-foreground">{option.label}</h3>
                   <span className="text-sm font-mono font-semibold text-emerald-400">
                     {option.cost}
-                    <span className="text-muted-foreground text-xs">/week</span>
+                    <span className="text-muted-foreground text-xs">{t('invoicing.perWeek')}</span>
                   </span>
                 </div>
                 <p className="text-sm text-muted-foreground">{option.description}</p>
@@ -110,14 +126,14 @@ export function InvoicingStep({
       <div className="flex items-start gap-3 p-3 bg-card/50 border border-border rounded-lg">
         <Info className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
         <p className="text-xs text-muted-foreground">
-          This affects your weekly deductions. You can change this anytime in Settings.
+          {t('invoicing.info')}
         </p>
       </div>
 
       {/* Progress + Actions */}
       <div className="space-y-4 pt-2">
         <div className="text-center">
-          <span className="text-sm text-muted-foreground">Step 2 of 4</span>
+          <span className="text-sm text-muted-foreground">{t('invoicing.step')}</span>
         </div>
 
         <div className="flex gap-3">
@@ -126,13 +142,13 @@ export function InvoicingStep({
             variant="outline"
             className="flex-1"
           >
-            Back
+            {t('common:actions.back')}
           </Button>
           <Button
             onClick={onNext}
             className="flex-1 bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white font-semibold"
           >
-            Next
+            {t('common:actions.next')}
           </Button>
         </div>
       </div>

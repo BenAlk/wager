@@ -1,0 +1,111 @@
+{
+  "title": "Settings [Français]",
+  "tabs": {
+    "finance": "Finance Settings [Français]",
+    "user": "User Details [Français]",
+    "language": "Language [Français]"
+  },
+  "language": {
+    "title": "Language Preference [Français]",
+    "selectLanguage": "Select Language [Français]",
+    "description": "Choose your preferred language for the app interface [Français]"
+  },
+  "finance": {
+    "title": "Pay Rates [Français]",
+    "description": "Set your daily pay rates. These will be used to calculate your weekly earnings. [Français]",
+    "warning": "These should only be changed on the week that pay rates change. [Français]",
+    "normalRate": "Normal Route Rate [Français]",
+    "drsRate": "DRS/Missort Route Rate [Français]",
+    "normalRateDefault": "Default: £160 per day [Français]",
+    "drsRateDefault": "Default: £100 per day [Français]",
+    "sixDayBonusTitle": "6-Day Week Bonus: [Français]",
+    "sixDayBonusDescription": "You automatically receive a flat £30 bonus when working exactly 6 days in a week (any route type combination). [Français]",
+    "invoicingTitle": "Invoicing & Accounting [Français]",
+    "invoicingDescription": "Choose how you handle invoicing and tax returns. Costs are deducted from your weekly standard pay. [Français]",
+    "serviceProvider": "Service Provider [Français]",
+    "serviceProviderPlaceholder": "Select invoicing service [Français]",
+    "selfInvoicingCost": "£0/week [Français]",
+    "versoBasicCost": "£10/week [Français]",
+    "versoFullCost": "£30/week [Français]",
+    "selfInvoicingDescription": "Handle your own invoicing and tax returns [Français]",
+    "versoBasicDescription": "Professional invoicing + public liability insurance (requires Ltd company) [Français]",
+    "versoFullDescription": "Full invoicing + accounting + tax returns + insurance (requires Ltd company) [Français]",
+    "loadingSettings": "Loading settings... [Français]",
+    "savingButton": "Saving... [Français]",
+    "saveButton": "Save Settings [Français]"
+  },
+  "user": {
+    "title": "Profile Information [Français]",
+    "description": "Update your personal information. Display name is required, while first and last names are optional. [Français]",
+    "displayName": "Display Name [Français]",
+    "displayNameRequired": "Display Name * [Français]",
+    "displayNamePlaceholder": "Enter your display name [Français]",
+    "displayNameHelp": "This is how you'll be identified in the app [Français]",
+    "firstName": "First Name [Français]",
+    "firstNamePlaceholder": "Enter your first name (optional) [Français]",
+    "lastName": "Last Name [Français]",
+    "lastNamePlaceholder": "Enter your last name (optional) [Français]",
+    "loadingUser": "Loading user details... [Français]",
+    "savingButton": "Saving... [Français]",
+    "saveButton": "Save Changes [Français]",
+    "dangerZoneTitle": "Danger Zone [Français]",
+    "deleteAccountTitle": "Delete Account [Français]",
+    "deleteAccountDescription": "Permanently delete your account and all associated data. This action cannot be undone. [Français]",
+    "deleteAccountButton": "Delete My Account [Français]"
+  },
+  "onboarding": {
+    "title": "Onboarding [Français]",
+    "description": "Restart the onboarding wizard to see the setup process again or take the interactive dashboard tour. [Français]",
+    "restartButton": "Restart Onboarding [Français]",
+    "tourButton": "Take Dashboard Tour [Français]"
+  },
+  "restartDialog": {
+    "title": "Restart Onboarding [Français]",
+    "description": "Choose how you'd like to restart the onboarding process [Français]",
+    "fullOnboardingTitle": "Full Onboarding [Français]",
+    "fullOnboardingDescription": "Start completely fresh. This will delete all your entered data (work days, van hires, settings) and begin from scratch. [Français]",
+    "tourOnlyTitle": "Tour Only [Français]",
+    "tourOnlyDescription": "Keep your data and just view the interactive dashboard tour. Your real data won't be affected. [Français]",
+    "warningLabel": "Full Onboarding Warning: [Français]",
+    "warningText": "This action cannot be undone. All work days, van hires, and settings will be permanently deleted. [Français]",
+    "cancelButton": "Cancel [Français]"
+  },
+  "deleteAccount": {
+    "warningTitle": "Delete Account - Final Warning [Français]",
+    "warningDescription": "Warning about permanent account deletion [Français]",
+    "permanentHeading": "This action is PERMANENT and IRREVERSIBLE [Français]",
+    "permanentText": "Once you delete your account, there is no way to recover your data. This is not a temporary deactivation. [Français]",
+    "dataDeletedHeading": "The following data will be permanently deleted: [Français]",
+    "dataList": {
+      "profile": "Your user profile and account settings [Français]",
+      "workDays": "All work days and weekly pay data (every week you've tracked) [Français]",
+      "vanHires": "All van hire records and deposit information [Français]",
+      "rankings": "Performance rankings history [Français]",
+      "mileage": "Mileage tracking and pay rate history [Français]",
+      "auth": "Your authentication credentials (you will be logged out) [Français]"
+    },
+    "alternativesHeading": "Consider these alternatives: [Français]",
+    "alternatives": {
+      "stopUsing": "You can simply stop using the app without deleting your account [Français]",
+      "clearWeeks": "You can clear individual weeks if you want to start fresh [Français]",
+      "resetRates": "You can reset your pay rates in Settings if they've changed [Français]"
+    },
+    "cancelButton": "Cancel (Keep My Account) [Français]",
+    "proceedButton": "I Understand - Proceed to Delete [Français]",
+    "confirmTitle": "Confirm Account Deletion [Français]",
+    "confirmDescription": "Final confirmation step for account deletion [Français]",
+    "lastChance": "Last chance: Enter your credentials to permanently delete your account [Français]",
+    "emailLabel": "Your Email Address [Français]",
+    "emailMatch": "Must match: {{email}}",
+    "passwordLabel": "Your Password [Français]",
+    "passwordPlaceholder": "Enter your password to confirm [Français]",
+    "passwordHelp": "We need to verify your identity before deletion [Français]",
+    "confirmTextLabel": "Type \"DELETE MY ACCOUNT\" to confirm [Français]",
+    "confirmTextPlaceholder": "DELETE MY ACCOUNT [Français]",
+    "confirmTextHelp": "Type exactly as shown (case sensitive) [Français]",
+    "finalWarning": "After clicking \"Delete My Account Forever\", your data will be immediately and permanently deleted. You will be logged out and cannot undo this action. [Français]",
+    "goBackButton": "Go Back [Français]",
+    "deletingButton": "Deleting Account... [Français]",
+    "deleteButton": "Delete My Account Forever [Français]"
+  }
+}

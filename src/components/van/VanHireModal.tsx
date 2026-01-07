@@ -31,41 +31,50 @@ import {
 	SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
+import { useTranslation } from '@/i18n/useTranslation'
 
-const vanHireSchema = z
-	.object({
-		registration: z
-			.string()
-			.min(1, 'Registration is required')
-			.max(20, 'Registration too long')
-			.transform((val) => val.toUpperCase().trim()),
-		van_type: z.enum(['Fleet', 'Flexi']).nullable(),
-		weekly_rate: z
-			.number({ message: 'Weekly rate is required' })
-			.int('Rate must be a whole number')
-			.min(0, 'Rate must be positive')
-			.max(100000, 'Rate too high'), // Max £1,000
-		on_hire_date: z.string().min(1, 'On-hire date is required'),
-		off_hire_date: z.string().optional().nullable(),
-		notes: z.string().max(500, 'Notes too long').optional().nullable(),
-	})
-	.refine(
-		(data) => {
-			// If off_hire_date is provided, ensure it's not before on_hire_date
-			if (data.off_hire_date && data.on_hire_date) {
-				const onHire = new Date(data.on_hire_date)
-				const offHire = new Date(data.off_hire_date)
-				return offHire >= onHire
+const createVanHireSchema = (t: (key: string, params?: any) => string) =>
+	z
+		.object({
+			registration: z
+				.string()
+				.min(1, t('validation:van.registrationRequired'))
+				.max(20, t('validation:van.registrationTooLong'))
+				.transform((val) => val.toUpperCase().trim()),
+			van_type: z.enum(['Fleet', 'Flexi']).nullable(),
+			weekly_rate: z
+				.number({ message: t('validation:van.weeklyRateRequired') })
+				.int(t('validation:van.rateWholeNumber'))
+				.min(0, t('validation:van.ratePositive'))
+				.max(100000, t('validation:van.rateTooHigh')), // Max £1,000
+			on_hire_date: z.string().min(1, t('validation:van.onHireDateRequired')),
+			off_hire_date: z.string().optional().nullable(),
+			notes: z.string().max(500, t('validation:van.notesTooLong')).optional().nullable(),
+		})
+		.refine(
+			(data) => {
+				// If off_hire_date is provided, ensure it's not before on_hire_date
+				if (data.off_hire_date && data.on_hire_date) {
+					const onHire = new Date(data.on_hire_date)
+					const offHire = new Date(data.off_hire_date)
+					return offHire >= onHire
+				}
+				return true
+			},
+			{
+				message: t('validation:van.offHireDateInvalid'),
+				path: ['off_hire_date'],
 			}
-			return true
-		},
-		{
-			message: 'Off-hire date must be on or after on-hire date',
-			path: ['off_hire_date'],
-		}
-	)
+		)
 
-type VanHireFormData = z.infer<typeof vanHireSchema>
+type VanHireFormData = {
+	registration: string
+	van_type: 'Fleet' | 'Flexi' | null
+	weekly_rate: number
+	on_hire_date: string
+	off_hire_date?: string | null
+	notes?: string | null
+}
 
 interface VanHireModalProps {
 	van: VanHire | null
@@ -73,6 +82,7 @@ interface VanHireModalProps {
 }
 
 export function VanHireModal({ van, onClose }: VanHireModalProps) {
+	const { t } = useTranslation('van')
 	const { user } = useAuth()
 	const {
 		addVan,
@@ -95,7 +105,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 		watch,
 		formState: { errors, isSubmitting },
 	} = useForm<VanHireFormData>({
-		resolver: zodResolver(vanHireSchema),
+		resolver: zodResolver(createVanHireSchema(t)),
 		defaultValues: van
 			? {
 					registration: van.registration,
@@ -136,10 +146,10 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 				const updated = await updateVanHire(van.id, data)
 				if (updated) {
 					updateVanStore(van.id, updated)
-					toast.success('Van hire updated successfully', { duration: 3000 })
+					toast.success(t('toast:van.updated'), { duration: 3000 })
 					onClose()
 				} else {
-					toast.error('Failed to update van hire', { duration: 3000 })
+					toast.error(t('toast:van.updateFailed'), { duration: 3000 })
 				}
 			} else {
 				// Create new van hire - deposit fields are auto-calculated by system
@@ -157,15 +167,15 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 				})
 				if (newVan) {
 					addVan(newVan)
-					toast.success('Van hire added successfully', { duration: 3000 })
+					toast.success(t('toast:van.added'), { duration: 3000 })
 					onClose()
 				} else {
-					toast.error('Failed to add van hire', { duration: 3000 })
+					toast.error(t('toast:van.addFailed'), { duration: 3000 })
 				}
 			}
 		} catch (error) {
 			console.error('Error saving van hire:', error)
-			toast.error('An error occurred', { duration: 3000 })
+			toast.error(t('toast:general.error'), { duration: 3000 })
 		} finally {
 			setSaving(false)
 		}
@@ -179,15 +189,15 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 			const success = await deleteVanHire(van.id)
 			if (success) {
 				removeVan(van.id)
-				toast.success('Van hire deleted', { duration: 3000 })
+				toast.success(t('toast:van.deleted'), { duration: 3000 })
 				setShowDeleteConfirm(false)
 				onClose()
 			} else {
-				toast.error('Failed to delete van hire', { duration: 3000 })
+				toast.error(t('toast:van.deleteFailed'), { duration: 3000 })
 			}
 		} catch (error) {
 			console.error('Error deleting van hire:', error)
-			toast.error('An error occurred', { duration: 3000 })
+			toast.error(t('toast:general.error'), { duration: 3000 })
 		} finally {
 			setIsDeleting(false)
 		}
@@ -195,7 +205,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 
 	const handleOffHire = async () => {
 		if (!van || !offHireDateInput) {
-			toast.error('Please enter an off-hire date', { duration: 3000 })
+			toast.error(t('toast:van.enterOffHireDate'), { duration: 3000 })
 			return
 		}
 
@@ -205,15 +215,15 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 			const updated = await offHireVan(van.id, offHireDate)
 			if (updated) {
 				updateVanStore(van.id, updated)
-				toast.success('Van off-hired successfully', { duration: 3000 })
+				toast.success(t('toast:van.offHired'), { duration: 3000 })
 				setShowOffHire(false)
 				onClose()
 			} else {
-				toast.error('Failed to off-hire van', { duration: 3000 })
+				toast.error(t('toast:van.offHireFailed'), { duration: 3000 })
 			}
 		} catch (error) {
 			console.error('Error off-hiring van:', error)
-			toast.error('An error occurred', { duration: 3000 })
+			toast.error(t('toast:general.error'), { duration: 3000 })
 		} finally {
 			setSaving(false)
 		}
@@ -221,13 +231,13 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 
 	const handleRefund = async () => {
 		if (!van || !refundAmountInput) {
-			toast.error('Please enter a refund amount', { duration: 3000 })
+			toast.error(t('toast:van.enterDeposit'), { duration: 3000 })
 			return
 		}
 
 		const refundAmount = Math.round(parseFloat(refundAmountInput) * 100)
 		if (refundAmount > van.deposit_paid) {
-			toast.error('Refund amount cannot exceed deposit paid', {
+			toast.error(t('toast:van.refundExceedsDeposit'), {
 				duration: 3000,
 			})
 			return
@@ -238,15 +248,15 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 			const updated = await refundDeposit(van.id, refundAmount)
 			if (updated) {
 				updateVanStore(van.id, updated)
-				toast.success('Deposit refunded successfully', { duration: 3000 })
+				toast.success(t('toast:van.depositRefunded'), { duration: 3000 })
 				setShowRefund(false)
 				onClose()
 			} else {
-				toast.error('Failed to refund deposit', { duration: 3000 })
+				toast.error(t('toast:van.refundFailed'), { duration: 3000 })
 			}
 		} catch (error) {
 			console.error('Error refunding deposit:', error)
-			toast.error('An error occurred', { duration: 3000 })
+			toast.error(t('toast:general.error'), { duration: 3000 })
 		} finally {
 			setSaving(false)
 		}
@@ -273,7 +283,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 					{/* Header */}
 					<div className='flex items-center justify-between mb-6'>
 						<h2 className='text-2xl font-bold text-[var(--text-primary)]'>
-							{isEditMode ? 'Edit Van Hire' : 'New Van Hire'}
+							{isEditMode ? t('modal.titleEdit') : t('modal.titleNew')}
 						</h2>
 						<Button
 							variant='ghost'
@@ -297,7 +307,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 								htmlFor='registration'
 								className='text-[var(--input-label)]'
 							>
-								Registration Number *
+								{t('modal.registrationLabel')}
 							</Label>
 							<Controller
 								name='registration'
@@ -306,7 +316,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									<Input
 										{...field}
 										id='registration'
-										placeholder='e.g., AB12 CDE'
+										placeholder={t('modal.registrationPlaceholder')}
 										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'
 									/>
 								)}
@@ -325,7 +335,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									htmlFor='van_type'
 									className='text-[var(--input-label)]'
 								>
-									Van Type
+									{t('modal.vanTypeLabel')}
 								</Label>
 								<Controller
 									name='van_type'
@@ -338,20 +348,20 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 											}
 										>
 											<SelectTrigger className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2'>
-												<SelectValue placeholder='Select type' />
+												<SelectValue placeholder={t('modal.vanTypePlaceholder')} />
 											</SelectTrigger>
 											<SelectContent className='bg-[var(--modal-bg)] border-[var(--modal-border)]'>
 												<SelectItem
 													value='Fleet'
 													className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 												>
-													Fleet (£250/week)
+													{t('modal.vanTypeFleet')}
 												</SelectItem>
 												<SelectItem
 													value='Flexi'
 													className='text-[var(--text-primary)] hover:bg-[var(--bg-hover)] focus:bg-[var(--bg-hover)]'
 												>
-													Flexi (£100-£250/week)
+													{t('modal.vanTypeFlexi')}
 												</SelectItem>
 											</SelectContent>
 										</Select>
@@ -364,7 +374,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									htmlFor='weekly_rate'
 									className='text-[var(--input-label)]'
 								>
-									Weekly Rate (£) *
+									{t('modal.weeklyRateLabel')}
 								</Label>
 								<Controller
 									name='weekly_rate'
@@ -396,7 +406,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									htmlFor='on_hire_date'
 									className='text-[var(--input-label)]'
 								>
-									On-Hire Date *
+									{t('modal.onHireDateLabel')}
 								</Label>
 								<Controller
 									name='on_hire_date'
@@ -423,7 +433,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									htmlFor='off_hire_date'
 									className='text-[var(--input-label)]'
 								>
-									Off-Hire Date
+									{t('modal.offHireDateLabel')}
 								</Label>
 								<Controller
 									name='off_hire_date'
@@ -446,7 +456,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									</p>
 								) : (
 									<p className='text-[var(--text-secondary)] text-xs mt-1'>
-										Leave empty if currently on-hire
+										{t('modal.offHireDateHelp')}
 									</p>
 								)}
 							</div>
@@ -455,16 +465,15 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 						{/* Deposit Status (Read-Only) */}
 						{isEditMode && van && (
 							<div className='bg-[var(--bg-surface-secondary)] border border-[var(--border-secondary)] rounded-lg p-4'>
-								<p className='text-[var(--text-secondary)] text-sm mb-2'>Deposit Status</p>
+								<p className='text-[var(--text-secondary)] text-sm mb-2'>{t('modal.depositStatusTitle')}</p>
 								<div className='flex items-center justify-between'>
-									<span className='text-[var(--text-primary)]'>Current Deposit:</span>
+									<span className='text-[var(--text-primary)]'>{t('modal.depositCurrent')}</span>
 									<span className='text-[var(--text-primary)] font-mono font-semibold'>
 										£{(van.deposit_paid / 100).toFixed(2)}
 									</span>
 								</div>
 								<p className='text-[var(--text-tertiary)] text-xs mt-2'>
-									Deposits are automatically calculated by the system based on
-									weeks with any van
+									{t('modal.depositAutoNote')}
 								</p>
 							</div>
 						)}
@@ -475,7 +484,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 								htmlFor='notes'
 								className='text-[var(--input-label)]'
 							>
-								Notes
+								{t('modal.notesLabel')}
 							</Label>
 							<Controller
 								name='notes'
@@ -485,7 +494,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 										{...field}
 										value={field.value ?? ''}
 										id='notes'
-										placeholder='Additional notes about this van hire...'
+										placeholder={t('modal.notesPlaceholder')}
 										className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2 min-h-[100px]'
 									/>
 								)}
@@ -507,7 +516,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 									onClick={() => setShowOffHire(true)}
 									className='w-full border-[var(--border-warning)] text-[var(--text-warning)] hover:bg-[var(--bg-warning)]'
 								>
-									Off-Hire Van
+									{t('modal.offHireButton')}
 								</Button>
 							)}
 
@@ -524,7 +533,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 												className='border-[var(--border-error)] text-[var(--text-error)] hover:bg-[var(--bg-error)]'
 											>
 												<Trash2 className='w-4 h-4 mr-2' />
-												Delete
+												{t('modal.deleteButton')}
 											</Button>
 											{van.off_hire_date &&
 												!van.deposit_refunded &&
@@ -535,7 +544,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 														onClick={() => setShowRefund(true)}
 														className='border-[var(--border-success)] text-[var(--text-success)] hover:bg-[var(--bg-success)]'
 													>
-														Refund Deposit
+														{t('modal.refundDepositButton')}
 													</Button>
 												)}
 										</>
@@ -550,7 +559,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 										disabled={isSubmitting}
 										className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 									>
-										Cancel
+										{t('modal.cancelButton')}
 									</Button>
 									<Button
 										type='submit'
@@ -562,7 +571,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 										) : (
 											<Save className='w-4 h-4 mr-2' />
 										)}
-										{isEditMode ? 'Update' : 'Create'}
+										{isEditMode ? t('modal.updateButton') : t('modal.createButton')}
 									</Button>
 								</div>
 							</div>
@@ -577,10 +586,10 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 				open={showDeleteConfirm}
 				onOpenChange={setShowDeleteConfirm}
 				onConfirm={handleDelete}
-				title="Delete Van Hire?"
+				title={t('deleteDialog.title')}
 				description={
 					<>
-						Are you sure you want to delete this van hire?
+						{t('deleteDialog.description')}
 						{van && (
 							<>
 								<br />
@@ -590,11 +599,11 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 						)}
 						<br />
 						<br />
-						This action cannot be undone.
+						{t('deleteDialog.warning')}
 					</>
 				}
-				confirmText="Delete"
-				cancelText="Cancel"
+				confirmText={t('deleteDialog.confirmButton')}
+				cancelText={t('deleteDialog.cancelButton')}
 				variant="destructive"
 				icon={<AlertCircle className="w-6 h-6" />}
 				isLoading={isDeleting}
@@ -604,23 +613,18 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 			{showOffHire && (
 				<div className='fixed inset-0 bg-[var(--modal-overlay)] flex items-center justify-center z-[60] p-4'>
 					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
-						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>Off-Hire Van</h3>
+						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>{t('offHireDialog.title')}</h3>
 						<p className='text-[var(--text-secondary)] mb-4'>
-							Enter the date when the van was returned. The deposit will be held
-							for 6 weeks.
+							{t('offHireDialog.description')}
 						</p>
 
 						{/* Important Info Box */}
 						<div className='bg-[var(--bg-info)] border border-[var(--border-info)] rounded-lg p-3 mb-4'>
 							<p className='text-[var(--text-info)] text-sm font-semibold mb-1'>
-								Important: Same-Day Van Swaps
+								{t('offHireDialog.infoTitle')}
 							</p>
 							<p className='text-[var(--text-info)]/80 text-xs'>
-								The off-hire date is the <strong>last day</strong> you had the
-								van. If you're picking up a new van the same morning you're
-								returning this one, off-hire this van on the{' '}
-								<strong>previous day</strong> to avoid counting the same day
-								twice.
+								{t('offHireDialog.infoDescription')}
 							</p>
 						</div>
 
@@ -628,7 +632,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							htmlFor='off_hire_input'
 							className='text-[var(--input-label)]'
 						>
-							Off-Hire Date *
+							{t('offHireDialog.dateLabel')}
 						</Label>
 						<Input
 							id='off_hire_input'
@@ -644,13 +648,13 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 								onClick={() => setShowOffHire(false)}
 								className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 							>
-								Cancel
+								{t('offHireDialog.cancelButton')}
 							</Button>
 							<Button
 								onClick={handleOffHire}
 								className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 							>
-								Confirm Off-Hire
+								{t('offHireDialog.confirmButton')}
 							</Button>
 						</div>
 					</Card>
@@ -662,16 +666,16 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 				<div className='fixed inset-0 bg-[var(--modal-overlay)] flex items-center justify-center z-[60] p-4'>
 					<Card className='bg-[var(--modal-bg)] border-[var(--modal-border)] max-w-md w-full p-6'>
 						<h3 className='text-xl font-bold text-[var(--text-primary)] mb-4'>
-							Refund Deposit
+							{t('refundDialog.title')}
 						</h3>
 						<p className='text-[var(--text-secondary)] mb-4'>
-							Enter the refund amount (after deducting any damage costs).
+							{t('refundDialog.description')}
 						</p>
 						<Label
 							htmlFor='refund_input'
 							className='text-[var(--input-label)]'
 						>
-							Refund Amount (£) *
+							{t('refundDialog.amountLabel')}
 						</Label>
 						<Input
 							id='refund_input'
@@ -682,7 +686,7 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 							className='bg-[var(--input-bg)] border-[var(--input-border)] text-[var(--input-text)] mt-2 mb-2'
 						/>
 						<p className='text-[var(--text-secondary)] text-xs mb-4'>
-							Max: £{van ? (van.deposit_paid / 100).toFixed(2) : '0.00'}
+							{t('refundDialog.maxLabel', { amount: van ? (van.deposit_paid / 100).toFixed(2) : '0.00' })}
 						</p>
 						<div className='flex gap-2 justify-end'>
 							<Button
@@ -690,13 +694,13 @@ export function VanHireModal({ van, onClose }: VanHireModalProps) {
 								onClick={() => setShowRefund(false)}
 								className='border-[var(--input-border)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
 							>
-								Cancel
+								{t('refundDialog.cancelButton')}
 							</Button>
 							<Button
 								onClick={handleRefund}
 								className='bg-gradient-to-r from-[var(--button-primary-from)] to-[var(--button-primary-to)] hover:from-[var(--button-primary-hover-from)] hover:to-[var(--button-primary-hover-to)] text-[var(--text-primary)]'
 							>
-								Confirm Refund
+								{t('refundDialog.confirmButton')}
 							</Button>
 						</div>
 					</Card>
