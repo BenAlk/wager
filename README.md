@@ -70,7 +70,7 @@ As a courier working for a DSP (Delivery Service Partner) that works with Amazon
 - **DRS/Missort Routes**: £100/day (customizable in settings)
 - **Manual Entry Routes**: Custom daily rate for special routes (LWB, 9.5hr, etc.) - entered per work day
 - **Device Payment**: £1.80/day (automatic payment for using Amazon Flex app on personal phone)
-- **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days (any route type combination)
+- **6-Day Bonus**: Flat £30 bonus (6 × £5) when working exactly 6 days (any route type combination during peak)
 - **Pay Timing**: Standard pay 2 weeks in arrears (Week N+2), performance bonuses received 6 weeks after work (Week N+6)
 - **Payment This Week Display**:
   - Shows Week N-2 standard pay (what you're receiving this week)
@@ -471,7 +471,7 @@ wager/
 - [x] Test all calculations ✅ **92/92 tests passing**
   - [x] Helper functions (currency conversion, formatting)
   - [x] Daily calculations (pay, sweeps, mileage, discrepancies)
-  - [x] Weekly calculations (base pay, 6-day bonus, aggregation)
+  - [x] Weekly calculations (base pay, 6-day bonus, aggregation, during peak)
   - [x] Performance bonus (Fantastic/Fantastic+ tiers)
   - [x] Van calculations (pro-rata, deposits £25/£50, £500 max)
   - [x] Invoicing costs (Self/Verso Basic/Verso Full)
@@ -566,7 +566,7 @@ Complete coverage of all pay calculation logic:
 
 **Validation Functions (7 tests)**
 
-- 6-day bonus eligibility
+- 6-day bonus eligibility during peak
 - 7-day work detection (illegal)
 - Sweeps limit (max 200/day)
 - Work day validation
