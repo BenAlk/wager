@@ -31,6 +31,8 @@ dist-ssr
 # AI context/status tracking (local only)
 STATUS.md
 CLAUDE.md
+Plan.md
+V2_PLAN.md
 
 # Example files (local only)
 examples/
